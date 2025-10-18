@@ -8,58 +8,64 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Café-inspired elegant palette */
-    --background: 32 20% 98%;
-    --foreground: 30 15% 25%;
+    /* Luxurious Korean cosmetics palette - Autumn elegance */
+    --background: 28 25% 97%;
+    --foreground: 25 20% 20%;
 
     --card: 0 0% 100%;
-    --card-foreground: 30 15% 25%;
+    --card-foreground: 25 20% 20%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 30 15% 25%;
+    --popover-foreground: 25 20% 20%;
 
-    /* Soft blush pink - feminine and elegant */
-    --primary: 350 65% 88%;
-    --primary-foreground: 30 15% 25%;
-    --primary-soft: 350 75% 95%;
+    /* Refined rose pink - elegant and luxurious */
+    --primary: 345 55% 75%;
+    --primary-foreground: 0 0% 100%;
+    --primary-soft: 345 65% 92%;
+    --primary-glow: 345 70% 85%;
     
-    /* Sage green - natural and calming */
-    --secondary: 145 25% 75%;
-    --secondary-foreground: 30 15% 25%;
-    --secondary-soft: 145 25% 92%;
+    /* Autumn sage green - natural grass tones */
+    --secondary: 140 30% 55%;
+    --secondary-foreground: 0 0% 100%;
+    --secondary-soft: 140 35% 85%;
+    --secondary-glow: 140 40% 75%;
 
-    /* Warm cream tones */
-    --muted: 35 20% 95%;
-    --muted-foreground: 30 10% 50%;
+    /* Warm autumn cream */
+    --muted: 35 30% 92%;
+    --muted-foreground: 30 15% 45%;
 
-    /* Soft gold accent */
-    --accent: 45 80% 88%;
-    --accent-foreground: 30 15% 25%;
+    /* Golden autumn accent */
+    --accent: 42 75% 72%;
+    --accent-foreground: 25 20% 20%;
 
     --destructive: 0 70% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 35 15% 90%;
-    --input: 35 15% 90%;
-    --ring: 350 65% 75%;
+    --border: 35 20% 88%;
+    --input: 35 20% 88%;
+    --ring: 345 55% 75%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
     /* Sidebar - admin panel */
-    --sidebar-background: 32 20% 98%;
-    --sidebar-foreground: 30 15% 25%;
-    --sidebar-primary: 350 65% 88%;
-    --sidebar-primary-foreground: 30 15% 25%;
-    --sidebar-accent: 35 20% 95%;
-    --sidebar-accent-foreground: 30 15% 25%;
-    --sidebar-border: 35 15% 90%;
-    --sidebar-ring: 350 65% 75%;
+    --sidebar-background: 28 25% 97%;
+    --sidebar-foreground: 25 20% 20%;
+    --sidebar-primary: 345 55% 75%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 35 30% 92%;
+    --sidebar-accent-foreground: 25 20% 20%;
+    --sidebar-border: 35 20% 88%;
+    --sidebar-ring: 345 55% 75%;
 
-    /* Custom design tokens */
-    --gradient-hero: linear-gradient(135deg, hsl(350 75% 95%), hsl(145 25% 92%));
-    --shadow-soft: 0 4px 20px -2px hsl(350 65% 88% / 0.15);
-    --shadow-elegant: 0 10px 40px -10px hsl(350 65% 75% / 0.2);
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Luxurious design tokens */
+    --gradient-hero: linear-gradient(135deg, hsl(345 65% 92%) 0%, hsl(140 35% 85%) 100%);
+    --gradient-luxury: linear-gradient(to right, hsl(345 70% 85%), hsl(42 75% 72%));
+    --gradient-elegant: linear-gradient(180deg, hsl(345 65% 92%) 0%, hsl(35 30% 92%) 50%, hsl(140 35% 85%) 100%);
+    --shadow-soft: 0 8px 24px -4px hsl(345 55% 75% / 0.12);
+    --shadow-elegant: 0 16px 48px -12px hsl(345 55% 75% / 0.25);
+    --shadow-luxury: 0 20px 60px -15px hsl(345 55% 75% / 0.35);
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-luxury: all 0.5s cubic-bezier(0.2, 0, 0.1, 1);
   }
 
   .dark {
