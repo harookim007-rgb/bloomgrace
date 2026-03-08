@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
-import ProductCard from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Hero = () => {
+  const { t } = useLanguage();
   const [banners, setBanners] = useState<any[]>([]);
   const [currentBanner, setCurrentBanner] = useState(0);
 
@@ -23,30 +24,36 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary-soft/30 via-background to-secondary-soft/20">
+      {/* Floral decorative elements */}
       <div className="absolute inset-0 bg-gradient-to-r from-background/96 via-background/85 to-background/40" />
-      <div className="absolute top-20 right-10 w-32 h-32 rounded-full bg-primary/10 blur-3xl" />
-      <div className="absolute bottom-20 left-10 w-40 h-40 rounded-full bg-secondary/10 blur-3xl" />
+      <div className="absolute top-10 right-16 w-40 h-40 rounded-full bg-primary/8 blur-3xl animate-pulse" />
+      <div className="absolute bottom-16 left-10 w-48 h-48 rounded-full bg-secondary/8 blur-3xl" />
+      <div className="absolute top-1/4 left-1/3 w-24 h-24 rounded-full bg-accent/10 blur-2xl" />
+      {/* Petal-like shapes */}
+      <div className="absolute top-20 right-1/4 text-primary/10 text-8xl select-none pointer-events-none font-serif">✿</div>
+      <div className="absolute bottom-32 left-1/5 text-secondary/10 text-6xl select-none pointer-events-none font-serif rotate-12">❀</div>
+      <div className="absolute top-1/2 right-10 text-accent/10 text-7xl select-none pointer-events-none font-serif -rotate-12">✾</div>
 
       <div className="container relative z-10 px-4 md:px-6 lg:px-8">
         <div className="max-w-3xl space-y-8">
           <span className="text-sm font-medium tracking-[0.3em] uppercase text-muted-foreground/80">
-            Premium Korean Beauty
+            {t("hero_tagline")}
           </span>
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-[1.1]">
-            {banner?.title || "Bloom & Grace"}
+            {banner?.title || t("hero_title")}
           </h1>
           <p className="text-xl text-foreground/70 font-light leading-relaxed max-w-2xl">
-            {banner?.subtitle || "한국의 아름다움을 담은 프리미엄 화장품. 자연에서 온 귀한 성분으로 당신의 우아함을 완성합니다."}
+            {banner?.subtitle || t("hero_subtitle")}
           </p>
           <div className="flex flex-wrap gap-4 pt-4">
             <Link to="/products">
               <Button size="lg" className="shadow-elegant hover:shadow-luxury transition-all duration-500 px-10 py-6 text-base font-medium">
-                컬렉션 보기
+                🌷 {t("hero_shop")}
               </Button>
             </Link>
             <Link to="/#about">
               <Button size="lg" variant="outline" className="border-2 px-10 py-6 text-base font-medium">
-                브랜드 스토리
+                {t("hero_story")}
               </Button>
             </Link>
           </div>

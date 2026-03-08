@@ -1,19 +1,22 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Package, Heart, MapPin, User } from "lucide-react";
+import { Package, Heart, User } from "lucide-react";
 
 const MyPage = () => {
   const { user, signOut } = useAuth();
+  const { t, formatPrice, language } = useLanguage();
   const [orders, setOrders] = useState<any[]>([]);
   const [wishlistProducts, setWishlistProducts] = useState<any[]>([]);
   const [profile, setProfile] = useState<any>(null);
+  const dateFmt = language === "ko" ? "ko-KR" : language === "de" ? "de-DE" : language === "es" ? "es-ES" : "en-US";
 
   useEffect(() => {
     if (!user) return;
@@ -30,14 +33,11 @@ const MyPage = () => {
     fetchData();
   }, [user]);
 
-  if (!user) return <div className="min-h-screen"><Navigation /><div className="text-center py-32">로그인이 필요합니다.</div><Footer /></div>;
+  if (!user) return <div className="min-h-screen"><Navigation /><div className="text-center py-32">{t("mp_login_required")}</div><Footer /></div>;
 
   const statusMap: Record<string, string> = {
-    pending: "주문 접수",
-    confirmed: "주문 확인",
-    shipping: "배송 중",
-    delivered: "배송 완료",
-    cancelled: "주문 취소",
+    pending: t("status_pending"), confirmed: t("status_confirmed"),
+    shipping: t("status_shipping"), delivered: t("status_delivered"), cancelled: t("status_cancelled"),
   };
 
   return (
@@ -46,26 +46,24 @@ const MyPage = () => {
       <section className="py-8 px-4">
         <div className="container max-w-5xl">
           <div className="flex items-center justify-between mb-8">
-            <h1 className="text-3xl font-bold">마이페이지</h1>
-            <Button variant="outline" onClick={signOut}>로그아웃</Button>
+            <h1 className="text-3xl font-bold">{t("mp_title")}</h1>
+            <Button variant="outline" onClick={signOut}>{t("mp_logout")}</Button>
           </div>
-
           <Tabs defaultValue="orders">
             <TabsList className="grid w-full grid-cols-3 mb-8">
-              <TabsTrigger value="orders" className="gap-2"><Package className="h-4 w-4" />주문내역</TabsTrigger>
-              <TabsTrigger value="wishlist" className="gap-2"><Heart className="h-4 w-4" />찜 목록</TabsTrigger>
-              <TabsTrigger value="profile" className="gap-2"><User className="h-4 w-4" />내 정보</TabsTrigger>
+              <TabsTrigger value="orders" className="gap-2"><Package className="h-4 w-4" />{t("mp_orders")}</TabsTrigger>
+              <TabsTrigger value="wishlist" className="gap-2"><Heart className="h-4 w-4" />{t("mp_wishlist")}</TabsTrigger>
+              <TabsTrigger value="profile" className="gap-2"><User className="h-4 w-4" />{t("mp_profile")}</TabsTrigger>
             </TabsList>
-
             <TabsContent value="orders" className="space-y-4">
               {orders.length === 0 ? (
-                <div className="text-center py-16 text-muted-foreground">주문 내역이 없습니다.</div>
+                <div className="text-center py-16 text-muted-foreground">{t("mp_no_orders")}</div>
               ) : orders.map(order => (
                 <Card key={order.id}>
                   <CardHeader className="pb-2">
                     <div className="flex justify-between items-center">
                       <CardTitle className="text-base">
-                        {new Date(order.created_at).toLocaleDateString("ko-KR")} 주문
+                        {new Date(order.created_at).toLocaleDateString(dateFmt)} {t("mp_order_date")}
                       </CardTitle>
                       <span className="text-sm px-3 py-1 rounded-full bg-primary/10 text-primary font-medium">
                         {statusMap[order.status] || order.status}
@@ -77,35 +75,33 @@ const MyPage = () => {
                       {order.order_items?.map((item: any) => (
                         <div key={item.id} className="flex justify-between text-sm">
                           <span>{item.product_name} x{item.quantity}</span>
-                          <span>{(item.price * item.quantity).toLocaleString()}원</span>
+                          <span>{formatPrice(item.price * item.quantity)}</span>
                         </div>
                       ))}
                       <div className="flex justify-between font-bold border-t pt-2">
-                        <span>합계</span>
-                        <span>{Number(order.total).toLocaleString()}원</span>
+                        <span>{t("mp_subtotal")}</span>
+                        <span>{formatPrice(Number(order.total))}</span>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
               ))}
             </TabsContent>
-
             <TabsContent value="wishlist">
               {wishlistProducts.length === 0 ? (
-                <div className="text-center py-16 text-muted-foreground">찜한 상품이 없습니다.</div>
+                <div className="text-center py-16 text-muted-foreground">{t("mp_no_wishlist")}</div>
               ) : (
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {wishlistProducts.map(p => p && <ProductCard key={p.id} product={p} />)}
                 </div>
               )}
             </TabsContent>
-
             <TabsContent value="profile">
               <Card>
                 <CardContent className="pt-6 space-y-4">
-                  <div><span className="text-sm text-muted-foreground">이메일</span><p>{user.email}</p></div>
-                  <div><span className="text-sm text-muted-foreground">이름</span><p>{profile?.display_name || "-"}</p></div>
-                  <div><span className="text-sm text-muted-foreground">연락처</span><p>{profile?.phone || "-"}</p></div>
+                  <div><span className="text-sm text-muted-foreground">{t("mp_email")}</span><p>{user.email}</p></div>
+                  <div><span className="text-sm text-muted-foreground">{t("mp_name")}</span><p>{profile?.display_name || "-"}</p></div>
+                  <div><span className="text-sm text-muted-foreground">{t("mp_phone")}</span><p>{profile?.phone || "-"}</p></div>
                 </CardContent>
               </Card>
             </TabsContent>
