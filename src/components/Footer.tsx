@@ -54,7 +54,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-16 pt-8 border-t border-border">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground font-sans">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-foreground/65 font-sans">
             <p>&copy; 2024 Bloom & Grace. {t("footer_rights")}</p>
             <p className="tracking-wider">{t("footer_cs")}</p>
           </div>
