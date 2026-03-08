@@ -170,9 +170,9 @@ const FloatingButtons = () => {
             <div className="flex-1 overflow-y-auto px-5 py-4 space-y-3 min-h-[200px]">
               <div className="flex gap-2">
                 <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <span className="text-[8px] font-sans font-bold text-primary">B&G</span>
+                  <span className="text-[8px] font-sans font-bold text-foreground">B&G</span>
                 </div>
-                <div className="bg-primary/5 px-3.5 py-2.5 max-w-[80%]">
+                <div className="bg-muted/50 px-3.5 py-2.5 max-w-[80%]">
                   <p className="text-xs leading-relaxed">{mt.greeting}</p>
                 </div>
               </div>
