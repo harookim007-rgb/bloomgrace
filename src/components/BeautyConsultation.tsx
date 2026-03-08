@@ -580,8 +580,8 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
         <div className="space-y-8 max-h-[60vh] overflow-y-auto pr-1">
           {/* Type Analysis */}
           <div className="space-y-3 border-b border-border/30 pb-6">
-            <p className="text-[10px] font-sans tracking-[0.25em] uppercase text-primary font-medium">{ct.yourType}</p>
-            <p className="text-sm leading-relaxed text-foreground/80">{result.typeExplanation}</p>
+            <p className="text-xs font-sans tracking-[0.18em] uppercase text-primary font-semibold">{ct.yourType}</p>
+            <p className="text-base leading-relaxed text-foreground/85">{result.typeExplanation}</p>
           </div>
 
           {/* Routine Order */}
