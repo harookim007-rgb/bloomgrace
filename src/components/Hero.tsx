@@ -78,11 +78,14 @@ const Hero = () => {
   const texts = heroTexts[language] || heroTexts.en;
 
   const slides = banners.length > 0
-    ? banners.map((b, i) => ({
-        image: b.image_url || fallbackSlides[i % 3].image,
-        title: b.title,
-        subtitle: b.subtitle || "",
-      }))
+    ? banners.map((b: any, i: number) => {
+        const trans = b.translations?.[language];
+        return {
+          image: b.image_url || fallbackSlides[i % 3].image,
+          title: trans?.title || b.title,
+          subtitle: trans?.subtitle || b.subtitle || "",
+        };
+      })
     : fallbackSlides.map((s, i) => ({
         image: s.image,
         title: texts.titles[i] || texts.titles[0],

@@ -4,6 +4,7 @@ import FeaturedProducts from "@/components/FeaturedProducts";
 import BeautyConsultation from "@/components/BeautyConsultation";
 import About from "@/components/About";
 import Footer from "@/components/Footer";
+import FloatingButtons from "@/components/FloatingButtons";
 
 const Index = () => {
   return (
@@ -16,6 +17,8 @@ const Index = () => {
       <Footer />
       {/* First-visit modal */}
       <BeautyConsultation mode="modal" />
+      {/* Floating AI + Messenger buttons */}
+      <FloatingButtons />
     </div>
   );
 };

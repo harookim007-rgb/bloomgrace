@@ -65,6 +65,7 @@ export type Database = {
           starts_at: string | null
           subtitle: string | null
           title: string
+          translations: Json | null
         }
         Insert: {
           created_at?: string
@@ -77,6 +78,7 @@ export type Database = {
           starts_at?: string | null
           subtitle?: string | null
           title: string
+          translations?: Json | null
         }
         Update: {
           created_at?: string
@@ -89,6 +91,7 @@ export type Database = {
           starts_at?: string | null
           subtitle?: string | null
           title?: string
+          translations?: Json | null
         }
         Relationships: []
       }
@@ -210,6 +213,42 @@ export type Database = {
         }
         Relationships: []
       }
+      inquiries: {
+        Row: {
+          admin_reply: string | null
+          created_at: string | null
+          email: string
+          id: string
+          language: string | null
+          message: string
+          name: string
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          admin_reply?: string | null
+          created_at?: string | null
+          email: string
+          id?: string
+          language?: string | null
+          message: string
+          name: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          admin_reply?: string | null
+          created_at?: string | null
+          email?: string
+          id?: string
+          language?: string | null
+          message?: string
+          name?: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       order_items: {
         Row: {
           id: string
@@ -313,6 +352,7 @@ export type Database = {
           slug: string
           stock: number
           tags: string[] | null
+          translations: Json | null
           updated_at: string
         }
         Insert: {
@@ -333,6 +373,7 @@ export type Database = {
           slug: string
           stock?: number
           tags?: string[] | null
+          translations?: Json | null
           updated_at?: string
         }
         Update: {
@@ -353,6 +394,7 @@ export type Database = {
           slug?: string
           stock?: number
           tags?: string[] | null
+          translations?: Json | null
           updated_at?: string
         }
         Relationships: [

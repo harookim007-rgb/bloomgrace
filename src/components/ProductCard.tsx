@@ -15,16 +15,20 @@ interface ProductCardProps {
     brand: string | null;
     rating: number | null;
     review_count: number | null;
+    translations?: any;
   };
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const { addToCart } = useCart();
   const { isWishlisted, toggleWishlist } = useWishlist();
-  const { t, formatPrice } = useLanguage();
+  const { t, formatPrice, language } = useLanguage();
   const discount = product.original_price
     ? Math.round((1 - product.price / product.original_price) * 100)
     : 0;
+
+  // Get translated name
+  const translatedName = product.translations?.[language]?.name || product.name;
 
   return (
     <div className="group">
@@ -32,7 +36,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         <Link to={`/products/${product.slug}`}>
           <img
             src={product.image_url || "/placeholder.svg"}
-            alt={product.name}
+            alt={translatedName}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             loading="lazy"
           />
@@ -48,7 +52,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
         >
           <Heart className={`h-3.5 w-3.5 ${isWishlisted(product.id) ? "fill-primary text-primary" : "text-foreground/60"}`} />
         </button>
-        {/* Quick add */}
         <button
           onClick={() => addToCart(product.id)}
           className="absolute bottom-0 left-0 right-0 bg-foreground/90 text-background text-xs font-sans tracking-[0.15em] uppercase py-3 text-center translate-y-full group-hover:translate-y-0 transition-transform duration-300"
@@ -62,7 +65,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         )}
         <Link to={`/products/${product.slug}`}>
           <h3 className="text-sm font-sans font-light leading-snug line-clamp-2 group-hover:text-primary transition-colors">
-            {product.name}
+            {translatedName}
           </h3>
         </Link>
         <div className="flex items-baseline gap-2">
