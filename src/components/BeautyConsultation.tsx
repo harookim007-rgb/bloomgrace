@@ -685,9 +685,9 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
               Close
             </button>
             <div className="text-center space-y-4">
-              <p className="text-[11px] tracking-[0.4em] uppercase text-primary font-sans font-medium">Personalize Your Routine</p>
-              <h2 className="text-2xl md:text-[2rem] font-serif font-light leading-tight">{ct.modalTitle}</h2>
-              <p className="text-[13px] text-muted-foreground leading-relaxed max-w-lg mx-auto font-light">{ct.modalSubtitle}</p>
+              <p className="text-sm tracking-[0.25em] uppercase text-primary font-sans font-semibold">Personalize Your Routine</p>
+              <h2 className="text-3xl md:text-4xl font-serif font-medium leading-tight">{ct.modalTitle}</h2>
+              <p className="text-base md:text-lg text-foreground/75 leading-relaxed max-w-2xl mx-auto font-normal">{ct.modalSubtitle}</p>
             </div>
           </div>
           {/* Content */}
