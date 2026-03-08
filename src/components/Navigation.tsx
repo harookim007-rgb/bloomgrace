@@ -137,10 +137,8 @@ const Navigation = () => {
           <div className="absolute inset-0 bg-foreground/20 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
           <div className="absolute left-0 top-0 h-full w-[300px] bg-background shadow-luxury p-8 animate-slide-in">
             <div className="mb-10">
-              <span className="text-lg font-serif font-light tracking-[0.3em] uppercase">
-                <span className="text-primary font-medium">B</span>LOOM
-                <span className="text-primary/40 mx-0.5">&</span>
-                <span className="text-primary font-medium">G</span>RACE
+              <span className="text-lg font-serif font-semibold tracking-[0.2em] uppercase text-foreground">
+                BLOOM<span className="text-foreground/40 mx-0.5">&</span>GRACE
               </span>
             </div>
             <nav className="flex flex-col gap-0">

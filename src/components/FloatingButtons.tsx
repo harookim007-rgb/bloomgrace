@@ -114,47 +114,34 @@ const FloatingButtons = () => {
 
   return (
     <>
-      {/* AI Bookmark Tab — sticky right edge, postcard/bookmark style */}
+      {/* AI Bookmark Tab — horizontal postcard style, sticky right edge */}
       <div className="fixed right-0 top-1/2 -translate-y-1/2 z-50">
         <HoverCard openDelay={200} closeDelay={100}>
           <HoverCardTrigger asChild>
             <button
               onClick={handleOpenAI}
               className="group relative flex items-center"
-              aria-label="Make Your Routine"
+              aria-label="Personalize Your Routine"
             >
-              {/* Bookmark shape — pink luxury */}
               <div
-                className="relative bg-gradient-to-b from-primary to-primary/85 text-primary-foreground pl-5 pr-4 py-8 flex flex-col items-center gap-3 shadow-luxury transition-all duration-500 group-hover:pl-6 group-hover:pr-5 group-hover:shadow-[0_0_30px_-5px_hsl(var(--primary)/0.4)]"
-                style={{
-                  borderRadius: "12px 0 0 12px",
-                }}
+                className="relative bg-foreground text-background px-5 py-6 flex flex-col items-center gap-2 shadow-luxury transition-all duration-500 group-hover:px-6 group-hover:shadow-[0_0_30px_-5px_hsl(var(--foreground)/0.3)]"
+                style={{ borderRadius: "8px 0 0 8px", writingMode: "vertical-rl", textOrientation: "mixed" }}
               >
-                <Sparkles className="h-5 w-5 text-primary-foreground/90" />
-                <div className="flex flex-col items-center gap-1">
-                  <span className="text-[10px] font-sans font-bold tracking-[0.2em] leading-tight text-center">{bt.line1}</span>
-                  <span className="text-[11px] font-serif font-semibold tracking-[0.1em] text-primary-foreground/90 text-center">{bt.line2}</span>
-                </div>
-                {/* Subtle pulse dot */}
-                <span className="absolute top-3 right-3 w-2 h-2 rounded-full bg-primary-foreground/80 animate-pulse" />
+                <span className="text-[9px] font-sans font-bold tracking-[0.25em] uppercase">{bt.line1}</span>
+                <span className="text-[10px] font-serif font-medium tracking-[0.15em] text-background/70">{bt.line2}</span>
               </div>
             </button>
           </HoverCardTrigger>
-          <HoverCardContent side="left" sideOffset={8} className="w-72 bg-background/95 backdrop-blur-md border-primary/20 shadow-luxury p-5">
+          <HoverCardContent side="left" sideOffset={8} className="w-72 bg-background/95 backdrop-blur-md border-border/30 shadow-luxury p-5">
             <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Sparkles className="h-4 w-4 text-primary" />
-                </div>
-                <div>
-                  <p className="text-xs font-serif font-semibold">Personalized Beauty</p>
-                  <p className="text-[9px] text-primary tracking-[0.15em] uppercase">AI Recommendation</p>
-                </div>
+              <div>
+                <p className="text-sm font-serif font-semibold">Personalized Beauty</p>
+                <p className="text-[9px] text-muted-foreground tracking-[0.15em] uppercase mt-0.5">Personalize Your Routine</p>
               </div>
               <p className="text-[11px] text-muted-foreground leading-relaxed">{bt.hover}</p>
               <div className="flex gap-2">
                 {["Skin", "Body", "Hair"].map(cat => (
-                  <span key={cat} className="text-[9px] px-2.5 py-1 bg-primary/8 text-primary border border-primary/15 tracking-[0.1em] uppercase">{cat}</span>
+                  <span key={cat} className="text-[9px] px-2.5 py-1 bg-muted text-foreground/70 border border-border/40 tracking-[0.1em] uppercase">{cat}</span>
                 ))}
               </div>
             </div>
