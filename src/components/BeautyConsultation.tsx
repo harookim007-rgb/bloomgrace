@@ -445,8 +445,8 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
                 </div>
                 {/* Label below image */}
                 <div className="p-4 text-center border-t border-border/20">
-                  <h4 className="text-xl font-serif font-semibold mb-1">{ct[`${cat.toLowerCase()}` as keyof typeof ct] || cat}</h4>
-                  <p className="text-sm text-foreground/70 tracking-wide">{ct[categoryMeta[cat].descKey]}</p>
+                  <h4 className="text-xl font-serif font-bold mb-1">{ct[`${cat.toLowerCase()}` as keyof typeof ct] || cat}</h4>
+                  <p className="text-base text-foreground/70 font-medium">{ct[categoryMeta[cat].descKey]}</p>
                 </div>
               </button>
             ))}
