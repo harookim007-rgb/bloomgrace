@@ -421,7 +421,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
       {step === 0 && (
         <div className="space-y-8">
           <div className="text-center space-y-3">
-            <p className="text-xs font-sans tracking-[0.3em] uppercase text-primary font-medium">AI Beauty Advisor</p>
+            <p className="text-xs font-sans tracking-[0.3em] uppercase text-primary font-medium">Personalize Your Routine</p>
             <h3 className="text-xl md:text-2xl font-serif font-light">{ct.step1}</h3>
             <p className="text-[11px] text-muted-foreground tracking-wide">{ct.step1Sub}</p>
           </div>
