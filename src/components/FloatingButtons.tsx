@@ -184,7 +184,7 @@ const FloatingButtons = () => {
                     <span className="text-[8px] font-sans font-bold text-foreground">B&G</span>
                     </div>
                   )}
-                  <div className={`px-3.5 py-2.5 max-w-[80%] ${msg.from === "user" ? "bg-foreground text-background" : "bg-muted/50"}`}>
+                  <div className={`px-3.5 py-2.5 max-w-[80%] ${msg.from === "user" ? "bg-primary text-primary-foreground" : "bg-muted/50"}`}>
                     <p className="text-xs leading-relaxed">{msg.text}</p>
                     <p className={`text-[9px] mt-1 ${msg.from === "user" ? "text-background/50" : "text-muted-foreground/50"}`}>{msg.time}</p>
                   </div>
