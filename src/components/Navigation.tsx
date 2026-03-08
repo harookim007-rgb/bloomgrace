@@ -78,7 +78,7 @@ const Navigation = () => {
             {isAdmin && (
               <Link
                 to="/admin"
-                className="text-[11px] font-sans font-medium tracking-[0.15em] uppercase text-primary hover:text-primary/80 transition-colors"
+                className="text-[13px] font-sans font-semibold tracking-[0.08em] uppercase text-primary hover:text-primary/80 transition-colors"
               >
                 {t("nav_admin")}
               </Link>
