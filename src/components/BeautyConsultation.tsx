@@ -577,7 +577,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
 
       {/* Step 4: Results */}
       {step === 4 && result && (
-        <div className="space-y-8 max-h-[60vh] overflow-y-auto pr-1">
+        <div className="space-y-8 max-h-[55dvh] overflow-y-auto pr-1 -webkit-overflow-scrolling-touch">
           {/* Type Analysis */}
           <div className="space-y-3 border-b border-border/30 pb-6">
             <p className="text-xs font-sans tracking-[0.18em] uppercase text-primary font-semibold">{ct.yourType}</p>
