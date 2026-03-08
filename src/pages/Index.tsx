@@ -11,13 +11,13 @@ const Index = () => {
     <div className="min-h-[100dvh] overflow-x-hidden">
       <Navigation />
       <Hero />
-      <div className="section-divider" />
       <FeaturedProducts />
-      <div className="section-divider" />
       <BeautyConsultation mode="section" />
       <About />
       <Footer />
+      {/* First-visit modal */}
       <BeautyConsultation mode="modal" />
+      {/* Floating AI + Messenger buttons */}
       <FloatingButtons />
     </div>
   );

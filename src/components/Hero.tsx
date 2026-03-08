@@ -108,26 +108,24 @@ const Hero = () => {
           style={{ opacity: i === current ? 1 : 0 }}
         >
           <img src={s.image} alt="" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/60 via-foreground/25 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-foreground/55 via-foreground/20 to-transparent" />
         </div>
       ))}
 
       <div className="relative z-10 h-full flex items-center">
         <div className="container px-6 md:px-8 lg:px-12">
-          <div className="max-w-2xl space-y-8">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-normal text-primary-foreground leading-[1.08] whitespace-pre-line tracking-[0.04em]"
-                style={{ textShadow: '0 2px 20px rgba(0,0,0,0.3)' }}>
+          <div className="max-w-2xl space-y-6">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold text-primary-foreground leading-[1.08] whitespace-pre-line drop-shadow-lg">
               {slide.title}
             </h1>
             {slide.subtitle && (
-              <p className="text-base md:text-lg text-primary-foreground/80 font-sans font-light leading-relaxed max-w-lg tracking-wide"
-                 style={{ textShadow: '0 1px 10px rgba(0,0,0,0.2)' }}>
+              <p className="text-lg md:text-xl text-primary-foreground/85 font-sans font-medium leading-relaxed max-w-lg drop-shadow-md">
                 {slide.subtitle}
               </p>
             )}
-            <div className="flex flex-wrap gap-4 pt-2">
+            <div className="flex flex-wrap gap-3 pt-3">
               <Link to="/products">
-                <button className="border border-primary-foreground/60 text-primary-foreground px-10 py-4 text-xs font-sans font-normal tracking-[0.2em] uppercase hover:bg-primary-foreground hover:text-foreground transition-all duration-500 flex items-center gap-3 backdrop-blur-sm bg-primary-foreground/5">
+                <button className="bg-primary text-primary-foreground px-10 py-4 text-sm font-sans font-bold tracking-[0.15em] uppercase hover:bg-primary/90 transition-all duration-300 flex items-center gap-2.5 shadow-elegant hover:shadow-luxury rounded-sm">
                   {t("hero_shop")} <ArrowRight className="h-4 w-4" />
                 </button>
               </Link>
@@ -141,26 +139,26 @@ const Hero = () => {
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-4">
           <button
             onClick={() => setCurrent(c => (c - 1 + slides.length) % slides.length)}
-            className="w-11 h-11 flex items-center justify-center text-primary-foreground/60 hover:text-primary-foreground transition-colors"
+            className="w-11 h-11 flex items-center justify-center text-primary-foreground/70 hover:text-primary-foreground transition-colors"
           >
-            <ChevronLeft className="h-5 w-5" />
+            <ChevronLeft className="h-6 w-6" />
           </button>
-          <div className="flex gap-3">
+          <div className="flex gap-2.5">
             {slides.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setCurrent(i)}
-                className={`transition-all duration-500 ${
-                  i === current ? "w-10 h-0.5 bg-primary-foreground" : "w-6 h-0.5 bg-primary-foreground/30"
+                className={`rounded-full transition-all duration-500 ${
+                  i === current ? "w-10 h-2.5 bg-primary" : "w-2.5 h-2.5 bg-primary-foreground/40"
                 }`}
               />
             ))}
           </div>
           <button
             onClick={() => setCurrent(c => (c + 1) % slides.length)}
-            className="w-11 h-11 flex items-center justify-center text-primary-foreground/60 hover:text-primary-foreground transition-colors"
+            className="w-11 h-11 flex items-center justify-center text-primary-foreground/70 hover:text-primary-foreground transition-colors"
           >
-            <ChevronRight className="h-5 w-5" />
+            <ChevronRight className="h-6 w-6" />
           </button>
         </div>
       )}
