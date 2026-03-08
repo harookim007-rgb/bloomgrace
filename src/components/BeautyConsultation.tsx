@@ -194,12 +194,13 @@ const categoryImages: Record<Category, string> = {
 // ── Translations ──
 const cTexts: Record<string, Record<string, string>> = {
   en: {
-    modalTitle: "Discover Your Perfect Routine",
-    modalSubtitle: "Our AI beauty advisor will craft a personalized regimen tailored to your unique needs",
+    modalTitle: "AI-Powered Recommendations",
+    modalSubtitle: "Our AI beauty advisor will recommend products perfectly matched to your unique needs",
     sectionTitle: "Personalized Beauty",
-    sectionSubtitle: "AI-Powered Consultation",
+    sectionSubtitle: "AI-Powered Recommendations",
     sectionDesc: "Discover products perfectly matched to your unique skin, body, and hair needs",
-    step1: "Choose Your Category",
+    step1: "Choose Your Type",
+    step1Sub: "Select a category to get AI-powered product recommendations",
     step2: "Select Your Concern",
     step3: "Filter by Product Type",
     analyzing: "Crafting your personalized routine",
@@ -223,12 +224,13 @@ const cTexts: Record<string, Record<string, string>> = {
     hairLong: "Identify your hair and scalp type to get expert recommendations for healthier, more beautiful hair.",
   },
   ko: {
-    modalTitle: "나만의 뷰티 루틴을 찾아보세요",
-    modalSubtitle: "AI 뷰티 어드바이저가 당신만을 위한 맞춤 루틴을 설계합니다",
+    modalTitle: "AI 맞춤 추천",
+    modalSubtitle: "AI 뷰티 어드바이저가 당신에게 딱 맞는 제품을 추천합니다",
     sectionTitle: "맞춤형 뷰티",
-    sectionSubtitle: "AI 맞춤 상담",
+    sectionSubtitle: "AI 맞춤 추천",
     sectionDesc: "당신만의 피부, 바디, 헤어 고민에 완벽하게 맞는 제품을 발견하세요",
-    step1: "카테고리 선택",
+    step1: "타입을 선택하세요",
+    step1Sub: "AI가 맞춤 제품을 추천해 드립니다",
     step2: "고민 유형 선택",
     step3: "제품 유형 필터",
     analyzing: "맞춤 루틴을 설계하고 있습니다",
@@ -252,12 +254,13 @@ const cTexts: Record<string, Record<string, string>> = {
     hairLong: "헤어 & 두피 타입을 진단받고 더 건강하고 아름다운 모발을 위한 추천을 받아보세요.",
   },
   es: {
-    modalTitle: "Descubre Tu Rutina Perfecta",
-    modalSubtitle: "Nuestro asesor de belleza IA creará un régimen personalizado para ti",
+    modalTitle: "Recomendaciones con IA",
+    modalSubtitle: "Nuestro asesor de belleza IA te recomendará productos perfectos para ti",
     sectionTitle: "Belleza Personalizada",
-    sectionSubtitle: "Consulta con IA",
+    sectionSubtitle: "Recomendaciones IA",
     sectionDesc: "Descubre productos perfectamente adaptados a tus necesidades únicas",
-    step1: "Elige Tu Categoría",
+    step1: "Elige Tu Tipo",
+    step1Sub: "Selecciona una categoría para obtener recomendaciones con IA",
     step2: "Selecciona Tu Preocupación",
     step3: "Filtrar por Tipo",
     analyzing: "Creando tu rutina personalizada",
@@ -281,12 +284,13 @@ const cTexts: Record<string, Record<string, string>> = {
     hairLong: "Identifica tu tipo de cabello y cuero cabelludo para obtener recomendaciones expertas.",
   },
   de: {
-    modalTitle: "Entdecken Sie Ihre Perfekte Routine",
-    modalSubtitle: "Unser KI-Beauty-Berater erstellt ein maßgeschneidertes Programm für Sie",
+    modalTitle: "KI-gestützte Empfehlungen",
+    modalSubtitle: "Unser KI-Beauty-Berater empfiehlt perfekt auf Sie abgestimmte Produkte",
     sectionTitle: "Personalisierte Schönheit",
-    sectionSubtitle: "KI-gestützte Beratung",
+    sectionSubtitle: "KI-Empfehlungen",
     sectionDesc: "Entdecken Sie perfekt auf Ihre Bedürfnisse abgestimmte Produkte",
-    step1: "Kategorie Wählen",
+    step1: "Wählen Sie Ihren Typ",
+    step1Sub: "Wählen Sie eine Kategorie für KI-gestützte Produktempfehlungen",
     step2: "Anliegen Wählen",
     step3: "Nach Produkttyp Filtern",
     analyzing: "Ihre persönliche Routine wird erstellt",
@@ -416,9 +420,10 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
       {/* Step 0: Category — Large visual cards */}
       {step === 0 && (
         <div className="space-y-8">
-          <div className="text-center space-y-2">
+          <div className="text-center space-y-3">
             <p className="text-xs font-sans tracking-[0.3em] uppercase text-primary font-medium">AI Beauty Advisor</p>
             <h3 className="text-xl md:text-2xl font-serif font-light">{ct.step1}</h3>
+            <p className="text-[11px] text-muted-foreground tracking-wide">{ct.step1Sub}</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {categories.map((cat) => (
@@ -430,24 +435,18 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
                 }}
                 className="group relative overflow-hidden bg-card border border-border/40 hover:border-primary/40 transition-all duration-500"
               >
-                {/* Category image */}
+                {/* Category image — no text overlay */}
                 <div className="aspect-[3/4] overflow-hidden">
                   <img
                     src={categoryImages[cat]}
                     alt={cat}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  {/* Gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
                 </div>
-                {/* Text overlay */}
-                <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6 text-left">
-                  <h4 className="text-xl md:text-2xl font-serif font-light text-primary-foreground mb-1.5">{cat}</h4>
-                  <p className="text-[11px] text-primary-foreground/70 leading-relaxed font-sans">{ct[categoryMeta[cat].descKey]}</p>
-                  <div className="mt-3 flex items-center gap-1.5 text-[10px] tracking-[0.2em] uppercase text-primary-foreground/60 group-hover:text-primary-foreground transition-colors">
-                    <span>{ct.next?.split(" ")[0] || "Start"}</span>
-                    <ArrowRight className="h-3 w-3" />
-                  </div>
+                {/* Label below image */}
+                <div className="p-4 text-center border-t border-border/20">
+                  <h4 className="text-base font-serif font-medium mb-0.5">{ct[`${cat.toLowerCase()}` as keyof typeof ct] || cat}</h4>
+                  <p className="text-[10px] text-muted-foreground tracking-wide">{ct[categoryMeta[cat].descKey]}</p>
                 </div>
               </button>
             ))}

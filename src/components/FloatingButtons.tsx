@@ -16,7 +16,6 @@ const messengerTexts: Record<string, Record<string, string>> = {
     sent: "Message sent! We'll get back to you soon.",
     error: "Failed to send message. Please try again.",
     greeting: "Hello! How can we help you today?",
-    aiLabel: "AI Beauty Advisor",
   },
   ko: {
     title: "고객 상담",
@@ -28,7 +27,6 @@ const messengerTexts: Record<string, Record<string, string>> = {
     sent: "메시지가 전송되었습니다! 곧 답변드리겠습니다.",
     error: "메시지 전송에 실패했습니다. 다시 시도해주세요.",
     greeting: "안녕하세요! 무엇을 도와드릴까요?",
-    aiLabel: "AI 뷰티 어드바이저",
   },
   es: {
     title: "Atención al Cliente",
@@ -40,7 +38,6 @@ const messengerTexts: Record<string, Record<string, string>> = {
     sent: "¡Mensaje enviado! Te responderemos pronto.",
     error: "Error al enviar. Inténtalo de nuevo.",
     greeting: "¡Hola! ¿Cómo podemos ayudarte?",
-    aiLabel: "Asesor de Belleza IA",
   },
   de: {
     title: "Kundenservice",
@@ -52,14 +49,21 @@ const messengerTexts: Record<string, Record<string, string>> = {
     sent: "Nachricht gesendet! Wir melden uns bald.",
     error: "Senden fehlgeschlagen. Bitte versuchen Sie es erneut.",
     greeting: "Hallo! Wie können wir Ihnen helfen?",
-    aiLabel: "KI-Beauty-Berater",
   },
+};
+
+const bookmarkTexts: Record<string, { line1: string; line2: string }> = {
+  en: { line1: "AI", line2: "RECOMMEND" },
+  ko: { line1: "AI", line2: "추천" },
+  es: { line1: "AI", line2: "RECOMENDAR" },
+  de: { line1: "AI", line2: "EMPFEHLUNG" },
 };
 
 const FloatingButtons = () => {
   const { language } = useLanguage();
   const { user } = useAuth();
   const mt = messengerTexts[language] || messengerTexts.en;
+  const bt = bookmarkTexts[language] || bookmarkTexts.en;
 
   const [messengerOpen, setMessengerOpen] = useState(false);
   const [name, setName] = useState("");
@@ -90,11 +94,9 @@ const FloatingButtons = () => {
     setMessages((prev) => [...prev, newMsg]);
 
     try {
-      // Send via edge function that emails admin
       const { error } = await supabase.functions.invoke("send-inquiry", {
         body: { name: name || "Guest", email, message, language },
       });
-
       if (error) throw error;
       toast.success(mt.sent);
       setMessage("");
@@ -107,19 +109,27 @@ const FloatingButtons = () => {
 
   return (
     <>
-      {/* Left — AI Beauty Advisor */}
+      {/* AI Bookmark Tab — sticky right edge */}
       <button
         onClick={handleOpenAI}
-        className="fixed left-4 md:left-6 bottom-6 z-50 group"
-        aria-label="AI Beauty Advisor"
+        className="fixed right-0 top-1/2 -translate-y-1/2 z-50 group"
+        aria-label="AI Beauty Recommend"
       >
         <div className="relative flex items-center">
-          <div className="w-12 h-12 md:w-14 md:h-14 bg-foreground text-background rounded-full flex items-center justify-center shadow-luxury transition-transform duration-300 group-hover:scale-105">
-            <Sparkles className="h-5 w-5 md:h-6 md:w-6" />
-          </div>
-          {/* Label tooltip */}
-          <div className="absolute left-full ml-3 bg-foreground text-background text-[10px] tracking-[0.1em] uppercase px-3 py-2 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-            {mt.aiLabel}
+          {/* Bookmark shape */}
+          <div className="relative bg-foreground text-background pl-4 pr-3 py-6 flex flex-col items-center gap-2 shadow-luxury transition-all duration-500 group-hover:pr-5 group-hover:pl-5"
+            style={{
+              borderRadius: "8px 0 0 8px",
+              clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%, 8px 50%)",
+            }}
+          >
+            <Sparkles className="h-4 w-4 text-primary" />
+            <div className="flex flex-col items-center gap-0.5">
+              <span className="text-[10px] font-sans font-bold tracking-[0.15em]">{bt.line1}</span>
+              <span className="text-[8px] font-sans tracking-[0.12em] uppercase text-background/70 writing-vertical">{bt.line2}</span>
+            </div>
+            {/* Subtle pulse dot */}
+            <span className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
           </div>
         </div>
       </button>
@@ -143,7 +153,6 @@ const FloatingButtons = () => {
 
             {/* Messages */}
             <div className="flex-1 overflow-y-auto px-5 py-4 space-y-3 min-h-[200px]">
-              {/* System greeting */}
               <div className="flex gap-2">
                 <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                   <span className="text-[8px] font-sans font-bold text-primary">B&G</span>
@@ -173,36 +182,18 @@ const FloatingButtons = () => {
             <div className="border-t border-border/30 px-4 py-3 space-y-2">
               {!user && (
                 <div className="flex gap-2">
-                  <input
-                    type="text"
-                    placeholder={mt.name}
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="flex-1 text-xs px-3 py-2 border border-border/40 bg-transparent focus:outline-none focus:border-primary/40 placeholder:text-muted-foreground/40"
-                  />
-                  <input
-                    type="email"
-                    placeholder={mt.email}
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="flex-1 text-xs px-3 py-2 border border-border/40 bg-transparent focus:outline-none focus:border-primary/40 placeholder:text-muted-foreground/40"
-                  />
+                  <input type="text" placeholder={mt.name} value={name} onChange={(e) => setName(e.target.value)}
+                    className="flex-1 text-xs px-3 py-2 border border-border/40 bg-transparent focus:outline-none focus:border-primary/40 placeholder:text-muted-foreground/40" />
+                  <input type="email" placeholder={mt.email} value={email} onChange={(e) => setEmail(e.target.value)}
+                    className="flex-1 text-xs px-3 py-2 border border-border/40 bg-transparent focus:outline-none focus:border-primary/40 placeholder:text-muted-foreground/40" />
                 </div>
               )}
               <div className="flex gap-2">
-                <input
-                  type="text"
-                  placeholder={mt.placeholder}
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
+                <input type="text" placeholder={mt.placeholder} value={message} onChange={(e) => setMessage(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                  className="flex-1 text-xs px-3 py-2.5 border border-border/40 bg-transparent focus:outline-none focus:border-primary/40 placeholder:text-muted-foreground/40"
-                />
-                <button
-                  onClick={handleSend}
-                  disabled={sending || !message.trim()}
-                  className="px-3 py-2.5 bg-foreground text-background disabled:opacity-40 hover:bg-foreground/90 transition-colors"
-                >
+                  className="flex-1 text-xs px-3 py-2.5 border border-border/40 bg-transparent focus:outline-none focus:border-primary/40 placeholder:text-muted-foreground/40" />
+                <button onClick={handleSend} disabled={sending || !message.trim()}
+                  className="px-3 py-2.5 bg-foreground text-background disabled:opacity-40 hover:bg-foreground/90 transition-colors">
                   <Send className="h-3.5 w-3.5" />
                 </button>
               </div>
