@@ -128,7 +128,7 @@ const FloatingButtons = () => {
                 style={{ borderRadius: "8px 0 0 8px" }}
               >
                 <span className="text-[9px] font-sans font-bold tracking-[0.25em] uppercase leading-tight text-center text-white">{bt.line1}</span>
-                <span className="text-[10px] font-serif font-medium tracking-[0.15em] text-white/80 text-center">{bt.line2}</span>
+                <span className="text-[10px] font-sans font-bold tracking-[0.25em] uppercase text-white text-center">{bt.line2}</span>
               </div>
             </button>
           </HoverCardTrigger>
