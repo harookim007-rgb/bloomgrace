@@ -604,7 +604,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
           {/* Recommended Products */}
           {result.recommendations && result.recommendations.length > 0 && (
             <div className="space-y-4">
-              <p className="text-[10px] font-sans tracking-[0.25em] uppercase text-primary font-medium">{ct.recommended}</p>
+              <p className="text-xs font-sans tracking-[0.18em] uppercase text-primary font-semibold">{ct.recommended}</p>
               <div className="space-y-3">
                 {result.recommendations.map((rec: any, i: number) => {
                   const matchedProduct = rec.productId ? products.find((p) => p.id === rec.productId) : null;
