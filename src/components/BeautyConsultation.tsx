@@ -416,9 +416,10 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
       {/* Step 0: Category — Large visual cards */}
       {step === 0 && (
         <div className="space-y-8">
-          <div className="text-center space-y-2">
+          <div className="text-center space-y-3">
             <p className="text-xs font-sans tracking-[0.3em] uppercase text-primary font-medium">AI Beauty Advisor</p>
             <h3 className="text-xl md:text-2xl font-serif font-light">{ct.step1}</h3>
+            <p className="text-[11px] text-muted-foreground tracking-wide">{ct.step1Sub}</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {categories.map((cat) => (
@@ -430,24 +431,18 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
                 }}
                 className="group relative overflow-hidden bg-card border border-border/40 hover:border-primary/40 transition-all duration-500"
               >
-                {/* Category image */}
+                {/* Category image — no text overlay */}
                 <div className="aspect-[3/4] overflow-hidden">
                   <img
                     src={categoryImages[cat]}
                     alt={cat}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  {/* Gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
                 </div>
-                {/* Text overlay */}
-                <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6 text-left">
-                  <h4 className="text-xl md:text-2xl font-serif font-light text-primary-foreground mb-1.5">{cat}</h4>
-                  <p className="text-[11px] text-primary-foreground/70 leading-relaxed font-sans">{ct[categoryMeta[cat].descKey]}</p>
-                  <div className="mt-3 flex items-center gap-1.5 text-[10px] tracking-[0.2em] uppercase text-primary-foreground/60 group-hover:text-primary-foreground transition-colors">
-                    <span>{ct.next?.split(" ")[0] || "Start"}</span>
-                    <ArrowRight className="h-3 w-3" />
-                  </div>
+                {/* Label below image */}
+                <div className="p-4 text-center border-t border-border/20">
+                  <h4 className="text-base font-serif font-medium mb-0.5">{ct[`${cat.toLowerCase()}` as keyof typeof ct] || cat}</h4>
+                  <p className="text-[10px] text-muted-foreground tracking-wide">{ct[categoryMeta[cat].descKey]}</p>
                 </div>
               </button>
             ))}
