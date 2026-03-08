@@ -37,14 +37,14 @@ const Navigation = () => {
   return (
     <>
       {/* Announcement bar */}
-      <div className="bg-foreground text-background text-sm text-center py-3 font-sans font-medium tracking-[0.1em]">
+      <div className="bg-foreground text-primary-foreground text-xs text-center py-2.5 font-sans font-light tracking-[0.15em] uppercase">
         {t("hero_tagline")}
       </div>
 
       <header
-        className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+        className={`sticky top-0 z-50 w-full transition-all duration-500 ${
           scrolled
-            ? "bg-background/95 backdrop-blur-xl shadow-soft"
+            ? "bg-background/90 backdrop-blur-xl shadow-soft"
             : "bg-background"
         }`}
       >
@@ -54,13 +54,13 @@ const Navigation = () => {
             className="lg:hidden p-2 -ml-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
             onClick={() => setMobileOpen(!mobileOpen)}
           >
-            {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
 
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <span className="text-xl md:text-2xl font-serif font-bold tracking-[0.15em] uppercase text-foreground">
-              BLOOM<span className="text-primary mx-1">&</span>GRACE
+            <span className="text-lg md:text-xl font-serif font-normal tracking-[0.2em] uppercase text-foreground">
+              BLOOM<span className="text-accent mx-1.5">&</span>GRACE
             </span>
           </Link>
 
@@ -70,7 +70,7 @@ const Navigation = () => {
               <Link
                 key={link.to}
                 to={link.to}
-                className="text-sm font-sans font-semibold tracking-[0.06em] uppercase text-foreground/80 hover:text-primary transition-colors"
+                className="link-underline text-xs font-sans font-normal tracking-[0.12em] uppercase text-foreground/70 hover:text-foreground transition-colors pb-0.5"
               >
                 {link.label}
               </Link>
@@ -78,7 +78,7 @@ const Navigation = () => {
             {isAdmin && (
               <Link
                 to="/admin"
-                className="text-sm font-sans font-semibold tracking-[0.06em] uppercase text-primary hover:text-primary/80 transition-colors"
+                className="text-xs font-sans font-normal tracking-[0.12em] uppercase text-accent hover:text-accent/80 transition-colors"
               >
                 {t("nav_admin")}
               </Link>
@@ -86,11 +86,11 @@ const Navigation = () => {
           </nav>
 
           {/* Icons */}
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-0.5">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-10 w-10 text-foreground/60 hover:text-primary">
-                  <Globe className="h-[18px] w-[18px]" />
+                <Button variant="ghost" size="icon" className="h-10 w-10 text-foreground/50 hover:text-foreground">
+                  <Globe className="h-[17px] w-[17px]" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="min-w-[140px]">
@@ -98,7 +98,7 @@ const Navigation = () => {
                   <DropdownMenuItem
                     key={lang}
                     onClick={() => setLanguage(lang)}
-                    className={`text-sm tracking-wider ${language === lang ? "font-bold text-primary" : ""}`}
+                    className={`text-xs tracking-wider ${language === lang ? "font-medium text-foreground" : "text-muted-foreground"}`}
                   >
                     {langLabels[lang]}
                   </DropdownMenuItem>
@@ -107,21 +107,21 @@ const Navigation = () => {
             </DropdownMenu>
 
             <Link to="/products">
-              <Button variant="ghost" size="icon" className="h-10 w-10 text-foreground/60 hover:text-primary">
-                <Search className="h-[18px] w-[18px]" />
+              <Button variant="ghost" size="icon" className="h-10 w-10 text-foreground/50 hover:text-foreground">
+                <Search className="h-[17px] w-[17px]" />
               </Button>
             </Link>
             {user && (
               <Link to="/mypage">
-                <Button variant="ghost" size="icon" className="h-10 w-10 text-foreground/60 hover:text-primary">
-                  <Heart className="h-[18px] w-[18px]" />
+                <Button variant="ghost" size="icon" className="h-10 w-10 text-foreground/50 hover:text-foreground">
+                  <Heart className="h-[17px] w-[17px]" />
                 </Button>
               </Link>
             )}
             <CartDrawer />
             <Link to={user ? "/mypage" : "/auth"}>
-              <Button variant="ghost" size="icon" className="h-10 w-10 text-foreground/60 hover:text-primary">
-                <User className="h-[18px] w-[18px]" />
+              <Button variant="ghost" size="icon" className="h-10 w-10 text-foreground/50 hover:text-foreground">
+                <User className="h-[17px] w-[17px]" />
               </Button>
             </Link>
           </div>
@@ -133,11 +133,11 @@ const Navigation = () => {
       {/* Mobile slide-out menu */}
       {mobileOpen && (
         <div className="fixed inset-0 z-[60] lg:hidden">
-          <div className="absolute inset-0 bg-foreground/30 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
-          <div className="absolute left-0 top-0 h-full w-[85vw] max-w-[320px] bg-background shadow-luxury p-6 md:p-8 animate-slide-in overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
-            <div className="mb-10">
-              <span className="text-lg font-serif font-bold tracking-[0.15em] uppercase text-foreground">
-                BLOOM<span className="text-primary mx-1">&</span>GRACE
+          <div className="absolute inset-0 bg-foreground/20 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
+          <div className="absolute left-0 top-0 h-full w-[85vw] max-w-[320px] bg-background shadow-luxury p-8 animate-slide-in overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
+            <div className="mb-12">
+              <span className="text-base font-serif font-normal tracking-[0.2em] uppercase text-foreground">
+                BLOOM<span className="text-accent mx-1.5">&</span>GRACE
               </span>
             </div>
             <nav className="flex flex-col gap-0">
@@ -145,7 +145,7 @@ const Navigation = () => {
                 <Link
                   key={link.to}
                   to={link.to}
-                  className="text-base font-sans font-semibold tracking-[0.04em] uppercase py-4 border-b border-border/40 text-foreground/80 hover:text-primary transition-colors min-h-[44px] flex items-center"
+                  className="text-sm font-sans font-light tracking-[0.08em] uppercase py-4 border-b border-border/30 text-foreground/70 hover:text-foreground transition-colors min-h-[44px] flex items-center"
                   onClick={() => setMobileOpen(false)}
                 >
                   {link.label}
@@ -153,36 +153,36 @@ const Navigation = () => {
               ))}
               <Link
                 to="/qa"
-                className="text-base font-sans font-semibold tracking-[0.04em] uppercase py-4 border-b border-border/40 text-foreground/80 hover:text-primary transition-colors min-h-[44px] flex items-center"
+                className="text-sm font-sans font-light tracking-[0.08em] uppercase py-4 border-b border-border/30 text-foreground/70 hover:text-foreground transition-colors min-h-[44px] flex items-center"
                 onClick={() => setMobileOpen(false)}
               >
                 {t("nav_qa")}
               </Link>
               {user ? (
-                <Link to="/mypage" className="text-base font-sans font-semibold tracking-[0.04em] uppercase py-4 border-b border-border/40 text-foreground/80 hover:text-primary min-h-[44px] flex items-center" onClick={() => setMobileOpen(false)}>
+                <Link to="/mypage" className="text-sm font-sans font-light tracking-[0.08em] uppercase py-4 border-b border-border/30 text-foreground/70 hover:text-foreground min-h-[44px] flex items-center" onClick={() => setMobileOpen(false)}>
                   {t("nav_mypage")}
                 </Link>
               ) : (
-                <Link to="/auth" className="text-base font-sans font-semibold tracking-[0.04em] uppercase py-4 border-b border-border/40 text-foreground/80 hover:text-primary min-h-[44px] flex items-center" onClick={() => setMobileOpen(false)}>
+                <Link to="/auth" className="text-sm font-sans font-light tracking-[0.08em] uppercase py-4 border-b border-border/30 text-foreground/70 hover:text-foreground min-h-[44px] flex items-center" onClick={() => setMobileOpen(false)}>
                   {t("nav_login")}
                 </Link>
               )}
               {isAdmin && (
-                <Link to="/admin" className="text-base font-sans font-semibold tracking-[0.06em] uppercase py-4 border-b border-border/40 text-primary min-h-[44px] flex items-center" onClick={() => setMobileOpen(false)}>
+                <Link to="/admin" className="text-sm font-sans font-light tracking-[0.08em] uppercase py-4 border-b border-border/30 text-accent min-h-[44px] flex items-center" onClick={() => setMobileOpen(false)}>
                   {t("nav_admin")}
                 </Link>
               )}
 
               {/* Language switcher in mobile */}
-              <div className="pt-8">
-                <p className="text-xs tracking-[0.15em] uppercase text-muted-foreground mb-3 font-semibold">Language</p>
+              <div className="pt-10">
+                <p className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground mb-4 font-light">Language</p>
                 <div className="flex flex-wrap gap-2">
                   {(Object.keys(langLabels) as Language[]).map(lang => (
                     <button
                       key={lang}
                       onClick={() => { setLanguage(lang); setMobileOpen(false); }}
-                      className={`text-sm tracking-wider px-4 py-2.5 border transition-all duration-200 min-h-[44px] ${
-                        language === lang ? "border-primary text-primary bg-primary/5 font-semibold" : "border-border text-muted-foreground hover:border-primary/30"
+                      className={`text-xs tracking-wider px-4 py-2.5 border transition-all duration-300 min-h-[44px] ${
+                        language === lang ? "border-accent text-foreground bg-accent/5" : "border-border/40 text-muted-foreground hover:border-accent/30"
                       }`}
                     >
                       {langLabels[lang]}
