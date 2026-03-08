@@ -10,7 +10,7 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Heart, ShoppingBag, Star, Minus, Plus } from "lucide-react";
+import { Heart, Star, Minus, Plus } from "lucide-react";
 import { toast } from "sonner";
 
 const ProductDetail = () => {
@@ -61,93 +61,132 @@ const ProductDetail = () => {
   const filteredReviews = filterRating > 0 ? reviews.filter(r => r.rating >= filterRating) : reviews;
   const dateFmt = language === "ko" ? "ko-KR" : language === "de" ? "de-DE" : language === "es" ? "es-ES" : "en-US";
 
-  if (isLoading) return <div className="min-h-screen"><Navigation /><div className="flex items-center justify-center py-32">{t("pd_loading")}</div></div>;
-  if (!product) return <div className="min-h-screen"><Navigation /><div className="flex items-center justify-center py-32">{t("pd_not_found")}</div></div>;
+  if (isLoading) return <div className="min-h-screen"><Navigation /><div className="flex items-center justify-center py-32 text-sm text-muted-foreground">{t("pd_loading")}</div></div>;
+  if (!product) return <div className="min-h-screen"><Navigation /><div className="flex items-center justify-center py-32 text-sm text-muted-foreground">{t("pd_not_found")}</div></div>;
 
   const discount = product.original_price ? Math.round((1 - product.price / product.original_price) * 100) : 0;
 
   return (
     <div className="min-h-screen">
       <Navigation />
-      <section className="py-8 px-4 md:px-6 lg:px-8">
+      <section className="py-8 md:py-16 px-4 md:px-6 lg:px-8">
         <div className="container max-w-6xl">
-          <div className="grid md:grid-cols-2 gap-10">
-            <div className="aspect-square rounded-lg overflow-hidden bg-muted/50">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-16">
+            {/* Image */}
+            <div className="aspect-square overflow-hidden bg-muted/30">
               <img src={product.image_url || "/placeholder.svg"} alt={product.name} className="w-full h-full object-cover" />
             </div>
-            <div className="space-y-6">
-              {product.brand && <p className="text-sm text-muted-foreground">{product.brand}</p>}
-              <h1 className="text-3xl font-bold">{product.name}</h1>
-              {product.categories?.name && (
-                <span className="inline-block text-xs bg-muted px-3 py-1 rounded-full">{product.categories.name}</span>
+
+            {/* Info */}
+            <div className="space-y-6 md:py-8">
+              {product.brand && (
+                <p className="text-[10px] font-sans tracking-[0.3em] uppercase text-muted-foreground">{product.brand}</p>
               )}
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-serif font-light">{product.name}</h1>
+
+              {product.categories?.name && (
+                <span className="inline-block text-[10px] font-sans tracking-[0.15em] uppercase border border-border px-3 py-1">
+                  {product.categories.name}
+                </span>
+              )}
+
               <div className="flex items-center gap-2">
                 <div className="flex">{[1,2,3,4,5].map(s => (
-                  <Star key={s} className={`h-5 w-5 ${s <= (product.rating || 0) ? "fill-accent text-accent" : "text-muted"}`} />
+                  <Star key={s} className={`h-4 w-4 ${s <= (product.rating || 0) ? "fill-accent text-accent" : "text-border"}`} />
                 ))}</div>
-                <span className="text-sm text-muted-foreground">({product.review_count || 0} {t("pd_reviews")})</span>
+                <span className="text-xs text-muted-foreground">({product.review_count || 0})</span>
               </div>
-              <div className="flex items-baseline gap-3">
-                {discount > 0 && <span className="text-2xl font-bold text-destructive">-{discount}%</span>}
-                <span className="text-3xl font-bold">{formatPrice(product.price)}</span>
+
+              <div className="flex items-baseline gap-3 py-4 border-y border-border">
+                {discount > 0 && <span className="text-lg font-sans font-medium text-primary">-{discount}%</span>}
+                <span className="text-2xl font-sans font-medium">{formatPrice(product.price)}</span>
                 {product.original_price && (
-                  <span className="text-lg text-muted-foreground line-through">{formatPrice(product.original_price)}</span>
+                  <span className="text-sm text-muted-foreground line-through">{formatPrice(product.original_price)}</span>
                 )}
               </div>
-              <p className="text-muted-foreground leading-relaxed">{product.description}</p>
-              <p className="text-sm">{product.stock > 0 ? `${t("pd_stock")}: ${product.stock}` : <span className="text-destructive">{t("pd_out_of_stock")}</span>}</p>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center border rounded-md">
-                  <Button variant="ghost" size="icon" onClick={() => setQuantity(Math.max(1, quantity - 1))}><Minus className="h-4 w-4" /></Button>
-                  <span className="w-12 text-center">{quantity}</span>
-                  <Button variant="ghost" size="icon" onClick={() => setQuantity(quantity + 1)}><Plus className="h-4 w-4" /></Button>
+
+              <p className="text-sm text-muted-foreground font-light leading-relaxed">{product.description}</p>
+
+              <p className="text-xs text-muted-foreground">
+                {product.stock > 0 ? `${t("pd_stock")}: ${product.stock}` : <span className="text-destructive">{t("pd_out_of_stock")}</span>}
+              </p>
+
+              <div className="flex items-center gap-4 pt-2">
+                <div className="flex items-center border border-border">
+                  <Button variant="ghost" size="icon" className="rounded-none h-10 w-10" onClick={() => setQuantity(Math.max(1, quantity - 1))}>
+                    <Minus className="h-3 w-3" />
+                  </Button>
+                  <span className="w-12 text-center text-sm font-sans">{quantity}</span>
+                  <Button variant="ghost" size="icon" className="rounded-none h-10 w-10" onClick={() => setQuantity(quantity + 1)}>
+                    <Plus className="h-3 w-3" />
+                  </Button>
                 </div>
-                <Button className="flex-1 gap-2" size="lg" onClick={() => addToCart(product.id, quantity)} disabled={product.stock === 0}>
-                  <ShoppingBag className="h-5 w-5" />{t("pd_add_to_cart")}
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <Button
+                  className="flex-1 rounded-none py-6 text-xs tracking-[0.15em] uppercase"
+                  onClick={() => addToCart(product.id, quantity)}
+                  disabled={product.stock === 0}
+                >
+                  {t("pd_add_to_cart")}
                 </Button>
-                <Button variant="outline" size="lg" onClick={() => toggleWishlist(product.id)}>
-                  <Heart className={`h-5 w-5 ${isWishlisted(product.id) ? "fill-destructive text-destructive" : ""}`} />
+                <Button variant="outline" className="rounded-none py-6 px-6" onClick={() => toggleWishlist(product.id)}>
+                  <Heart className={`h-4 w-4 ${isWishlisted(product.id) ? "fill-primary text-primary" : ""}`} />
                 </Button>
               </div>
             </div>
           </div>
-          <div className="mt-16 space-y-8">
-            <h2 className="text-2xl font-bold">{t("pd_review_section")} ({reviews.length})</h2>
+
+          {/* Reviews */}
+          <div className="mt-20 md:mt-28 space-y-8">
+            <div className="border-b border-border pb-4">
+              <h2 className="text-xl md:text-2xl font-serif font-light">{t("pd_review_section")} ({reviews.length})</h2>
+            </div>
+
             <div className="flex gap-2">
               {[0,5,4,3].map(r => (
-                <Button key={r} variant={filterRating === r ? "default" : "outline"} size="sm" onClick={() => setFilterRating(r)}>
-                  {r === 0 ? t("pd_all") : `${r} ${t("pd_above")}`}
-                </Button>
+                <button
+                  key={r}
+                  onClick={() => setFilterRating(r)}
+                  className={`text-xs font-sans tracking-wider uppercase px-4 py-2 border transition-colors ${
+                    filterRating === r ? "bg-foreground text-background border-foreground" : "border-border text-muted-foreground"
+                  }`}
+                >
+                  {r === 0 ? t("pd_all") : `${r}+ ★`}
+                </button>
               ))}
             </div>
+
             {user && (
-              <form onSubmit={submitReview} className="space-y-4 p-6 rounded-lg bg-muted/30">
-                <h3 className="font-medium">{t("pd_write_review")}</h3>
+              <form onSubmit={submitReview} className="space-y-4 p-6 border border-border">
+                <h3 className="text-sm font-sans font-medium tracking-wider uppercase">{t("pd_write_review")}</h3>
                 <div className="flex gap-1">{[1,2,3,4,5].map(s => (
                   <button key={s} type="button" onClick={() => setReviewForm({ ...reviewForm, rating: s })}>
-                    <Star className={`h-6 w-6 ${s <= reviewForm.rating ? "fill-accent text-accent" : "text-muted"}`} />
+                    <Star className={`h-5 w-5 ${s <= reviewForm.rating ? "fill-accent text-accent" : "text-border"}`} />
                   </button>
                 ))}</div>
-                <Input placeholder={t("pd_review_title")} value={reviewForm.title} onChange={e => setReviewForm({ ...reviewForm, title: e.target.value })} />
-                <Textarea placeholder={t("pd_review_content")} value={reviewForm.content} onChange={e => setReviewForm({ ...reviewForm, content: e.target.value })} rows={3} />
-                <Button type="submit">{t("pd_submit_review")}</Button>
+                <Input placeholder={t("pd_review_title")} className="rounded-none" value={reviewForm.title} onChange={e => setReviewForm({ ...reviewForm, title: e.target.value })} />
+                <Textarea placeholder={t("pd_review_content")} className="rounded-none" value={reviewForm.content} onChange={e => setReviewForm({ ...reviewForm, content: e.target.value })} rows={3} />
+                <Button type="submit" className="rounded-none text-xs tracking-wider uppercase">{t("pd_submit_review")}</Button>
               </form>
             )}
-            <div className="space-y-4">
+
+            <div className="space-y-0">
               {filteredReviews.map(review => (
-                <div key={review.id} className="p-4 rounded-lg border border-border/50">
-                  <div className="flex items-center gap-2 mb-2">
+                <div key={review.id} className="py-6 border-b border-border">
+                  <div className="flex items-center gap-3 mb-3">
                     <div className="flex">{[1,2,3,4,5].map(s => (
-                      <Star key={s} className={`h-4 w-4 ${s <= review.rating ? "fill-accent text-accent" : "text-muted"}`} />
+                      <Star key={s} className={`h-3.5 w-3.5 ${s <= review.rating ? "fill-accent text-accent" : "text-border"}`} />
                     ))}</div>
-                    <span className="text-sm text-muted-foreground">{review.profiles?.display_name || t("pd_anonymous")}</span>
-                    <span className="text-xs text-muted-foreground">{new Date(review.created_at).toLocaleDateString(dateFmt)}</span>
+                    <span className="text-xs text-muted-foreground">{review.profiles?.display_name || t("pd_anonymous")}</span>
+                    <span className="text-xs text-muted-foreground/60">{new Date(review.created_at).toLocaleDateString(dateFmt)}</span>
                   </div>
-                  {review.title && <h4 className="font-medium">{review.title}</h4>}
-                  {review.content && <p className="text-sm text-muted-foreground mt-1">{review.content}</p>}
+                  {review.title && <h4 className="text-sm font-medium mb-1">{review.title}</h4>}
+                  {review.content && <p className="text-sm text-muted-foreground font-light">{review.content}</p>}
                 </div>
               ))}
-              {filteredReviews.length === 0 && <p className="text-center text-muted-foreground py-8">{t("pd_no_reviews")}</p>}
+              {filteredReviews.length === 0 && <p className="text-center text-muted-foreground py-12 text-sm">{t("pd_no_reviews")}</p>}
             </div>
           </div>
         </div>

@@ -3,7 +3,6 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent } from "@/components/ui/card";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -13,75 +12,55 @@ const Contact = () => {
   return (
     <div className="min-h-screen">
       <Navigation />
-      <section className="py-20 px-4 md:px-6 lg:px-8">
+      <section className="py-16 md:py-24 px-4 md:px-6 lg:px-8">
         <div className="container max-w-6xl">
-          <div className="text-center mb-16 space-y-6">
-            <div className="inline-block">
-              <span className="text-sm font-medium tracking-[0.3em] uppercase text-muted-foreground/70 mb-3 block">{t("contact_tagline")}</span>
-              <div className="w-16 h-0.5 bg-gradient-to-r from-primary via-accent to-secondary mx-auto" />
-            </div>
-            <h1 className="text-5xl md:text-6xl font-bold">{t("contact_title")}</h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">{t("contact_subtitle")}</p>
+          <div className="mb-16 space-y-3">
+            <p className="text-xs font-sans tracking-[0.3em] uppercase text-muted-foreground">{t("contact_tagline")}</p>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-light">{t("contact_title")}</h1>
+            <p className="text-sm text-muted-foreground font-light max-w-lg">{t("contact_subtitle")}</p>
           </div>
-          <div className="grid md:grid-cols-2 gap-12 mb-16">
+
+          <div className="grid md:grid-cols-2 gap-16">
+            <div>
+              <form className="space-y-6">
+                <div className="space-y-2">
+                  <label className="text-xs font-sans tracking-wider uppercase">{t("contact_name")}</label>
+                  <Input className="rounded-none border-border" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-sans tracking-wider uppercase">{t("contact_email")}</label>
+                  <Input type="email" className="rounded-none border-border" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-sans tracking-wider uppercase">{t("contact_phone")}</label>
+                  <Input type="tel" className="rounded-none border-border" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-sans tracking-wider uppercase">{t("contact_message")}</label>
+                  <Textarea rows={5} className="rounded-none border-border resize-none" placeholder={t("contact_message_placeholder")} />
+                </div>
+                <Button type="submit" className="w-full rounded-none py-6 text-xs tracking-[0.15em] uppercase">
+                  {t("contact_submit")}
+                </Button>
+              </form>
+            </div>
+
             <div className="space-y-8">
-              <div>
-                <h2 className="text-3xl font-bold mb-6">{t("contact_send")}</h2>
-                <form className="space-y-6">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">{t("contact_name")}</label>
-                    <Input placeholder="John Doe" className="bg-background/50 border-border/50 focus:border-primary transition-colors" />
+              {[
+                { icon: MapPin, title: t("contact_address_title"), value: t("contact_address_value") },
+                { icon: Phone, title: t("contact_phone_title"), value: t("contact_phone_value") },
+                { icon: Mail, title: t("contact_email_title"), value: t("contact_email_value") },
+                { icon: Clock, title: t("contact_hours_title"), value: t("contact_hours_value") },
+              ].map((item, i) => (
+                <div key={i} className="flex items-start gap-4 pb-8 border-b border-border last:border-0">
+                  <item.icon className="w-5 h-5 text-muted-foreground mt-0.5 shrink-0" />
+                  <div>
+                    <h3 className="text-sm font-sans font-medium mb-1">{item.title}</h3>
+                    <p className="text-sm text-muted-foreground font-light whitespace-pre-line">{item.value}</p>
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">{t("contact_email")}</label>
-                    <Input type="email" placeholder="your@email.com" className="bg-background/50 border-border/50 focus:border-primary transition-colors" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">{t("contact_phone")}</label>
-                    <Input type="tel" placeholder="+1-234-567-8900" className="bg-background/50 border-border/50 focus:border-primary transition-colors" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">{t("contact_message")}</label>
-                    <Textarea placeholder={t("contact_message_placeholder")} rows={6} className="bg-background/50 border-border/50 focus:border-primary transition-colors resize-none" />
-                  </div>
-                  <Button type="submit" className="w-full py-6 text-base font-medium">{t("contact_submit")}</Button>
-                </form>
-              </div>
+                </div>
+              ))}
             </div>
-            <div className="space-y-6">
-              <h2 className="text-3xl font-bold mb-6">{t("contact_info")}</h2>
-              <Card className="border-border/50 bg-card/50 backdrop-blur-sm shadow-soft hover:shadow-elegant transition-all duration-300">
-                <CardContent className="p-6 space-y-6">
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-lg bg-primary/10"><MapPin className="w-6 h-6 text-primary" /></div>
-                    <div><h3 className="font-semibold mb-1">{t("contact_address_title")}</h3><p className="text-muted-foreground whitespace-pre-line">{t("contact_address_value")}</p></div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-lg bg-secondary/10"><Phone className="w-6 h-6 text-secondary" /></div>
-                    <div><h3 className="font-semibold mb-1">{t("contact_phone_title")}</h3><p className="text-muted-foreground whitespace-pre-line">{t("contact_phone_value")}</p></div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-lg bg-accent/10"><Mail className="w-6 h-6 text-accent" /></div>
-                    <div><h3 className="font-semibold mb-1">{t("contact_email_title")}</h3><p className="text-muted-foreground whitespace-pre-line">{t("contact_email_value")}</p></div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-lg bg-primary/10"><Clock className="w-6 h-6 text-primary" /></div>
-                    <div><h3 className="font-semibold mb-1">{t("contact_hours_title")}</h3><p className="text-muted-foreground whitespace-pre-line">{t("contact_hours_value")}</p></div>
-                  </div>
-                </CardContent>
-              </Card>
-              <Card className="border-border/50 bg-gradient-to-br from-primary-soft/30 to-secondary-soft/30 backdrop-blur-sm">
-                <CardContent className="p-8 text-center">
-                  <h3 className="text-xl font-bold mb-3">{t("contact_visit")}</h3>
-                  <p className="text-muted-foreground mb-4">{t("contact_visit_desc")}</p>
-                  <Button>{t("contact_reserve")}</Button>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-          <div className="rounded-2xl overflow-hidden shadow-elegant">
-            <div className="bg-muted/30 p-4 text-center"><p className="text-sm text-muted-foreground">{t("contact_map")}</p></div>
-            <div className="aspect-video bg-muted/50 flex items-center justify-center"><p className="text-muted-foreground">{t("contact_map_desc")}</p></div>
           </div>
         </div>
       </section>

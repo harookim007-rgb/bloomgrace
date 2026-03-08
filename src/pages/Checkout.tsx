@@ -9,7 +9,6 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 
@@ -57,71 +56,77 @@ const Checkout = () => {
     finally { setIsProcessing(false); }
   };
 
-  if (!user) return <div className="min-h-screen"><Navigation /><div className="text-center py-32">{t("co_login_required")}</div><Footer /></div>;
-  if (items.length === 0) return <div className="min-h-screen"><Navigation /><div className="text-center py-32">{t("co_cart_empty")}</div><Footer /></div>;
+  if (!user) return <div className="min-h-screen"><Navigation /><div className="text-center py-32 text-sm text-muted-foreground">{t("co_login_required")}</div><Footer /></div>;
+  if (items.length === 0) return <div className="min-h-screen"><Navigation /><div className="text-center py-32 text-sm text-muted-foreground">{t("co_cart_empty")}</div><Footer /></div>;
 
   return (
     <div className="min-h-screen">
       <Navigation />
-      <section className="py-8 px-4">
+      <section className="py-12 md:py-16 px-4">
         <div className="container max-w-4xl">
-          <h1 className="text-3xl font-bold mb-8">{t("co_title")}</h1>
-          <form onSubmit={handleOrder} className="grid md:grid-cols-3 gap-6">
-            <div className="md:col-span-2 space-y-6">
-              <Card>
-                <CardHeader><CardTitle>{t("co_shipping")}</CardTitle></CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div><Label>{t("co_recipient")}</Label><Input required value={address.name} onChange={e => setAddress({...address, name: e.target.value})} /></div>
-                    <div><Label>{t("co_phone")}</Label><Input required value={address.phone} onChange={e => setAddress({...address, phone: e.target.value})} /></div>
-                  </div>
-                  <div><Label>{t("co_address")}</Label><Input required value={address.address_line1} onChange={e => setAddress({...address, address_line1: e.target.value})} /></div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div><Label>{t("co_detail_address")}</Label><Input value={address.address_line2} onChange={e => setAddress({...address, address_line2: e.target.value})} /></div>
-                    <div><Label>{t("co_postal")}</Label><Input required value={address.postal_code} onChange={e => setAddress({...address, postal_code: e.target.value})} /></div>
-                  </div>
-                  <div><Label>{t("co_city")}</Label><Input required value={address.city} onChange={e => setAddress({...address, city: e.target.value})} /></div>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader><CardTitle>{t("co_payment")}</CardTitle></CardHeader>
-                <CardContent>
-                  <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod} className="space-y-3">
-                    <div className="flex items-center space-x-2"><RadioGroupItem value="card" id="card" /><Label htmlFor="card">{t("co_card")}</Label></div>
-                    <div className="flex items-center space-x-2"><RadioGroupItem value="bank" id="bank" /><Label htmlFor="bank">{t("co_bank")}</Label></div>
-                    <div className="flex items-center space-x-2"><RadioGroupItem value="kakao" id="kakao" /><Label htmlFor="kakao">{t("co_kakao")}</Label></div>
-                    <div className="flex items-center space-x-2"><RadioGroupItem value="naver" id="naver" /><Label htmlFor="naver">{t("co_naver")}</Label></div>
-                  </RadioGroup>
-                </CardContent>
-              </Card>
-            </div>
-            <div>
-              <Card className="sticky top-24">
-                <CardHeader><CardTitle>{t("co_summary")}</CardTitle></CardHeader>
-                <CardContent className="space-y-4">
-                  {items.map(item => (
-                    <div key={item.id} className="flex justify-between text-sm">
-                      <span className="truncate flex-1">{item.product.name} x{item.quantity}</span>
-                      <span className="font-medium">{formatPrice(item.product.price * item.quantity)}</span>
+          <h1 className="text-2xl md:text-3xl font-serif font-light mb-10">{t("co_title")}</h1>
+          <form onSubmit={handleOrder} className="grid md:grid-cols-3 gap-8">
+            <div className="md:col-span-2 space-y-8">
+              {/* Shipping */}
+              <div className="space-y-5">
+                <h2 className="text-sm font-sans font-medium tracking-[0.15em] uppercase border-b border-border pb-3">{t("co_shipping")}</h2>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1"><Label className="text-xs tracking-wider uppercase">{t("co_recipient")}</Label><Input required className="rounded-none" value={address.name} onChange={e => setAddress({...address, name: e.target.value})} /></div>
+                  <div className="space-y-1"><Label className="text-xs tracking-wider uppercase">{t("co_phone")}</Label><Input required className="rounded-none" value={address.phone} onChange={e => setAddress({...address, phone: e.target.value})} /></div>
+                </div>
+                <div className="space-y-1"><Label className="text-xs tracking-wider uppercase">{t("co_address")}</Label><Input required className="rounded-none" value={address.address_line1} onChange={e => setAddress({...address, address_line1: e.target.value})} /></div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1"><Label className="text-xs tracking-wider uppercase">{t("co_detail_address")}</Label><Input className="rounded-none" value={address.address_line2} onChange={e => setAddress({...address, address_line2: e.target.value})} /></div>
+                  <div className="space-y-1"><Label className="text-xs tracking-wider uppercase">{t("co_postal")}</Label><Input required className="rounded-none" value={address.postal_code} onChange={e => setAddress({...address, postal_code: e.target.value})} /></div>
+                </div>
+                <div className="space-y-1"><Label className="text-xs tracking-wider uppercase">{t("co_city")}</Label><Input required className="rounded-none" value={address.city} onChange={e => setAddress({...address, city: e.target.value})} /></div>
+              </div>
+
+              {/* Payment */}
+              <div className="space-y-5">
+                <h2 className="text-sm font-sans font-medium tracking-[0.15em] uppercase border-b border-border pb-3">{t("co_payment")}</h2>
+                <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod} className="space-y-3">
+                  {[
+                    { value: "card", label: t("co_card") },
+                    { value: "bank", label: t("co_bank") },
+                    { value: "kakao", label: t("co_kakao") },
+                    { value: "naver", label: t("co_naver") },
+                  ].map(pm => (
+                    <div key={pm.value} className="flex items-center space-x-3 py-2 border-b border-border/50">
+                      <RadioGroupItem value={pm.value} id={pm.value} />
+                      <Label htmlFor={pm.value} className="text-sm font-light">{pm.label}</Label>
                     </div>
                   ))}
-                  <div className="border-t pt-4 space-y-2">
-                    <div className="flex gap-2">
-                      <Input placeholder={t("co_coupon")} value={couponCode} onChange={e => setCouponCode(e.target.value)} />
-                      <Button type="button" variant="outline" onClick={applyCoupon}>{t("co_apply")}</Button>
-                    </div>
-                    {discount > 0 && (
-                      <div className="flex justify-between text-sm text-destructive"><span>{t("co_discount")}</span><span>-{formatPrice(discount)}</span></div>
-                    )}
-                    <div className="flex justify-between font-bold text-lg border-t pt-2">
-                      <span>{t("co_total")}</span><span>{formatPrice(total - discount)}</span>
-                    </div>
+                </RadioGroup>
+              </div>
+            </div>
+
+            {/* Summary */}
+            <div>
+              <div className="sticky top-24 border border-border p-6 space-y-5">
+                <h2 className="text-sm font-sans font-medium tracking-[0.15em] uppercase">{t("co_summary")}</h2>
+                {items.map(item => (
+                  <div key={item.id} className="flex justify-between text-sm font-light">
+                    <span className="truncate flex-1 pr-2">{item.product.name} ×{item.quantity}</span>
+                    <span>{formatPrice(item.product.price * item.quantity)}</span>
                   </div>
-                  <Button type="submit" className="w-full" size="lg" disabled={isProcessing}>
-                    {isProcessing ? t("co_processing") : `${formatPrice(total - discount)} ${t("co_pay")}`}
-                  </Button>
-                </CardContent>
-              </Card>
+                ))}
+                <div className="border-t border-border pt-4 space-y-3">
+                  <div className="flex gap-2">
+                    <Input placeholder={t("co_coupon")} className="rounded-none text-xs" value={couponCode} onChange={e => setCouponCode(e.target.value)} />
+                    <Button type="button" variant="outline" className="rounded-none text-xs" onClick={applyCoupon}>{t("co_apply")}</Button>
+                  </div>
+                  {discount > 0 && (
+                    <div className="flex justify-between text-sm text-primary"><span>{t("co_discount")}</span><span>-{formatPrice(discount)}</span></div>
+                  )}
+                  <div className="flex justify-between font-medium text-base border-t border-border pt-3">
+                    <span>{t("co_total")}</span><span>{formatPrice(total - discount)}</span>
+                  </div>
+                </div>
+                <Button type="submit" className="w-full rounded-none py-6 text-xs tracking-[0.15em] uppercase" disabled={isProcessing}>
+                  {isProcessing ? t("co_processing") : t("co_pay")}
+                </Button>
+              </div>
             </div>
           </form>
         </div>

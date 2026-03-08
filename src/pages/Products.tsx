@@ -57,31 +57,34 @@ const Products = () => {
   return (
     <div className="min-h-screen">
       <Navigation />
-      <section className="py-8 px-4 md:px-6 lg:px-8">
+      <section className="py-12 md:py-16 px-4 md:px-6 lg:px-8">
         <div className="container">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">{t("products_title")}</h1>
-            <p className="text-muted-foreground">{t("products_subtitle")}</p>
+          {/* Header */}
+          <div className="mb-12 space-y-3">
+            <p className="text-xs font-sans tracking-[0.3em] uppercase text-muted-foreground">{t("featured_tagline")}</p>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-light">{t("products_title")}</h1>
           </div>
-          <div className="flex flex-col md:flex-row gap-4 mb-8">
+
+          {/* Filters */}
+          <div className="flex flex-col md:flex-row gap-4 mb-8 pb-8 border-b border-border">
             <form onSubmit={handleSearch} className="flex gap-2 flex-1 max-w-md">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input placeholder={t("products_search")} className="pl-10" value={search}
+                <Input placeholder={t("products_search")} className="pl-10 rounded-none border-border text-sm" value={search}
                   onChange={e => setSearch(e.target.value)} />
               </div>
-              <Button type="submit" variant="outline">{t("products_search_btn")}</Button>
+              <Button type="submit" variant="outline" className="rounded-none text-xs tracking-wider uppercase">{t("products_search_btn")}</Button>
             </form>
             <div className="flex gap-2 flex-wrap">
               <Select value={category} onValueChange={setCategory}>
-                <SelectTrigger className="w-[140px]"><SelectValue placeholder={t("products_category")} /></SelectTrigger>
+                <SelectTrigger className="w-[140px] rounded-none text-xs"><SelectValue placeholder={t("products_category")} /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">{t("products_all")}</SelectItem>
                   {categories.map(c => <SelectItem key={c.id} value={c.slug}>{c.name}</SelectItem>)}
                 </SelectContent>
               </Select>
               <Select value={sort} onValueChange={setSort}>
-                <SelectTrigger className="w-[130px]"><SelectValue /></SelectTrigger>
+                <SelectTrigger className="w-[130px] rounded-none text-xs"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="popular">{t("products_popular")}</SelectItem>
                   <SelectItem value="newest">{t("products_newest")}</SelectItem>
@@ -91,7 +94,7 @@ const Products = () => {
                 </SelectContent>
               </Select>
               <Select value={priceRange} onValueChange={setPriceRange}>
-                <SelectTrigger className="w-[150px]"><SelectValue /></SelectTrigger>
+                <SelectTrigger className="w-[150px] rounded-none text-xs"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">{t("products_all_prices")}</SelectItem>
                   <SelectItem value="under20000">{t("products_under_20k")}</SelectItem>
@@ -101,23 +104,45 @@ const Products = () => {
               </Select>
             </div>
           </div>
-          <div className="flex gap-2 overflow-x-auto pb-4 mb-6">
-            <Button variant={category === "all" ? "default" : "outline"} size="sm" onClick={() => setCategory("all")}>
+
+          {/* Category pills */}
+          <div className="flex gap-3 overflow-x-auto pb-6 mb-2">
+            <button
+              onClick={() => setCategory("all")}
+              className={`text-xs font-sans tracking-[0.15em] uppercase whitespace-nowrap px-4 py-2 border transition-colors ${
+                category === "all" ? "bg-foreground text-background border-foreground" : "border-border text-muted-foreground hover:text-foreground hover:border-foreground"
+              }`}
+            >
               {t("products_all")}
-            </Button>
+            </button>
             {categories.map(c => (
-              <Button key={c.id} variant={category === c.slug ? "default" : "outline"} size="sm"
-                onClick={() => setCategory(c.slug)} className="whitespace-nowrap">{c.name}</Button>
+              <button
+                key={c.id}
+                onClick={() => setCategory(c.slug)}
+                className={`text-xs font-sans tracking-[0.15em] uppercase whitespace-nowrap px-4 py-2 border transition-colors ${
+                  category === c.slug ? "bg-foreground text-background border-foreground" : "border-border text-muted-foreground hover:text-foreground hover:border-foreground"
+                }`}
+              >
+                {c.name}
+              </button>
             ))}
           </div>
+
+          {/* Grid */}
           {isLoading ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-              {[...Array(8)].map((_, i) => <div key={i} className="aspect-square rounded-lg bg-muted animate-pulse" />)}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
+              {[...Array(8)].map((_, i) => (
+                <div key={i}>
+                  <div className="aspect-[3/4] bg-muted animate-pulse mb-4" />
+                  <div className="h-3 bg-muted animate-pulse w-2/3 mb-2" />
+                  <div className="h-3 bg-muted animate-pulse w-1/3" />
+                </div>
+              ))}
             </div>
           ) : products.length === 0 ? (
-            <div className="text-center py-16 text-muted-foreground">{t("products_no_results")}</div>
+            <div className="text-center py-20 text-muted-foreground text-sm">{t("products_no_results")}</div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
               {products.map(product => <ProductCard key={product.id} product={product} />)}
             </div>
           )}
