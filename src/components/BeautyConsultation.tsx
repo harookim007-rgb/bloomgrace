@@ -492,8 +492,8 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
               >
                 <div className="flex items-center justify-between">
                   <div className="space-y-1.5">
-                    <p className="text-sm font-serif font-medium">{c.label[language] || c.label.en}</p>
-                    <p className="text-[11px] text-muted-foreground leading-relaxed">{c.description[language] || c.description.en}</p>
+                    <p className="text-lg font-serif font-semibold">{c.label[language] || c.label.en}</p>
+                    <p className="text-sm text-foreground/70 leading-relaxed">{c.description[language] || c.description.en}</p>
                   </div>
                   <ChevronRight className="h-4 w-4 text-muted-foreground/30 group-hover:text-primary transition-colors flex-shrink-0 ml-3" />
                 </div>
