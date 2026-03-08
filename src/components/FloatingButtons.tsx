@@ -154,7 +154,7 @@ const FloatingButtons = () => {
         {messengerOpen && (
           <div className="absolute bottom-16 right-0 w-[340px] md:w-[380px] bg-background border border-border/40 shadow-luxury flex flex-col max-h-[480px] animate-fade-in">
             {/* Header */}
-            <div className="px-5 py-4 border-b border-border/30 bg-primary/5">
+            <div className="px-5 py-4 border-b border-border/30 bg-muted/30">
               <div className="flex items-center justify-between">
                 <div>
                   <h4 className="text-sm font-serif font-medium">{mt.title}</h4>
