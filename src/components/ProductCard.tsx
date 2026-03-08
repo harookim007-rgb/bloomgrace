@@ -64,7 +64,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           <p className="text-[10px] font-sans tracking-[0.2em] uppercase text-muted-foreground">{product.brand}</p>
         )}
         <Link to={`/products/${product.slug}`}>
-          <h3 className="text-sm font-sans font-light leading-snug line-clamp-2 group-hover:text-primary transition-colors">
+          <h3 className="text-sm font-sans font-light leading-snug line-clamp-2 transition-colors">
             {translatedName}
           </h3>
         </Link>
