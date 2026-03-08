@@ -135,7 +135,7 @@ const Navigation = () => {
       {mobileOpen && (
         <div className="fixed inset-0 z-[60] lg:hidden">
           <div className="absolute inset-0 bg-foreground/20 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
-          <div className="absolute left-0 top-0 h-full w-[300px] bg-background shadow-luxury p-8 animate-slide-in">
+          <div className="absolute left-0 top-0 h-full w-[85vw] max-w-[300px] bg-background shadow-luxury p-6 md:p-8 animate-slide-in overflow-y-auto -webkit-overflow-scrolling-touch">
             <div className="mb-10">
               <span className="text-lg font-serif font-semibold tracking-[0.2em] uppercase text-foreground">
                 BLOOM<span className="text-foreground/40 mx-0.5">&</span>GRACE

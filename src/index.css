@@ -104,15 +104,33 @@
     @apply border-border;
   }
 
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+  }
+
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-size: 16px;
     line-height: 1.65;
     font-weight: 500;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: auto;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
   }
 }
 
@@ -123,5 +141,12 @@
 
   .text-gradient {
     @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+  }
+}
+
+/* WebView / KakaoTalk compatibility */
+@supports (-webkit-touch-callout: none) {
+  .h-screen, [style*="100vh"] {
+    height: -webkit-fill-available;
   }
 }

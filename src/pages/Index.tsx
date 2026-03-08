@@ -8,7 +8,7 @@ import FloatingButtons from "@/components/FloatingButtons";
 
 const Index = () => {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-[100dvh] overflow-x-hidden">
       <Navigation />
       <Hero />
       <FeaturedProducts />

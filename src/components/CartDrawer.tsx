@@ -21,7 +21,7 @@ const CartDrawer = () => {
           )}
         </Button>
       </SheetTrigger>
-      <SheetContent className="w-[360px] flex flex-col p-0">
+      <SheetContent className="w-[85vw] max-w-[360px] flex flex-col p-0">
         <SheetHeader className="px-6 py-5 border-b border-border">
           <SheetTitle className="text-sm font-sans font-medium tracking-[0.15em] uppercase">{t("cart_title")}</SheetTitle>
         </SheetHeader>

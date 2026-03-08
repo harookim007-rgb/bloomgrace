@@ -114,8 +114,8 @@ const FloatingButtons = () => {
 
   return (
     <>
-      {/* AI Bookmark Tab — horizontal postcard style, sticky right edge */}
-      <div className="fixed right-0 top-1/2 -translate-y-1/2 z-50">
+      {/* AI Bookmark Tab — hidden on very small screens, sticky right edge */}
+      <div className="fixed right-0 top-1/2 -translate-y-1/2 z-50 hidden sm:block">
         <HoverCard openDelay={200} closeDelay={100}>
           <HoverCardTrigger asChild>
             <button
@@ -152,7 +152,7 @@ const FloatingButtons = () => {
       {/* Right — Customer Messenger */}
       <div className="fixed right-4 md:right-6 bottom-6 z-50">
         {messengerOpen && (
-          <div className="absolute bottom-16 right-0 w-[340px] md:w-[380px] bg-background border border-border/40 shadow-luxury flex flex-col max-h-[480px] animate-fade-in">
+          <div className="absolute bottom-16 right-0 w-[calc(100vw-2rem)] max-w-[380px] bg-background border border-border/40 shadow-luxury flex flex-col max-h-[70dvh] animate-fade-in">
             {/* Header */}
             <div className="px-5 py-4 border-b border-border/30 bg-muted/30">
               <div className="flex items-center justify-between">
