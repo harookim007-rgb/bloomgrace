@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ArrowRight, ArrowLeft, Loader2, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import categorySkinImg from "@/assets/category-skin.jpg";
+import categoryBodyImg from "@/assets/category-body.jpg";
+import categoryHairImg from "@/assets/category-hair.jpg";
 
 // ── Beauty knowledge data ──
 const categories = ["Skin", "Body", "Hair"] as const;
@@ -183,6 +185,12 @@ const getConcerns = (cat: Category) => {
   return hairConcerns;
 };
 
+const categoryImages: Record<Category, string> = {
+  Skin: categorySkinImg,
+  Body: categoryBodyImg,
+  Hair: categoryHairImg,
+};
+
 // ── Translations ──
 const cTexts: Record<string, Record<string, string>> = {
   en: {
@@ -210,6 +218,9 @@ const cTexts: Record<string, Record<string, string>> = {
     skinDesc: "Face care & skincare routine",
     bodyDesc: "Body care & hydration",
     hairDesc: "Hair & scalp treatments",
+    skinLong: "Discover your skin type and get a personalized skincare routine with products perfectly suited for you.",
+    bodyLong: "Find the right body care products to address your specific concerns and achieve healthy, radiant skin.",
+    hairLong: "Identify your hair and scalp type to get expert recommendations for healthier, more beautiful hair.",
   },
   ko: {
     modalTitle: "나만의 뷰티 루틴을 찾아보세요",
@@ -236,6 +247,9 @@ const cTexts: Record<string, Record<string, string>> = {
     skinDesc: "페이스 케어 & 스킨케어 루틴",
     bodyDesc: "바디 케어 & 보습",
     hairDesc: "헤어 & 두피 관리",
+    skinLong: "나만의 피부 타입을 발견하고 맞춤 스킨케어 루틴을 추천받으세요.",
+    bodyLong: "바디 고민에 맞는 케어 제품으로 건강하고 빛나는 피부를 만나보세요.",
+    hairLong: "헤어 & 두피 타입을 진단받고 더 건강하고 아름다운 모발을 위한 추천을 받아보세요.",
   },
   es: {
     modalTitle: "Descubre Tu Rutina Perfecta",
@@ -262,6 +276,9 @@ const cTexts: Record<string, Record<string, string>> = {
     skinDesc: "Cuidado facial y rutina de skincare",
     bodyDesc: "Cuidado corporal e hidratación",
     hairDesc: "Tratamientos capilares y cuero cabelludo",
+    skinLong: "Descubre tu tipo de piel y obtén una rutina personalizada con productos perfectos para ti.",
+    bodyLong: "Encuentra los productos corporales adecuados para tus preocupaciones específicas.",
+    hairLong: "Identifica tu tipo de cabello y cuero cabelludo para obtener recomendaciones expertas.",
   },
   de: {
     modalTitle: "Entdecken Sie Ihre Perfekte Routine",
@@ -288,6 +305,9 @@ const cTexts: Record<string, Record<string, string>> = {
     skinDesc: "Gesichtspflege & Hautpflege-Routine",
     bodyDesc: "Körperpflege & Feuchtigkeit",
     hairDesc: "Haar- & Kopfhautbehandlungen",
+    skinLong: "Entdecken Sie Ihren Hauttyp und erhalten Sie eine personalisierte Hautpflege-Routine.",
+    bodyLong: "Finden Sie die richtigen Körperpflegeprodukte für Ihre spezifischen Anliegen.",
+    hairLong: "Identifizieren Sie Ihren Haar- und Kopfhauttyp für fachkundige Empfehlungen.",
   },
 };
 
@@ -297,7 +317,7 @@ interface BeautyConsultationProps {
 }
 
 const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
-  const { language } = useLanguage();
+  const { language, formatPrice } = useLanguage();
   const ct = cTexts[language] || cTexts.en;
 
   const [showModal, setShowModal] = useState(false);
@@ -314,7 +334,6 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
       const dismissed = localStorage.getItem("beauty-modal-dismiss-date");
       const today = new Date().toDateString();
       if (dismissed === today) return;
-
       const visited = sessionStorage.getItem("bloom-consulted");
       if (!visited) {
         const timer = setTimeout(() => setShowModal(true), 3000);
@@ -335,6 +354,16 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
     setSubCategory("All");
     setResult(null);
   };
+
+  // Public open method for floating button
+  useEffect(() => {
+    const handler = () => {
+      reset();
+      setShowModal(true);
+    };
+    window.addEventListener("open-beauty-advisor", handler);
+    return () => window.removeEventListener("open-beauty-advisor", handler);
+  }, []);
 
   const handleGetRecommendation = async () => {
     setStep(3);
@@ -376,21 +405,22 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
 
   const concerns = category ? getConcerns(category) : [];
 
-  const categoryDescKey: Record<Category, string> = {
-    Skin: "skinDesc",
-    Body: "bodyDesc",
-    Hair: "hairDesc",
+  const categoryMeta: Record<Category, { descKey: string; longKey: string }> = {
+    Skin: { descKey: "skinDesc", longKey: "skinLong" },
+    Body: { descKey: "bodyDesc", longKey: "bodyLong" },
+    Hair: { descKey: "hairDesc", longKey: "hairLong" },
   };
 
   const renderContent = () => (
     <div className="space-y-6">
-      {/* Step 0: Category */}
+      {/* Step 0: Category — Large visual cards */}
       {step === 0 && (
         <div className="space-y-8">
-          <div className="text-center">
-            <p className="text-[11px] font-sans tracking-[0.25em] uppercase text-muted-foreground">{ct.step1}</p>
+          <div className="text-center space-y-2">
+            <p className="text-xs font-sans tracking-[0.3em] uppercase text-primary font-medium">AI Beauty Advisor</p>
+            <h3 className="text-xl md:text-2xl font-serif font-light">{ct.step1}</h3>
           </div>
-          <div className="grid grid-cols-3 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {categories.map((cat) => (
               <button
                 key={cat}
@@ -398,17 +428,27 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
                   setCategory(cat);
                   setStep(1);
                 }}
-                className="group relative flex flex-col items-center gap-4 py-8 md:py-10 border border-border/60 bg-card hover:border-primary/40 hover:bg-primary/[0.02] transition-all duration-500"
+                className="group relative overflow-hidden bg-card border border-border/40 hover:border-primary/40 transition-all duration-500"
               >
-                {/* Minimal geometric icon */}
-                <div className="w-12 h-12 md:w-14 md:h-14 border border-foreground/10 rounded-full flex items-center justify-center group-hover:border-primary/30 transition-colors duration-500">
-                  <div className="w-3 h-3 md:w-3.5 md:h-3.5 rounded-full bg-foreground/15 group-hover:bg-primary/30 transition-colors duration-500" />
+                {/* Category image */}
+                <div className="aspect-[3/4] overflow-hidden">
+                  <img
+                    src={categoryImages[cat]}
+                    alt={cat}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  {/* Gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
                 </div>
-                <div className="text-center space-y-1">
-                  <p className="text-sm md:text-base font-serif font-medium tracking-wide">{cat}</p>
-                  <p className="text-[10px] text-muted-foreground leading-tight px-2 hidden md:block">{ct[categoryDescKey[cat]]}</p>
+                {/* Text overlay */}
+                <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6 text-left">
+                  <h4 className="text-xl md:text-2xl font-serif font-light text-primary-foreground mb-1.5">{cat}</h4>
+                  <p className="text-[11px] text-primary-foreground/70 leading-relaxed font-sans">{ct[categoryMeta[cat].descKey]}</p>
+                  <div className="mt-3 flex items-center gap-1.5 text-[10px] tracking-[0.2em] uppercase text-primary-foreground/60 group-hover:text-primary-foreground transition-colors">
+                    <span>{ct.next?.split(" ")[0] || "Start"}</span>
+                    <ArrowRight className="h-3 w-3" />
+                  </div>
                 </div>
-                <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-center" />
               </button>
             ))}
           </div>
@@ -420,10 +460,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
         <div className="space-y-5">
           <div className="flex items-center justify-between">
             <button
-              onClick={() => {
-                setStep(0);
-                setConcern(null);
-              }}
+              onClick={() => { setStep(0); setConcern(null); }}
               className="flex items-center gap-1.5 text-[11px] text-muted-foreground hover:text-foreground transition-colors tracking-wider uppercase"
             >
               <ArrowLeft className="h-3 w-3" /> {ct.back}
@@ -431,7 +468,19 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
             <p className="text-[11px] font-sans tracking-[0.25em] uppercase text-muted-foreground">{ct.step2}</p>
             <div className="w-14" />
           </div>
-          <div className="space-y-2.5">
+
+          {/* Category header with image */}
+          <div className="relative h-28 md:h-36 overflow-hidden mb-4">
+            <img src={categoryImages[category!]} alt="" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-foreground/50 flex items-center justify-center">
+              <div className="text-center">
+                <h4 className="text-2xl font-serif font-light text-primary-foreground">{category}</h4>
+                <p className="text-[10px] text-primary-foreground/60 tracking-[0.2em] uppercase mt-1">{ct[categoryMeta[category!].descKey]}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-2">
             {concerns.map((c) => (
               <button
                 key={c.id}
@@ -440,14 +489,14 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
                   if (category === "Skin") setStep(2);
                   else setStep(2);
                 }}
-                className="w-full text-left p-4 md:p-5 border border-border/60 bg-card hover:border-primary/40 transition-all duration-300 group"
+                className="w-full text-left p-4 md:p-5 border border-border/40 bg-card hover:border-primary/30 hover:bg-primary/[0.02] transition-all duration-300 group"
               >
                 <div className="flex items-center justify-between">
                   <div className="space-y-1.5">
                     <p className="text-sm font-serif font-medium">{c.label[language] || c.label.en}</p>
                     <p className="text-[11px] text-muted-foreground leading-relaxed">{c.description[language] || c.description.en}</p>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-muted-foreground/40 group-hover:text-primary transition-colors flex-shrink-0 ml-3" />
+                  <ChevronRight className="h-4 w-4 text-muted-foreground/30 group-hover:text-primary transition-colors flex-shrink-0 ml-3" />
                 </div>
               </button>
             ))}
@@ -468,6 +517,10 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
 
           {category === "Skin" ? (
             <div className="space-y-6">
+              <div className="text-center py-4 border border-border/30 bg-muted/20">
+                <p className="text-[10px] tracking-[0.15em] uppercase text-muted-foreground mb-1">{category}</p>
+                <p className="text-sm font-serif">{getConcerns(category!).find((c) => c.id === concern)?.label[language] || ""}</p>
+              </div>
               <div className="flex flex-wrap gap-2 justify-center">
                 {skinSubCategories.map((sub) => (
                   <button
@@ -492,8 +545,8 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
             </div>
           ) : (
             <div className="space-y-6">
-              <div className="text-center py-6 border border-border/40 bg-muted/20">
-                <p className="text-xs tracking-[0.15em] uppercase text-muted-foreground mb-1">{category}</p>
+              <div className="text-center py-6 border border-border/30 bg-muted/20">
+                <p className="text-[10px] tracking-[0.15em] uppercase text-muted-foreground mb-1">{category}</p>
                 <p className="text-sm font-serif">{getConcerns(category!).find((c) => c.id === concern)?.label[language] || ""}</p>
               </div>
               <button
@@ -509,25 +562,25 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
 
       {/* Step 3: Loading */}
       {step === 3 && (
-        <div className="flex flex-col items-center justify-center py-16 space-y-6">
+        <div className="flex flex-col items-center justify-center py-20 space-y-6">
           <div className="relative">
-            <div className="w-16 h-16 border border-primary/20 rounded-full flex items-center justify-center">
-              <Loader2 className="h-6 w-6 animate-spin text-primary" />
+            <div className="w-20 h-20 border border-primary/20 rounded-full flex items-center justify-center">
+              <Loader2 className="h-7 w-7 animate-spin text-primary" />
             </div>
-            <div className="absolute inset-0 w-16 h-16 border border-primary/10 rounded-full animate-ping" />
+            <div className="absolute inset-0 w-20 h-20 border border-primary/10 rounded-full animate-ping" />
           </div>
-          <div className="text-center space-y-1">
-            <p className="text-sm font-serif">{ct.analyzing}</p>
-            <p className="text-[10px] text-muted-foreground tracking-wider">AI BEAUTY ADVISOR</p>
+          <div className="text-center space-y-2">
+            <p className="text-base font-serif">{ct.analyzing}</p>
+            <p className="text-[10px] text-muted-foreground tracking-[0.3em] uppercase">AI Beauty Advisor</p>
           </div>
         </div>
       )}
 
       {/* Step 4: Results */}
       {step === 4 && result && (
-        <div className="space-y-8 max-h-[60vh] overflow-y-auto pr-1 scrollbar-thin">
+        <div className="space-y-8 max-h-[60vh] overflow-y-auto pr-1">
           {/* Type Analysis */}
-          <div className="space-y-3 border-b border-border/40 pb-6">
+          <div className="space-y-3 border-b border-border/30 pb-6">
             <p className="text-[10px] font-sans tracking-[0.25em] uppercase text-primary font-medium">{ct.yourType}</p>
             <p className="text-sm leading-relaxed text-foreground/80">{result.typeExplanation}</p>
           </div>
@@ -549,7 +602,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
             </div>
           )}
 
-          {/* Recommended Products with images */}
+          {/* Recommended Products */}
           {result.recommendations && result.recommendations.length > 0 && (
             <div className="space-y-4">
               <p className="text-[10px] font-sans tracking-[0.25em] uppercase text-primary font-medium">{ct.recommended}</p>
@@ -557,9 +610,8 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
                 {result.recommendations.map((rec: any, i: number) => {
                   const matchedProduct = rec.productId ? products.find((p) => p.id === rec.productId) : null;
                   return (
-                    <div key={i} className="border border-border/40 bg-card overflow-hidden">
+                    <div key={i} className="border border-border/30 bg-card overflow-hidden">
                       <div className="flex gap-0">
-                        {/* Product Image */}
                         {matchedProduct?.image_url && (
                           <Link to={`/products/${matchedProduct.slug}`} onClick={() => setShowModal(false)} className="flex-shrink-0">
                             <div className="w-20 h-20 md:w-24 md:h-24 bg-muted/50">
@@ -582,6 +634,9 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
                             )}
                           </div>
                           <p className="text-[11px] text-muted-foreground leading-relaxed line-clamp-2">{rec.reason}</p>
+                          {matchedProduct && (
+                            <p className="text-xs font-sans font-medium text-foreground/70">{formatPrice(matchedProduct.price)}</p>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -608,7 +663,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
 
           <button
             onClick={reset}
-            className="w-full py-3 border border-border/60 text-[11px] tracking-[0.2em] uppercase text-foreground/60 hover:text-foreground hover:border-foreground/30 transition-colors duration-300"
+            className="w-full py-3 border border-border/40 text-[11px] tracking-[0.2em] uppercase text-foreground/60 hover:text-foreground hover:border-foreground/30 transition-colors duration-300"
           >
             {ct.startOver}
           </button>
@@ -621,26 +676,26 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
   if (mode === "modal") {
     return (
       <Dialog open={showModal} onOpenChange={setShowModal}>
-        <DialogContent className="sm:max-w-[620px] md:max-w-[680px] p-0 gap-0 rounded-none border-none overflow-hidden shadow-luxury [&>button]:hidden">
+        <DialogContent className="sm:max-w-[720px] md:max-w-[800px] p-0 gap-0 rounded-none border-none overflow-hidden shadow-luxury [&>button]:hidden">
           {/* Header */}
-          <div className="relative px-8 pt-10 pb-6 bg-gradient-to-b from-muted/50 to-transparent">
+          <div className="relative px-8 md:px-12 pt-12 pb-8 bg-gradient-to-b from-muted/60 to-transparent">
             <button
               onClick={() => setShowModal(false)}
-              className="absolute top-4 right-4 text-muted-foreground/50 hover:text-foreground transition-colors text-xs tracking-wider uppercase"
+              className="absolute top-5 right-5 text-muted-foreground/40 hover:text-foreground transition-colors text-[10px] tracking-[0.2em] uppercase"
             >
               Close
             </button>
-            <div className="text-center space-y-3">
-              <p className="text-[10px] tracking-[0.35em] uppercase text-primary font-sans font-medium">AI Beauty Advisor</p>
-              <h2 className="text-2xl md:text-3xl font-serif font-light leading-tight">{ct.modalTitle}</h2>
-              <p className="text-xs text-muted-foreground leading-relaxed max-w-md mx-auto">{ct.modalSubtitle}</p>
+            <div className="text-center space-y-4">
+              <p className="text-[11px] tracking-[0.4em] uppercase text-primary font-sans font-medium">AI Beauty Advisor</p>
+              <h2 className="text-2xl md:text-[2rem] font-serif font-light leading-tight">{ct.modalTitle}</h2>
+              <p className="text-[13px] text-muted-foreground leading-relaxed max-w-lg mx-auto font-light">{ct.modalSubtitle}</p>
             </div>
           </div>
           {/* Content */}
-          <div className="px-8 pb-6">{renderContent()}</div>
+          <div className="px-8 md:px-12 pb-8">{renderContent()}</div>
           {/* Don't show today */}
-          <div className="border-t border-border/30 px-8 py-3 flex justify-center">
-            <button onClick={handleDontShowToday} className="text-[11px] text-muted-foreground/60 hover:text-foreground transition-colors tracking-wider">
+          <div className="border-t border-border/20 px-8 py-4 flex justify-center bg-muted/20">
+            <button onClick={handleDontShowToday} className="text-[11px] text-muted-foreground/50 hover:text-foreground transition-colors tracking-[0.1em]">
               {ct.dontShowToday}
             </button>
           </div>
@@ -652,17 +707,14 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
   // ── Section mode ──
   return (
     <section className="py-20 md:py-28 px-4 md:px-6 lg:px-8 bg-muted/20">
-      <div className="container max-w-4xl">
+      <div className="container max-w-5xl">
         <div className="text-center space-y-3 mb-14">
-          <p className="text-[11px] font-sans font-medium tracking-[0.3em] uppercase text-muted-foreground">{ct.sectionSubtitle}</p>
+          <p className="text-[11px] font-sans font-medium tracking-[0.3em] uppercase text-primary">{ct.sectionSubtitle}</p>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-light">{ct.sectionTitle}</h2>
           <p className="text-sm text-muted-foreground max-w-md mx-auto">{ct.sectionDesc}</p>
         </div>
 
-        <div className="bg-background border border-border/40 p-8 md:p-12 shadow-elegant">
-          <div className="text-center mb-8">
-            <p className="text-[10px] tracking-[0.3em] uppercase text-primary font-sans font-medium">AI Beauty Advisor</p>
-          </div>
+        <div className="bg-background border border-border/30 p-8 md:p-12 shadow-elegant">
           {renderContent()}
         </div>
       </div>
