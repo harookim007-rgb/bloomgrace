@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { MessageCircle, X, Send, Sparkles } from "lucide-react";
+import { MessageCircle, X, Send } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -114,47 +114,34 @@ const FloatingButtons = () => {
 
   return (
     <>
-      {/* AI Bookmark Tab — sticky right edge, postcard/bookmark style */}
+      {/* AI Bookmark Tab — horizontal postcard style, sticky right edge */}
       <div className="fixed right-0 top-1/2 -translate-y-1/2 z-50">
         <HoverCard openDelay={200} closeDelay={100}>
           <HoverCardTrigger asChild>
             <button
               onClick={handleOpenAI}
               className="group relative flex items-center"
-              aria-label="Make Your Routine"
+              aria-label="Personalize Your Routine"
             >
-              {/* Bookmark shape — pink luxury */}
               <div
-                className="relative bg-gradient-to-b from-primary to-primary/85 text-primary-foreground pl-5 pr-4 py-8 flex flex-col items-center gap-3 shadow-luxury transition-all duration-500 group-hover:pl-6 group-hover:pr-5 group-hover:shadow-[0_0_30px_-5px_hsl(var(--primary)/0.4)]"
-                style={{
-                  borderRadius: "12px 0 0 12px",
-                }}
+                className="relative bg-foreground text-background px-5 py-6 flex flex-col items-center gap-2 shadow-luxury transition-all duration-500 group-hover:px-6 group-hover:shadow-[0_0_30px_-5px_hsl(var(--foreground)/0.3)]"
+                style={{ borderRadius: "8px 0 0 8px", writingMode: "vertical-rl", textOrientation: "mixed" }}
               >
-                <Sparkles className="h-5 w-5 text-primary-foreground/90" />
-                <div className="flex flex-col items-center gap-1">
-                  <span className="text-[10px] font-sans font-bold tracking-[0.2em] leading-tight text-center">{bt.line1}</span>
-                  <span className="text-[11px] font-serif font-semibold tracking-[0.1em] text-primary-foreground/90 text-center">{bt.line2}</span>
-                </div>
-                {/* Subtle pulse dot */}
-                <span className="absolute top-3 right-3 w-2 h-2 rounded-full bg-primary-foreground/80 animate-pulse" />
+                <span className="text-[9px] font-sans font-bold tracking-[0.25em] uppercase">{bt.line1}</span>
+                <span className="text-[10px] font-serif font-medium tracking-[0.15em] text-background/70">{bt.line2}</span>
               </div>
             </button>
           </HoverCardTrigger>
-          <HoverCardContent side="left" sideOffset={8} className="w-72 bg-background/95 backdrop-blur-md border-primary/20 shadow-luxury p-5">
+          <HoverCardContent side="left" sideOffset={8} className="w-72 bg-background/95 backdrop-blur-md border-border/30 shadow-luxury p-5">
             <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Sparkles className="h-4 w-4 text-primary" />
-                </div>
-                <div>
-                  <p className="text-xs font-serif font-semibold">Personalized Beauty</p>
-                  <p className="text-[9px] text-primary tracking-[0.15em] uppercase">AI Recommendation</p>
-                </div>
+              <div>
+                <p className="text-sm font-serif font-semibold">Personalized Beauty</p>
+                <p className="text-[9px] text-muted-foreground tracking-[0.15em] uppercase mt-0.5">Personalize Your Routine</p>
               </div>
               <p className="text-[11px] text-muted-foreground leading-relaxed">{bt.hover}</p>
               <div className="flex gap-2">
                 {["Skin", "Body", "Hair"].map(cat => (
-                  <span key={cat} className="text-[9px] px-2.5 py-1 bg-primary/8 text-primary border border-primary/15 tracking-[0.1em] uppercase">{cat}</span>
+                  <span key={cat} className="text-[9px] px-2.5 py-1 bg-muted text-foreground/70 border border-border/40 tracking-[0.1em] uppercase">{cat}</span>
                 ))}
               </div>
             </div>
@@ -183,9 +170,9 @@ const FloatingButtons = () => {
             <div className="flex-1 overflow-y-auto px-5 py-4 space-y-3 min-h-[200px]">
               <div className="flex gap-2">
                 <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <span className="text-[8px] font-sans font-bold text-primary">B&G</span>
+                  <span className="text-[8px] font-sans font-bold text-foreground">B&G</span>
                 </div>
-                <div className="bg-primary/5 px-3.5 py-2.5 max-w-[80%]">
+                <div className="bg-muted/50 px-3.5 py-2.5 max-w-[80%]">
                   <p className="text-xs leading-relaxed">{mt.greeting}</p>
                 </div>
               </div>
@@ -194,12 +181,12 @@ const FloatingButtons = () => {
                 <div key={i} className={`flex gap-2 ${msg.from === "user" ? "justify-end" : ""}`}>
                   {msg.from === "system" && (
                     <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <span className="text-[8px] font-sans font-bold text-primary">B&G</span>
+                    <span className="text-[8px] font-sans font-bold text-foreground">B&G</span>
                     </div>
                   )}
-                  <div className={`px-3.5 py-2.5 max-w-[80%] ${msg.from === "user" ? "bg-primary text-primary-foreground" : "bg-primary/5"}`}>
+                  <div className={`px-3.5 py-2.5 max-w-[80%] ${msg.from === "user" ? "bg-foreground text-background" : "bg-muted/50"}`}>
                     <p className="text-xs leading-relaxed">{msg.text}</p>
-                    <p className={`text-[9px] mt-1 ${msg.from === "user" ? "text-primary-foreground/50" : "text-muted-foreground/50"}`}>{msg.time}</p>
+                    <p className={`text-[9px] mt-1 ${msg.from === "user" ? "text-background/50" : "text-muted-foreground/50"}`}>{msg.time}</p>
                   </div>
                 </div>
               ))}
@@ -221,7 +208,7 @@ const FloatingButtons = () => {
                   onKeyDown={(e) => e.key === "Enter" && handleSend()}
                   className="flex-1 text-xs px-3 py-2.5 border border-border/40 bg-transparent focus:outline-none focus:border-primary/40 placeholder:text-muted-foreground/40" />
                 <button onClick={handleSend} disabled={sending || !message.trim()}
-                  className="px-3 py-2.5 bg-primary text-primary-foreground disabled:opacity-40 hover:bg-primary/90 transition-colors">
+                  className="px-3 py-2.5 bg-foreground text-background disabled:opacity-40 hover:bg-foreground/90 transition-colors">
                   <Send className="h-3.5 w-3.5" />
                 </button>
               </div>
@@ -231,7 +218,7 @@ const FloatingButtons = () => {
 
         <button
           onClick={() => setMessengerOpen(!messengerOpen)}
-          className="w-12 h-12 md:w-14 md:h-14 bg-primary text-primary-foreground rounded-full flex items-center justify-center shadow-luxury hover:scale-105 transition-transform duration-300"
+          className="w-12 h-12 md:w-14 md:h-14 bg-foreground text-background rounded-full flex items-center justify-center shadow-luxury hover:scale-105 transition-transform duration-300"
           aria-label="Customer Support"
         >
           {messengerOpen ? <X className="h-5 w-5 md:h-6 md:w-6" /> : <MessageCircle className="h-5 w-5 md:h-6 md:w-6" />}

@@ -37,7 +37,7 @@ const Navigation = () => {
   return (
     <>
       {/* Announcement bar */}
-      <div className="bg-primary/90 text-primary-foreground text-[11px] text-center py-2 font-sans tracking-[0.15em]">
+      <div className="bg-foreground text-background text-[11px] text-center py-2 font-sans tracking-[0.15em]">
         {t("hero_tagline")}
       </div>
 
@@ -59,11 +59,8 @@ const Navigation = () => {
 
           {/* Logo — luxurious serif with letter spacing */}
           <Link to="/" className="flex items-center">
-            <span className="text-xl md:text-2xl font-serif font-light tracking-[0.3em] uppercase text-foreground"
-              style={{ fontStyle: "normal", letterSpacing: "0.35em" }}>
-              <span className="text-primary font-medium">B</span>LOOM
-              <span className="text-primary/40 mx-1">&</span>
-              <span className="text-primary font-medium">G</span>RACE
+            <span className="text-xl md:text-2xl font-serif font-semibold tracking-[0.2em] uppercase text-foreground">
+              BLOOM<span className="text-foreground/40 mx-0.5">&</span>GRACE
             </span>
           </Link>
 
@@ -140,10 +137,8 @@ const Navigation = () => {
           <div className="absolute inset-0 bg-foreground/20 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
           <div className="absolute left-0 top-0 h-full w-[300px] bg-background shadow-luxury p-8 animate-slide-in">
             <div className="mb-10">
-              <span className="text-lg font-serif font-light tracking-[0.3em] uppercase">
-                <span className="text-primary font-medium">B</span>LOOM
-                <span className="text-primary/40 mx-0.5">&</span>
-                <span className="text-primary font-medium">G</span>RACE
+              <span className="text-lg font-serif font-semibold tracking-[0.2em] uppercase text-foreground">
+                BLOOM<span className="text-foreground/40 mx-0.5">&</span>GRACE
               </span>
             </div>
             <nav className="flex flex-col gap-0">

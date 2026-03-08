@@ -194,10 +194,10 @@ const categoryImages: Record<Category, string> = {
 // ── Translations ──
 const cTexts: Record<string, Record<string, string>> = {
   en: {
-    modalTitle: "AI-Powered Recommendations",
-    modalSubtitle: "Our AI beauty advisor will recommend products perfectly matched to your unique needs",
+    modalTitle: "Personalized Beauty",
+    modalSubtitle: "Discover products perfectly matched to your unique skin, body, and hair needs",
     sectionTitle: "Personalized Beauty",
-    sectionSubtitle: "AI-Powered Recommendations",
+    sectionSubtitle: "Personalize Your Routine",
     sectionDesc: "Discover products perfectly matched to your unique skin, body, and hair needs",
     step1: "Choose Your Type",
     step1Sub: "Select a category to get AI-powered product recommendations",
@@ -685,7 +685,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
               Close
             </button>
             <div className="text-center space-y-4">
-              <p className="text-[11px] tracking-[0.4em] uppercase text-primary font-sans font-medium">Make Your Routine</p>
+              <p className="text-[11px] tracking-[0.4em] uppercase text-primary font-sans font-medium">Personalize Your Routine</p>
               <h2 className="text-2xl md:text-[2rem] font-serif font-light leading-tight">{ct.modalTitle}</h2>
               <p className="text-[13px] text-muted-foreground leading-relaxed max-w-lg mx-auto font-light">{ct.modalSubtitle}</p>
             </div>
@@ -708,7 +708,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
     <section className="py-20 md:py-28 px-4 md:px-6 lg:px-8 bg-muted/20">
       <div className="container max-w-5xl">
         <div className="text-center space-y-3 mb-14">
-          <p className="text-[11px] font-sans font-medium tracking-[0.3em] uppercase text-primary">Personalize Your Routine</p>
+          <p className="text-[11px] font-sans font-medium tracking-[0.3em] uppercase text-primary">{ct.sectionSubtitle}</p>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-light">{ct.sectionTitle}</h2>
           <p className="text-sm text-muted-foreground max-w-md mx-auto">{ct.sectionDesc}</p>
         </div>
