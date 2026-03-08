@@ -37,7 +37,7 @@ const Navigation = () => {
   return (
     <>
       {/* Announcement bar */}
-      <div className="bg-foreground text-background text-[11px] text-center py-2 font-sans tracking-[0.15em]">
+      <div className="bg-foreground text-background text-[13px] text-center py-2.5 font-sans font-medium tracking-[0.12em]">
         {t("hero_tagline")}
       </div>
 
