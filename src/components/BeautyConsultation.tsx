@@ -517,8 +517,8 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
           {category === "Skin" ? (
             <div className="space-y-6">
               <div className="text-center py-4 border border-border/30 bg-muted/20">
-                <p className="text-[10px] tracking-[0.15em] uppercase text-muted-foreground mb-1">{category}</p>
-                <p className="text-sm font-serif">{getConcerns(category!).find((c) => c.id === concern)?.label[language] || ""}</p>
+                <p className="text-xs tracking-[0.12em] uppercase text-foreground/65 mb-1.5">{category}</p>
+                <p className="text-lg font-serif font-semibold">{getConcerns(category!).find((c) => c.id === concern)?.label[language] || ""}</p>
               </div>
               <div className="flex flex-wrap gap-2 justify-center">
                 {skinSubCategories.map((sub) => (
