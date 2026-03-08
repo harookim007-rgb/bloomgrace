@@ -42,8 +42,8 @@ const Footer = () => {
           </div>
 
           <div className="space-y-4">
-            <h4 className="text-xs font-sans font-medium tracking-[0.2em] uppercase">{t("footer_support")}</h4>
-            <ul className="space-y-3 text-sm text-muted-foreground font-light">
+            <h4 className="text-sm font-sans font-semibold tracking-[0.14em] uppercase">{t("footer_support")}</h4>
+            <ul className="space-y-3 text-base text-foreground/75 font-normal">
               <li><Link to="/contact" className="hover:text-foreground transition-colors">{t("nav_contact")}</Link></li>
               <li><Link to="/qa" className="hover:text-foreground transition-colors">{t("footer_faq")}</Link></li>
               <li><a href="#" className="hover:text-foreground transition-colors">{t("footer_shipping")}</a></li>
