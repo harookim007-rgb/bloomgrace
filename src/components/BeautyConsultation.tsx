@@ -677,7 +677,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
       <Dialog open={showModal} onOpenChange={setShowModal}>
         <DialogContent className="sm:max-w-[720px] md:max-w-[800px] p-0 gap-0 rounded-none border-none overflow-hidden shadow-luxury [&>button]:hidden">
           {/* Header */}
-          <div className="relative px-8 md:px-12 pt-12 pb-8 bg-gradient-to-b from-muted/60 to-transparent">
+          <div className="relative px-8 md:px-12 pt-12 pb-8 bg-gradient-to-b from-primary/8 to-transparent">
             <button
               onClick={() => setShowModal(false)}
               className="absolute top-5 right-5 text-muted-foreground/40 hover:text-foreground transition-colors text-[10px] tracking-[0.2em] uppercase"
@@ -685,7 +685,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
               Close
             </button>
             <div className="text-center space-y-4">
-              <p className="text-[11px] tracking-[0.4em] uppercase text-primary font-sans font-medium">AI Beauty Advisor</p>
+              <p className="text-[11px] tracking-[0.4em] uppercase text-primary font-sans font-medium">Make Your Routine</p>
               <h2 className="text-2xl md:text-[2rem] font-serif font-light leading-tight">{ct.modalTitle}</h2>
               <p className="text-[13px] text-muted-foreground leading-relaxed max-w-lg mx-auto font-light">{ct.modalSubtitle}</p>
             </div>

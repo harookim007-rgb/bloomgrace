@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import heroImg1 from "@/assets/hero-luxury-1.jpg";
@@ -79,11 +78,12 @@ const Hero = () => {
 
   const slides = banners.length > 0
     ? banners.map((b: any, i: number) => {
+        // Use translated title/subtitle if available for current language
         const trans = b.translations?.[language];
         return {
           image: b.image_url || fallbackSlides[i % 3].image,
-          title: trans?.title || b.title,
-          subtitle: trans?.subtitle || b.subtitle || "",
+          title: trans?.title || b.translations?.en?.title || b.title,
+          subtitle: trans?.subtitle || b.translations?.en?.subtitle || b.subtitle || "",
         };
       })
     : fallbackSlides.map((s, i) => ({
@@ -109,8 +109,8 @@ const Hero = () => {
           style={{ opacity: i === current ? 1 : 0 }}
         >
           <img src={s.image} alt="" className="w-full h-full object-cover" />
-          {/* Soft gradient overlay — keeps the pink tones visible */}
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/50 via-foreground/20 to-transparent" />
+          {/* Soft gradient overlay with pink tint */}
+          <div className="absolute inset-0 bg-gradient-to-r from-foreground/45 via-foreground/15 to-primary/5" />
         </div>
       ))}
 
@@ -127,7 +127,7 @@ const Hero = () => {
             )}
             <div className="flex flex-wrap gap-3 pt-2">
               <Link to="/products">
-                <button className="bg-primary-foreground text-foreground px-8 py-3.5 text-[11px] font-sans font-medium tracking-[0.2em] uppercase hover:bg-primary-foreground/90 transition-colors duration-300 flex items-center gap-2">
+                <button className="bg-primary text-primary-foreground px-8 py-3.5 text-[11px] font-sans font-medium tracking-[0.2em] uppercase hover:bg-primary/90 transition-colors duration-300 flex items-center gap-2">
                   {t("hero_shop")} <ArrowRight className="h-3.5 w-3.5" />
                 </button>
               </Link>
@@ -151,7 +151,7 @@ const Hero = () => {
                 key={i}
                 onClick={() => setCurrent(i)}
                 className={`rounded-full transition-all duration-500 ${
-                  i === current ? "w-8 h-2 bg-primary-foreground" : "w-2 h-2 bg-primary-foreground/40"
+                  i === current ? "w-8 h-2 bg-primary" : "w-2 h-2 bg-primary-foreground/40"
                 }`}
               />
             ))}

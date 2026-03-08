@@ -4,6 +4,11 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
 const messengerTexts: Record<string, Record<string, string>> = {
   en: {
@@ -52,11 +57,11 @@ const messengerTexts: Record<string, Record<string, string>> = {
   },
 };
 
-const bookmarkTexts: Record<string, { line1: string; line2: string }> = {
-  en: { line1: "AI", line2: "RECOMMEND" },
-  ko: { line1: "AI", line2: "추천" },
-  es: { line1: "AI", line2: "RECOMENDAR" },
-  de: { line1: "AI", line2: "EMPFEHLUNG" },
+const bookmarkTexts: Record<string, { line1: string; line2: string; hover: string }> = {
+  en: { line1: "MAKE YOUR", line2: "ROUTINE", hover: "Personalize your beauty routine with our AI advisor. Discover products perfectly matched to your skin, body & hair." },
+  ko: { line1: "나만의", line2: "루틴 만들기", hover: "AI 어드바이저로 나만의 뷰티 루틴을 완성하세요. 피부, 바디, 헤어에 맞는 제품을 추천받으세요." },
+  es: { line1: "CREA TU", line2: "RUTINA", hover: "Personaliza tu rutina de belleza con nuestro asesor IA. Descubre productos perfectos para ti." },
+  de: { line1: "DEINE", line2: "ROUTINE", hover: "Personalisieren Sie Ihre Beauty-Routine mit unserem KI-Berater. Entdecken Sie perfekt abgestimmte Produkte." },
 };
 
 const FloatingButtons = () => {
@@ -109,37 +114,60 @@ const FloatingButtons = () => {
 
   return (
     <>
-      {/* AI Bookmark Tab — sticky right edge */}
-      <button
-        onClick={handleOpenAI}
-        className="fixed right-0 top-1/2 -translate-y-1/2 z-50 group"
-        aria-label="AI Beauty Recommend"
-      >
-        <div className="relative flex items-center">
-          {/* Bookmark shape */}
-          <div className="relative bg-foreground text-background pl-4 pr-3 py-6 flex flex-col items-center gap-2 shadow-luxury transition-all duration-500 group-hover:pr-5 group-hover:pl-5"
-            style={{
-              borderRadius: "8px 0 0 8px",
-              clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%, 8px 50%)",
-            }}
-          >
-            <Sparkles className="h-4 w-4 text-primary" />
-            <div className="flex flex-col items-center gap-0.5">
-              <span className="text-[10px] font-sans font-bold tracking-[0.15em]">{bt.line1}</span>
-              <span className="text-[8px] font-sans tracking-[0.12em] uppercase text-background/70 writing-vertical">{bt.line2}</span>
+      {/* AI Bookmark Tab — sticky right edge, postcard/bookmark style */}
+      <div className="fixed right-0 top-1/2 -translate-y-1/2 z-50">
+        <HoverCard openDelay={200} closeDelay={100}>
+          <HoverCardTrigger asChild>
+            <button
+              onClick={handleOpenAI}
+              className="group relative flex items-center"
+              aria-label="Make Your Routine"
+            >
+              {/* Bookmark shape — pink luxury */}
+              <div
+                className="relative bg-gradient-to-b from-primary to-primary/85 text-primary-foreground pl-5 pr-4 py-8 flex flex-col items-center gap-3 shadow-luxury transition-all duration-500 group-hover:pl-6 group-hover:pr-5 group-hover:shadow-[0_0_30px_-5px_hsl(var(--primary)/0.4)]"
+                style={{
+                  borderRadius: "12px 0 0 12px",
+                }}
+              >
+                <Sparkles className="h-5 w-5 text-primary-foreground/90" />
+                <div className="flex flex-col items-center gap-1">
+                  <span className="text-[10px] font-sans font-bold tracking-[0.2em] leading-tight text-center">{bt.line1}</span>
+                  <span className="text-[11px] font-serif font-semibold tracking-[0.1em] text-primary-foreground/90 text-center">{bt.line2}</span>
+                </div>
+                {/* Subtle pulse dot */}
+                <span className="absolute top-3 right-3 w-2 h-2 rounded-full bg-primary-foreground/80 animate-pulse" />
+              </div>
+            </button>
+          </HoverCardTrigger>
+          <HoverCardContent side="left" sideOffset={8} className="w-72 bg-background/95 backdrop-blur-md border-primary/20 shadow-luxury p-5">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Sparkles className="h-4 w-4 text-primary" />
+                </div>
+                <div>
+                  <p className="text-xs font-serif font-semibold">Personalized Beauty</p>
+                  <p className="text-[9px] text-primary tracking-[0.15em] uppercase">AI Recommendation</p>
+                </div>
+              </div>
+              <p className="text-[11px] text-muted-foreground leading-relaxed">{bt.hover}</p>
+              <div className="flex gap-2">
+                {["Skin", "Body", "Hair"].map(cat => (
+                  <span key={cat} className="text-[9px] px-2.5 py-1 bg-primary/8 text-primary border border-primary/15 tracking-[0.1em] uppercase">{cat}</span>
+                ))}
+              </div>
             </div>
-            {/* Subtle pulse dot */}
-            <span className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-          </div>
-        </div>
-      </button>
+          </HoverCardContent>
+        </HoverCard>
+      </div>
 
       {/* Right — Customer Messenger */}
       <div className="fixed right-4 md:right-6 bottom-6 z-50">
         {messengerOpen && (
           <div className="absolute bottom-16 right-0 w-[340px] md:w-[380px] bg-background border border-border/40 shadow-luxury flex flex-col max-h-[480px] animate-fade-in">
             {/* Header */}
-            <div className="px-5 py-4 border-b border-border/30 bg-muted/30">
+            <div className="px-5 py-4 border-b border-border/30 bg-primary/5">
               <div className="flex items-center justify-between">
                 <div>
                   <h4 className="text-sm font-serif font-medium">{mt.title}</h4>
@@ -157,7 +185,7 @@ const FloatingButtons = () => {
                 <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                   <span className="text-[8px] font-sans font-bold text-primary">B&G</span>
                 </div>
-                <div className="bg-muted/40 px-3.5 py-2.5 max-w-[80%]">
+                <div className="bg-primary/5 px-3.5 py-2.5 max-w-[80%]">
                   <p className="text-xs leading-relaxed">{mt.greeting}</p>
                 </div>
               </div>
@@ -169,9 +197,9 @@ const FloatingButtons = () => {
                       <span className="text-[8px] font-sans font-bold text-primary">B&G</span>
                     </div>
                   )}
-                  <div className={`px-3.5 py-2.5 max-w-[80%] ${msg.from === "user" ? "bg-foreground text-background" : "bg-muted/40"}`}>
+                  <div className={`px-3.5 py-2.5 max-w-[80%] ${msg.from === "user" ? "bg-primary text-primary-foreground" : "bg-primary/5"}`}>
                     <p className="text-xs leading-relaxed">{msg.text}</p>
-                    <p className={`text-[9px] mt-1 ${msg.from === "user" ? "text-background/50" : "text-muted-foreground/50"}`}>{msg.time}</p>
+                    <p className={`text-[9px] mt-1 ${msg.from === "user" ? "text-primary-foreground/50" : "text-muted-foreground/50"}`}>{msg.time}</p>
                   </div>
                 </div>
               ))}
@@ -193,7 +221,7 @@ const FloatingButtons = () => {
                   onKeyDown={(e) => e.key === "Enter" && handleSend()}
                   className="flex-1 text-xs px-3 py-2.5 border border-border/40 bg-transparent focus:outline-none focus:border-primary/40 placeholder:text-muted-foreground/40" />
                 <button onClick={handleSend} disabled={sending || !message.trim()}
-                  className="px-3 py-2.5 bg-foreground text-background disabled:opacity-40 hover:bg-foreground/90 transition-colors">
+                  className="px-3 py-2.5 bg-primary text-primary-foreground disabled:opacity-40 hover:bg-primary/90 transition-colors">
                   <Send className="h-3.5 w-3.5" />
                 </button>
               </div>
