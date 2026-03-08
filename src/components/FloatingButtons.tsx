@@ -124,11 +124,11 @@ const FloatingButtons = () => {
               aria-label="Personalize Your Routine"
             >
               <div
-                className="relative bg-foreground text-background px-5 py-6 flex flex-col items-center gap-2 shadow-luxury transition-all duration-500 group-hover:px-6 group-hover:shadow-[0_0_30px_-5px_hsl(var(--foreground)/0.3)]"
-                style={{ borderRadius: "8px 0 0 8px", writingMode: "vertical-rl", textOrientation: "mixed" }}
+                className="relative bg-foreground text-background pl-4 pr-3 py-10 flex flex-col items-center gap-3 shadow-luxury transition-all duration-500 group-hover:pl-5 group-hover:pr-4 group-hover:shadow-[0_0_30px_-5px_hsl(var(--foreground)/0.3)]"
+                style={{ borderRadius: "8px 0 0 8px" }}
               >
-                <span className="text-[9px] font-sans font-bold tracking-[0.25em] uppercase">{bt.line1}</span>
-                <span className="text-[10px] font-serif font-medium tracking-[0.15em] text-background/70">{bt.line2}</span>
+                <span className="text-[9px] font-sans font-bold tracking-[0.25em] uppercase leading-tight text-center">{bt.line1}</span>
+                <span className="text-[10px] font-serif font-medium tracking-[0.15em] text-background/70 text-center">{bt.line2}</span>
               </div>
             </button>
           </HoverCardTrigger>
