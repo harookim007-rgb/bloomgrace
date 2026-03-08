@@ -32,8 +32,8 @@ const Footer = () => {
           </div>
 
           <div className="space-y-4">
-            <h4 className="text-xs font-sans font-medium tracking-[0.2em] uppercase">{t("footer_brand")}</h4>
-            <ul className="space-y-3 text-sm text-muted-foreground font-light">
+            <h4 className="text-sm font-sans font-semibold tracking-[0.14em] uppercase">{t("footer_brand")}</h4>
+            <ul className="space-y-3 text-base text-foreground/75 font-normal">
               <li><Link to="/#about" className="hover:text-foreground transition-colors">{t("nav_brand_story")}</Link></li>
               <li><Link to="/contact" className="hover:text-foreground transition-colors">{t("footer_store")}</Link></li>
               <li><a href="#" className="hover:text-foreground transition-colors">{t("footer_sustainability")}</a></li>
