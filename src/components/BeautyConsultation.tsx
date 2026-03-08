@@ -194,10 +194,10 @@ const categoryImages: Record<Category, string> = {
 // ── Translations ──
 const cTexts: Record<string, Record<string, string>> = {
   en: {
-    modalTitle: "AI-Powered Recommendations",
-    modalSubtitle: "Our AI beauty advisor will recommend products perfectly matched to your unique needs",
+    modalTitle: "Personalized Beauty",
+    modalSubtitle: "Discover products perfectly matched to your unique skin, body, and hair needs",
     sectionTitle: "Personalized Beauty",
-    sectionSubtitle: "AI-Powered Recommendations",
+    sectionSubtitle: "Personalize Your Routine",
     sectionDesc: "Discover products perfectly matched to your unique skin, body, and hair needs",
     step1: "Choose Your Type",
     step1Sub: "Select a category to get AI-powered product recommendations",
