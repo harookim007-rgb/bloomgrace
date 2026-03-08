@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { 
   LayoutDashboard, Package, FolderTree, ShoppingCart, Users, 
-  Tag, Image, Star, Settings, ChevronLeft, ChevronRight, LogOut, Home
+  Tag, Image, Star, Settings, ChevronLeft, ChevronRight, LogOut, Home, Paintbrush
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useDesignModeStore } from "@/stores/designModeStore";
 import type { AdminTab } from "@/pages/Admin";
 
 interface AdminSidebarProps {
