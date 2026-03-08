@@ -8,13 +8,13 @@
   :root {
     /* Bloom & Grace — soft blush pink, warm rose, cream */
     --background: 350 30% 98%;
-    --foreground: 20 15% 12%;
+    --foreground: 20 15% 8%;
 
     --card: 350 25% 99%;
-    --card-foreground: 20 15% 12%;
+    --card-foreground: 20 15% 8%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 20 15% 12%;
+    --popover-foreground: 20 15% 8%;
 
     /* Soft rose pink — slightly stronger */
     --primary: 348 52% 63%;
@@ -28,7 +28,7 @@
 
     /* Cream muted with pink tint */
     --muted: 348 15% 95%;
-    --muted-foreground: 20 10% 45%;
+    --muted-foreground: 20 10% 35%;
 
     /* Rose gold accent */
     --accent: 348 35% 90%;
