@@ -6,57 +6,57 @@
 
 @layer base {
   :root {
-    /* Luxe cosmetic palette — soft blush, warm neutrals, rose gold */
-    --background: 20 20% 98%;
-    --foreground: 20 10% 15%;
+    /* AM COSMETIC inspired — soft blush pink, warm peach, rose gold */
+    --background: 15 25% 97%;
+    --foreground: 20 15% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 20 10% 15%;
+    --card-foreground: 20 15% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 20 10% 15%;
+    --popover-foreground: 20 15% 12%;
+
+    /* Soft rose pink */
+    --primary: 350 55% 62%;
+    --primary-foreground: 0 0% 100%;
+    --primary-soft: 350 40% 95%;
+
+    /* Warm peach/blush */
+    --secondary: 15 45% 70%;
+    --secondary-foreground: 0 0% 100%;
+    --secondary-soft: 15 30% 94%;
+
+    /* Cream muted */
+    --muted: 20 20% 95%;
+    --muted-foreground: 20 10% 45%;
 
     /* Rose gold accent */
-    --primary: 350 45% 65%;
-    --primary-foreground: 0 0% 100%;
-    --primary-soft: 350 40% 94%;
-
-    /* Warm taupe */
-    --secondary: 25 15% 55%;
-    --secondary-foreground: 0 0% 100%;
-    --secondary-soft: 25 20% 92%;
-
-    /* Neutral cream muted */
-    --muted: 30 15% 94%;
-    --muted-foreground: 20 10% 50%;
-
-    /* Gold highlight */
-    --accent: 38 50% 65%;
-    --accent-foreground: 20 10% 15%;
+    --accent: 15 50% 68%;
+    --accent-foreground: 20 15% 12%;
 
     --destructive: 0 65% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 30 10% 90%;
-    --input: 30 10% 90%;
-    --ring: 350 45% 65%;
+    --border: 20 15% 91%;
+    --input: 20 15% 91%;
+    --ring: 350 55% 62%;
 
     --radius: 0.5rem;
 
     /* Sidebar */
-    --sidebar-background: 20 15% 97%;
-    --sidebar-foreground: 20 10% 15%;
-    --sidebar-primary: 350 45% 65%;
+    --sidebar-background: 15 20% 97%;
+    --sidebar-foreground: 20 15% 12%;
+    --sidebar-primary: 350 55% 62%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 30 15% 94%;
-    --sidebar-accent-foreground: 20 10% 15%;
-    --sidebar-border: 30 10% 90%;
-    --sidebar-ring: 350 45% 65%;
+    --sidebar-accent: 20 20% 95%;
+    --sidebar-accent-foreground: 20 15% 12%;
+    --sidebar-border: 20 15% 91%;
+    --sidebar-ring: 350 55% 62%;
 
     /* Design tokens */
-    --shadow-soft: 0 2px 16px -2px hsl(20 10% 15% / 0.06);
-    --shadow-elegant: 0 8px 30px -8px hsl(20 10% 15% / 0.10);
-    --shadow-luxury: 0 20px 50px -12px hsl(20 10% 15% / 0.15);
+    --shadow-soft: 0 2px 16px -2px hsl(20 10% 15% / 0.05);
+    --shadow-elegant: 0 8px 30px -8px hsl(20 10% 15% / 0.08);
+    --shadow-luxury: 0 20px 50px -12px hsl(20 10% 15% / 0.12);
   }
 
   .dark {
@@ -72,13 +72,13 @@
     --primary: 350 50% 68%;
     --primary-foreground: 30 10% 92%;
 
-    --secondary: 25 12% 45%;
+    --secondary: 15 40% 50%;
     --secondary-foreground: 30 10% 92%;
 
     --muted: 20 8% 18%;
     --muted-foreground: 30 8% 60%;
 
-    --accent: 38 45% 55%;
+    --accent: 15 45% 55%;
     --accent-foreground: 30 10% 92%;
 
     --destructive: 0 65% 50%;
