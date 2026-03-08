@@ -218,7 +218,7 @@ const FloatingButtons = () => {
 
         <button
           onClick={() => setMessengerOpen(!messengerOpen)}
-          className="w-12 h-12 md:w-14 md:h-14 bg-primary text-primary-foreground rounded-full flex items-center justify-center shadow-luxury hover:scale-105 transition-transform duration-300"
+          className="w-12 h-12 md:w-14 md:h-14 bg-foreground text-background rounded-full flex items-center justify-center shadow-luxury hover:scale-105 transition-transform duration-300"
           aria-label="Customer Support"
         >
           {messengerOpen ? <X className="h-5 w-5 md:h-6 md:w-6" /> : <MessageCircle className="h-5 w-5 md:h-6 md:w-6" />}
