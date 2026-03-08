@@ -460,11 +460,11 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
           <div className="flex items-center justify-between">
             <button
               onClick={() => { setStep(0); setConcern(null); }}
-              className="flex items-center gap-1.5 text-[11px] text-muted-foreground hover:text-foreground transition-colors tracking-wider uppercase"
+              className="flex items-center gap-1.5 text-sm text-foreground/70 hover:text-foreground transition-colors tracking-wide uppercase"
             >
               <ArrowLeft className="h-3 w-3" /> {ct.back}
             </button>
-            <p className="text-[11px] font-sans tracking-[0.25em] uppercase text-muted-foreground">{ct.step2}</p>
+            <p className="text-sm font-sans tracking-[0.18em] uppercase text-foreground/65">{ct.step2}</p>
             <div className="w-14" />
           </div>
 
