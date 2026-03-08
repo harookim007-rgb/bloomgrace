@@ -181,7 +181,7 @@ const FloatingButtons = () => {
                 <div key={i} className={`flex gap-2 ${msg.from === "user" ? "justify-end" : ""}`}>
                   {msg.from === "system" && (
                     <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <span className="text-[8px] font-sans font-bold text-primary">B&G</span>
+                    <span className="text-[8px] font-sans font-bold text-foreground">B&G</span>
                     </div>
                   )}
                   <div className={`px-3.5 py-2.5 max-w-[80%] ${msg.from === "user" ? "bg-primary text-primary-foreground" : "bg-primary/5"}`}>
