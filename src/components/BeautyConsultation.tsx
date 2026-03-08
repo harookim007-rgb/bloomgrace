@@ -421,7 +421,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
       {step === 0 && (
         <div className="space-y-8">
           <div className="text-center space-y-3">
-            <p className="text-xs font-sans tracking-[0.3em] uppercase text-primary font-medium">AI Beauty Advisor</p>
+            <p className="text-xs font-sans tracking-[0.3em] uppercase text-primary font-medium">Personalize Your Routine</p>
             <h3 className="text-xl md:text-2xl font-serif font-light">{ct.step1}</h3>
             <p className="text-[11px] text-muted-foreground tracking-wide">{ct.step1Sub}</p>
           </div>
@@ -675,9 +675,9 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
   if (mode === "modal") {
     return (
       <Dialog open={showModal} onOpenChange={setShowModal}>
-        <DialogContent className="sm:max-w-[720px] md:max-w-[800px] p-0 gap-0 rounded-none border-none overflow-hidden shadow-luxury [&>button]:hidden">
+        <DialogContent className="sm:max-w-[720px] md:max-w-[800px] p-0 gap-0 rounded-none border border-primary/15 overflow-hidden shadow-luxury [&>button]:hidden bg-background">
           {/* Header */}
-          <div className="relative px-8 md:px-12 pt-12 pb-8 bg-gradient-to-b from-muted/60 to-transparent">
+          <div className="relative px-8 md:px-12 pt-12 pb-8 bg-gradient-to-b from-primary/8 to-transparent">
             <button
               onClick={() => setShowModal(false)}
               className="absolute top-5 right-5 text-muted-foreground/40 hover:text-foreground transition-colors text-[10px] tracking-[0.2em] uppercase"
@@ -685,7 +685,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
               Close
             </button>
             <div className="text-center space-y-4">
-              <p className="text-[11px] tracking-[0.4em] uppercase text-primary font-sans font-medium">AI Beauty Advisor</p>
+              <p className="text-[11px] tracking-[0.4em] uppercase text-primary font-sans font-medium">Make Your Routine</p>
               <h2 className="text-2xl md:text-[2rem] font-serif font-light leading-tight">{ct.modalTitle}</h2>
               <p className="text-[13px] text-muted-foreground leading-relaxed max-w-lg mx-auto font-light">{ct.modalSubtitle}</p>
             </div>
@@ -693,7 +693,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
           {/* Content */}
           <div className="px-8 md:px-12 pb-8">{renderContent()}</div>
           {/* Don't show today */}
-          <div className="border-t border-border/20 px-8 py-4 flex justify-center bg-muted/20">
+          <div className="border-t border-primary/10 px-8 py-4 flex justify-center bg-primary/3">
             <button onClick={handleDontShowToday} className="text-[11px] text-muted-foreground/50 hover:text-foreground transition-colors tracking-[0.1em]">
               {ct.dontShowToday}
             </button>
@@ -708,7 +708,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
     <section className="py-20 md:py-28 px-4 md:px-6 lg:px-8 bg-muted/20">
       <div className="container max-w-5xl">
         <div className="text-center space-y-3 mb-14">
-          <p className="text-[11px] font-sans font-medium tracking-[0.3em] uppercase text-primary">{ct.sectionSubtitle}</p>
+          <p className="text-[11px] font-sans font-medium tracking-[0.3em] uppercase text-primary">Personalize Your Routine</p>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-light">{ct.sectionTitle}</h2>
           <p className="text-sm text-muted-foreground max-w-md mx-auto">{ct.sectionDesc}</p>
         </div>
