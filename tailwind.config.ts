@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-        sans: ['"Noto Sans KR"', 'Outfit', 'system-ui', 'sans-serif'],
+        serif: ['"Playfair Display"', 'Georgia', 'serif'],
+        sans: ['"Inter"', '"Noto Sans KR"', 'system-ui', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",

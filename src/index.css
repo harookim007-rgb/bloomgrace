@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Noto+Sans+KR:wght@400;500;700&family=Outfit:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,57 +6,50 @@
 
 @layer base {
   :root {
-    /* Bloom & Grace — soft blush pink, warm rose, cream */
-    --background: 350 30% 98%;
-    --foreground: 20 15% 8%;
+    --background: 30 20% 97%;
+    --foreground: 20 20% 6%;
 
-    --card: 350 25% 99%;
-    --card-foreground: 20 15% 8%;
+    --card: 30 15% 98%;
+    --card-foreground: 20 20% 6%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 20 15% 8%;
+    --popover-foreground: 20 20% 6%;
 
-    /* Soft rose pink — slightly stronger */
-    --primary: 348 52% 63%;
+    --primary: 348 55% 55%;
     --primary-foreground: 0 0% 100%;
     --primary-soft: 348 35% 93%;
 
-    /* Warm peach/blush */
-    --secondary: 15 45% 70%;
+    --secondary: 15 45% 65%;
     --secondary-foreground: 0 0% 100%;
     --secondary-soft: 15 30% 94%;
 
-    /* Cream muted with pink tint */
-    --muted: 348 15% 95%;
-    --muted-foreground: 20 10% 35%;
+    --muted: 30 10% 94%;
+    --muted-foreground: 20 12% 30%;
 
-    /* Rose gold accent */
-    --accent: 348 35% 90%;
-    --accent-foreground: 20 15% 12%;
+    --accent: 348 30% 88%;
+    --accent-foreground: 20 20% 8%;
 
-    --destructive: 0 65% 55%;
+    --destructive: 0 72% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 348 15% 91%;
-    --input: 348 15% 91%;
-    --ring: 348 58% 58%;
+    --border: 30 10% 88%;
+    --input: 30 10% 88%;
+    --ring: 348 55% 55%;
 
     --radius: 0.5rem;
 
-    /* Sidebar */
-    --sidebar-background: 348 20% 97%;
-    --sidebar-foreground: 20 15% 12%;
-    --sidebar-primary: 348 58% 58%;
+    --sidebar-background: 30 15% 96%;
+    --sidebar-foreground: 20 20% 8%;
+    --sidebar-primary: 348 55% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 348 15% 95%;
-    --sidebar-accent-foreground: 20 15% 12%;
-    --sidebar-border: 348 15% 91%;
-    --sidebar-ring: 348 58% 58%;
+    --sidebar-accent: 30 10% 94%;
+    --sidebar-accent-foreground: 20 20% 8%;
+    --sidebar-border: 30 10% 88%;
+    --sidebar-ring: 348 55% 55%;
 
-    /* Design tokens */
-    --shadow-soft: 0 2px 16px -2px hsl(348 20% 50% / 0.06);
-    --shadow-elegant: 0 8px 30px -8px hsl(348 20% 50% / 0.1);
-    --shadow-luxury: 0 20px 50px -12px hsl(348 20% 50% / 0.15);
+    --shadow-soft: 0 2px 16px -2px hsl(20 20% 20% / 0.06);
+    --shadow-elegant: 0 8px 30px -8px hsl(20 20% 20% / 0.1);
+    --shadow-luxury: 0 20px 50px -12px hsl(20 20% 20% / 0.15);
   }
 
   .dark {
@@ -118,14 +111,16 @@
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-size: 16px;
-    line-height: 1.65;
-    font-weight: 500;
+    line-height: 1.7;
+    font-weight: 400;
+    letter-spacing: 0.01em;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: auto;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif;
+    @apply font-serif font-semibold;
+    letter-spacing: -0.01em;
   }
 
   img {
@@ -136,7 +131,7 @@
 
 @layer components {
   .hover-lift {
-    @apply transition-all duration-500 hover:-translate-y-0.5;
+    @apply transition-all duration-500 hover:-translate-y-1 hover:shadow-elegant;
   }
 
   .text-gradient {
