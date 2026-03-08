@@ -124,11 +124,11 @@ const FloatingButtons = () => {
               aria-label="Personalize Your Routine"
             >
               <div
-                className="relative bg-foreground text-background pl-4 pr-3 py-10 flex flex-col items-center gap-3 shadow-luxury transition-all duration-500 group-hover:pl-5 group-hover:pr-4 group-hover:shadow-[0_0_30px_-5px_hsl(var(--foreground)/0.3)]"
+                className="relative bg-[hsl(0_0%_35%)] text-white pl-4 pr-3 py-10 flex flex-col items-center gap-3 shadow-luxury transition-all duration-500 group-hover:pl-5 group-hover:pr-4 group-hover:bg-[hsl(0_0%_28%)]"
                 style={{ borderRadius: "8px 0 0 8px" }}
               >
-                <span className="text-[9px] font-sans font-bold tracking-[0.25em] uppercase leading-tight text-center">{bt.line1}</span>
-                <span className="text-[10px] font-serif font-medium tracking-[0.15em] text-background/70 text-center">{bt.line2}</span>
+                <span className="text-[9px] font-sans font-bold tracking-[0.25em] uppercase leading-tight text-center text-white">{bt.line1}</span>
+                <span className="text-[10px] font-serif font-medium tracking-[0.15em] text-white/80 text-center">{bt.line2}</span>
               </div>
             </button>
           </HoverCardTrigger>
@@ -184,9 +184,9 @@ const FloatingButtons = () => {
                     <span className="text-[8px] font-sans font-bold text-foreground">B&G</span>
                     </div>
                   )}
-                  <div className={`px-3.5 py-2.5 max-w-[80%] ${msg.from === "user" ? "bg-foreground text-background" : "bg-muted/50"}`}>
+                  <div className={`px-3.5 py-2.5 max-w-[80%] ${msg.from === "user" ? "bg-primary text-primary-foreground" : "bg-muted/50"}`}>
                     <p className="text-xs leading-relaxed">{msg.text}</p>
-                    <p className={`text-[9px] mt-1 ${msg.from === "user" ? "text-background/50" : "text-muted-foreground/50"}`}>{msg.time}</p>
+                    <p className={`text-[9px] mt-1 ${msg.from === "user" ? "text-primary-foreground/50" : "text-muted-foreground/50"}`}>{msg.time}</p>
                   </div>
                 </div>
               ))}
@@ -208,7 +208,7 @@ const FloatingButtons = () => {
                   onKeyDown={(e) => e.key === "Enter" && handleSend()}
                   className="flex-1 text-xs px-3 py-2.5 border border-border/40 bg-transparent focus:outline-none focus:border-primary/40 placeholder:text-muted-foreground/40" />
                 <button onClick={handleSend} disabled={sending || !message.trim()}
-                  className="px-3 py-2.5 bg-foreground text-background disabled:opacity-40 hover:bg-foreground/90 transition-colors">
+                  className="px-3 py-2.5 bg-primary text-primary-foreground disabled:opacity-40 hover:bg-primary/90 transition-colors">
                   <Send className="h-3.5 w-3.5" />
                 </button>
               </div>
@@ -218,7 +218,7 @@ const FloatingButtons = () => {
 
         <button
           onClick={() => setMessengerOpen(!messengerOpen)}
-          className="w-12 h-12 md:w-14 md:h-14 bg-foreground text-background rounded-full flex items-center justify-center shadow-luxury hover:scale-105 transition-transform duration-300"
+          className="w-12 h-12 md:w-14 md:h-14 bg-primary text-primary-foreground rounded-full flex items-center justify-center shadow-luxury hover:scale-105 transition-transform duration-300"
           aria-label="Customer Support"
         >
           {messengerOpen ? <X className="h-5 w-5 md:h-6 md:w-6" /> : <MessageCircle className="h-5 w-5 md:h-6 md:w-6" />}

@@ -42,7 +42,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           />
         </Link>
         {discount > 0 && (
-          <span className="absolute top-3 left-3 bg-foreground text-background text-[10px] font-sans font-medium tracking-wider px-2.5 py-1">
+          <span className="absolute top-3 left-3 bg-primary/90 text-primary-foreground text-[10px] font-sans font-medium tracking-wider px-2.5 py-1">
             -{discount}%
           </span>
         )}
@@ -54,7 +54,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </button>
         <button
           onClick={() => addToCart(product.id)}
-          className="absolute bottom-0 left-0 right-0 bg-foreground/90 text-background text-xs font-sans tracking-[0.15em] uppercase py-3 text-center translate-y-full group-hover:translate-y-0 transition-transform duration-300"
+          className="absolute bottom-0 left-0 right-0 bg-primary/90 text-primary-foreground text-xs font-sans tracking-[0.15em] uppercase py-3 text-center translate-y-full group-hover:translate-y-0 transition-transform duration-300"
         >
           {t("pc_add_to_cart")}
         </button>
@@ -64,7 +64,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           <p className="text-[10px] font-sans tracking-[0.2em] uppercase text-muted-foreground">{product.brand}</p>
         )}
         <Link to={`/products/${product.slug}`}>
-          <h3 className="text-sm font-sans font-light leading-snug line-clamp-2 group-hover:text-primary transition-colors">
+          <h3 className="text-sm font-sans font-light leading-snug line-clamp-2 transition-colors">
             {translatedName}
           </h3>
         </Link>

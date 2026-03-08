@@ -528,7 +528,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
                     className={`px-5 py-2.5 text-[11px] tracking-[0.15em] uppercase border transition-all duration-300 ${
                       subCategory === sub
                         ? "border-primary bg-primary text-primary-foreground"
-                        : "border-border/60 text-foreground/60 hover:border-primary/40 hover:text-foreground"
+                        : "border-border/60 text-foreground/60 hover:border-primary/40 hover:text-primary"
                     }`}
                   >
                     {sub}
@@ -537,7 +537,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
               </div>
               <button
                 onClick={handleGetRecommendation}
-                className="w-full py-4 bg-foreground text-background text-[11px] tracking-[0.2em] uppercase font-sans hover:bg-foreground/90 transition-colors duration-300 flex items-center justify-center gap-2"
+                className="w-full py-4 bg-primary text-primary-foreground text-[11px] tracking-[0.2em] uppercase font-sans hover:bg-primary/90 transition-colors duration-300 flex items-center justify-center gap-2"
               >
                 {ct.next} <ArrowRight className="h-3.5 w-3.5" />
               </button>
@@ -550,7 +550,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
               </div>
               <button
                 onClick={handleGetRecommendation}
-                className="w-full py-4 bg-foreground text-background text-[11px] tracking-[0.2em] uppercase font-sans hover:bg-foreground/90 transition-colors duration-300 flex items-center justify-center gap-2"
+                className="w-full py-4 bg-primary text-primary-foreground text-[11px] tracking-[0.2em] uppercase font-sans hover:bg-primary/90 transition-colors duration-300 flex items-center justify-center gap-2"
               >
                 {ct.next} <ArrowRight className="h-3.5 w-3.5" />
               </button>
