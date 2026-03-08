@@ -525,7 +525,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
                   <button
                     key={sub}
                     onClick={() => setSubCategory(sub)}
-                    className={`px-5 py-2.5 text-[11px] tracking-[0.15em] uppercase border transition-all duration-300 ${
+                    className={`px-5 py-3 text-sm font-medium tracking-[0.1em] uppercase border transition-all duration-300 ${
                       subCategory === sub
                         ? "border-primary bg-primary text-primary-foreground"
                         : "border-border/60 text-foreground/60 hover:border-primary/40 hover:text-primary"
