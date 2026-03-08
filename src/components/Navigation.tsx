@@ -146,7 +146,7 @@ const Navigation = () => {
                 <Link
                   key={link.to}
                   to={link.to}
-                  className="text-sm font-sans tracking-[0.1em] uppercase py-3.5 border-b border-border/40 text-foreground/60 hover:text-primary transition-colors"
+                  className="text-base font-sans font-medium tracking-[0.06em] uppercase py-3.5 border-b border-border/40 text-foreground/85 hover:text-primary transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
                   {link.label}
