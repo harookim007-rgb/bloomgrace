@@ -421,9 +421,9 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
       {step === 0 && (
         <div className="space-y-8">
           <div className="text-center space-y-3">
-            <p className="text-sm font-sans tracking-[0.22em] uppercase text-primary font-semibold">Personalize Your Routine</p>
-            <h3 className="text-2xl md:text-3xl font-serif font-medium">{ct.step1}</h3>
-            <p className="text-base text-foreground/75 tracking-wide">{ct.step1Sub}</p>
+            <p className="text-sm font-sans tracking-[0.15em] uppercase text-primary font-bold">Personalize Your Routine</p>
+            <h3 className="text-2xl md:text-4xl font-serif font-bold">{ct.step1}</h3>
+            <p className="text-base md:text-lg text-foreground/80 font-medium">{ct.step1Sub}</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {categories.map((cat) => (
@@ -445,8 +445,8 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
                 </div>
                 {/* Label below image */}
                 <div className="p-4 text-center border-t border-border/20">
-                  <h4 className="text-xl font-serif font-semibold mb-1">{ct[`${cat.toLowerCase()}` as keyof typeof ct] || cat}</h4>
-                  <p className="text-sm text-foreground/70 tracking-wide">{ct[categoryMeta[cat].descKey]}</p>
+                  <h4 className="text-xl font-serif font-bold mb-1">{ct[`${cat.toLowerCase()}` as keyof typeof ct] || cat}</h4>
+                  <p className="text-base text-foreground/70 font-medium">{ct[categoryMeta[cat].descKey]}</p>
                 </div>
               </button>
             ))}
@@ -492,8 +492,8 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
               >
                 <div className="flex items-center justify-between">
                   <div className="space-y-1.5">
-                    <p className="text-lg font-serif font-semibold">{c.label[language] || c.label.en}</p>
-                    <p className="text-sm text-foreground/70 leading-relaxed">{c.description[language] || c.description.en}</p>
+                    <p className="text-lg font-serif font-bold">{c.label[language] || c.label.en}</p>
+                     <p className="text-base text-foreground/70 leading-relaxed">{c.description[language] || c.description.en}</p>
                   </div>
                   <ChevronRight className="h-4 w-4 text-muted-foreground/30 group-hover:text-primary transition-colors flex-shrink-0 ml-3" />
                 </div>
@@ -708,9 +708,9 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
     <section className="py-20 md:py-28 px-4 md:px-6 lg:px-8 bg-muted/20">
       <div className="container max-w-5xl">
         <div className="text-center space-y-3 mb-14">
-          <p className="text-sm font-sans font-semibold tracking-[0.22em] uppercase text-primary">{ct.sectionSubtitle}</p>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-medium">{ct.sectionTitle}</h2>
-          <p className="text-lg text-foreground/75 max-w-xl mx-auto">{ct.sectionDesc}</p>
+          <p className="text-sm font-sans font-bold tracking-[0.15em] uppercase text-primary">{ct.sectionSubtitle}</p>
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-serif font-bold">{ct.sectionTitle}</h2>
+          <p className="text-base md:text-lg text-foreground/80 max-w-xl mx-auto font-medium">{ct.sectionDesc}</p>
         </div>
 
         <div className="bg-background border border-border/30 p-8 md:p-12 shadow-elegant">

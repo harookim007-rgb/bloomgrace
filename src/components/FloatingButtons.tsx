@@ -124,21 +124,21 @@ const FloatingButtons = () => {
               aria-label="Personalize Your Routine"
             >
               <div
-                className="relative bg-[hsl(0_0%_35%)] text-white pl-4 pr-3 py-10 flex flex-col items-center gap-3 shadow-luxury transition-all duration-500 group-hover:pl-5 group-hover:pr-4 group-hover:bg-[hsl(0_0%_28%)]"
+                className="relative bg-foreground text-background pl-4 pr-3 py-10 flex flex-col items-center gap-3 shadow-luxury transition-all duration-500 group-hover:pl-5 group-hover:pr-4 group-hover:bg-foreground/90"
                 style={{ borderRadius: "8px 0 0 8px" }}
               >
-                <span className="text-[10px] font-sans font-bold tracking-[0.22em] uppercase leading-tight text-center text-white">{bt.line1}</span>
-                <span className="text-[11px] font-sans font-bold tracking-[0.22em] uppercase text-white text-center">{bt.line2}</span>
+                <span className="text-xs font-sans font-bold tracking-[0.18em] uppercase leading-tight text-center">{bt.line1}</span>
+                <span className="text-xs font-sans font-bold tracking-[0.18em] uppercase text-center">{bt.line2}</span>
               </div>
             </button>
           </HoverCardTrigger>
           <HoverCardContent side="left" sideOffset={8} className="w-72 bg-background/95 backdrop-blur-md border-border/30 shadow-luxury p-5">
             <div className="space-y-3">
               <div>
-                <p className="text-base font-serif font-semibold">Personalized Beauty</p>
-                <p className="text-xs text-foreground/70 tracking-[0.12em] uppercase mt-0.5 font-medium">Personalize Your Routine</p>
+              <p className="text-lg font-serif font-bold">Personalized Beauty</p>
+                <p className="text-sm text-foreground/70 tracking-[0.1em] uppercase mt-0.5 font-semibold">Personalize Your Routine</p>
               </div>
-              <p className="text-sm text-foreground/75 leading-relaxed">{bt.hover}</p>
+              <p className="text-base text-foreground/80 leading-relaxed">{bt.hover}</p>
               <div className="flex gap-2">
                 {["Skin", "Body", "Hair"].map(cat => (
                   <span key={cat} className="text-xs px-2.5 py-1 bg-muted text-foreground/80 border border-border/40 tracking-[0.08em] uppercase font-medium">{cat}</span>
