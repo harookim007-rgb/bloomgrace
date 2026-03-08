@@ -1,4 +1,5 @@
 import { useDesignModeStore } from "@/stores/designModeStore";
+import { useDesignModeKeyboard } from "@/hooks/useDesignModeKeyboard";
 import DesignModeToolbar from "./DesignModeToolbar";
 import MenuManagerPanel from "./MenuManagerPanel";
 import WidgetPickerPanel from "./WidgetPickerPanel";
