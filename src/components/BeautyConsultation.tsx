@@ -693,7 +693,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
           {/* Content */}
           <div className="px-8 md:px-12 pb-8">{renderContent()}</div>
           {/* Don't show today */}
-          <div className="border-t border-border/20 px-8 py-4 flex justify-center bg-muted/20">
+          <div className="border-t border-primary/10 px-8 py-4 flex justify-center bg-primary/3">
             <button onClick={handleDontShowToday} className="text-[11px] text-muted-foreground/50 hover:text-foreground transition-colors tracking-[0.1em]">
               {ct.dontShowToday}
             </button>
