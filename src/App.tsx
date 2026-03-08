@@ -14,6 +14,7 @@ import Auth from "./pages/Auth";
 import MyPage from "./pages/MyPage";
 import Checkout from "./pages/Checkout";
 import Admin from "./pages/Admin";
+import DesignModeOverlay from "./components/design/DesignModeOverlay";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
