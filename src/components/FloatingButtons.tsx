@@ -138,7 +138,7 @@ const FloatingButtons = () => {
               <p className="text-lg font-serif font-bold">Personalized Beauty</p>
                 <p className="text-sm text-foreground/70 tracking-[0.1em] uppercase mt-0.5 font-semibold">Personalize Your Routine</p>
               </div>
-              <p className="text-sm text-foreground/75 leading-relaxed">{bt.hover}</p>
+              <p className="text-base text-foreground/80 leading-relaxed">{bt.hover}</p>
               <div className="flex gap-2">
                 {["Skin", "Body", "Hair"].map(cat => (
                   <span key={cat} className="text-xs px-2.5 py-1 bg-muted text-foreground/80 border border-border/40 tracking-[0.08em] uppercase font-medium">{cat}</span>
