@@ -164,7 +164,7 @@ const Navigation = () => {
                   {t("nav_mypage")}
                 </Link>
               ) : (
-                <Link to="/auth" className="text-sm font-sans tracking-[0.1em] uppercase py-3.5 border-b border-border/40 text-foreground/60 hover:text-primary" onClick={() => setMobileOpen(false)}>
+                <Link to="/auth" className="text-base font-sans font-medium tracking-[0.06em] uppercase py-3.5 border-b border-border/40 text-foreground/85 hover:text-primary" onClick={() => setMobileOpen(false)}>
                   {t("nav_login")}
                 </Link>
               )}
