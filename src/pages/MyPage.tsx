@@ -6,9 +6,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Package, Heart, User } from "lucide-react";
 
 const MyPage = () => {
   const { user, signOut } = useAuth();
@@ -33,7 +31,7 @@ const MyPage = () => {
     fetchData();
   }, [user]);
 
-  if (!user) return <div className="min-h-screen"><Navigation /><div className="text-center py-32">{t("mp_login_required")}</div><Footer /></div>;
+  if (!user) return <div className="min-h-screen"><Navigation /><div className="text-center py-32 text-sm text-muted-foreground">{t("mp_login_required")}</div><Footer /></div>;
 
   const statusMap: Record<string, string> = {
     pending: t("status_pending"), confirmed: t("status_confirmed"),
@@ -43,67 +41,72 @@ const MyPage = () => {
   return (
     <div className="min-h-screen">
       <Navigation />
-      <section className="py-8 px-4">
+      <section className="py-12 md:py-16 px-4">
         <div className="container max-w-5xl">
-          <div className="flex items-center justify-between mb-8">
-            <h1 className="text-3xl font-bold">{t("mp_title")}</h1>
-            <Button variant="outline" onClick={signOut}>{t("mp_logout")}</Button>
+          <div className="flex items-center justify-between mb-10">
+            <h1 className="text-2xl md:text-3xl font-serif font-light">{t("mp_title")}</h1>
+            <Button variant="ghost" onClick={signOut} className="text-xs tracking-wider uppercase text-muted-foreground">{t("mp_logout")}</Button>
           </div>
+
           <Tabs defaultValue="orders">
-            <TabsList className="grid w-full grid-cols-3 mb-8">
-              <TabsTrigger value="orders" className="gap-2"><Package className="h-4 w-4" />{t("mp_orders")}</TabsTrigger>
-              <TabsTrigger value="wishlist" className="gap-2"><Heart className="h-4 w-4" />{t("mp_wishlist")}</TabsTrigger>
-              <TabsTrigger value="profile" className="gap-2"><User className="h-4 w-4" />{t("mp_profile")}</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-3 mb-10 rounded-none bg-muted/50 h-auto">
+              <TabsTrigger value="orders" className="rounded-none text-xs tracking-wider uppercase py-3">{t("mp_orders")}</TabsTrigger>
+              <TabsTrigger value="wishlist" className="rounded-none text-xs tracking-wider uppercase py-3">{t("mp_wishlist")}</TabsTrigger>
+              <TabsTrigger value="profile" className="rounded-none text-xs tracking-wider uppercase py-3">{t("mp_profile")}</TabsTrigger>
             </TabsList>
-            <TabsContent value="orders" className="space-y-4">
+
+            <TabsContent value="orders" className="space-y-0">
               {orders.length === 0 ? (
-                <div className="text-center py-16 text-muted-foreground">{t("mp_no_orders")}</div>
+                <div className="text-center py-20 text-sm text-muted-foreground">{t("mp_no_orders")}</div>
               ) : orders.map(order => (
-                <Card key={order.id}>
-                  <CardHeader className="pb-2">
-                    <div className="flex justify-between items-center">
-                      <CardTitle className="text-base">
-                        {new Date(order.created_at).toLocaleDateString(dateFmt)} {t("mp_order_date")}
-                      </CardTitle>
-                      <span className="text-sm px-3 py-1 rounded-full bg-primary/10 text-primary font-medium">
-                        {statusMap[order.status] || order.status}
-                      </span>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2">
-                      {order.order_items?.map((item: any) => (
-                        <div key={item.id} className="flex justify-between text-sm">
-                          <span>{item.product_name} x{item.quantity}</span>
-                          <span>{formatPrice(item.price * item.quantity)}</span>
-                        </div>
-                      ))}
-                      <div className="flex justify-between font-bold border-t pt-2">
-                        <span>{t("mp_subtotal")}</span>
-                        <span>{formatPrice(Number(order.total))}</span>
+                <div key={order.id} className="py-6 border-b border-border">
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="text-sm font-sans">
+                      {new Date(order.created_at).toLocaleDateString(dateFmt)}
+                    </span>
+                    <span className="text-xs tracking-wider uppercase px-3 py-1 bg-muted">
+                      {statusMap[order.status] || order.status}
+                    </span>
+                  </div>
+                  <div className="space-y-2">
+                    {order.order_items?.map((item: any) => (
+                      <div key={item.id} className="flex justify-between text-sm font-light">
+                        <span>{item.product_name} ×{item.quantity}</span>
+                        <span>{formatPrice(item.price * item.quantity)}</span>
                       </div>
+                    ))}
+                    <div className="flex justify-between font-medium text-sm pt-3 border-t border-border/50">
+                      <span>{t("mp_subtotal")}</span>
+                      <span>{formatPrice(Number(order.total))}</span>
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               ))}
             </TabsContent>
+
             <TabsContent value="wishlist">
               {wishlistProducts.length === 0 ? (
-                <div className="text-center py-16 text-muted-foreground">{t("mp_no_wishlist")}</div>
+                <div className="text-center py-20 text-sm text-muted-foreground">{t("mp_no_wishlist")}</div>
               ) : (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
                   {wishlistProducts.map(p => p && <ProductCard key={p.id} product={p} />)}
                 </div>
               )}
             </TabsContent>
+
             <TabsContent value="profile">
-              <Card>
-                <CardContent className="pt-6 space-y-4">
-                  <div><span className="text-sm text-muted-foreground">{t("mp_email")}</span><p>{user.email}</p></div>
-                  <div><span className="text-sm text-muted-foreground">{t("mp_name")}</span><p>{profile?.display_name || "-"}</p></div>
-                  <div><span className="text-sm text-muted-foreground">{t("mp_phone")}</span><p>{profile?.phone || "-"}</p></div>
-                </CardContent>
-              </Card>
+              <div className="max-w-md space-y-6 py-4">
+                {[
+                  { label: t("mp_email"), value: user.email },
+                  { label: t("mp_name"), value: profile?.display_name || "—" },
+                  { label: t("mp_phone"), value: profile?.phone || "—" },
+                ].map((item, i) => (
+                  <div key={i} className="pb-4 border-b border-border">
+                    <p className="text-xs font-sans tracking-wider uppercase text-muted-foreground mb-1">{item.label}</p>
+                    <p className="text-sm">{item.value}</p>
+                  </div>
+                ))}
+              </div>
             </TabsContent>
           </Tabs>
         </div>

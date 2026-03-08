@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 import ProductCard from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const FeaturedProducts = () => {
@@ -15,27 +16,23 @@ const FeaturedProducts = () => {
   }, []);
 
   return (
-    <section className="py-20 px-4 md:px-6 lg:px-8 bg-gradient-to-b from-background to-muted/30 relative overflow-hidden">
-      {/* Floral decorative accents */}
-      <div className="absolute top-0 left-0 text-primary/5 text-[12rem] select-none pointer-events-none font-serif -translate-x-1/3 -translate-y-1/4">❁</div>
-      <div className="absolute bottom-0 right-0 text-secondary/5 text-[10rem] select-none pointer-events-none font-serif translate-x-1/4 translate-y-1/4">✿</div>
-
-      <div className="container relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <span className="text-sm font-medium tracking-[0.3em] uppercase text-muted-foreground/70">
-            {t("featured_tagline")}
-          </span>
-          <h2 className="text-4xl md:text-5xl font-bold">{t("featured_title")}</h2>
-          <p className="text-lg text-muted-foreground">{t("featured_subtitle")}</p>
-          <div className="w-20 h-0.5 bg-gradient-to-r from-primary via-accent to-secondary mx-auto mt-4" />
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-          {products.map(product => <ProductCard key={product.id} product={product} />)}
-        </div>
-        <div className="text-center mt-12">
+    <section className="py-20 md:py-28 px-4 md:px-6 lg:px-8">
+      <div className="container">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12 md:mb-16 gap-4">
+          <div className="space-y-3">
+            <p className="text-xs font-sans font-medium tracking-[0.3em] uppercase text-muted-foreground">
+              {t("featured_tagline")}
+            </p>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-light">{t("featured_title")}</h2>
+          </div>
           <Link to="/products">
-            <Button variant="outline" size="lg" className="px-10">{t("featured_view_all")}</Button>
+            <Button variant="ghost" className="text-xs tracking-[0.15em] uppercase gap-2 font-sans rounded-none border-b border-foreground/20 hover:border-foreground px-0 pb-1">
+              {t("featured_view_all")} <ArrowRight className="h-3 w-3" />
+            </Button>
           </Link>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
+          {products.map(product => <ProductCard key={product.id} product={product} />)}
         </div>
       </div>
     </section>

@@ -1,110 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Outfit:wght@200;300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
 @layer base {
   :root {
-    /* Luxurious Korean cosmetics palette - Autumn elegance */
-    --background: 28 25% 97%;
-    --foreground: 25 20% 20%;
+    /* Luxe cosmetic palette — soft blush, warm neutrals, rose gold */
+    --background: 20 20% 98%;
+    --foreground: 20 10% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 25 20% 20%;
+    --card-foreground: 20 10% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 25 20% 20%;
+    --popover-foreground: 20 10% 15%;
 
-    /* Refined rose pink - elegant and luxurious */
-    --primary: 345 55% 75%;
+    /* Rose gold accent */
+    --primary: 350 45% 65%;
     --primary-foreground: 0 0% 100%;
-    --primary-soft: 345 65% 92%;
-    --primary-glow: 345 70% 85%;
-    
-    /* Autumn sage green - natural grass tones */
-    --secondary: 140 30% 55%;
+    --primary-soft: 350 40% 94%;
+
+    /* Warm taupe */
+    --secondary: 25 15% 55%;
     --secondary-foreground: 0 0% 100%;
-    --secondary-soft: 140 35% 85%;
-    --secondary-glow: 140 40% 75%;
+    --secondary-soft: 25 20% 92%;
 
-    /* Warm autumn cream */
-    --muted: 35 30% 92%;
-    --muted-foreground: 30 15% 45%;
+    /* Neutral cream muted */
+    --muted: 30 15% 94%;
+    --muted-foreground: 20 10% 50%;
 
-    /* Golden autumn accent */
-    --accent: 42 75% 72%;
-    --accent-foreground: 25 20% 20%;
+    /* Gold highlight */
+    --accent: 38 50% 65%;
+    --accent-foreground: 20 10% 15%;
 
-    --destructive: 0 70% 60%;
+    --destructive: 0 65% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 35 20% 88%;
-    --input: 35 20% 88%;
-    --ring: 345 55% 75%;
+    --border: 30 10% 90%;
+    --input: 30 10% 90%;
+    --ring: 350 45% 65%;
 
-    --radius: 1rem;
+    --radius: 0.5rem;
 
-    /* Sidebar - admin panel */
-    --sidebar-background: 28 25% 97%;
-    --sidebar-foreground: 25 20% 20%;
-    --sidebar-primary: 345 55% 75%;
+    /* Sidebar */
+    --sidebar-background: 20 15% 97%;
+    --sidebar-foreground: 20 10% 15%;
+    --sidebar-primary: 350 45% 65%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 35 30% 92%;
-    --sidebar-accent-foreground: 25 20% 20%;
-    --sidebar-border: 35 20% 88%;
-    --sidebar-ring: 345 55% 75%;
+    --sidebar-accent: 30 15% 94%;
+    --sidebar-accent-foreground: 20 10% 15%;
+    --sidebar-border: 30 10% 90%;
+    --sidebar-ring: 350 45% 65%;
 
-    /* Luxurious design tokens */
-    --gradient-hero: linear-gradient(135deg, hsl(345 65% 92%) 0%, hsl(140 35% 85%) 100%);
-    --gradient-luxury: linear-gradient(to right, hsl(345 70% 85%), hsl(42 75% 72%));
-    --gradient-elegant: linear-gradient(180deg, hsl(345 65% 92%) 0%, hsl(35 30% 92%) 50%, hsl(140 35% 85%) 100%);
-    --shadow-soft: 0 8px 24px -4px hsl(345 55% 75% / 0.12);
-    --shadow-elegant: 0 16px 48px -12px hsl(345 55% 75% / 0.25);
-    --shadow-luxury: 0 20px 60px -15px hsl(345 55% 75% / 0.35);
-    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-luxury: all 0.5s cubic-bezier(0.2, 0, 0.1, 1);
+    /* Design tokens */
+    --shadow-soft: 0 2px 16px -2px hsl(20 10% 15% / 0.06);
+    --shadow-elegant: 0 8px 30px -8px hsl(20 10% 15% / 0.10);
+    --shadow-luxury: 0 20px 50px -12px hsl(20 10% 15% / 0.15);
   }
 
   .dark {
-    --background: 30 10% 12%;
-    --foreground: 35 20% 95%;
+    --background: 20 10% 8%;
+    --foreground: 30 10% 92%;
 
-    --card: 30 10% 15%;
-    --card-foreground: 35 20% 95%;
+    --card: 20 10% 11%;
+    --card-foreground: 30 10% 92%;
 
-    --popover: 30 10% 15%;
-    --popover-foreground: 35 20% 95%;
+    --popover: 20 10% 11%;
+    --popover-foreground: 30 10% 92%;
 
-    --primary: 350 60% 70%;
-    --primary-foreground: 35 20% 95%;
+    --primary: 350 50% 68%;
+    --primary-foreground: 30 10% 92%;
 
-    --secondary: 145 20% 50%;
-    --secondary-foreground: 35 20% 95%;
+    --secondary: 25 12% 45%;
+    --secondary-foreground: 30 10% 92%;
 
-    --muted: 30 10% 20%;
-    --muted-foreground: 35 10% 65%;
+    --muted: 20 8% 18%;
+    --muted-foreground: 30 8% 60%;
 
-    --accent: 45 70% 60%;
-    --accent-foreground: 35 20% 95%;
+    --accent: 38 45% 55%;
+    --accent-foreground: 30 10% 92%;
 
-    --destructive: 0 70% 50%;
-    --destructive-foreground: 35 20% 95%;
+    --destructive: 0 65% 50%;
+    --destructive-foreground: 30 10% 92%;
 
-    --border: 30 10% 25%;
-    --input: 30 10% 25%;
-    --ring: 350 60% 70%;
-    
-    --sidebar-background: 30 10% 12%;
-    --sidebar-foreground: 35 20% 95%;
-    --sidebar-primary: 350 60% 70%;
-    --sidebar-primary-foreground: 35 20% 95%;
-    --sidebar-accent: 30 10% 20%;
-    --sidebar-accent-foreground: 35 20% 95%;
-    --sidebar-border: 30 10% 25%;
-    --sidebar-ring: 350 60% 70%;
+    --border: 20 8% 20%;
+    --input: 20 8% 20%;
+    --ring: 350 50% 68%;
+
+    --sidebar-background: 20 10% 8%;
+    --sidebar-foreground: 30 10% 92%;
+    --sidebar-primary: 350 50% 68%;
+    --sidebar-primary-foreground: 30 10% 92%;
+    --sidebar-accent: 20 8% 18%;
+    --sidebar-accent-foreground: 30 10% 92%;
+    --sidebar-border: 20 8% 20%;
+    --sidebar-ring: 350 50% 68%;
   }
 }
 
@@ -114,7 +105,7 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-foreground font-sans antialiased;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -124,10 +115,10 @@ All colors MUST be HSL.
 
 @layer components {
   .hover-lift {
-    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg;
+    @apply transition-all duration-500 hover:-translate-y-0.5;
   }
 
   .text-gradient {
-    @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
   }
 }

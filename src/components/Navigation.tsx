@@ -1,11 +1,7 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ShoppingBag, User, Menu, Search, Heart, Globe } from "lucide-react";
-import {
-  NavigationMenu, NavigationMenuContent, NavigationMenuItem,
-  NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { ShoppingBag, User, Menu, Search, Heart, Globe, X } from "lucide-react";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -14,153 +10,187 @@ import { useLanguage, Language } from "@/contexts/LanguageContext";
 import CartDrawer from "@/components/CartDrawer";
 
 const langLabels: Record<Language, string> = {
-  en: "English",
-  ko: "한국어",
-  es: "Español",
-  de: "Deutsch",
+  en: "EN", ko: "KR", es: "ES", de: "DE",
 };
 
 const Navigation = () => {
   const { user, isAdmin } = useAuth();
   const { t, language, setLanguage } = useLanguage();
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  const categories = [
-    { to: "/products", label: t("nav_all_products"), desc: t("nav_all_products") },
-    { to: "/products?category=skincare", label: t("nav_skincare"), desc: t("nav_skincare_desc") },
-    { to: "/products?category=makeup", label: t("nav_makeup"), desc: t("nav_makeup_desc") },
-    { to: "/products?category=haircare", label: t("nav_haircare"), desc: t("nav_haircare_desc") },
-    { to: "/products?category=fragrance", label: t("nav_fragrance"), desc: t("nav_fragrance_desc") },
-    { to: "/products?category=bodycare", label: t("nav_bodycare"), desc: t("nav_bodycare_desc") },
-    { to: "/products?category=health", label: t("nav_health"), desc: t("nav_health_desc") },
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const navLinks = [
+    { to: "/", label: t("nav_home") },
+    { to: "/products", label: t("nav_products") },
+    { to: "/products?category=skincare", label: t("nav_skincare") },
+    { to: "/products?category=makeup", label: t("nav_makeup") },
+    { to: "/#about", label: t("nav_brand_story") },
+    { to: "/contact", label: t("nav_contact") },
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/95 backdrop-blur-md supports-[backdrop-filter]:bg-background/90 shadow-sm">
-      <div className="container flex h-16 items-center justify-between px-4 md:px-6 lg:px-8">
-        <Link to="/" className="flex items-center space-x-2 group">
-          <span className="text-xl md:text-2xl font-bold font-serif group-hover:text-primary transition-colors">
-            🌸 Bloom & Grace
-          </span>
-        </Link>
-
-        {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-6">
-          <Link to="/" className="text-sm font-medium transition-colors hover:text-primary">{t("nav_home")}</Link>
-          <NavigationMenu>
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger className="bg-transparent hover:bg-primary-soft/50">{t("nav_products")}</NavigationMenuTrigger>
-                <NavigationMenuContent className="bg-background/95 backdrop-blur-md">
-                  <ul className="grid w-[300px] gap-2 p-3">
-                    {categories.map(item => (
-                      <li key={item.to}>
-                        <NavigationMenuLink asChild>
-                          <Link to={item.to} className="block p-2 rounded-md hover:bg-primary-soft/50 transition-colors">
-                            <div className="text-sm font-medium">{item.label}</div>
-                            <p className="text-xs text-muted-foreground">{item.desc}</p>
-                          </Link>
-                        </NavigationMenuLink>
-                      </li>
-                    ))}
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
-          <Link to="/#about" className="text-sm font-medium transition-colors hover:text-primary">{t("nav_brand_story")}</Link>
-          <Link to="/qa" className="text-sm font-medium transition-colors hover:text-primary">{t("nav_qa")}</Link>
-          <Link to="/contact" className="text-sm font-medium transition-colors hover:text-primary">{t("nav_contact")}</Link>
-          {isAdmin && (
-            <Link to="/admin" className="text-sm font-medium transition-colors hover:text-primary text-primary">
-              {t("nav_admin")}
-            </Link>
-          )}
-        </nav>
-
-        {/* Icons */}
-        <div className="flex items-center gap-1">
-          {/* Language Switcher */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="hover:bg-primary-soft/50 hover:text-primary">
-                <Globe className="h-5 w-5" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="min-w-[140px]">
-              {(Object.keys(langLabels) as Language[]).map(lang => (
-                <DropdownMenuItem
-                  key={lang}
-                  onClick={() => setLanguage(lang)}
-                  className={language === lang ? "bg-primary/10 text-primary font-medium" : ""}
-                >
-                  {langLabels[lang]}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <Link to="/products">
-            <Button variant="ghost" size="icon" className="hover:bg-primary-soft/50 hover:text-primary">
-              <Search className="h-5 w-5" />
-            </Button>
-          </Link>
-          {user && (
-            <Link to="/mypage">
-              <Button variant="ghost" size="icon" className="hover:bg-primary-soft/50 hover:text-primary">
-                <Heart className="h-5 w-5" />
-              </Button>
-            </Link>
-          )}
-          <CartDrawer />
-          <Link to={user ? "/mypage" : "/auth"}>
-            <Button variant="ghost" size="icon" className="hover:bg-primary-soft/50 hover:text-primary">
-              <User className="h-5 w-5" />
-            </Button>
-          </Link>
-
-          {/* Mobile Menu */}
-          <Sheet>
-            <SheetTrigger asChild className="lg:hidden">
-              <Button variant="ghost" size="icon"><Menu className="h-5 w-5" /></Button>
-            </SheetTrigger>
-            <SheetContent className="w-[300px]">
-              <SheetHeader><SheetTitle className="font-serif text-2xl">🌸 {t("nav_menu")}</SheetTitle></SheetHeader>
-              <nav className="flex flex-col gap-3 mt-6">
-                <Link to="/" className="text-base font-medium py-2 hover:text-primary">{t("nav_home")}</Link>
-                <Link to="/products" className="text-base font-medium py-2 hover:text-primary">{t("nav_all_products")}</Link>
-                <Link to="/products?category=skincare" className="text-sm py-1 pl-4 hover:text-primary text-muted-foreground">{t("nav_skincare")}</Link>
-                <Link to="/products?category=makeup" className="text-sm py-1 pl-4 hover:text-primary text-muted-foreground">{t("nav_makeup")}</Link>
-                <Link to="/products?category=haircare" className="text-sm py-1 pl-4 hover:text-primary text-muted-foreground">{t("nav_haircare")}</Link>
-                <Link to="/products?category=fragrance" className="text-sm py-1 pl-4 hover:text-primary text-muted-foreground">{t("nav_fragrance")}</Link>
-                <Link to="/#about" className="text-base font-medium py-2 hover:text-primary">{t("nav_brand_story")}</Link>
-                <Link to="/qa" className="text-base font-medium py-2 hover:text-primary">{t("nav_qa")}</Link>
-                <Link to="/contact" className="text-base font-medium py-2 hover:text-primary">{t("nav_contact")}</Link>
-
-                {/* Mobile Language Switcher */}
-                <div className="border-t pt-3 mt-2">
-                  <p className="text-xs text-muted-foreground mb-2 uppercase tracking-wider">Language</p>
-                  <div className="flex flex-wrap gap-2">
-                    {(Object.keys(langLabels) as Language[]).map(lang => (
-                      <Button key={lang} variant={language === lang ? "default" : "outline"} size="sm"
-                        onClick={() => setLanguage(lang)}>
-                        {langLabels[lang]}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-
-                {user ? (
-                  <Link to="/mypage" className="text-base font-medium py-2 hover:text-primary">{t("nav_mypage")}</Link>
-                ) : (
-                  <Link to="/auth" className="text-base font-medium py-2 hover:text-primary">{t("nav_login")}</Link>
-                )}
-                {isAdmin && <Link to="/admin" className="text-base font-medium py-2 text-primary">{t("nav_admin")}</Link>}
-              </nav>
-            </SheetContent>
-          </Sheet>
-        </div>
+    <>
+      {/* Announcement bar */}
+      <div className="bg-foreground text-background text-xs text-center py-2 font-sans tracking-wider">
+        {t("hero_tagline")}
       </div>
-    </header>
+
+      <header
+        className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+          scrolled
+            ? "bg-background/98 backdrop-blur-md shadow-soft"
+            : "bg-background"
+        }`}
+      >
+        <div className="container flex h-16 md:h-20 items-center justify-between px-4 md:px-6 lg:px-8">
+          {/* Mobile menu toggle */}
+          <button
+            className="lg:hidden p-2 -ml-2"
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+
+          {/* Logo */}
+          <Link to="/" className="flex items-center">
+            <span className="text-xl md:text-2xl font-serif font-semibold tracking-wider uppercase">
+              BLOOM & GRACE
+            </span>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center gap-8">
+            {navLinks.map(link => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="text-xs font-sans font-medium tracking-[0.15em] uppercase text-foreground/70 hover:text-foreground transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className="text-xs font-sans font-medium tracking-[0.15em] uppercase text-primary hover:text-primary/80 transition-colors"
+              >
+                {t("nav_admin")}
+              </Link>
+            )}
+          </nav>
+
+          {/* Icons */}
+          <div className="flex items-center gap-0.5">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-9 w-9 text-foreground/60 hover:text-foreground">
+                  <Globe className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="min-w-[100px]">
+                {(Object.keys(langLabels) as Language[]).map(lang => (
+                  <DropdownMenuItem
+                    key={lang}
+                    onClick={() => setLanguage(lang)}
+                    className={`text-xs tracking-wider ${language === lang ? "font-semibold text-primary" : ""}`}
+                  >
+                    {langLabels[lang]}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <Link to="/products">
+              <Button variant="ghost" size="icon" className="h-9 w-9 text-foreground/60 hover:text-foreground">
+                <Search className="h-4 w-4" />
+              </Button>
+            </Link>
+            {user && (
+              <Link to="/mypage">
+                <Button variant="ghost" size="icon" className="h-9 w-9 text-foreground/60 hover:text-foreground">
+                  <Heart className="h-4 w-4" />
+                </Button>
+              </Link>
+            )}
+            <CartDrawer />
+            <Link to={user ? "/mypage" : "/auth"}>
+              <Button variant="ghost" size="icon" className="h-9 w-9 text-foreground/60 hover:text-foreground">
+                <User className="h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+
+        {/* Subtle bottom border */}
+        <div className="h-px bg-border" />
+      </header>
+
+      {/* Mobile slide-out menu */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-[60] lg:hidden">
+          <div className="absolute inset-0 bg-foreground/20" onClick={() => setMobileOpen(false)} />
+          <div className="absolute left-0 top-0 h-full w-[280px] bg-background shadow-luxury p-8 animate-slide-in">
+            <div className="mb-10">
+              <span className="text-lg font-serif font-semibold tracking-wider uppercase">BLOOM & GRACE</span>
+            </div>
+            <nav className="flex flex-col gap-1">
+              {navLinks.map(link => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className="text-sm font-sans tracking-wider uppercase py-3 border-b border-border/50 text-foreground/70 hover:text-foreground transition-colors"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              <Link
+                to="/qa"
+                className="text-sm font-sans tracking-wider uppercase py-3 border-b border-border/50 text-foreground/70 hover:text-foreground transition-colors"
+                onClick={() => setMobileOpen(false)}
+              >
+                {t("nav_qa")}
+              </Link>
+              {user ? (
+                <Link to="/mypage" className="text-sm font-sans tracking-wider uppercase py-3 border-b border-border/50 text-foreground/70 hover:text-foreground" onClick={() => setMobileOpen(false)}>
+                  {t("nav_mypage")}
+                </Link>
+              ) : (
+                <Link to="/auth" className="text-sm font-sans tracking-wider uppercase py-3 border-b border-border/50 text-foreground/70 hover:text-foreground" onClick={() => setMobileOpen(false)}>
+                  {t("nav_login")}
+                </Link>
+              )}
+              {isAdmin && (
+                <Link to="/admin" className="text-sm font-sans tracking-wider uppercase py-3 border-b border-border/50 text-primary" onClick={() => setMobileOpen(false)}>
+                  {t("nav_admin")}
+                </Link>
+              )}
+
+              {/* Language */}
+              <div className="pt-6 flex gap-3">
+                {(Object.keys(langLabels) as Language[]).map(lang => (
+                  <button
+                    key={lang}
+                    onClick={() => { setLanguage(lang); setMobileOpen(false); }}
+                    className={`text-xs tracking-wider uppercase px-3 py-1.5 border transition-colors ${
+                      language === lang ? "border-foreground text-foreground" : "border-border text-muted-foreground"
+                    }`}
+                  >
+                    {langLabels[lang]}
+                  </button>
+                ))}
+              </div>
+            </nav>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
