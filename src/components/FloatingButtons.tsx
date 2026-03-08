@@ -135,13 +135,13 @@ const FloatingButtons = () => {
           <HoverCardContent side="left" sideOffset={8} className="w-72 bg-background/95 backdrop-blur-md border-border/30 shadow-luxury p-5">
             <div className="space-y-3">
               <div>
-                <p className="text-sm font-serif font-semibold">Personalized Beauty</p>
-                <p className="text-[9px] text-muted-foreground tracking-[0.15em] uppercase mt-0.5">Personalize Your Routine</p>
+                <p className="text-base font-serif font-semibold">Personalized Beauty</p>
+                <p className="text-xs text-foreground/70 tracking-[0.12em] uppercase mt-0.5 font-medium">Personalize Your Routine</p>
               </div>
-              <p className="text-[11px] text-muted-foreground leading-relaxed">{bt.hover}</p>
+              <p className="text-sm text-foreground/75 leading-relaxed">{bt.hover}</p>
               <div className="flex gap-2">
                 {["Skin", "Body", "Hair"].map(cat => (
-                  <span key={cat} className="text-[9px] px-2.5 py-1 bg-muted text-foreground/70 border border-border/40 tracking-[0.1em] uppercase">{cat}</span>
+                  <span key={cat} className="text-xs px-2.5 py-1 bg-muted text-foreground/80 border border-border/40 tracking-[0.08em] uppercase font-medium">{cat}</span>
                 ))}
               </div>
             </div>
