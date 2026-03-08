@@ -587,7 +587,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
           {/* Routine Order */}
           {result.routineOrder && result.routineOrder.length > 0 && (
             <div className="space-y-4">
-              <p className="text-[10px] font-sans tracking-[0.25em] uppercase text-primary font-medium">{ct.routine}</p>
+              <p className="text-xs font-sans tracking-[0.18em] uppercase text-primary font-semibold">{ct.routine}</p>
               <div className="space-y-2">
                 {result.routineOrder.map((s: string, i: number) => (
                   <div key={i} className="flex items-start gap-4 p-3 bg-muted/30">
