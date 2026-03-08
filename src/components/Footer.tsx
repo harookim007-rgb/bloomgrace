@@ -10,10 +10,10 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-8">
           <div className="space-y-5 lg:col-span-1">
             <h3 className="text-lg font-serif font-semibold tracking-wider uppercase">BLOOM & GRACE</h3>
-            <p className="text-sm text-muted-foreground font-light leading-relaxed">{t("footer_desc")}</p>
+            <p className="text-base text-foreground/75 font-normal leading-relaxed">{t("footer_desc")}</p>
             <div className="flex gap-4 pt-2">
               {["Instagram", "Facebook", "YouTube"].map(name => (
-                <a key={name} href="#" className="text-xs font-sans tracking-wider uppercase text-muted-foreground hover:text-foreground transition-colors">
+                <a key={name} href="#" className="text-sm font-sans font-medium tracking-wide uppercase text-foreground/70 hover:text-foreground transition-colors">
                   {name}
                 </a>
               ))}

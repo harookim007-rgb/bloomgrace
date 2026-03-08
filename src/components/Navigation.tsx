@@ -160,7 +160,7 @@ const Navigation = () => {
                 {t("nav_qa")}
               </Link>
               {user ? (
-                <Link to="/mypage" className="text-sm font-sans tracking-[0.1em] uppercase py-3.5 border-b border-border/40 text-foreground/60 hover:text-primary" onClick={() => setMobileOpen(false)}>
+                <Link to="/mypage" className="text-base font-sans font-medium tracking-[0.06em] uppercase py-3.5 border-b border-border/40 text-foreground/85 hover:text-primary" onClick={() => setMobileOpen(false)}>
                   {t("nav_mypage")}
                 </Link>
               ) : (
