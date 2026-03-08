@@ -708,7 +708,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
     <section className="py-20 md:py-28 px-4 md:px-6 lg:px-8 bg-muted/20">
       <div className="container max-w-5xl">
         <div className="text-center space-y-3 mb-14">
-          <p className="text-[11px] font-sans font-medium tracking-[0.3em] uppercase text-primary">{ct.sectionSubtitle}</p>
+          <p className="text-[11px] font-sans font-medium tracking-[0.3em] uppercase text-primary">Personalize Your Routine</p>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-light">{ct.sectionTitle}</h2>
           <p className="text-sm text-muted-foreground max-w-md mx-auto">{ct.sectionDesc}</p>
         </div>
