@@ -675,7 +675,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
   if (mode === "modal") {
     return (
       <Dialog open={showModal} onOpenChange={setShowModal}>
-        <DialogContent className="sm:max-w-[720px] md:max-w-[800px] p-0 gap-0 rounded-none border-none overflow-hidden shadow-luxury [&>button]:hidden">
+        <DialogContent className="sm:max-w-[720px] md:max-w-[800px] p-0 gap-0 rounded-none border border-primary/15 overflow-hidden shadow-luxury [&>button]:hidden bg-background">
           {/* Header */}
           <div className="relative px-8 md:px-12 pt-12 pb-8 bg-gradient-to-b from-primary/8 to-transparent">
             <button
