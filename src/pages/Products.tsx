@@ -1,187 +1,143 @@
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import ProductCard from "@/components/ProductCard";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import lipstickImg from "@/assets/product-lipstick.jpg";
-import creamImg from "@/assets/product-cream.jpg";
-import perfumeImg from "@/assets/product-perfume.jpg";
-import brushesImg from "@/assets/product-brushes.jpg";
-
-const allProducts = [
-  {
-    id: 1,
-    name: "Rose Velvet Lipstick",
-    price: "$28",
-    image: lipstickImg,
-    description: "Silky smooth formula with natural rose extract",
-    category: "makeup"
-  },
-  {
-    id: 2,
-    name: "Botanical Face Cream",
-    price: "$45",
-    image: creamImg,
-    description: "Nourishing cream with eucalyptus & shea butter",
-    category: "skincare"
-  },
-  {
-    id: 3,
-    name: "Fleur d'Élégance",
-    price: "$65",
-    image: perfumeImg,
-    description: "Signature fragrance with floral notes",
-    category: "fragrance"
-  },
-  {
-    id: 4,
-    name: "Luxury Brush Set",
-    price: "$52",
-    image: brushesImg,
-    description: "Professional rose-gold brushes",
-    category: "tools"
-  },
-  {
-    id: 5,
-    name: "Autumn Glow Serum",
-    price: "$58",
-    image: creamImg,
-    description: "Vitamin C infused brightening serum",
-    category: "skincare"
-  },
-  {
-    id: 6,
-    name: "Pink Pearl Highlighter",
-    price: "$32",
-    image: lipstickImg,
-    description: "Luminous pearl finish highlighter",
-    category: "makeup"
-  },
-  {
-    id: 7,
-    name: "Green Tea Mist",
-    price: "$25",
-    image: creamImg,
-    description: "Refreshing Korean green tea facial mist",
-    category: "skincare"
-  },
-  {
-    id: 8,
-    name: "Velvet Blush Duo",
-    price: "$36",
-    image: lipstickImg,
-    description: "Soft matte blush in autumn shades",
-    category: "makeup"
-  },
-];
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Search } from "lucide-react";
 
 const Products = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [products, setProducts] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [search, setSearch] = useState(searchParams.get("q") || "");
+  const [category, setCategory] = useState(searchParams.get("category") || "all");
+  const [sort, setSort] = useState("popular");
+  const [priceRange, setPriceRange] = useState("all");
+
+  useEffect(() => {
+    supabase.from("categories").select("*").order("sort_order").then(({ data }) => setCategories(data || []));
+  }, []);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setIsLoading(true);
+      let query = supabase.from("products").select("*").eq("is_active", true);
+
+      if (category !== "all") {
+        const cat = categories.find(c => c.slug === category);
+        if (cat) query = query.eq("category_id", cat.id);
+      }
+
+      if (search) query = query.ilike("name", `%${search}%`);
+
+      if (priceRange === "under20000") query = query.lt("price", 20000);
+      else if (priceRange === "20000-50000") query = query.gte("price", 20000).lte("price", 50000);
+      else if (priceRange === "over50000") query = query.gt("price", 50000);
+
+      if (sort === "popular") query = query.order("review_count", { ascending: false });
+      else if (sort === "newest") query = query.order("created_at", { ascending: false });
+      else if (sort === "price-low") query = query.order("price", { ascending: true });
+      else if (sort === "price-high") query = query.order("price", { ascending: false });
+      else if (sort === "rating") query = query.order("rating", { ascending: false });
+
+      const { data } = await query;
+      setProducts(data || []);
+      setIsLoading(false);
+    };
+    fetchProducts();
+  }, [category, search, sort, priceRange, categories]);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSearchParams(prev => { prev.set("q", search); return prev; });
+  };
+
   return (
     <div className="min-h-screen">
       <Navigation />
-      
-      <section className="py-16 px-4 md:px-6 lg:px-8 bg-gradient-to-b from-primary-soft/20 to-background">
+      <section className="py-8 px-4 md:px-6 lg:px-8">
         <div className="container">
-          <div className="text-center max-w-3xl mx-auto mb-12 space-y-6">
-            <div className="inline-block">
-              <span className="text-sm font-medium tracking-[0.3em] uppercase text-muted-foreground/70 mb-3 block">
-                전체 컬렉션
-              </span>
-              <div className="w-16 h-0.5 bg-gradient-to-r from-primary via-accent to-secondary mx-auto" />
-            </div>
-            <h1 className="text-5xl md:text-6xl font-bold">All Products</h1>
-            <p className="text-lg text-muted-foreground">
-              한국의 아름다움을 담은 프리미엄 화장품 컬렉션
-            </p>
+          <div className="text-center mb-8">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">전체 상품</h1>
+            <p className="text-muted-foreground">프리미엄 한국 화장품 컬렉션</p>
           </div>
 
-          <Tabs defaultValue="all" className="w-full">
-            <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-5 mb-12 h-auto p-1 bg-muted/50">
-              <TabsTrigger value="all" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                All
-              </TabsTrigger>
-              <TabsTrigger value="skincare" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                Skincare
-              </TabsTrigger>
-              <TabsTrigger value="makeup" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                Makeup
-              </TabsTrigger>
-              <TabsTrigger value="fragrance" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                Fragrance
-              </TabsTrigger>
-              <TabsTrigger value="tools" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                Tools
-              </TabsTrigger>
-            </TabsList>
+          {/* Filters */}
+          <div className="flex flex-col md:flex-row gap-4 mb-8">
+            <form onSubmit={handleSearch} className="flex gap-2 flex-1 max-w-md">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input placeholder="상품 검색..." className="pl-10" value={search}
+                  onChange={e => setSearch(e.target.value)} />
+              </div>
+              <Button type="submit" variant="outline">검색</Button>
+            </form>
+            <div className="flex gap-2 flex-wrap">
+              <Select value={category} onValueChange={setCategory}>
+                <SelectTrigger className="w-[140px]"><SelectValue placeholder="카테고리" /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">전체</SelectItem>
+                  {categories.map(c => <SelectItem key={c.id} value={c.slug}>{c.name}</SelectItem>)}
+                </SelectContent>
+              </Select>
+              <Select value={sort} onValueChange={setSort}>
+                <SelectTrigger className="w-[130px]"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="popular">인기순</SelectItem>
+                  <SelectItem value="newest">최신순</SelectItem>
+                  <SelectItem value="price-low">가격 낮은순</SelectItem>
+                  <SelectItem value="price-high">가격 높은순</SelectItem>
+                  <SelectItem value="rating">평점순</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select value={priceRange} onValueChange={setPriceRange}>
+                <SelectTrigger className="w-[150px]"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">전체 가격</SelectItem>
+                  <SelectItem value="under20000">2만원 미만</SelectItem>
+                  <SelectItem value="20000-50000">2만원~5만원</SelectItem>
+                  <SelectItem value="over50000">5만원 이상</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
 
-            <TabsContent value="all" className="mt-0">
-              <ProductGrid products={allProducts} />
-            </TabsContent>
-            
-            <TabsContent value="skincare">
-              <ProductGrid products={allProducts.filter(p => p.category === "skincare")} />
-            </TabsContent>
-            
-            <TabsContent value="makeup">
-              <ProductGrid products={allProducts.filter(p => p.category === "makeup")} />
-            </TabsContent>
-            
-            <TabsContent value="fragrance">
-              <ProductGrid products={allProducts.filter(p => p.category === "fragrance")} />
-            </TabsContent>
-            
-            <TabsContent value="tools">
-              <ProductGrid products={allProducts.filter(p => p.category === "tools")} />
-            </TabsContent>
-          </Tabs>
+          {/* Category tabs */}
+          <div className="flex gap-2 overflow-x-auto pb-4 mb-6">
+            <Button variant={category === "all" ? "default" : "outline"} size="sm" onClick={() => setCategory("all")}>
+              전체
+            </Button>
+            {categories.map(c => (
+              <Button key={c.id} variant={category === c.slug ? "default" : "outline"} size="sm"
+                onClick={() => setCategory(c.slug)} className="whitespace-nowrap">
+                {c.name}
+              </Button>
+            ))}
+          </div>
+
+          {isLoading ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+              {[...Array(8)].map((_, i) => (
+                <div key={i} className="aspect-square rounded-lg bg-muted animate-pulse" />
+              ))}
+            </div>
+          ) : products.length === 0 ? (
+            <div className="text-center py-16 text-muted-foreground">검색 결과가 없습니다.</div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+              {products.map(product => <ProductCard key={product.id} product={product} />)}
+            </div>
+          )}
         </div>
       </section>
-      
       <Footer />
     </div>
   );
 };
-
-const ProductGrid = ({ products }: { products: typeof allProducts }) => (
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-    {products.map((product, index) => (
-      <Card 
-        key={product.id}
-        className="border border-border/50 hover-lift overflow-hidden group bg-card/80 backdrop-blur-sm shadow-soft hover:shadow-elegant transition-all duration-500"
-        style={{ animationDelay: `${index * 50}ms` }}
-      >
-        <CardHeader className="p-0 relative">
-          <div className="aspect-square overflow-hidden bg-muted/50">
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          </div>
-        </CardHeader>
-        <CardContent className="p-6 space-y-3">
-          <CardTitle className="text-xl font-semibold group-hover:text-primary transition-colors duration-300">
-            {product.name}
-          </CardTitle>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            {product.description}
-          </p>
-          <div className="flex items-baseline gap-2 pt-2">
-            <p className="text-2xl font-bold text-foreground">{product.price}</p>
-            <span className="text-xs text-muted-foreground">USD</span>
-          </div>
-        </CardContent>
-        <CardFooter className="p-6 pt-0">
-          <Button 
-            className="w-full bg-primary hover:bg-primary-glow text-primary-foreground shadow-soft hover:shadow-elegant transition-all duration-500 font-medium"
-          >
-            장바구니 담기
-          </Button>
-        </CardFooter>
-      </Card>
-    ))}
-  </div>
-);
 
 export default Products;
