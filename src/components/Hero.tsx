@@ -127,7 +127,7 @@ const Hero = () => {
             )}
             <div className="flex flex-wrap gap-3 pt-2">
               <Link to="/products">
-                <button className="bg-primary text-primary-foreground px-8 py-3.5 text-[11px] font-sans font-medium tracking-[0.2em] uppercase hover:bg-primary/90 transition-colors duration-300 flex items-center gap-2">
+                <button className="bg-primary-soft text-foreground px-8 py-3.5 text-[11px] font-sans font-medium tracking-[0.2em] uppercase hover:bg-primary/15 transition-colors duration-300 flex items-center gap-2 border border-primary/20">
                   {t("hero_shop")} <ArrowRight className="h-3.5 w-3.5" />
                 </button>
               </Link>
