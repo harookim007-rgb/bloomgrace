@@ -21,8 +21,8 @@ const Footer = () => {
           </div>
 
           <div className="space-y-4">
-            <h4 className="text-xs font-sans font-medium tracking-[0.2em] uppercase">{t("footer_products")}</h4>
-            <ul className="space-y-3 text-sm text-muted-foreground font-light">
+            <h4 className="text-sm font-sans font-semibold tracking-[0.14em] uppercase">{t("footer_products")}</h4>
+            <ul className="space-y-3 text-base text-foreground/75 font-normal">
               <li><Link to="/products" className="hover:text-foreground transition-colors">{t("nav_all_products")}</Link></li>
               <li><Link to="/products?category=skincare" className="hover:text-foreground transition-colors">{t("nav_skincare")}</Link></li>
               <li><Link to="/products?category=makeup" className="hover:text-foreground transition-colors">{t("nav_makeup")}</Link></li>
