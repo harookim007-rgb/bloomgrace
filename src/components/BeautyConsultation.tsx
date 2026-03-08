@@ -648,7 +648,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
           {/* Tips */}
           {result.generalTips && result.generalTips.length > 0 && (
             <div className="space-y-3">
-              <p className="text-[10px] font-sans tracking-[0.25em] uppercase text-primary font-medium">{ct.tips}</p>
+              <p className="text-xs font-sans tracking-[0.18em] uppercase text-primary font-semibold">{ct.tips}</p>
               <div className="space-y-2">
                 {result.generalTips.map((tip: string, i: number) => (
                   <div key={i} className="flex items-start gap-3 text-xs text-foreground/70 leading-relaxed">
