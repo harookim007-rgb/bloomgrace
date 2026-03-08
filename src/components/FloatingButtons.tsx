@@ -208,7 +208,7 @@ const FloatingButtons = () => {
                   onKeyDown={(e) => e.key === "Enter" && handleSend()}
                   className="flex-1 text-xs px-3 py-2.5 border border-border/40 bg-transparent focus:outline-none focus:border-primary/40 placeholder:text-muted-foreground/40" />
                 <button onClick={handleSend} disabled={sending || !message.trim()}
-                  className="px-3 py-2.5 bg-primary text-primary-foreground disabled:opacity-40 hover:bg-primary/90 transition-colors">
+                  className="px-3 py-2.5 bg-foreground text-background disabled:opacity-40 hover:bg-foreground/90 transition-colors">
                   <Send className="h-3.5 w-3.5" />
                 </button>
               </div>
