@@ -70,7 +70,7 @@ const Navigation = () => {
               <Link
                 key={link.to}
                 to={link.to}
-                className="text-[11px] font-sans font-medium tracking-[0.15em] uppercase text-foreground/60 hover:text-primary transition-colors"
+                className="text-[13px] font-sans font-semibold tracking-[0.08em] uppercase text-foreground/85 hover:text-primary transition-colors"
               >
                 {link.label}
               </Link>
