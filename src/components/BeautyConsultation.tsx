@@ -197,7 +197,7 @@ const cTexts: Record<string, Record<string, string>> = {
     modalTitle: "AI-Powered Recommendations",
     modalSubtitle: "Our AI beauty advisor will recommend products perfectly matched to your unique needs",
     sectionTitle: "Personalized Beauty",
-    sectionSubtitle: "AI-Powered Consultation",
+    sectionSubtitle: "AI-Powered Recommendations",
     sectionDesc: "Discover products perfectly matched to your unique skin, body, and hair needs",
     step1: "Choose Your Type",
     step1Sub: "Select a category to get AI-powered product recommendations",
