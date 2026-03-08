@@ -42,7 +42,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           />
         </Link>
         {discount > 0 && (
-          <span className="absolute top-3 left-3 bg-foreground text-background text-[10px] font-sans font-medium tracking-wider px-2.5 py-1">
+          <span className="absolute top-3 left-3 bg-primary/90 text-primary-foreground text-[10px] font-sans font-medium tracking-wider px-2.5 py-1">
             -{discount}%
           </span>
         )}
