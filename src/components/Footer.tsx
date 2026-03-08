@@ -1,16 +1,19 @@
 import { Link } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Footer = () => {
+  const { t } = useLanguage();
+
   return (
-    <footer className="border-t border-border/50 bg-gradient-to-b from-background to-muted/30">
-      <div className="container px-4 md:px-6 lg:px-8 py-16">
+    <footer className="border-t border-border/50 bg-gradient-to-b from-background to-muted/30 relative overflow-hidden">
+      {/* Floral accent */}
+      <div className="absolute top-0 right-0 text-primary/5 text-[8rem] select-none pointer-events-none font-serif translate-x-1/4 -translate-y-1/4">✿</div>
+
+      <div className="container px-4 md:px-6 lg:px-8 py-16 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           <div className="space-y-4">
-            <h3 className="text-xl font-bold font-serif">Bloom & Grace</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              한국의 아름다움을 담은 프리미엄 화장품 브랜드. 
-              자연에서 온 귀한 성분으로 당신의 우아함을 완성합니다.
-            </p>
+            <h3 className="text-xl font-bold font-serif">🌸 Bloom & Grace</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">{t("footer_desc")}</p>
             <div className="flex gap-2 pt-2">
               <a href="#" className="w-9 h-9 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-all">
                 <span className="sr-only">Instagram</span>
@@ -28,43 +31,43 @@ const Footer = () => {
           </div>
           
           <div className="space-y-4">
-            <h4 className="text-sm font-bold uppercase tracking-wider">제품</h4>
+            <h4 className="text-sm font-bold uppercase tracking-wider">{t("footer_products")}</h4>
             <ul className="space-y-3 text-sm text-muted-foreground">
-              <li><Link to="/products" className="hover:text-primary transition-colors">전체 제품</Link></li>
-              <li><Link to="/products?category=skincare" className="hover:text-primary transition-colors">스킨케어</Link></li>
-              <li><Link to="/products?category=makeup" className="hover:text-primary transition-colors">메이크업</Link></li>
-              <li><Link to="/products?category=new" className="hover:text-primary transition-colors">신제품</Link></li>
-              <li><Link to="/products?category=bestseller" className="hover:text-primary transition-colors">베스트셀러</Link></li>
+              <li><Link to="/products" className="hover:text-primary transition-colors">{t("nav_all_products")}</Link></li>
+              <li><Link to="/products?category=skincare" className="hover:text-primary transition-colors">{t("nav_skincare")}</Link></li>
+              <li><Link to="/products?category=makeup" className="hover:text-primary transition-colors">{t("nav_makeup")}</Link></li>
+              <li><Link to="/products?category=new" className="hover:text-primary transition-colors">{t("footer_new")}</Link></li>
+              <li><Link to="/products?category=bestseller" className="hover:text-primary transition-colors">{t("footer_bestseller")}</Link></li>
             </ul>
           </div>
           
           <div className="space-y-4">
-            <h4 className="text-sm font-bold uppercase tracking-wider">브랜드</h4>
+            <h4 className="text-sm font-bold uppercase tracking-wider">{t("footer_brand")}</h4>
             <ul className="space-y-3 text-sm text-muted-foreground">
-              <li><Link to="/#about" className="hover:text-primary transition-colors">브랜드 스토리</Link></li>
-              <li><Link to="/contact" className="hover:text-primary transition-colors">매장 안내</Link></li>
-              <li><a href="#" className="hover:text-primary transition-colors">지속가능성</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">성분 이야기</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">채용 정보</a></li>
+              <li><Link to="/#about" className="hover:text-primary transition-colors">{t("nav_brand_story")}</Link></li>
+              <li><Link to="/contact" className="hover:text-primary transition-colors">{t("footer_store")}</Link></li>
+              <li><a href="#" className="hover:text-primary transition-colors">{t("footer_sustainability")}</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">{t("footer_ingredients")}</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">{t("footer_careers")}</a></li>
             </ul>
           </div>
           
           <div className="space-y-4">
-            <h4 className="text-sm font-bold uppercase tracking-wider">고객지원</h4>
+            <h4 className="text-sm font-bold uppercase tracking-wider">{t("footer_support")}</h4>
             <ul className="space-y-3 text-sm text-muted-foreground">
-              <li><Link to="/contact" className="hover:text-primary transition-colors">문의하기</Link></li>
-              <li><Link to="/qa" className="hover:text-primary transition-colors">자주 묻는 질문</Link></li>
-              <li><a href="#" className="hover:text-primary transition-colors">배송 안내</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">교환/반품</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">이용약관</a></li>
+              <li><Link to="/contact" className="hover:text-primary transition-colors">{t("nav_contact")}</Link></li>
+              <li><Link to="/qa" className="hover:text-primary transition-colors">{t("footer_faq")}</Link></li>
+              <li><a href="#" className="hover:text-primary transition-colors">{t("footer_shipping")}</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">{t("footer_returns")}</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">{t("footer_terms")}</a></li>
             </ul>
           </div>
         </div>
         
         <div className="mt-16 pt-8 border-t border-border/50">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-            <p>&copy; 2024 Bloom & Grace. All rights reserved.</p>
-            <p>고객센터: 1588-1234 | 이메일: contact@bloomandgrace.com</p>
+            <p>&copy; 2024 Bloom & Grace. {t("footer_rights")}</p>
+            <p>{t("footer_cs")}</p>
           </div>
         </div>
       </div>
