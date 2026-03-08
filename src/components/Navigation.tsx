@@ -10,7 +10,7 @@ import { useLanguage, Language } from "@/contexts/LanguageContext";
 import CartDrawer from "@/components/CartDrawer";
 
 const langLabels: Record<Language, string> = {
-  en: "EN", ko: "KR", es: "ES", de: "DE",
+  en: "English", ko: "한국어", es: "Español", de: "Deutsch",
 };
 
 const Navigation = () => {
@@ -37,7 +37,7 @@ const Navigation = () => {
   return (
     <>
       {/* Announcement bar */}
-      <div className="bg-foreground text-background text-xs text-center py-2 font-sans tracking-wider">
+      <div className="bg-foreground text-background text-[11px] text-center py-2 font-sans tracking-[0.15em]">
         {t("hero_tagline")}
       </div>
 
@@ -59,7 +59,7 @@ const Navigation = () => {
 
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <span className="text-xl md:text-2xl font-serif font-semibold tracking-wider uppercase">
+            <span className="text-xl md:text-2xl font-serif font-semibold tracking-[0.15em] uppercase">
               BLOOM & GRACE
             </span>
           </Link>
@@ -70,7 +70,7 @@ const Navigation = () => {
               <Link
                 key={link.to}
                 to={link.to}
-                className="text-xs font-sans font-medium tracking-[0.15em] uppercase text-foreground/70 hover:text-foreground transition-colors"
+                className="text-[11px] font-sans font-medium tracking-[0.15em] uppercase text-foreground/60 hover:text-foreground transition-colors"
               >
                 {link.label}
               </Link>
@@ -78,7 +78,7 @@ const Navigation = () => {
             {isAdmin && (
               <Link
                 to="/admin"
-                className="text-xs font-sans font-medium tracking-[0.15em] uppercase text-primary hover:text-primary/80 transition-colors"
+                className="text-[11px] font-sans font-medium tracking-[0.15em] uppercase text-primary hover:text-primary/80 transition-colors"
               >
                 {t("nav_admin")}
               </Link>
@@ -87,13 +87,14 @@ const Navigation = () => {
 
           {/* Icons */}
           <div className="flex items-center gap-0.5">
+            {/* Language Switcher */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-9 w-9 text-foreground/60 hover:text-foreground">
+                <Button variant="ghost" size="icon" className="h-9 w-9 text-foreground/50 hover:text-foreground">
                   <Globe className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="min-w-[100px]">
+              <DropdownMenuContent align="end" className="min-w-[140px]">
                 {(Object.keys(langLabels) as Language[]).map(lang => (
                   <DropdownMenuItem
                     key={lang}
@@ -107,44 +108,43 @@ const Navigation = () => {
             </DropdownMenu>
 
             <Link to="/products">
-              <Button variant="ghost" size="icon" className="h-9 w-9 text-foreground/60 hover:text-foreground">
+              <Button variant="ghost" size="icon" className="h-9 w-9 text-foreground/50 hover:text-foreground">
                 <Search className="h-4 w-4" />
               </Button>
             </Link>
             {user && (
               <Link to="/mypage">
-                <Button variant="ghost" size="icon" className="h-9 w-9 text-foreground/60 hover:text-foreground">
+                <Button variant="ghost" size="icon" className="h-9 w-9 text-foreground/50 hover:text-foreground">
                   <Heart className="h-4 w-4" />
                 </Button>
               </Link>
             )}
             <CartDrawer />
             <Link to={user ? "/mypage" : "/auth"}>
-              <Button variant="ghost" size="icon" className="h-9 w-9 text-foreground/60 hover:text-foreground">
+              <Button variant="ghost" size="icon" className="h-9 w-9 text-foreground/50 hover:text-foreground">
                 <User className="h-4 w-4" />
               </Button>
             </Link>
           </div>
         </div>
 
-        {/* Subtle bottom border */}
         <div className="h-px bg-border" />
       </header>
 
       {/* Mobile slide-out menu */}
       {mobileOpen && (
         <div className="fixed inset-0 z-[60] lg:hidden">
-          <div className="absolute inset-0 bg-foreground/20" onClick={() => setMobileOpen(false)} />
-          <div className="absolute left-0 top-0 h-full w-[280px] bg-background shadow-luxury p-8 animate-slide-in">
+          <div className="absolute inset-0 bg-foreground/20 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
+          <div className="absolute left-0 top-0 h-full w-[300px] bg-background shadow-luxury p-8 animate-slide-in">
             <div className="mb-10">
-              <span className="text-lg font-serif font-semibold tracking-wider uppercase">BLOOM & GRACE</span>
+              <span className="text-lg font-serif font-semibold tracking-[0.15em] uppercase">BLOOM & GRACE</span>
             </div>
-            <nav className="flex flex-col gap-1">
+            <nav className="flex flex-col gap-0">
               {navLinks.map(link => (
                 <Link
                   key={link.to}
                   to={link.to}
-                  className="text-sm font-sans tracking-wider uppercase py-3 border-b border-border/50 text-foreground/70 hover:text-foreground transition-colors"
+                  className="text-sm font-sans tracking-[0.1em] uppercase py-3.5 border-b border-border/40 text-foreground/60 hover:text-foreground transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
                   {link.label}
@@ -152,39 +152,42 @@ const Navigation = () => {
               ))}
               <Link
                 to="/qa"
-                className="text-sm font-sans tracking-wider uppercase py-3 border-b border-border/50 text-foreground/70 hover:text-foreground transition-colors"
+                className="text-sm font-sans tracking-[0.1em] uppercase py-3.5 border-b border-border/40 text-foreground/60 hover:text-foreground transition-colors"
                 onClick={() => setMobileOpen(false)}
               >
                 {t("nav_qa")}
               </Link>
               {user ? (
-                <Link to="/mypage" className="text-sm font-sans tracking-wider uppercase py-3 border-b border-border/50 text-foreground/70 hover:text-foreground" onClick={() => setMobileOpen(false)}>
+                <Link to="/mypage" className="text-sm font-sans tracking-[0.1em] uppercase py-3.5 border-b border-border/40 text-foreground/60 hover:text-foreground" onClick={() => setMobileOpen(false)}>
                   {t("nav_mypage")}
                 </Link>
               ) : (
-                <Link to="/auth" className="text-sm font-sans tracking-wider uppercase py-3 border-b border-border/50 text-foreground/70 hover:text-foreground" onClick={() => setMobileOpen(false)}>
+                <Link to="/auth" className="text-sm font-sans tracking-[0.1em] uppercase py-3.5 border-b border-border/40 text-foreground/60 hover:text-foreground" onClick={() => setMobileOpen(false)}>
                   {t("nav_login")}
                 </Link>
               )}
               {isAdmin && (
-                <Link to="/admin" className="text-sm font-sans tracking-wider uppercase py-3 border-b border-border/50 text-primary" onClick={() => setMobileOpen(false)}>
+                <Link to="/admin" className="text-sm font-sans tracking-[0.1em] uppercase py-3.5 border-b border-border/40 text-primary" onClick={() => setMobileOpen(false)}>
                   {t("nav_admin")}
                 </Link>
               )}
 
-              {/* Language */}
-              <div className="pt-6 flex gap-3">
-                {(Object.keys(langLabels) as Language[]).map(lang => (
-                  <button
-                    key={lang}
-                    onClick={() => { setLanguage(lang); setMobileOpen(false); }}
-                    className={`text-xs tracking-wider uppercase px-3 py-1.5 border transition-colors ${
-                      language === lang ? "border-foreground text-foreground" : "border-border text-muted-foreground"
-                    }`}
-                  >
-                    {langLabels[lang]}
-                  </button>
-                ))}
+              {/* Language switcher in mobile */}
+              <div className="pt-8">
+                <p className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground mb-3">Language</p>
+                <div className="flex flex-wrap gap-2">
+                  {(Object.keys(langLabels) as Language[]).map(lang => (
+                    <button
+                      key={lang}
+                      onClick={() => { setLanguage(lang); setMobileOpen(false); }}
+                      className={`text-[11px] tracking-wider px-4 py-2 border transition-all duration-200 ${
+                        language === lang ? "border-foreground text-foreground bg-foreground/5" : "border-border text-muted-foreground hover:border-foreground/30"
+                      }`}
+                    >
+                      {langLabels[lang]}
+                    </button>
+                  ))}
+                </div>
               </div>
             </nav>
           </div>
