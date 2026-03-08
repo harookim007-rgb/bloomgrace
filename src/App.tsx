@@ -27,6 +27,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <AuthProvider>
+            <DesignModeOverlay />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/products" element={<Products />} />
