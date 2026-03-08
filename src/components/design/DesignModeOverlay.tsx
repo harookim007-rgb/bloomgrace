@@ -12,6 +12,8 @@ const DesignModeOverlay = () => {
 
   if (!editMode) return null;
 
+  useDesignModeKeyboard();
+
   return (
     <>
       <DesignModeToolbar />
