@@ -19,11 +19,11 @@ const FeaturedProducts = () => {
       <div className="container">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-14 md:mb-16 gap-4">
           <div className="space-y-3">
-            <p className="text-[10px] font-sans font-medium tracking-[0.35em] uppercase text-primary">
+            <p className="text-xs font-sans font-medium tracking-[0.35em] uppercase text-primary">
               {t("featured_tagline")}
             </p>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-light">{t("featured_title")}</h2>
-            <p className="text-sm text-muted-foreground font-light max-w-md">{t("featured_subtitle")}</p>
+            <p className="text-base text-muted-foreground font-light max-w-md">{t("featured_subtitle")}</p>
           </div>
           <Link
             to="/products"

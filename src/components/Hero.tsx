@@ -117,17 +117,17 @@ const Hero = () => {
       <div className="relative z-10 h-full flex items-center">
         <div className="container px-6 md:px-8 lg:px-12">
           <div className="max-w-xl space-y-6">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-light text-primary-foreground leading-[1.15] tracking-tight whitespace-pre-line">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-light text-primary-foreground leading-[1.1] tracking-tight whitespace-pre-line">
               {slide.title}
             </h1>
             {slide.subtitle && (
-              <p className="text-sm md:text-base text-primary-foreground/75 font-sans font-light leading-relaxed max-w-md">
+              <p className="text-base md:text-lg text-primary-foreground/80 font-sans font-light leading-relaxed max-w-md">
                 {slide.subtitle}
               </p>
             )}
             <div className="flex flex-wrap gap-3 pt-2">
               <Link to="/products">
-                <button className="bg-primary/80 text-primary-foreground px-8 py-3.5 text-[11px] font-sans font-medium tracking-[0.2em] uppercase hover:bg-primary/90 transition-colors duration-300 flex items-center gap-2">
+                <button className="bg-primary/80 text-primary-foreground px-10 py-4 text-xs font-sans font-medium tracking-[0.2em] uppercase hover:bg-primary/90 transition-colors duration-300 flex items-center gap-2">
                   {t("hero_shop")} <ArrowRight className="h-3.5 w-3.5" />
                 </button>
               </Link>
