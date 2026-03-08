@@ -29,6 +29,13 @@ const menuItems: { id: AdminTab; label: string; icon: React.ElementType; }[] = [
 
 const AdminSidebar = ({ activeTab, setActiveTab, isOpen, setIsOpen }: AdminSidebarProps) => {
   const { signOut } = useAuth();
+  const navigate = useNavigate();
+  const setEditMode = useDesignModeStore(s => s.setEditMode);
+
+  const handleDesignMode = () => {
+    setEditMode(true);
+    navigate("/");
+  };
 
   return (
     <aside className={`fixed left-0 top-0 h-screen bg-card border-r border-border z-50 flex flex-col transition-all duration-300 ${isOpen ? 'w-64' : 'w-16'}`}>
