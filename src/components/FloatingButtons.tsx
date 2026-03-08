@@ -127,8 +127,8 @@ const FloatingButtons = () => {
                 className="relative bg-[hsl(0_0%_35%)] text-white pl-4 pr-3 py-10 flex flex-col items-center gap-3 shadow-luxury transition-all duration-500 group-hover:pl-5 group-hover:pr-4 group-hover:bg-[hsl(0_0%_28%)]"
                 style={{ borderRadius: "8px 0 0 8px" }}
               >
-                <span className="text-[9px] font-sans font-bold tracking-[0.25em] uppercase leading-tight text-center text-white">{bt.line1}</span>
-                <span className="text-[10px] font-sans font-bold tracking-[0.25em] uppercase text-white text-center">{bt.line2}</span>
+                <span className="text-[10px] font-sans font-bold tracking-[0.22em] uppercase leading-tight text-center text-white">{bt.line1}</span>
+                <span className="text-[11px] font-sans font-bold tracking-[0.22em] uppercase text-white text-center">{bt.line2}</span>
               </div>
             </button>
           </HoverCardTrigger>
