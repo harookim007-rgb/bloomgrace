@@ -9,10 +9,9 @@ import SectionOverlay from "./SectionOverlay";
 
 const DesignModeOverlay = () => {
   const { editMode, viewport } = useDesignModeStore();
+  useDesignModeKeyboard();
 
   if (!editMode) return null;
-
-  useDesignModeKeyboard();
 
   return (
     <>
