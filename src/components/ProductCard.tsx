@@ -54,7 +54,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </button>
         <button
           onClick={() => addToCart(product.id)}
-          className="absolute bottom-0 left-0 right-0 bg-foreground/90 text-background text-xs font-sans tracking-[0.15em] uppercase py-3 text-center translate-y-full group-hover:translate-y-0 transition-transform duration-300"
+          className="absolute bottom-0 left-0 right-0 bg-primary/90 text-primary-foreground text-xs font-sans tracking-[0.15em] uppercase py-3 text-center translate-y-full group-hover:translate-y-0 transition-transform duration-300"
         >
           {t("pc_add_to_cart")}
         </button>
