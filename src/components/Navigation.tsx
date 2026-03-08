@@ -37,7 +37,7 @@ const Navigation = () => {
   return (
     <>
       {/* Announcement bar */}
-      <div className="bg-foreground text-background text-[11px] text-center py-2 font-sans tracking-[0.15em]">
+      <div className="bg-foreground text-background text-[13px] text-center py-2.5 font-sans font-medium tracking-[0.12em]">
         {t("hero_tagline")}
       </div>
 
@@ -70,7 +70,7 @@ const Navigation = () => {
               <Link
                 key={link.to}
                 to={link.to}
-                className="text-[11px] font-sans font-medium tracking-[0.15em] uppercase text-foreground/60 hover:text-primary transition-colors"
+                className="text-[13px] font-sans font-semibold tracking-[0.08em] uppercase text-foreground/85 hover:text-primary transition-colors"
               >
                 {link.label}
               </Link>
@@ -78,7 +78,7 @@ const Navigation = () => {
             {isAdmin && (
               <Link
                 to="/admin"
-                className="text-[11px] font-sans font-medium tracking-[0.15em] uppercase text-primary hover:text-primary/80 transition-colors"
+                className="text-[13px] font-sans font-semibold tracking-[0.08em] uppercase text-primary hover:text-primary/80 transition-colors"
               >
                 {t("nav_admin")}
               </Link>
@@ -146,7 +146,7 @@ const Navigation = () => {
                 <Link
                   key={link.to}
                   to={link.to}
-                  className="text-sm font-sans tracking-[0.1em] uppercase py-3.5 border-b border-border/40 text-foreground/60 hover:text-primary transition-colors"
+                  className="text-base font-sans font-medium tracking-[0.06em] uppercase py-3.5 border-b border-border/40 text-foreground/85 hover:text-primary transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
                   {link.label}
@@ -154,17 +154,17 @@ const Navigation = () => {
               ))}
               <Link
                 to="/qa"
-                className="text-sm font-sans tracking-[0.1em] uppercase py-3.5 border-b border-border/40 text-foreground/60 hover:text-primary transition-colors"
+                className="text-base font-sans font-medium tracking-[0.06em] uppercase py-3.5 border-b border-border/40 text-foreground/85 hover:text-primary transition-colors"
                 onClick={() => setMobileOpen(false)}
               >
                 {t("nav_qa")}
               </Link>
               {user ? (
-                <Link to="/mypage" className="text-sm font-sans tracking-[0.1em] uppercase py-3.5 border-b border-border/40 text-foreground/60 hover:text-primary" onClick={() => setMobileOpen(false)}>
+                <Link to="/mypage" className="text-base font-sans font-medium tracking-[0.06em] uppercase py-3.5 border-b border-border/40 text-foreground/85 hover:text-primary" onClick={() => setMobileOpen(false)}>
                   {t("nav_mypage")}
                 </Link>
               ) : (
-                <Link to="/auth" className="text-sm font-sans tracking-[0.1em] uppercase py-3.5 border-b border-border/40 text-foreground/60 hover:text-primary" onClick={() => setMobileOpen(false)}>
+                <Link to="/auth" className="text-base font-sans font-medium tracking-[0.06em] uppercase py-3.5 border-b border-border/40 text-foreground/85 hover:text-primary" onClick={() => setMobileOpen(false)}>
                   {t("nav_login")}
                 </Link>
               )}
