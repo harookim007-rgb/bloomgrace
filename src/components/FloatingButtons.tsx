@@ -114,8 +114,8 @@ const FloatingButtons = () => {
 
   return (
     <>
-      {/* AI Bookmark Tab — horizontal postcard style, sticky right edge */}
-      <div className="fixed right-0 top-1/2 -translate-y-1/2 z-50">
+      {/* AI Bookmark Tab — hidden on very small screens, sticky right edge */}
+      <div className="fixed right-0 top-1/2 -translate-y-1/2 z-50 hidden sm:block">
         <HoverCard openDelay={200} closeDelay={100}>
           <HoverCardTrigger asChild>
             <button
