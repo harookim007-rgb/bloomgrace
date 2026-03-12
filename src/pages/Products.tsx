@@ -75,7 +75,7 @@ const Products = () => {
               </div>
               <Button type="submit" variant="outline" className="rounded-none text-xs tracking-wider uppercase">{t("products_search_btn")}</Button>
             </form>
-            <div className="flex gap-2 flex-wrap">
+            <div className="flex gap-2 flex-wrap overflow-x-auto">
               <Select value={category} onValueChange={setCategory}>
                 <SelectTrigger className="w-[140px] rounded-none text-xs"><SelectValue placeholder={t("products_category")} /></SelectTrigger>
                 <SelectContent>
