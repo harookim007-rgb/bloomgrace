@@ -57,16 +57,16 @@ const Products = () => {
   return (
     <div className="min-h-screen">
       <Navigation />
-      <section className="py-12 md:py-16 px-4 md:px-6 lg:px-8">
+      <section className="py-8 md:py-16 px-3 md:px-6 lg:px-8">
         <div className="container">
           {/* Header */}
-          <div className="mb-12 space-y-3">
-            <p className="text-xs font-sans tracking-[0.3em] uppercase text-muted-foreground">{t("featured_tagline")}</p>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-light">{t("products_title")}</h1>
+          <div className="mb-8 md:mb-12 space-y-2">
+            <p className="text-[11px] md:text-xs font-sans tracking-[0.3em] uppercase text-muted-foreground">{t("featured_tagline")}</p>
+            <h1 className="text-2xl md:text-4xl lg:text-5xl font-serif font-light">{t("products_title")}</h1>
           </div>
 
           {/* Filters */}
-          <div className="flex flex-col md:flex-row gap-4 mb-8 pb-8 border-b border-border">
+          <div className="flex flex-col gap-3 md:gap-4 mb-6 md:mb-8 pb-6 md:pb-8 border-b border-border">
             <form onSubmit={handleSearch} className="flex gap-2 flex-1 max-w-md">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -75,16 +75,16 @@ const Products = () => {
               </div>
               <Button type="submit" variant="outline" className="rounded-none text-xs tracking-wider uppercase">{t("products_search_btn")}</Button>
             </form>
-            <div className="flex gap-2 flex-wrap">
+            <div className="flex gap-2 flex-wrap overflow-x-auto">
               <Select value={category} onValueChange={setCategory}>
-                <SelectTrigger className="w-[140px] rounded-none text-xs"><SelectValue placeholder={t("products_category")} /></SelectTrigger>
+                <SelectTrigger className="w-[120px] md:w-[140px] rounded-none text-xs min-h-[44px]"><SelectValue placeholder={t("products_category")} /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">{t("products_all")}</SelectItem>
                   {categories.map(c => <SelectItem key={c.id} value={c.slug}>{c.name}</SelectItem>)}
                 </SelectContent>
               </Select>
               <Select value={sort} onValueChange={setSort}>
-                <SelectTrigger className="w-[130px] rounded-none text-xs"><SelectValue /></SelectTrigger>
+                <SelectTrigger className="w-[110px] md:w-[130px] rounded-none text-xs min-h-[44px]"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="popular">{t("products_popular")}</SelectItem>
                   <SelectItem value="newest">{t("products_newest")}</SelectItem>
@@ -94,7 +94,7 @@ const Products = () => {
                 </SelectContent>
               </Select>
               <Select value={priceRange} onValueChange={setPriceRange}>
-                <SelectTrigger className="w-[150px] rounded-none text-xs"><SelectValue /></SelectTrigger>
+                <SelectTrigger className="w-[120px] md:w-[150px] rounded-none text-xs min-h-[44px]"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">{t("products_all_prices")}</SelectItem>
                   <SelectItem value="under20000">{t("products_under_20k")}</SelectItem>
@@ -106,10 +106,10 @@ const Products = () => {
           </div>
 
           {/* Category pills */}
-          <div className="flex gap-3 overflow-x-auto pb-6 mb-2">
+          <div className="flex gap-2 overflow-x-auto pb-4 md:pb-6 mb-2 -mx-1 px-1 scrollbar-hide">
             <button
               onClick={() => setCategory("all")}
-              className={`text-xs font-sans tracking-[0.15em] uppercase whitespace-nowrap px-4 py-2 border transition-colors ${
+              className={`text-[11px] md:text-xs font-sans tracking-[0.12em] md:tracking-[0.15em] uppercase whitespace-nowrap px-3 md:px-4 py-2 border transition-colors min-h-[40px] ${
                 category === "all" ? "bg-foreground text-background border-foreground" : "border-border text-muted-foreground hover:text-foreground hover:border-foreground"
               }`}
             >
@@ -119,7 +119,7 @@ const Products = () => {
               <button
                 key={c.id}
                 onClick={() => setCategory(c.slug)}
-                className={`text-xs font-sans tracking-[0.15em] uppercase whitespace-nowrap px-4 py-2 border transition-colors ${
+                className={`text-[11px] md:text-xs font-sans tracking-[0.12em] md:tracking-[0.15em] uppercase whitespace-nowrap px-3 md:px-4 py-2 border transition-colors min-h-[40px] ${
                   category === c.slug ? "bg-foreground text-background border-foreground" : "border-border text-muted-foreground hover:text-foreground hover:border-foreground"
                 }`}
               >
@@ -130,7 +130,7 @@ const Products = () => {
 
           {/* Grid */}
           {isLoading ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 lg:gap-8">
               {[...Array(8)].map((_, i) => (
                 <div key={i}>
                   <div className="aspect-[3/4] bg-muted animate-pulse mb-4" />
@@ -142,7 +142,7 @@ const Products = () => {
           ) : products.length === 0 ? (
             <div className="text-center py-20 text-muted-foreground text-sm">{t("products_no_results")}</div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 lg:gap-8">
               {products.map(product => <ProductCard key={product.id} product={product} />)}
             </div>
           )}

@@ -13,6 +13,7 @@ import Contact from "./pages/Contact";
 import Auth from "./pages/Auth";
 import MyPage from "./pages/MyPage";
 import Checkout from "./pages/Checkout";
+import CompleteProfile from "./pages/CompleteProfile";
 import Admin from "./pages/Admin";
 import DesignModeOverlay from "./components/design/DesignModeOverlay";
 import NotFound from "./pages/NotFound";
@@ -37,6 +38,7 @@ const App = () => (
               <Route path="/auth" element={<Auth />} />
               <Route path="/mypage" element={<MyPage />} />
               <Route path="/checkout" element={<Checkout />} />
+              <Route path="/complete-profile" element={<CompleteProfile />} />
               <Route path="/admin" element={<Admin />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

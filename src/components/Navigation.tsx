@@ -37,7 +37,7 @@ const Navigation = () => {
   return (
     <>
       {/* Announcement bar */}
-      <div className="bg-foreground text-background text-sm text-center py-3 font-sans font-medium tracking-[0.1em]">
+      <div className="bg-foreground text-background text-[11px] md:text-sm text-center py-2 md:py-3 font-sans font-medium tracking-[0.08em] md:tracking-[0.1em]">
         {t("hero_tagline")}
       </div>
 
@@ -48,7 +48,7 @@ const Navigation = () => {
             : "bg-background"
         }`}
       >
-        <div className="container flex h-16 md:h-20 items-center justify-between px-4 md:px-6 lg:px-8">
+        <div className="container flex h-14 md:h-20 items-center justify-between px-3 md:px-6 lg:px-8">
           {/* Mobile menu toggle */}
           <button
             className="lg:hidden p-2 -ml-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
@@ -59,8 +59,8 @@ const Navigation = () => {
 
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <span className="text-xl md:text-2xl font-serif font-bold tracking-[0.15em] uppercase text-foreground">
-              BLOOM<span className="text-primary mx-1">&</span>GRACE
+            <span className="text-lg md:text-2xl font-serif font-bold tracking-[0.1em] md:tracking-[0.15em] uppercase text-foreground">
+              BLOOM<span className="text-primary mx-0.5 md:mx-1">&</span>GRACE
             </span>
           </Link>
 
@@ -86,11 +86,11 @@ const Navigation = () => {
           </nav>
 
           {/* Icons */}
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-0">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-10 w-10 text-foreground/60 hover:text-primary">
-                  <Globe className="h-[18px] w-[18px]" />
+                <Button variant="ghost" size="icon" className="h-9 w-9 md:h-10 md:w-10 text-foreground/60 hover:text-primary">
+                  <Globe className="h-4 w-4 md:h-[18px] md:w-[18px]" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="min-w-[140px]">
@@ -107,21 +107,21 @@ const Navigation = () => {
             </DropdownMenu>
 
             <Link to="/products">
-              <Button variant="ghost" size="icon" className="h-10 w-10 text-foreground/60 hover:text-primary">
-                <Search className="h-[18px] w-[18px]" />
+              <Button variant="ghost" size="icon" className="h-9 w-9 md:h-10 md:w-10 text-foreground/60 hover:text-primary">
+                <Search className="h-4 w-4 md:h-[18px] md:w-[18px]" />
               </Button>
             </Link>
             {user && (
               <Link to="/mypage">
-                <Button variant="ghost" size="icon" className="h-10 w-10 text-foreground/60 hover:text-primary">
-                  <Heart className="h-[18px] w-[18px]" />
+                <Button variant="ghost" size="icon" className="h-9 w-9 md:h-10 md:w-10 text-foreground/60 hover:text-primary">
+                  <Heart className="h-4 w-4 md:h-[18px] md:w-[18px]" />
                 </Button>
               </Link>
             )}
             <CartDrawer />
             <Link to={user ? "/mypage" : "/auth"}>
-              <Button variant="ghost" size="icon" className="h-10 w-10 text-foreground/60 hover:text-primary">
-                <User className="h-[18px] w-[18px]" />
+              <Button variant="ghost" size="icon" className="h-9 w-9 md:h-10 md:w-10 text-foreground/60 hover:text-primary">
+                <User className="h-4 w-4 md:h-[18px] md:w-[18px]" />
               </Button>
             </Link>
           </div>

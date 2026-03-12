@@ -42,7 +42,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <div className="group hover-lift">
       {/* Image container — 1:1 ratio */}
-      <div className="relative aspect-square overflow-hidden bg-muted/30 mb-4 rounded-sm">
+      <div className="relative aspect-square overflow-hidden bg-muted/30 mb-2.5 md:mb-4 rounded-sm">
         <Link to={`/products/${product.slug}`}>
           <img
             src={product.image_url || "/placeholder.svg"}
@@ -53,19 +53,19 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </Link>
 
         {/* Badges — top left */}
-        <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+        <div className="absolute top-2 md:top-3 left-2 md:left-3 flex flex-col gap-1">
           {discount > 0 && (
-            <Badge variant="destructive" className="rounded-sm text-[11px] font-sans font-bold px-2.5 py-0.5">
+            <Badge variant="destructive" className="rounded-sm text-[10px] md:text-[11px] font-sans font-bold px-1.5 md:px-2.5 py-0.5">
               -{discount}%
             </Badge>
           )}
           {isNew && (
-            <Badge className="rounded-sm text-[11px] font-sans font-bold px-2.5 py-0.5 bg-foreground text-background border-foreground">
+            <Badge className="rounded-sm text-[10px] md:text-[11px] font-sans font-bold px-1.5 md:px-2.5 py-0.5 bg-foreground text-background border-foreground">
               NEW
             </Badge>
           )}
           {isBest && !isNew && (
-            <Badge className="rounded-sm text-[11px] font-sans font-bold px-2.5 py-0.5 bg-secondary text-secondary-foreground border-secondary">
+            <Badge className="rounded-sm text-[10px] md:text-[11px] font-sans font-bold px-1.5 md:px-2.5 py-0.5 bg-secondary text-secondary-foreground border-secondary">
               BEST
             </Badge>
           )}
@@ -74,34 +74,34 @@ const ProductCard = ({ product }: ProductCardProps) => {
         {/* Wishlist */}
         <button
           onClick={() => toggleWishlist(product.id)}
-          className="absolute top-3 right-3 w-10 h-10 flex items-center justify-center bg-background/90 backdrop-blur-sm rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-soft"
+          className="absolute top-2 md:top-3 right-2 md:right-3 w-8 h-8 md:w-10 md:h-10 flex items-center justify-center bg-background/90 backdrop-blur-sm rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-soft"
         >
-          <Heart className={`h-4 w-4 ${isWishlisted(product.id) ? "fill-primary text-primary" : "text-foreground/60"}`} />
+          <Heart className={`h-3.5 w-3.5 md:h-4 md:w-4 ${isWishlisted(product.id) ? "fill-primary text-primary" : "text-foreground/60"}`} />
         </button>
 
         {/* Quick add to cart */}
         <button
           onClick={() => addToCart(product.id)}
-          className="absolute bottom-3 right-3 w-10 h-10 flex items-center justify-center bg-primary text-primary-foreground rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-elegant hover:scale-110"
+          className="absolute bottom-2 md:bottom-3 right-2 md:right-3 w-8 h-8 md:w-10 md:h-10 flex items-center justify-center bg-primary text-primary-foreground rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-elegant hover:scale-110"
         >
-          <ShoppingBag className="h-4 w-4" />
+          <ShoppingBag className="h-3.5 w-3.5 md:h-4 md:w-4" />
         </button>
       </div>
 
       {/* Product info */}
-      <div className="space-y-2 px-0.5">
+      <div className="space-y-1 md:space-y-2 px-0.5">
         {product.brand && (
-          <p className="text-xs font-sans font-semibold tracking-[0.15em] uppercase text-muted-foreground">{product.brand}</p>
+          <p className="text-[10px] md:text-xs font-sans font-semibold tracking-[0.12em] md:tracking-[0.15em] uppercase text-muted-foreground">{product.brand}</p>
         )}
         <Link to={`/products/${product.slug}`}>
-          <h3 className="text-base font-sans font-medium leading-snug line-clamp-2 text-foreground">
+          <h3 className="text-[13px] md:text-base font-sans font-medium leading-snug line-clamp-2 text-foreground">
             {translatedName}
           </h3>
         </Link>
-        <div className="flex items-baseline gap-2.5">
-          <span className="text-lg font-sans font-bold text-foreground">{formatPrice(product.price)}</span>
+        <div className="flex items-baseline gap-1.5 md:gap-2.5">
+          <span className="text-sm md:text-lg font-sans font-bold text-foreground">{formatPrice(product.price)}</span>
           {product.original_price && (
-            <span className="text-sm text-muted-foreground line-through">{formatPrice(product.original_price)}</span>
+            <span className="text-[11px] md:text-sm text-muted-foreground line-through">{formatPrice(product.original_price)}</span>
           )}
         </div>
       </div>

@@ -15,15 +15,15 @@ const FeaturedProducts = () => {
   }, []);
 
   return (
-    <section className="py-20 md:py-28 px-4 md:px-6 lg:px-8">
+    <section className="py-12 md:py-28 px-3 md:px-6 lg:px-8">
       <div className="container">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12 md:mb-16 gap-4">
-          <div className="space-y-3">
-            <p className="text-sm font-sans font-semibold tracking-[0.2em] uppercase text-primary">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-8 md:mb-16 gap-3 md:gap-4">
+          <div className="space-y-2 md:space-y-3">
+            <p className="text-[11px] md:text-sm font-sans font-semibold tracking-[0.18em] md:tracking-[0.2em] uppercase text-primary">
               {t("featured_tagline")}
             </p>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif">{t("featured_title")}</h2>
-            <p className="text-base md:text-lg text-muted-foreground max-w-md">{t("featured_subtitle")}</p>
+            <h2 className="text-2xl md:text-4xl lg:text-5xl font-serif">{t("featured_title")}</h2>
+            <p className="text-sm md:text-lg text-muted-foreground max-w-md">{t("featured_subtitle")}</p>
           </div>
           <Link
             to="/products"
@@ -32,7 +32,7 @@ const FeaturedProducts = () => {
             {t("featured_view_all")} <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-8">
           {products.map(product => <ProductCard key={product.id} product={product} />)}
         </div>
       </div>

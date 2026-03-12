@@ -100,7 +100,7 @@ const Hero = () => {
   const slide = slides[current];
 
   return (
-    <section className="relative w-full min-h-[500px] max-h-[920px] overflow-hidden" style={{ height: '100dvh' }}>
+    <section className="relative w-full min-h-[400px] md:min-h-[500px] max-h-[920px] overflow-hidden" style={{ height: '85dvh' }}>
       {slides.map((s, i) => (
         <div
           key={i}
@@ -113,19 +113,19 @@ const Hero = () => {
       ))}
 
       <div className="relative z-10 h-full flex items-center">
-        <div className="container px-6 md:px-8 lg:px-12">
-          <div className="max-w-2xl space-y-6">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold text-primary-foreground leading-[1.08] whitespace-pre-line drop-shadow-lg">
+        <div className="container px-4 md:px-8 lg:px-12">
+          <div className="max-w-2xl space-y-4 md:space-y-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-serif font-bold text-primary-foreground leading-[1.12] whitespace-pre-line drop-shadow-lg">
               {slide.title}
             </h1>
             {slide.subtitle && (
-              <p className="text-lg md:text-xl text-primary-foreground/85 font-sans font-medium leading-relaxed max-w-lg drop-shadow-md">
+              <p className="text-base md:text-lg text-primary-foreground/85 font-sans font-medium leading-relaxed max-w-lg drop-shadow-md">
                 {slide.subtitle}
               </p>
             )}
-            <div className="flex flex-wrap gap-3 pt-3">
+            <div className="flex flex-wrap gap-3 pt-2">
               <Link to="/products">
-                <button className="bg-primary text-primary-foreground px-10 py-4 text-sm font-sans font-bold tracking-[0.15em] uppercase hover:bg-primary/90 transition-all duration-300 flex items-center gap-2.5 shadow-elegant hover:shadow-luxury rounded-sm">
+                <button className="bg-primary text-primary-foreground px-8 md:px-10 py-3.5 md:py-4 text-xs md:text-sm font-sans font-bold tracking-[0.15em] uppercase hover:bg-primary/90 transition-all duration-300 flex items-center gap-2.5 shadow-elegant hover:shadow-luxury rounded-sm min-h-[44px]">
                   {t("hero_shop")} <ArrowRight className="h-4 w-4" />
                 </button>
               </Link>
