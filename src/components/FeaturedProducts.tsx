@@ -15,7 +15,7 @@ const FeaturedProducts = () => {
   }, []);
 
   return (
-    <section className="py-20 md:py-28 px-4 md:px-6 lg:px-8">
+    <section className="py-12 md:py-28 px-3 md:px-6 lg:px-8">
       <div className="container">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12 md:mb-16 gap-4">
           <div className="space-y-3">
