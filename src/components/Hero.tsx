@@ -113,9 +113,9 @@ const Hero = () => {
       ))}
 
       <div className="relative z-10 h-full flex items-center">
-        <div className="container px-6 md:px-8 lg:px-12">
-          <div className="max-w-2xl space-y-6">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold text-primary-foreground leading-[1.08] whitespace-pre-line drop-shadow-lg">
+        <div className="container px-4 md:px-8 lg:px-12">
+          <div className="max-w-2xl space-y-4 md:space-y-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-serif font-bold text-primary-foreground leading-[1.12] whitespace-pre-line drop-shadow-lg">
               {slide.title}
             </h1>
             {slide.subtitle && (
