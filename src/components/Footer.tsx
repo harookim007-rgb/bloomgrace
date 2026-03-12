@@ -20,14 +20,14 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="space-y-4">
-            <h4 className="text-base font-sans font-bold tracking-[0.1em] uppercase">{t("footer_products")}</h4>
-            <ul className="space-y-3">
-              <li><Link to="/products" className="text-base text-muted-foreground hover:text-primary transition-colors">{t("nav_all_products")}</Link></li>
-              <li><Link to="/products?category=skincare" className="text-base text-muted-foreground hover:text-primary transition-colors">{t("nav_skincare")}</Link></li>
-              <li><Link to="/products?category=makeup" className="text-base text-muted-foreground hover:text-primary transition-colors">{t("nav_makeup")}</Link></li>
-              <li><Link to="/products?category=new" className="text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_new")}</Link></li>
-              <li><Link to="/products?category=bestseller" className="text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_bestseller")}</Link></li>
+          <div className="space-y-3">
+            <h4 className="text-sm md:text-base font-sans font-bold tracking-[0.1em] uppercase">{t("footer_products")}</h4>
+            <ul className="space-y-2">
+              <li><Link to="/products" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{t("nav_all_products")}</Link></li>
+              <li><Link to="/products?category=skincare" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{t("nav_skincare")}</Link></li>
+              <li><Link to="/products?category=makeup" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{t("nav_makeup")}</Link></li>
+              <li><Link to="/products?category=new" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_new")}</Link></li>
+              <li><Link to="/products?category=bestseller" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_bestseller")}</Link></li>
             </ul>
           </div>
 
