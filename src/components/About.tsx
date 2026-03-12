@@ -5,9 +5,9 @@ const About = () => {
   const { t } = useLanguage();
 
   return (
-    <section id="about" className="py-20 md:py-28 bg-muted/30">
+    <section id="about" className="py-12 md:py-28 bg-muted/30">
       <div className="container px-4 md:px-6 lg:px-8">
-        <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-20 items-center">
           {/* Image */}
           <div className="aspect-square overflow-hidden bg-primary-soft rounded-sm">
             <img
