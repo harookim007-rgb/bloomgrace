@@ -13,6 +13,7 @@ import Contact from "./pages/Contact";
 import Auth from "./pages/Auth";
 import MyPage from "./pages/MyPage";
 import Checkout from "./pages/Checkout";
+import CompleteProfile from "./pages/CompleteProfile";
 import Admin from "./pages/Admin";
 import DesignModeOverlay from "./components/design/DesignModeOverlay";
 import NotFound from "./pages/NotFound";
