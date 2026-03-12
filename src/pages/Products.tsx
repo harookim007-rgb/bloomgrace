@@ -57,7 +57,7 @@ const Products = () => {
   return (
     <div className="min-h-screen">
       <Navigation />
-      <section className="py-12 md:py-16 px-4 md:px-6 lg:px-8">
+      <section className="py-8 md:py-16 px-3 md:px-6 lg:px-8">
         <div className="container">
           {/* Header */}
           <div className="mb-12 space-y-3">
