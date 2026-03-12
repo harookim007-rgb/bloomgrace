@@ -29,7 +29,7 @@ const About = () => {
               </h2>
             </div>
 
-            <div className="space-y-5 text-base md:text-lg leading-[1.8] text-muted-foreground font-sans">
+            <div className="space-y-4 text-sm md:text-lg leading-[1.8] text-muted-foreground font-sans">
               <p>{t("about_p1")}</p>
               <p>{t("about_p2")}</p>
               <p>{t("about_p3")}</p>
