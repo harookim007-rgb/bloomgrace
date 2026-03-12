@@ -119,7 +119,7 @@ const Hero = () => {
               {slide.title}
             </h1>
             {slide.subtitle && (
-              <p className="text-lg md:text-xl text-primary-foreground/85 font-sans font-medium leading-relaxed max-w-lg drop-shadow-md">
+              <p className="text-base md:text-lg text-primary-foreground/85 font-sans font-medium leading-relaxed max-w-lg drop-shadow-md">
                 {slide.subtitle}
               </p>
             )}
