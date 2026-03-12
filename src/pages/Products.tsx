@@ -130,7 +130,7 @@ const Products = () => {
 
           {/* Grid */}
           {isLoading ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 lg:gap-8">
               {[...Array(8)].map((_, i) => (
                 <div key={i}>
                   <div className="aspect-[3/4] bg-muted animate-pulse mb-4" />
