@@ -74,9 +74,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
         {/* Wishlist */}
         <button
           onClick={() => toggleWishlist(product.id)}
-          className="absolute top-3 right-3 w-10 h-10 flex items-center justify-center bg-background/90 backdrop-blur-sm rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-soft"
+          className="absolute top-2 md:top-3 right-2 md:right-3 w-8 h-8 md:w-10 md:h-10 flex items-center justify-center bg-background/90 backdrop-blur-sm rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-soft"
         >
-          <Heart className={`h-4 w-4 ${isWishlisted(product.id) ? "fill-primary text-primary" : "text-foreground/60"}`} />
+          <Heart className={`h-3.5 w-3.5 md:h-4 md:w-4 ${isWishlisted(product.id) ? "fill-primary text-primary" : "text-foreground/60"}`} />
         </button>
 
         {/* Quick add to cart */}
