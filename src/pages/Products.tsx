@@ -94,7 +94,7 @@ const Products = () => {
                 </SelectContent>
               </Select>
               <Select value={priceRange} onValueChange={setPriceRange}>
-                <SelectTrigger className="w-[150px] rounded-none text-xs"><SelectValue /></SelectTrigger>
+                <SelectTrigger className="w-[120px] md:w-[150px] rounded-none text-xs min-h-[44px]"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">{t("products_all_prices")}</SelectItem>
                   <SelectItem value="under20000">{t("products_under_20k")}</SelectItem>
