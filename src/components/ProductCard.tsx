@@ -53,19 +53,19 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </Link>
 
         {/* Badges — top left */}
-        <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+        <div className="absolute top-2 md:top-3 left-2 md:left-3 flex flex-col gap-1">
           {discount > 0 && (
-            <Badge variant="destructive" className="rounded-sm text-[11px] font-sans font-bold px-2.5 py-0.5">
+            <Badge variant="destructive" className="rounded-sm text-[10px] md:text-[11px] font-sans font-bold px-1.5 md:px-2.5 py-0.5">
               -{discount}%
             </Badge>
           )}
           {isNew && (
-            <Badge className="rounded-sm text-[11px] font-sans font-bold px-2.5 py-0.5 bg-foreground text-background border-foreground">
+            <Badge className="rounded-sm text-[10px] md:text-[11px] font-sans font-bold px-1.5 md:px-2.5 py-0.5 bg-foreground text-background border-foreground">
               NEW
             </Badge>
           )}
           {isBest && !isNew && (
-            <Badge className="rounded-sm text-[11px] font-sans font-bold px-2.5 py-0.5 bg-secondary text-secondary-foreground border-secondary">
+            <Badge className="rounded-sm text-[10px] md:text-[11px] font-sans font-bold px-1.5 md:px-2.5 py-0.5 bg-secondary text-secondary-foreground border-secondary">
               BEST
             </Badge>
           )}
