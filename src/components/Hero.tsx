@@ -123,9 +123,9 @@ const Hero = () => {
                 {slide.subtitle}
               </p>
             )}
-            <div className="flex flex-wrap gap-3 pt-3">
+            <div className="flex flex-wrap gap-3 pt-2">
               <Link to="/products">
-                <button className="bg-primary text-primary-foreground px-10 py-4 text-sm font-sans font-bold tracking-[0.15em] uppercase hover:bg-primary/90 transition-all duration-300 flex items-center gap-2.5 shadow-elegant hover:shadow-luxury rounded-sm">
+                <button className="bg-primary text-primary-foreground px-8 md:px-10 py-3.5 md:py-4 text-xs md:text-sm font-sans font-bold tracking-[0.15em] uppercase hover:bg-primary/90 transition-all duration-300 flex items-center gap-2.5 shadow-elegant hover:shadow-luxury rounded-sm min-h-[44px]">
                   {t("hero_shop")} <ArrowRight className="h-4 w-4" />
                 </button>
               </Link>
