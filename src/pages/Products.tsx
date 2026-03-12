@@ -109,7 +109,7 @@ const Products = () => {
           <div className="flex gap-2 overflow-x-auto pb-4 md:pb-6 mb-2 -mx-1 px-1 scrollbar-hide">
             <button
               onClick={() => setCategory("all")}
-              className={`text-xs font-sans tracking-[0.15em] uppercase whitespace-nowrap px-4 py-2 border transition-colors ${
+              className={`text-[11px] md:text-xs font-sans tracking-[0.12em] md:tracking-[0.15em] uppercase whitespace-nowrap px-3 md:px-4 py-2 border transition-colors min-h-[40px] ${
                 category === "all" ? "bg-foreground text-background border-foreground" : "border-border text-muted-foreground hover:text-foreground hover:border-foreground"
               }`}
             >
