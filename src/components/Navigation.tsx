@@ -86,7 +86,7 @@ const Navigation = () => {
           </nav>
 
           {/* Icons */}
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-0">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="h-10 w-10 text-foreground/60 hover:text-primary">
