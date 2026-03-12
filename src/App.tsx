@@ -38,6 +38,7 @@ const App = () => (
               <Route path="/auth" element={<Auth />} />
               <Route path="/mypage" element={<MyPage />} />
               <Route path="/checkout" element={<Checkout />} />
+              <Route path="/complete-profile" element={<CompleteProfile />} />
               <Route path="/admin" element={<Admin />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
