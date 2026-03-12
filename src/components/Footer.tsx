@@ -41,14 +41,14 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div className="space-y-4">
-            <h4 className="text-base font-sans font-bold tracking-[0.1em] uppercase">{t("footer_support")}</h4>
-            <ul className="space-y-3">
-              <li><Link to="/contact" className="text-base text-muted-foreground hover:text-primary transition-colors">{t("nav_contact")}</Link></li>
-              <li><Link to="/qa" className="text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_faq")}</Link></li>
-              <li><a href="#" className="text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_shipping")}</a></li>
-              <li><a href="#" className="text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_returns")}</a></li>
-              <li><a href="#" className="text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_terms")}</a></li>
+          <div className="space-y-3">
+            <h4 className="text-sm md:text-base font-sans font-bold tracking-[0.1em] uppercase">{t("footer_support")}</h4>
+            <ul className="space-y-2">
+              <li><Link to="/contact" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{t("nav_contact")}</Link></li>
+              <li><Link to="/qa" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_faq")}</Link></li>
+              <li><a href="#" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_shipping")}</a></li>
+              <li><a href="#" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_returns")}</a></li>
+              <li><a href="#" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_terms")}</a></li>
             </ul>
           </div>
         </div>
