@@ -77,7 +77,7 @@ const Products = () => {
             </form>
             <div className="flex gap-2 flex-wrap overflow-x-auto">
               <Select value={category} onValueChange={setCategory}>
-                <SelectTrigger className="w-[140px] rounded-none text-xs"><SelectValue placeholder={t("products_category")} /></SelectTrigger>
+                <SelectTrigger className="w-[120px] md:w-[140px] rounded-none text-xs min-h-[44px]"><SelectValue placeholder={t("products_category")} /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">{t("products_all")}</SelectItem>
                   {categories.map(c => <SelectItem key={c.id} value={c.slug}>{c.name}</SelectItem>)}
