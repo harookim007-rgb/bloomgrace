@@ -119,7 +119,7 @@ const Products = () => {
               <button
                 key={c.id}
                 onClick={() => setCategory(c.slug)}
-                className={`text-xs font-sans tracking-[0.15em] uppercase whitespace-nowrap px-4 py-2 border transition-colors ${
+                className={`text-[11px] md:text-xs font-sans tracking-[0.12em] md:tracking-[0.15em] uppercase whitespace-nowrap px-3 md:px-4 py-2 border transition-colors min-h-[40px] ${
                   category === c.slug ? "bg-foreground text-background border-foreground" : "border-border text-muted-foreground hover:text-foreground hover:border-foreground"
                 }`}
               >
