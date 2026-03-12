@@ -11,7 +11,7 @@ const Footer = () => {
           <div className="space-y-4 col-span-2 md:col-span-2 lg:col-span-1">
             <h3 className="text-lg md:text-xl font-serif font-bold tracking-wider uppercase">BLOOM & GRACE</h3>
             <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{t("footer_desc")}</p>
-            <div className="flex gap-5 pt-2">
+            <div className="flex gap-4 pt-1">
               {["Instagram", "Facebook", "YouTube"].map(name => (
                 <a key={name} href="#" className="text-sm font-sans font-semibold tracking-wide uppercase text-foreground/60 hover:text-primary transition-colors">
                   {name}
