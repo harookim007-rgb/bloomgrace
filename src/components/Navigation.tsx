@@ -120,8 +120,8 @@ const Navigation = () => {
             )}
             <CartDrawer />
             <Link to={user ? "/mypage" : "/auth"}>
-              <Button variant="ghost" size="icon" className="h-10 w-10 text-foreground/60 hover:text-primary">
-                <User className="h-[18px] w-[18px]" />
+              <Button variant="ghost" size="icon" className="h-9 w-9 md:h-10 md:w-10 text-foreground/60 hover:text-primary">
+                <User className="h-4 w-4 md:h-[18px] md:w-[18px]" />
               </Button>
             </Link>
           </div>
