@@ -84,7 +84,7 @@ const Products = () => {
                 </SelectContent>
               </Select>
               <Select value={sort} onValueChange={setSort}>
-                <SelectTrigger className="w-[130px] rounded-none text-xs"><SelectValue /></SelectTrigger>
+                <SelectTrigger className="w-[110px] md:w-[130px] rounded-none text-xs min-h-[44px]"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="popular">{t("products_popular")}</SelectItem>
                   <SelectItem value="newest">{t("products_newest")}</SelectItem>
