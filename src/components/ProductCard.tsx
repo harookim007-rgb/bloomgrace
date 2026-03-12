@@ -82,9 +82,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
         {/* Quick add to cart */}
         <button
           onClick={() => addToCart(product.id)}
-          className="absolute bottom-3 right-3 w-10 h-10 flex items-center justify-center bg-primary text-primary-foreground rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-elegant hover:scale-110"
+          className="absolute bottom-2 md:bottom-3 right-2 md:right-3 w-8 h-8 md:w-10 md:h-10 flex items-center justify-center bg-primary text-primary-foreground rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-elegant hover:scale-110"
         >
-          <ShoppingBag className="h-4 w-4" />
+          <ShoppingBag className="h-3.5 w-3.5 md:h-4 md:w-4" />
         </button>
       </div>
 
