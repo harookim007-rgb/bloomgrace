@@ -89,19 +89,19 @@ const ProductCard = ({ product }: ProductCardProps) => {
       </div>
 
       {/* Product info */}
-      <div className="space-y-2 px-0.5">
+      <div className="space-y-1 md:space-y-2 px-0.5">
         {product.brand && (
-          <p className="text-xs font-sans font-semibold tracking-[0.15em] uppercase text-muted-foreground">{product.brand}</p>
+          <p className="text-[10px] md:text-xs font-sans font-semibold tracking-[0.12em] md:tracking-[0.15em] uppercase text-muted-foreground">{product.brand}</p>
         )}
         <Link to={`/products/${product.slug}`}>
-          <h3 className="text-base font-sans font-medium leading-snug line-clamp-2 text-foreground">
+          <h3 className="text-[13px] md:text-base font-sans font-medium leading-snug line-clamp-2 text-foreground">
             {translatedName}
           </h3>
         </Link>
-        <div className="flex items-baseline gap-2.5">
-          <span className="text-lg font-sans font-bold text-foreground">{formatPrice(product.price)}</span>
+        <div className="flex items-baseline gap-1.5 md:gap-2.5">
+          <span className="text-sm md:text-lg font-sans font-bold text-foreground">{formatPrice(product.price)}</span>
           {product.original_price && (
-            <span className="text-sm text-muted-foreground line-through">{formatPrice(product.original_price)}</span>
+            <span className="text-[11px] md:text-sm text-muted-foreground line-through">{formatPrice(product.original_price)}</span>
           )}
         </div>
       </div>
