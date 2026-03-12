@@ -42,7 +42,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <div className="group hover-lift">
       {/* Image container — 1:1 ratio */}
-      <div className="relative aspect-square overflow-hidden bg-muted/30 mb-4 rounded-sm">
+      <div className="relative aspect-square overflow-hidden bg-muted/30 mb-2.5 md:mb-4 rounded-sm">
         <Link to={`/products/${product.slug}`}>
           <img
             src={product.image_url || "/placeholder.svg"}
