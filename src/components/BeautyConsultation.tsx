@@ -471,10 +471,10 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
           {/* Category header with image */}
           <div className="relative h-28 md:h-36 overflow-hidden mb-4">
             <img src={categoryImages[category!]} alt="" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-foreground/50 flex items-center justify-center">
+            <div className="absolute inset-0 bg-background/45 flex items-center justify-center backdrop-blur-[1px]">
               <div className="text-center">
-                <h4 className="text-2xl font-serif font-light text-primary-foreground">{category}</h4>
-                <p className="text-[10px] text-primary-foreground/60 tracking-[0.2em] uppercase mt-1">{ct[categoryMeta[category!].descKey]}</p>
+                <h4 className="text-2xl font-serif font-light text-foreground">{category}</h4>
+                <p className="text-[10px] text-foreground/60 tracking-[0.2em] uppercase mt-1">{ct[categoryMeta[category!].descKey]}</p>
               </div>
             </div>
           </div>
