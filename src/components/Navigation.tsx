@@ -49,7 +49,7 @@ const Navigation = () => {
             : "bg-background"
         }`}
       >
-        <div className="container flex h-14 md:h-20 items-center justify-between px-3 md:px-6 lg:px-8">
+        <div className="container flex h-16 md:h-24 items-center justify-between px-3 md:px-6 lg:px-8">
           {/* Mobile menu toggle */}
           <button
             className="lg:hidden p-2 -ml-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
