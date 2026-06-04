@@ -59,11 +59,8 @@ const Navigation = () => {
           </button>
 
           {/* Logo */}
-          <Link to="/" className="flex items-center">
-            <span className="text-lg md:text-2xl font-serif font-bold tracking-[0.1em] md:tracking-[0.15em] uppercase text-foreground">
-              BLOOM<span className="text-primary mx-0.5 md:mx-1">&</span>GRACE
-            </span>
-          </Link>
+          <BrandLogo size="md" showTagline={true} />
+
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-8">
