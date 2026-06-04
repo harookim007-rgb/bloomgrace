@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
+import BrandLogo from "@/components/BrandLogo";
 
 const Footer = () => {
   const { t } = useLanguage();
@@ -9,7 +10,7 @@ const Footer = () => {
       <div className="container px-4 md:px-6 lg:px-8 py-10 md:py-20">
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-8">
           <div className="space-y-4 col-span-2 md:col-span-2 lg:col-span-1">
-            <h3 className="text-lg md:text-xl font-serif font-bold tracking-wider uppercase">BLOOM & GRACE</h3>
+            <BrandLogo size="md" showTagline={true} asLink={false} className="items-start" />
             <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{t("footer_desc")}</p>
             <div className="flex gap-4 pt-1">
               {["Instagram", "Facebook", "YouTube"].map(name => (
