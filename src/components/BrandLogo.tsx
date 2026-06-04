@@ -13,9 +13,9 @@ interface BrandLogoProps {
  */
 const BrandLogo = ({ size = "md", showTagline = true, className = "", asLink = true }: BrandLogoProps) => {
   const sizes = {
-    sm: { text: "text-[15px]", mark: 26, tag: "text-[8.5px] tracking-[0.36em]", gap: "gap-2", mt: "mt-1" },
-    md: { text: "text-lg md:text-2xl", mark: 32, tag: "text-[9.5px] md:text-[10.5px] tracking-[0.4em]", gap: "gap-2 md:gap-2.5", mt: "mt-1.5" },
-    lg: { text: "text-2xl md:text-3xl", mark: 42, tag: "text-[11px] tracking-[0.44em]", gap: "gap-3", mt: "mt-2" },
+    sm: { text: "text-[15px]", mark: 32, tag: "text-[8.5px] tracking-[0.36em]", gap: "gap-2", mt: "mt-1" },
+    md: { text: "text-lg md:text-2xl", mark: 40, tag: "text-[9.5px] md:text-[10.5px] tracking-[0.4em]", gap: "gap-2 md:gap-3", mt: "mt-1.5" },
+    lg: { text: "text-2xl md:text-3xl", mark: 52, tag: "text-[11px] tracking-[0.44em]", gap: "gap-3", mt: "mt-2" },
   }[size];
 
   const content = (
