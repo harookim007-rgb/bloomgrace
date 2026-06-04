@@ -134,9 +134,7 @@ const Navigation = () => {
           <div className="absolute inset-0 bg-foreground/30 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
           <div className="absolute left-0 top-0 h-full w-[85vw] max-w-[320px] bg-background shadow-luxury p-6 md:p-8 animate-slide-in overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
             <div className="mb-10">
-              <span className="text-lg font-serif font-bold tracking-[0.15em] uppercase text-foreground">
-                BLOOM<span className="text-primary mx-1">&</span>GRACE
-              </span>
+              <BrandLogo size="sm" showTagline={true} asLink={false} className="items-start" />
             </div>
             <nav className="flex flex-col gap-0">
               {navLinks.map(link => (
