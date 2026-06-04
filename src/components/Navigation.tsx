@@ -8,6 +8,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage, Language } from "@/contexts/LanguageContext";
 import CartDrawer from "@/components/CartDrawer";
+import BrandLogo from "@/components/BrandLogo";
 
 const langLabels: Record<Language, string> = {
   en: "English", ko: "한국어", es: "Español", de: "Deutsch",
