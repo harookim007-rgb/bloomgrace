@@ -8,15 +8,14 @@ interface BrandLogoProps {
 }
 
 /**
- * BLOOM & GRACE — premium K-Beauty brand mark
- * Inspired by line-art heart-flower monograms: a continuous-line heart
- * cradling a blooming lotus, evoking love + Korean floral beauty.
+ * BLOOM & GRACE — K-Beauty brand mark
+ * Simple, graphic: a soft pink heart with a tulip bloom cut out of it.
  */
 const BrandLogo = ({ size = "md", showTagline = true, className = "", asLink = true }: BrandLogoProps) => {
   const sizes = {
-    sm: { text: "text-[15px]", mark: 26, tag: "text-[8.5px] tracking-[0.38em]", gap: "gap-2", mt: "mt-1" },
-    md: { text: "text-lg md:text-2xl", mark: 34, tag: "text-[9.5px] md:text-[10.5px] tracking-[0.42em]", gap: "gap-2 md:gap-3", mt: "mt-1.5" },
-    lg: { text: "text-2xl md:text-3xl", mark: 44, tag: "text-[11px] tracking-[0.46em]", gap: "gap-3", mt: "mt-2" },
+    sm: { text: "text-[15px]", mark: 24, tag: "text-[8.5px] tracking-[0.36em]", gap: "gap-2", mt: "mt-1" },
+    md: { text: "text-lg md:text-2xl", mark: 30, tag: "text-[9.5px] md:text-[10.5px] tracking-[0.4em]", gap: "gap-2 md:gap-2.5", mt: "mt-1.5" },
+    lg: { text: "text-2xl md:text-3xl", mark: 40, tag: "text-[11px] tracking-[0.44em]", gap: "gap-3", mt: "mt-2" },
   }[size];
 
   const content = (
@@ -47,72 +46,47 @@ const BrandLogo = ({ size = "md", showTagline = true, className = "", asLink = t
 };
 
 /**
- * Continuous-line heart embracing a lotus bloom.
- * Drawn with thin elegant strokes — premium / editorial / K-beauty.
+ * Simple pink heart with a tulip silhouette cut out.
+ * Bold, single-color, instantly readable at any size.
  */
-export const BloomMark = ({ size = 34 }: { size?: number }) => {
-  const stroke = "hsl(var(--primary))";
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 64 64"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      className="shrink-0"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      {/* Outer heart — single elegant line */}
-      <path
-        d="M32 54
-           C 14 42, 8 30, 12 20
-           C 15 12, 25 11, 32 19
-           C 39 11, 49 12, 52 20
-           C 56 30, 50 42, 32 54 Z"
-        stroke={stroke}
-        strokeWidth="1.4"
-        fill="none"
-      />
+export const BloomMark = ({ size = 30 }: { size?: number }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 64 64"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+    className="shrink-0"
+  >
+    <defs>
+      <linearGradient id="bg-heart" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="hsl(348 70% 70%)" />
+        <stop offset="100%" stopColor="hsl(348 55% 55%)" />
+      </linearGradient>
+    </defs>
 
-      {/* Inner lotus — three layered petals nested in the heart */}
-      {/* Left outer petal */}
-      <path
-        d="M32 44
-           C 22 40, 19 32, 22 26
-           C 25 22, 30 23, 32 28"
-        stroke={stroke}
-        strokeWidth="1.2"
-        fill="none"
-      />
-      {/* Right outer petal */}
-      <path
-        d="M32 44
-           C 42 40, 45 32, 42 26
-           C 39 22, 34 23, 32 28"
-        stroke={stroke}
-        strokeWidth="1.2"
-        fill="none"
-      />
-      {/* Center petal (the bloom) — closed teardrop */}
-      <path
-        d="M32 42
-           C 27 38, 27 30, 32 24
-           C 37 30, 37 38, 32 42 Z"
-        stroke={stroke}
-        strokeWidth="1.2"
-        fill="hsl(var(--primary) / 0.08)"
-      />
-      {/* Tiny stamen accent */}
-      <path
-        d="M32 34 L 32 28"
-        stroke={stroke}
-        strokeWidth="1"
-      />
-      <circle cx="32" cy="27" r="1" fill={stroke} />
-    </svg>
-  );
-};
+    {/* Solid pink heart, the body of the mark */}
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M32 56 C 10 42, 4 28, 10 18 C 14 11, 24 10, 32 18 C 40 10, 50 11, 54 18 C 60 28, 54 42, 32 56 Z
+         M32 42 C 26 36, 26 28, 32 22 C 38 28, 38 36, 32 42 Z"
+      fill="url(#bg-heart)"
+    />
+
+    {/* Two small leaves under the bloom for the "blooming" feel */}
+    <path
+      d="M28 44 C 24 44, 22 46, 22 49 C 25 49, 27 47, 28 44 Z"
+      fill="hsl(348 70% 70%)"
+      opacity="0.95"
+    />
+    <path
+      d="M36 44 C 40 44, 42 46, 42 49 C 39 49, 37 47, 36 44 Z"
+      fill="hsl(348 70% 70%)"
+      opacity="0.95"
+    />
+  </svg>
+);
 
 export default BrandLogo;
