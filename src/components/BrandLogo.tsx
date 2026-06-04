@@ -8,102 +8,111 @@ interface BrandLogoProps {
 }
 
 /**
- * BLOOM & GRACE brand logo
- * - Custom ornament between BLOOM and GRACE: heart morphing into a blooming flower
- * - Optional tagline "KOREAN COSMETICS" underneath
+ * BLOOM & GRACE — premium K-Beauty brand mark
+ * Inspired by line-art heart-flower monograms: a continuous-line heart
+ * cradling a blooming lotus, evoking love + Korean floral beauty.
  */
 const BrandLogo = ({ size = "md", showTagline = true, className = "", asLink = true }: BrandLogoProps) => {
   const sizes = {
-    sm: { text: "text-base", ornament: 18, tag: "text-[9px] tracking-[0.32em]", gap: "gap-1.5", mt: "mt-0.5" },
-    md: { text: "text-lg md:text-2xl", ornament: 22, tag: "text-[10px] md:text-[11px] tracking-[0.34em]", gap: "gap-2", mt: "mt-1" },
-    lg: { text: "text-2xl md:text-3xl", ornament: 28, tag: "text-xs tracking-[0.38em]", gap: "gap-2.5", mt: "mt-1.5" },
+    sm: { text: "text-[15px]", mark: 26, tag: "text-[8.5px] tracking-[0.38em]", gap: "gap-2", mt: "mt-1" },
+    md: { text: "text-lg md:text-2xl", mark: 34, tag: "text-[9.5px] md:text-[10.5px] tracking-[0.42em]", gap: "gap-2 md:gap-3", mt: "mt-1.5" },
+    lg: { text: "text-2xl md:text-3xl", mark: 44, tag: "text-[11px] tracking-[0.46em]", gap: "gap-3", mt: "mt-2" },
   }[size];
 
   const content = (
     <div className={`inline-flex flex-col items-center ${className}`}>
       <div className={`flex items-center ${sizes.gap}`}>
-        <span className={`${sizes.text} font-serif font-bold tracking-[0.12em] md:tracking-[0.18em] uppercase text-foreground`}>
-          BLOOM
+        <span className={`${sizes.text} font-serif font-semibold tracking-[0.18em] md:tracking-[0.22em] uppercase text-foreground leading-none`}>
+          Bloom
         </span>
-        <BloomMark size={sizes.ornament} />
-        <span className={`${sizes.text} font-serif font-bold tracking-[0.12em] md:tracking-[0.18em] uppercase text-foreground`}>
-          GRACE
+        <BloomMark size={sizes.mark} />
+        <span className={`${sizes.text} font-serif font-semibold tracking-[0.18em] md:tracking-[0.22em] uppercase text-foreground leading-none`}>
+          Grace
         </span>
       </div>
       {showTagline && (
-        <span className={`${sizes.tag} ${sizes.mt} font-sans font-semibold uppercase text-primary/80`}>
-          Korean&nbsp;Cosmetics
+        <span className={`${sizes.tag} ${sizes.mt} font-sans font-semibold uppercase text-primary leading-none`}>
+          K-Beauty&nbsp;Shop
         </span>
       )}
     </div>
   );
 
   if (!asLink) return content;
-  return <Link to="/" aria-label="BLOOM & GRACE — Korean Cosmetics">{content}</Link>;
+  return (
+    <Link to="/" aria-label="BLOOM & GRACE — K-Beauty Shop" className="inline-block">
+      {content}
+    </Link>
+  );
 };
 
 /**
- * Ornamental mark: a heart that opens into a blooming flower.
- * Hand-built SVG so it scales crisply and inherits theme color.
+ * Continuous-line heart embracing a lotus bloom.
+ * Drawn with thin elegant strokes — premium / editorial / K-beauty.
  */
-export const BloomMark = ({ size = 24 }: { size?: number }) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 48 48"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    aria-hidden="true"
-    className="shrink-0"
-  >
-    <defs>
-      <linearGradient id="bg-petal" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.95" />
-        <stop offset="100%" stopColor="hsl(var(--secondary))" stopOpacity="0.9" />
-      </linearGradient>
-      <radialGradient id="bg-center" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stopColor="hsl(var(--primary-soft))" />
-        <stop offset="100%" stopColor="hsl(var(--primary))" />
-      </radialGradient>
-    </defs>
+export const BloomMark = ({ size = 34 }: { size?: number }) => {
+  const stroke = "hsl(var(--primary))";
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 64 64"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      className="shrink-0"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {/* Outer heart — single elegant line */}
+      <path
+        d="M32 54
+           C 14 42, 8 30, 12 20
+           C 15 12, 25 11, 32 19
+           C 39 11, 49 12, 52 20
+           C 56 30, 50 42, 32 54 Z"
+        stroke={stroke}
+        strokeWidth="1.4"
+        fill="none"
+      />
 
-    {/* Four outer petals (rotated hearts forming a flower) */}
-    {[0, 90, 180, 270].map((deg) => (
-      <g key={deg} transform={`rotate(${deg} 24 24)`}>
-        <path
-          d="M24 12 C 20 6, 12 8, 12 16 C 12 21, 18 24, 24 28 C 30 24, 36 21, 36 16 C 36 8, 28 6, 24 12 Z"
-          fill="url(#bg-petal)"
-          opacity="0.55"
-          transform="translate(0 -4) scale(0.55) translate(20 20)"
-        />
-      </g>
-    ))}
-
-    {/* Two diagonal accent petals for depth */}
-    {[45, 135, 225, 315].map((deg) => (
-      <g key={deg} transform={`rotate(${deg} 24 24)`}>
-        <ellipse
-          cx="24"
-          cy="14"
-          rx="3.2"
-          ry="6"
-          fill="hsl(var(--primary))"
-          opacity="0.35"
-        />
-      </g>
-    ))}
-
-    {/* Central heart - the soul of the mark */}
-    <path
-      d="M24 32 C 16 26, 12 21, 14 16.5 C 15.5 13, 19.5 12.5, 22 15 L 24 17 L 26 15 C 28.5 12.5, 32.5 13, 34 16.5 C 36 21, 32 26, 24 32 Z"
-      fill="url(#bg-center)"
-      stroke="hsl(var(--primary))"
-      strokeWidth="0.6"
-    />
-
-    {/* Tiny highlight - the craftsmanship dot */}
-    <circle cx="20" cy="18" r="1.2" fill="hsl(var(--background))" opacity="0.7" />
-  </svg>
-);
+      {/* Inner lotus — three layered petals nested in the heart */}
+      {/* Left outer petal */}
+      <path
+        d="M32 44
+           C 22 40, 19 32, 22 26
+           C 25 22, 30 23, 32 28"
+        stroke={stroke}
+        strokeWidth="1.2"
+        fill="none"
+      />
+      {/* Right outer petal */}
+      <path
+        d="M32 44
+           C 42 40, 45 32, 42 26
+           C 39 22, 34 23, 32 28"
+        stroke={stroke}
+        strokeWidth="1.2"
+        fill="none"
+      />
+      {/* Center petal (the bloom) — closed teardrop */}
+      <path
+        d="M32 42
+           C 27 38, 27 30, 32 24
+           C 37 30, 37 38, 32 42 Z"
+        stroke={stroke}
+        strokeWidth="1.2"
+        fill="hsl(var(--primary) / 0.08)"
+      />
+      {/* Tiny stamen accent */}
+      <path
+        d="M32 34 L 32 28"
+        stroke={stroke}
+        strokeWidth="1"
+      />
+      <circle cx="32" cy="27" r="1" fill={stroke} />
+    </svg>
+  );
+};
 
 export default BrandLogo;
