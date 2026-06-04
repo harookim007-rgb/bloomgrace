@@ -339,10 +339,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
       const today = new Date().toDateString();
       if (dismissed === today) return;
       const visited = sessionStorage.getItem("bloom-consulted");
-      if (!visited) {
-        const timer = setTimeout(() => setShowModal(true), 3000);
-        return () => clearTimeout(timer);
-      }
+      if (!visited) return;
     }
   }, [mode]);
 
