@@ -69,7 +69,7 @@ export const BloomMark = ({ size = 40 }: { size?: number }) => {
         <path
           key={deg}
           d={heart}
-          fill="hsl(var(--primary))"
+          fill="hsl(348 78% 62%)"
           transform={`rotate(${deg})`}
         />
       ))}
