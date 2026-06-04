@@ -49,29 +49,33 @@ const BrandLogo = ({ size = "md", showTagline = true, className = "", asLink = t
  * 5 hearts arranged in a flower shape — pointed tips inward, rounded lobes outward.
  * Pink, solid, instantly legible.
  */
-export const BloomMark = ({ size = 32 }: { size?: number }) => {
-  // One heart pointing UP (tip at top-center near origin, lobes hanging below).
-  // Placed so the tip sits near (0,0) and the heart extends downward.
+export const BloomMark = ({ size = 40 }: { size?: number }) => {
+  // Heart with the dip (between the two lobes) at the origin (0,0),
+  // and the pointed tip extending downward to (0, 22).
+  // When 5 are rotated around origin, dips meet at center,
+  // tips radiate outward — forming a 5-petal flower.
   const heart =
-    "M0 0 C -3 -6, -14 -6, -14 2 C -14 9, -6 14, 0 20 C 6 14, 14 9, 14 2 C 14 -6, 3 -6, 0 0 Z";
+    "M0 0 C -2 -5, -11 -5, -11 3 C -11 9, -5 14, 0 22 C 5 14, 11 9, 11 3 C 11 -5, 2 -5, 0 0 Z";
 
   return (
     <svg
       width={size}
       height={size}
-      viewBox="-40 -40 80 80"
+      viewBox="-24 -24 48 48"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
       className="shrink-0"
     >
-      {[0, 72, 144, 216, 288].map((deg) => (
-        <path
-          key={deg}
-          d={heart}
-          fill="hsl(var(--primary))"
-          transform={`rotate(${deg}) translate(0 -2)`}
-        />
-      ))}
+      <g transform="rotate(180)">
+        {[0, 72, 144, 216, 288].map((deg) => (
+          <path
+            key={deg}
+            d={heart}
+            fill="hsl(var(--primary))"
+            transform={`rotate(${deg})`}
+          />
+        ))}
+      </g>
     </svg>
   );
 };
