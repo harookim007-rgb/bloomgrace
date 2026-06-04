@@ -50,12 +50,11 @@ const BrandLogo = ({ size = "md", showTagline = true, className = "", asLink = t
  * Pink, solid, instantly legible.
  */
 export const BloomMark = ({ size = 40 }: { size?: number }) => {
-  // Heart with the dip (between the two lobes) at the origin (0,0),
-  // and the pointed tip extending downward to (0, 22).
-  // When 5 are rotated around origin, dips meet at center,
-  // tips radiate outward — forming a 5-petal flower.
+  // Heart with the pointed TIP at the origin (0,0) and the two rounded lobes
+  // extending UPWARD (away from center). When 5 are rotated 72° around (0,0),
+  // tips meet at center and lobes radiate outward — a 5-petal heart flower.
   const heart =
-    "M0 0 C -2 -5, -11 -5, -11 3 C -11 9, -5 14, 0 22 C 5 14, 11 9, 11 3 C 11 -5, 2 -5, 0 0 Z";
+    "M0 0 C -3 -6, -12 -10, -12 -16 C -12 -22, -5 -23, 0 -16 C 5 -23, 12 -22, 12 -16 C 12 -10, 3 -6, 0 0 Z";
 
   return (
     <svg
@@ -66,16 +65,14 @@ export const BloomMark = ({ size = 40 }: { size?: number }) => {
       aria-hidden="true"
       className="shrink-0"
     >
-      <g transform="rotate(180)">
-        {[0, 72, 144, 216, 288].map((deg) => (
-          <path
-            key={deg}
-            d={heart}
-            fill="hsl(var(--primary))"
-            transform={`rotate(${deg})`}
-          />
-        ))}
-      </g>
+      {[0, 72, 144, 216, 288].map((deg) => (
+        <path
+          key={deg}
+          d={heart}
+          fill="hsl(var(--primary))"
+          transform={`rotate(${deg})`}
+        />
+      ))}
     </svg>
   );
 };
