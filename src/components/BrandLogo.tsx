@@ -9,13 +9,13 @@ interface BrandLogoProps {
 
 /**
  * BLOOM & GRACE — K-Beauty brand mark
- * 5 pink hearts arranged as a flower (inspired by user reference).
+ * A clean cherry-blossom (sakura) symbol between the wordmark.
  */
 const BrandLogo = ({ size = "md", showTagline = true, className = "", asLink = true }: BrandLogoProps) => {
   const sizes = {
-    sm: { text: "text-[15px]", mark: 32, tag: "text-[8.5px] tracking-[0.36em]", gap: "gap-2", mt: "mt-1" },
-    md: { text: "text-lg md:text-2xl", mark: 40, tag: "text-[9.5px] md:text-[10.5px] tracking-[0.4em]", gap: "gap-2 md:gap-3", mt: "mt-1.5" },
-    lg: { text: "text-2xl md:text-3xl", mark: 52, tag: "text-[11px] tracking-[0.44em]", gap: "gap-3", mt: "mt-2" },
+    sm: { text: "text-[15px]", mark: 22, tag: "text-[8.5px] tracking-[0.36em]", gap: "gap-2", mt: "mt-1" },
+    md: { text: "text-lg md:text-2xl", mark: 28, tag: "text-[9.5px] md:text-[10.5px] tracking-[0.4em]", gap: "gap-2 md:gap-2.5", mt: "mt-1.5" },
+    lg: { text: "text-2xl md:text-3xl", mark: 36, tag: "text-[11px] tracking-[0.44em]", gap: "gap-3", mt: "mt-2" },
   }[size];
 
   const content = (
@@ -24,7 +24,7 @@ const BrandLogo = ({ size = "md", showTagline = true, className = "", asLink = t
         <span className={`${sizes.text} font-serif font-semibold tracking-[0.18em] md:tracking-[0.22em] uppercase text-foreground leading-none`}>
           Bloom
         </span>
-        <BloomMark size={sizes.mark} />
+        <SakuraMark size={sizes.mark} />
         <span className={`${sizes.text} font-serif font-semibold tracking-[0.18em] md:tracking-[0.22em] uppercase text-foreground leading-none`}>
           Grace
         </span>
@@ -46,15 +46,14 @@ const BrandLogo = ({ size = "md", showTagline = true, className = "", asLink = t
 };
 
 /**
- * 5 hearts arranged in a flower shape — pointed tips inward, rounded lobes outward.
- * Pink, solid, instantly legible.
+ * Sakura (cherry blossom) — 5 notched petals around a small golden center.
+ * Notched petal tip is the signature shape of cherry blossom.
  */
-export const BloomMark = ({ size = 40 }: { size?: number }) => {
-  // Heart with the pointed TIP at the origin (0,0) and the two rounded lobes
-  // extending UPWARD (away from center). When 5 are rotated 72° around (0,0),
-  // tips meet at center and lobes radiate outward — a 5-petal heart flower.
-  const heart =
-    "M0 0 C -3 -6, -12 -10, -12 -16 C -12 -22, -5 -23, 0 -16 C 5 -23, 12 -22, 12 -16 C 12 -10, 3 -6, 0 0 Z";
+export const SakuraMark = ({ size = 28 }: { size?: number }) => {
+  // One petal pointing UP from origin: rounded base curves up to a cleft tip.
+  // Tip notch sits around y=-22. Petal width ~14.
+  const petal =
+    "M0 0 C -7 -4, -10 -10, -7 -16 C -5 -20, -2 -21, -1.2 -18.5 L 0 -16 L 1.2 -18.5 C 2 -21, 5 -20, 7 -16 C 10 -10, 7 -4, 0 0 Z";
 
   return (
     <svg
@@ -65,11 +64,34 @@ export const BloomMark = ({ size = 40 }: { size?: number }) => {
       aria-hidden="true"
       className="shrink-0"
     >
+      <defs>
+        <radialGradient id="sakuraPetal" cx="50%" cy="80%" r="80%">
+          <stop offset="0%" stopColor="hsl(348 90% 92%)" />
+          <stop offset="60%" stopColor="hsl(348 78% 78%)" />
+          <stop offset="100%" stopColor="hsl(348 65% 64%)" />
+        </radialGradient>
+      </defs>
       {[0, 72, 144, 216, 288].map((deg) => (
         <path
           key={deg}
-          d={heart}
-          fill="hsl(348 78% 62%)"
+          d={petal}
+          fill="url(#sakuraPetal)"
+          stroke="hsl(348 55% 55%)"
+          strokeWidth="0.6"
+          strokeLinejoin="round"
+          transform={`rotate(${deg})`}
+        />
+      ))}
+      {/* center */}
+      <circle r="2.2" fill="hsl(45 90% 65%)" />
+      {/* tiny stamen dots */}
+      {[0, 72, 144, 216, 288].map((deg) => (
+        <circle
+          key={`s-${deg}`}
+          cx={0}
+          cy={-4.5}
+          r={0.7}
+          fill="hsl(45 80% 55%)"
           transform={`rotate(${deg})`}
         />
       ))}
