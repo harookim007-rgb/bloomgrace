@@ -108,18 +108,18 @@ const Hero = () => {
           style={{ opacity: i === current ? 1 : 0 }}
         >
           <img src={s.image} alt="" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/55 via-foreground/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/65 to-background/10" />
         </div>
       ))}
 
       <div className="relative z-10 h-full flex items-center">
         <div className="container px-4 md:px-8 lg:px-12">
           <div className="max-w-2xl space-y-4 md:space-y-6">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-serif font-bold text-primary-foreground leading-[1.12] whitespace-pre-line drop-shadow-lg">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-serif font-bold text-foreground leading-[1.12] whitespace-pre-line">
               {slide.title}
             </h1>
             {slide.subtitle && (
-              <p className="text-base md:text-lg text-primary-foreground/85 font-sans font-medium leading-relaxed max-w-lg drop-shadow-md">
+              <p className="text-base md:text-lg text-foreground/75 font-sans font-medium leading-relaxed max-w-lg">
                 {slide.subtitle}
               </p>
             )}
@@ -139,7 +139,7 @@ const Hero = () => {
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-4">
           <button
             onClick={() => setCurrent(c => (c - 1 + slides.length) % slides.length)}
-            className="w-11 h-11 flex items-center justify-center text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+            className="w-11 h-11 flex items-center justify-center text-foreground/50 hover:text-foreground transition-colors"
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
@@ -149,14 +149,14 @@ const Hero = () => {
                 key={i}
                 onClick={() => setCurrent(i)}
                 className={`rounded-full transition-all duration-500 ${
-                  i === current ? "w-10 h-2.5 bg-primary" : "w-2.5 h-2.5 bg-primary-foreground/40"
+                  i === current ? "w-10 h-2.5 bg-primary" : "w-2.5 h-2.5 bg-foreground/20"
                 }`}
               />
             ))}
           </div>
           <button
             onClick={() => setCurrent(c => (c + 1) % slides.length)}
-            className="w-11 h-11 flex items-center justify-center text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+            className="w-11 h-11 flex items-center justify-center text-foreground/50 hover:text-foreground transition-colors"
           >
             <ChevronRight className="h-6 w-6" />
           </button>

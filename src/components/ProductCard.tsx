@@ -60,7 +60,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
             </Badge>
           )}
           {isNew && (
-            <Badge className="rounded-sm text-[10px] md:text-[11px] font-sans font-bold px-1.5 md:px-2.5 py-0.5 bg-foreground text-background border-foreground">
+            <Badge className="rounded-sm text-[10px] md:text-[11px] font-sans font-bold px-1.5 md:px-2.5 py-0.5 bg-primary-soft text-primary border-primary/20">
               NEW
             </Badge>
           )}

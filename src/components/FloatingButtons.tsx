@@ -124,7 +124,7 @@ const FloatingButtons = () => {
               aria-label="Personalize Your Routine"
             >
               <div
-                className="relative bg-foreground text-background pl-4 pr-3 py-10 flex flex-col items-center gap-3 shadow-luxury transition-all duration-500 group-hover:pl-5 group-hover:pr-4 group-hover:bg-foreground/90"
+                className="relative border border-primary/15 bg-primary-soft text-primary pl-4 pr-3 py-10 flex flex-col items-center gap-3 shadow-luxury transition-all duration-500 group-hover:pl-5 group-hover:pr-4 group-hover:bg-primary-soft/80"
                 style={{ borderRadius: "8px 0 0 8px" }}
               >
                 <span className="text-xs font-sans font-bold tracking-[0.18em] uppercase leading-tight text-center">{bt.line1}</span>

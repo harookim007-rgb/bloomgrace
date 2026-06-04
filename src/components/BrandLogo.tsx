@@ -7,24 +7,21 @@ interface BrandLogoProps {
   asLink?: boolean;
 }
 
-/**
- * BLOOM & GRACE — K-Beauty wordmark with a unique double-layer sakura mark.
- */
 const BrandLogo = ({ size = "md", showTagline = true, className = "", asLink = true }: BrandLogoProps) => {
   const sizes = {
-    sm: { text: "text-[15px]", mark: 26, tag: "text-[8.5px] tracking-[0.36em]", gap: "gap-2", mt: "mt-1" },
-    md: { text: "text-lg md:text-2xl", mark: 34, tag: "text-[9.5px] md:text-[10.5px] tracking-[0.4em]", gap: "gap-2 md:gap-2.5", mt: "mt-1.5" },
-    lg: { text: "text-2xl md:text-3xl", mark: 44, tag: "text-[11px] tracking-[0.44em]", gap: "gap-3", mt: "mt-2" },
+    sm: { text: "text-[15px]", mark: 20, tag: "text-[8px] tracking-[0.28em]", gap: "gap-2", mt: "mt-1" },
+    md: { text: "text-[18px] md:text-[24px]", mark: 26, tag: "text-[9px] md:text-[10px] tracking-[0.32em]", gap: "gap-2 md:gap-2.5", mt: "mt-1.5" },
+    lg: { text: "text-[28px] md:text-[34px]", mark: 34, tag: "text-[10.5px] tracking-[0.36em]", gap: "gap-3", mt: "mt-2" },
   }[size];
 
   const content = (
     <div className={`inline-flex flex-col items-center ${className}`}>
       <div className={`flex items-center ${sizes.gap}`}>
-        <span className={`${sizes.text} font-serif font-semibold tracking-[0.18em] md:tracking-[0.22em] uppercase text-foreground leading-none`}>
+        <span className={`${sizes.text} font-serif font-semibold tracking-[0.14em] md:tracking-[0.18em] uppercase text-foreground leading-none`}>
           Bloom
         </span>
         <SakuraMark size={sizes.mark} />
-        <span className={`${sizes.text} font-serif font-semibold tracking-[0.18em] md:tracking-[0.22em] uppercase text-foreground leading-none`}>
+        <span className={`${sizes.text} font-serif font-semibold tracking-[0.14em] md:tracking-[0.18em] uppercase text-foreground leading-none`}>
           Grace
         </span>
       </div>
@@ -44,69 +41,49 @@ const BrandLogo = ({ size = "md", showTagline = true, className = "", asLink = t
   );
 };
 
-/**
- * Unique sakura mark — two overlapping 5-petal blossoms (one solid, one rotated outline)
- * with a small gold center. Reads as a cherry-blossom rosette.
- */
 export const SakuraMark = ({ size = 34 }: { size?: number }) => {
-  // Petal with notched (cleft) tip — signature sakura silhouette.
   const petal =
-    "M0 -2 C -6 -5, -10 -11, -8 -16 C -6.5 -19, -3.5 -19.5, -1.5 -17 L 0 -14.5 L 1.5 -17 C 3.5 -19.5, 6.5 -19, 8 -16 C 10 -11, 6 -5, 0 -2 Z";
+    "M0 -2.2 C -4.3 -5.2, -7.4 -10.5, -6.3 -14.8 C -5.5 -18.3, -2.6 -19.5, -0.8 -16.8 L 0 -15.1 L 0.8 -16.8 C 2.6 -19.5, 5.5 -18.3, 6.3 -14.8 C 7.4 -10.5, 4.3 -5.2, 0 -2.2 Z";
 
   return (
     <svg
       width={size}
       height={size}
-      viewBox="-22 -22 44 44"
+      viewBox="-20 -20 40 40"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
       className="shrink-0"
     >
-      <defs>
-        <radialGradient id="sakuraFill" cx="50%" cy="35%" r="75%">
-          <stop offset="0%" stopColor="hsl(348 100% 96%)" />
-          <stop offset="55%" stopColor="hsl(348 82% 80%)" />
-          <stop offset="100%" stopColor="hsl(348 65% 62%)" />
-        </radialGradient>
-      </defs>
-
-      {/* Back layer: rotated outline petals (offset 36°) for depth */}
-      <g opacity="0.55">
-        {[36, 108, 180, 252, 324].map((deg) => (
+      <g opacity="0.12" transform="translate(0 0.9)">
+        {[0, 72, 144, 216, 288].map((deg) => (
           <path
-            key={`b-${deg}`}
+            key={`shadow-${deg}`}
             d={petal}
-            fill="hsl(348 60% 92%)"
-            stroke="hsl(348 55% 60%)"
-            strokeWidth="0.5"
+            fill="hsl(var(--primary))"
             strokeLinejoin="round"
-            transform={`rotate(${deg}) scale(0.85)`}
+            transform={`rotate(${deg})`}
           />
         ))}
       </g>
-
-      {/* Front layer: filled petals */}
       {[0, 72, 144, 216, 288].map((deg) => (
         <path
-          key={`f-${deg}`}
+          key={`petal-${deg}`}
           d={petal}
-          fill="url(#sakuraFill)"
-          stroke="hsl(348 55% 50%)"
-          strokeWidth="0.7"
+          fill="hsl(var(--primary))"
+          stroke="hsl(var(--background))"
+          strokeWidth="0.9"
           strokeLinejoin="round"
           transform={`rotate(${deg})`}
         />
       ))}
-
-      {/* Center: gold pistil with stamen dots */}
-      <circle r="2.4" fill="hsl(45 92% 62%)" stroke="hsl(35 70% 45%)" strokeWidth="0.3" />
-      {[0, 60, 120, 180, 240, 300].map((deg) => (
+      <circle r="2.5" fill="hsl(var(--primary-soft))" stroke="hsl(var(--primary))" strokeWidth="0.7" />
+      {[0, 72, 144, 216, 288].map((deg) => (
         <circle
-          key={`s-${deg}`}
+          key={`center-${deg}`}
           cx={0}
-          cy={-4.8}
-          r={0.7}
-          fill="hsl(40 85% 55%)"
+          cy={-4.1}
+          r={0.55}
+          fill="hsl(var(--background))"
           transform={`rotate(${deg})`}
         />
       ))}
