@@ -129,7 +129,11 @@ const Hero = () => {
         className="pointer-events-none absolute bottom-0 left-0 w-[32%] max-w-[380px] opacity-45 mix-blend-multiply select-none rotate-180"
       />
 
+      <HangulWatermark variant="scattered" />
+      <HangulWatermark variant="side" className="right-4 top-1/2 -translate-y-1/2 hidden md:block" />
+
       <FallingPetals count={26} />
+
 
 
       <div className="relative z-10 h-full flex items-center">
