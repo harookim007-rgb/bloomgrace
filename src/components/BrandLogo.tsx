@@ -20,7 +20,7 @@ const BrandLogo = ({ size = "md", showTagline = true, className = "", asLink = t
       <FloralMark size={sizes.mark} />
       <div className="flex flex-col items-start leading-none">
         <span className={`${sizes.text} font-elegant font-medium tracking-[0.04em] text-foreground leading-[1] whitespace-nowrap`}>
-          Bloom <span className="font-script text-primary text-[1.15em] align-middle px-0.5">&amp;</span> Grace
+          Bloom <span className="text-primary">&amp;</span> Grace
         </span>
         {showTagline && (
           <span className={`${sizes.tag} ${sizes.mt} font-sans font-semibold uppercase text-primary/80 leading-none`}>

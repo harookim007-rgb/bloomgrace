@@ -18,17 +18,20 @@ import Admin from "./pages/Admin";
 import DesignModeOverlay from "./components/design/DesignModeOverlay";
 import NotFound from "./pages/NotFound";
 import FallingPetals from "./components/FallingPetals";
+import ScatteredFlorals from "./components/FloralDecor";
 
 const queryClient = new QueryClient();
 
 const GlobalPetals = () => {
   const { pathname } = useLocation();
-  // Hide on admin to keep the dashboard distraction-free
   if (pathname.startsWith("/admin")) return null;
   return (
-    <div className="pointer-events-none fixed inset-0 z-[5]">
-      <FallingPetals count={14} />
-    </div>
+    <>
+      <ScatteredFlorals count={10} />
+      <div className="pointer-events-none fixed inset-0 z-[5]">
+        <FallingPetals count={14} />
+      </div>
+    </>
   );
 };
 
