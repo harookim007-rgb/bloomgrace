@@ -1,4 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700&family=Pinyon+Script&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+
+.font-script { font-family: 'Pinyon Script', 'Great Vibes', cursive; }
+.font-elegant { font-family: 'Cormorant Garamond', 'Playfair Display', serif; }
+
+@keyframes floralFadeIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: var(--floral-opacity, 0.18); transform: scale(1); }
+}
+.floral-decor {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0;
+  animation: floralFadeIn 2.2s ease-out forwards;
+  z-index: 0;
+}
 
 @tailwind base;
 @tailwind components;
