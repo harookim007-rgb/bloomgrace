@@ -42,11 +42,11 @@ const ScatteredFlorals = ({ count = 9, seed }: ScatteredFloralsProps) => {
     const rand = mulberry32(hashString(key));
     return Array.from({ length: count }).map((_, i) => {
       const asset = ASSETS[Math.floor(rand() * ASSETS.length)];
-      const size = 36 + Math.floor(rand() * 52); // 36–88px
+      const size = 28 + Math.floor(rand() * 38); // 28–66px
       const top = rand() * 100;                  // 0–100 vh
       const left = rand() * 100;                 // 0–100 vw
       const rotate = Math.floor(rand() * 360);
-      const opacity = 0.10 + rand() * 0.14;      // 0.10–0.24
+      const opacity = 0.05 + rand() * 0.08;      // 0.05–0.13
       const delay = Math.floor(rand() * 1400);
       return { id: i, asset, size, top, left, rotate, opacity, delay };
     });
