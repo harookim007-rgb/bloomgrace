@@ -117,7 +117,7 @@ const Hero = () => {
 
 
 
-      <FallingPetals count={26} />
+      <FallingPetals count={10} />
 
 
 
