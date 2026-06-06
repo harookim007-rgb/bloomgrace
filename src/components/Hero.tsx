@@ -111,7 +111,7 @@ const Hero = () => {
           style={{ opacity: i === current ? 1 : 0 }}
         >
           <img src={s.image} alt="" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(var(--sky-soft))]/80 via-background/70 to-[hsl(var(--primary-soft))]/55" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--sky-soft))]/85 via-background/65 to-[hsl(var(--primary-soft))]/70" />
         </div>
       ))}
 
@@ -119,27 +119,30 @@ const Hero = () => {
         src={sakuraCorner}
         alt=""
         aria-hidden="true"
-        className="pointer-events-none absolute top-0 right-0 w-[42%] max-w-[520px] opacity-70 mix-blend-multiply select-none -scale-x-100"
+        className="pointer-events-none absolute top-0 right-0 w-[42%] max-w-[520px] opacity-60 mix-blend-multiply select-none -scale-x-100"
       />
       <img
         src={sakuraCorner}
         alt=""
         aria-hidden="true"
-        className="pointer-events-none absolute bottom-0 left-0 w-[32%] max-w-[380px] opacity-50 mix-blend-multiply select-none rotate-180"
+        className="pointer-events-none absolute bottom-0 left-0 w-[32%] max-w-[380px] opacity-45 mix-blend-multiply select-none rotate-180"
       />
 
-      <FallingPetals count={16} />
+      <FallingPetals count={26} />
 
 
       <div className="relative z-10 h-full flex items-center">
         <div className="container px-4 md:px-8 lg:px-12">
           <div className="max-w-2xl space-y-4 md:space-y-6">
+            <div className="pb-2">
+              <BrandLogo size="md" showTagline={true} asLink={false} className="items-start" />
+            </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-serif font-bold text-foreground leading-[1.12] whitespace-pre-line">
               {slide.title}
             </h1>
             {slide.subtitle && (
               <p className="text-base md:text-lg text-foreground/75 font-sans font-medium leading-relaxed max-w-lg">
-                {slide.subtitle}
+                {slide.subtitle.replace(/,?\s*BLOOM\s*&\s*GRACE/gi, "").replace(/,?\s*Bloom\s*&\s*Grace/gi, "").trim()}
               </p>
             )}
             <div className="flex flex-wrap gap-3 pt-2">
