@@ -134,7 +134,7 @@
 
   body {
     @apply text-foreground font-sans antialiased;
-    background: linear-gradient(180deg, hsl(205 65% 97%) 0%, hsl(340 50% 98%) 40%, hsl(345 45% 98%) 100%);
+    background: linear-gradient(180deg, hsl(38 45% 97%) 0%, hsl(36 30% 98%) 45%, hsl(32 28% 97%) 100%);
     background-attachment: fixed;
     font-size: 16px;
     line-height: 1.7;
