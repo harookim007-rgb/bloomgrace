@@ -3,6 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import FallingPetals from "@/components/FallingPetals";
+import sakuraCorner from "@/assets/sakura-bg-corner.png";
 import heroImg1 from "@/assets/hero-luxury-1.jpg";
 import heroImg2 from "@/assets/hero-luxury-2.jpg";
 import heroImg3 from "@/assets/hero-luxury-3.jpg";
