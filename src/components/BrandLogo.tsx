@@ -18,12 +18,12 @@ const BrandLogo = ({ size = "md", showTagline = true, className = "", asLink = t
   const content = (
     <div className={`inline-flex items-center ${sizes.gap} ${className}`}>
       <FloralMark size={sizes.mark} />
-      <div className="flex flex-col items-start leading-none">
+      <div className="flex flex-col items-center leading-none">
         <span className={`${sizes.text} font-elegant font-medium tracking-[0.04em] text-foreground leading-[1] whitespace-nowrap`}>
           Bloom <span className="text-primary">&amp;</span> Grace
         </span>
         {showTagline && (
-          <span className={`${sizes.tag} ${sizes.mt} font-sans font-semibold uppercase text-primary/80 leading-none`}>
+          <span className={`${sizes.tag} ${sizes.mt} font-sans font-semibold uppercase text-primary/80 leading-none text-center w-full`}>
             K-Beauty&nbsp;Shop
           </span>
         )}
