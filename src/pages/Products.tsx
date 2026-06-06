@@ -61,8 +61,7 @@ const Products = () => {
       <section className="py-8 md:py-16 px-3 md:px-6 lg:px-8">
         <div className="container">
           {/* Header */}
-          <div className="mb-8 md:mb-12 space-y-2">
-            <p className="text-[11px] md:text-xs font-sans tracking-[0.3em] uppercase text-muted-foreground">{t("featured_tagline")}</p>
+          <div className="mb-8 md:mb-12">
             <h1 className="text-2xl md:text-4xl lg:text-5xl font-serif font-light">{t("products_title")}</h1>
           </div>
 
