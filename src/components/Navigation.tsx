@@ -9,6 +9,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage, Language } from "@/contexts/LanguageContext";
 import CartDrawer from "@/components/CartDrawer";
 import BrandLogo from "@/components/BrandLogo";
+import RollingGreeting from "@/components/RollingGreeting";
 
 const langLabels: Record<Language, string> = {
   en: "English", ko: "한국어", es: "Español", de: "Deutsch",
@@ -37,10 +38,9 @@ const Navigation = () => {
 
   return (
     <>
-      {/* Announcement bar */}
-      <div className="border-b border-primary/10 bg-primary-soft text-primary text-[11px] md:text-sm text-center py-2 md:py-3 font-sans font-semibold tracking-[0.08em] md:tracking-[0.1em]">
-        {t("hero_tagline")}
-      </div>
+      {/* Rolling multi-language greeting (iPhone hello style) */}
+      <RollingGreeting />
+
 
       <header
         className={`sticky top-0 z-50 w-full transition-all duration-300 ${
