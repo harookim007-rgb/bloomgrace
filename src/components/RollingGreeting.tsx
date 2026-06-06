@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
 
-// Witty multilingual rolling greeting — always starts in Korean.
+// Multilingual rolling greeting — flag always in front, no trailing emojis.
 const greetings: { lang: string; flag: string; text: string; dir?: "rtl" }[] = [
-  { lang: "ko", flag: "🇰🇷", text: "안녕하세요! 저희는 BLOOM & GRACE 입니다 ✨" },
-  { lang: "en", flag: "🇺🇸", text: "Hello, gorgeous! We're BLOOM & GRACE 🌸" },
-  { lang: "ja", flag: "🇯🇵", text: "こんにちは！BLOOM & GRACE です 🌸" },
-  { lang: "zh", flag: "🇨🇳", text: "你好！我们是 BLOOM & GRACE 💗" },
-  { lang: "es", flag: "🇪🇸", text: "¡Hola, bella! Somos BLOOM & GRACE 💕" },
-  { lang: "fr", flag: "🇫🇷", text: "Bonjour ! Nous sommes BLOOM & GRACE 🌷" },
-  { lang: "de", flag: "🇩🇪", text: "Hallo! Wir sind BLOOM & GRACE 🌺" },
-  { lang: "it", flag: "🇮🇹", text: "Ciao, bella! Siamo BLOOM & GRACE 💐" },
-  { lang: "pt", flag: "🇧🇷", text: "Olá, linda! Somos a BLOOM & GRACE 🌸" },
-  { lang: "ru", flag: "🇷🇺", text: "Привет! Мы — BLOOM & GRACE 🌷" },
-  { lang: "ar", flag: "🇸🇦", text: "مرحباً! نحن BLOOM & GRACE 🌸", dir: "rtl" },
-  { lang: "hi", flag: "🇮🇳", text: "नमस्ते! हम BLOOM & GRACE हैं 🌺" },
-  { lang: "th", flag: "🇹🇭", text: "สวัสดี! เราคือ BLOOM & GRACE 💗" },
-  { lang: "vi", flag: "🇻🇳", text: "Xin chào! Chúng tôi là BLOOM & GRACE 🌸" },
-  { lang: "tr", flag: "🇹🇷", text: "Merhaba güzelim! Biz BLOOM & GRACE 💐" },
-  { lang: "id", flag: "🇮🇩", text: "Halo cantik! Kami BLOOM & GRACE 🌷" },
+  { lang: "ko", flag: "🇰🇷", text: "안녕하세요! 저희는 BLOOM & GRACE 입니다" },
+  { lang: "en", flag: "🇺🇸", text: "Hello, gorgeous! We're BLOOM & GRACE" },
+  { lang: "ja", flag: "🇯🇵", text: "こんにちは！BLOOM & GRACE です" },
+  { lang: "zh", flag: "🇨🇳", text: "你好！我们是 BLOOM & GRACE" },
+  { lang: "es", flag: "🇪🇸", text: "¡Hola, bella! Somos BLOOM & GRACE" },
+  { lang: "fr", flag: "🇫🇷", text: "Bonjour ! Nous sommes BLOOM & GRACE" },
+  { lang: "de", flag: "🇩🇪", text: "Hallo! Wir sind BLOOM & GRACE" },
+  { lang: "it", flag: "🇮🇹", text: "Ciao, bella! Siamo BLOOM & GRACE" },
+  { lang: "pt", flag: "🇧🇷", text: "Olá, linda! Somos a BLOOM & GRACE" },
+  { lang: "ru", flag: "🇷🇺", text: "Привет! Мы — BLOOM & GRACE" },
+  { lang: "ar", flag: "🇸🇦", text: "مرحباً! نحن BLOOM & GRACE", dir: "rtl" },
+  { lang: "hi", flag: "🇮🇳", text: "नमस्ते! हम BLOOM & GRACE हैं" },
+  { lang: "th", flag: "🇹🇭", text: "สวัสดี! เราคือ BLOOM & GRACE" },
+  { lang: "vi", flag: "🇻🇳", text: "Xin chào! Chúng tôi là BLOOM & GRACE" },
+  { lang: "tr", flag: "🇹🇷", text: "Merhaba güzelim! Biz BLOOM & GRACE" },
+  { lang: "id", flag: "🇮🇩", text: "Halo cantik! Kami BLOOM & GRACE" },
 ];
 
 const RollingGreeting = () => {
@@ -31,12 +31,12 @@ const RollingGreeting = () => {
   return (
     <div className="relative overflow-hidden border-b border-primary/15 bg-gradient-to-r from-[hsl(var(--sky-soft))] via-[hsl(var(--primary-soft))] to-[hsl(var(--sky-soft))]">
       <div className="container px-4 py-2.5 md:py-3 flex items-center justify-center">
-        <div className="relative h-6 md:h-7 w-full max-w-[760px] overflow-hidden">
+        <div className="relative h-7 md:h-8 w-full max-w-[760px] overflow-hidden">
           {greetings.map((item, idx) => (
             <p
               key={idx}
               dir={item.dir || "ltr"}
-              className={`absolute inset-0 flex items-center justify-center gap-2 text-center text-[13px] md:text-[15px] font-sans font-semibold tracking-[0.02em] text-foreground/90 transition-all duration-[900ms] ease-out ${
+              className={`absolute inset-0 flex items-center justify-center gap-2 text-center font-script text-[18px] md:text-[22px] leading-none tracking-normal text-foreground/90 transition-all duration-[900ms] ease-out ${
                 idx === i
                   ? "opacity-100 translate-y-0 scale-100"
                   : idx === (i - 1 + greetings.length) % greetings.length
@@ -44,7 +44,7 @@ const RollingGreeting = () => {
                   : "opacity-0 translate-y-4 scale-95"
               }`}
             >
-              <span className="text-base md:text-lg">{item.flag}</span>
+              <span className="text-base md:text-lg leading-none" style={{ fontFamily: '"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif' }}>{item.flag}</span>
               <span>{item.text}</span>
             </p>
           ))}
