@@ -5,37 +5,45 @@ interface FallingPetalsProps {
   className?: string;
 }
 
-const PetalShape = () => (
-  <svg viewBox="-20 -20 40 40" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-    <defs>
-      <radialGradient id="petalGrad" cx="50%" cy="40%" r="60%">
-        <stop offset="0%" stopColor="hsl(348 100% 97%)" />
-        <stop offset="60%" stopColor="hsl(348 80% 88%)" />
-        <stop offset="100%" stopColor="hsl(348 70% 78%)" />
-      </radialGradient>
-    </defs>
-    <path
-      d="M0 14 C -10 10, -14 0, -10 -8 C -6 -14, -2 -16, 0 -14 C 2 -16, 6 -14, 10 -8 C 14 0, 10 10, 0 14 Z"
-      fill="url(#petalGrad)"
-      stroke="hsl(348 60% 70%)"
-      strokeWidth="0.4"
-      strokeOpacity="0.5"
-    />
-  </svg>
-);
+// Soft watercolor sakura petal — no stroke, gradient blush
+const PetalShape = ({ tone = 0 }: { tone?: number }) => {
+  const id = `petalGrad-${tone}`;
+  const stops = [
+    ["348 100% 98%", "345 85% 90%", "345 75% 82%"], // pale blush
+    ["350 95% 97%", "348 80% 88%", "345 70% 80%"], // softer pink
+    ["345 100% 99%", "345 75% 92%", "340 65% 84%"], // whisper pink
+  ][tone % 3];
+  return (
+    <svg viewBox="-20 -20 40 40" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+      <defs>
+        <radialGradient id={id} cx="50%" cy="35%" r="70%">
+          <stop offset="0%" stopColor={`hsl(${stops[0]})`} stopOpacity="0.95" />
+          <stop offset="55%" stopColor={`hsl(${stops[1]})`} stopOpacity="0.85" />
+          <stop offset="100%" stopColor={`hsl(${stops[2]})`} stopOpacity="0.6" />
+        </radialGradient>
+      </defs>
+      <path
+        d="M0 15 C -11 12, -15 2, -11 -7 C -7 -14, -2 -16, 0 -13 C 2 -16, 7 -14, 11 -7 C 15 2, 11 12, 0 15 Z"
+        fill={`url(#${id})`}
+      />
+    </svg>
+  );
+};
 
-const FallingPetals = ({ count = 14, className = "" }: FallingPetalsProps) => {
+const FallingPetals = ({ count = 22, className = "" }: FallingPetalsProps) => {
   const petals = useMemo(
     () =>
       Array.from({ length: count }).map((_, i) => ({
         id: i,
         left: Math.random() * 100,
-        size: 10 + Math.random() * 18,
-        duration: 14 + Math.random() * 14,
-        delay: -Math.random() * 20,
-        sway: 20 + Math.random() * 40,
-        rotateSpeed: 4 + Math.random() * 6,
-        opacity: 0.35 + Math.random() * 0.45,
+        size: 8 + Math.random() * 20,
+        duration: 16 + Math.random() * 18,
+        delay: -Math.random() * 26,
+        sway: -60 + Math.random() * 120,
+        rotateSpeed: 5 + Math.random() * 8,
+        opacity: 0.45 + Math.random() * 0.4,
+        tone: i % 3,
+        blur: Math.random() > 0.6 ? 0.4 : 0,
       })),
     [count]
   );
@@ -54,12 +62,13 @@ const FallingPetals = ({ count = 14, className = "" }: FallingPetalsProps) => {
             width: p.size,
             height: p.size,
             opacity: p.opacity,
+            filter: p.blur ? `blur(${p.blur}px)` : undefined,
             animation: `petal-fall ${p.duration}s linear ${p.delay}s infinite, petal-sway ${p.rotateSpeed}s ease-in-out ${p.delay}s infinite alternate`,
-            // @ts-ignore custom prop
+            // @ts-ignore
             ["--sway" as any]: `${p.sway}px`,
           }}
         >
-          <PetalShape />
+          <PetalShape tone={p.tone} />
         </div>
       ))}
     </div>
