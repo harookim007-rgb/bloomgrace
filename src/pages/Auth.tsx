@@ -155,10 +155,11 @@ const Auth = () => {
       <Navigation />
       <section className="py-16 md:py-24 px-4 flex items-center justify-center min-h-[70dvh]">
         <div className="w-full max-w-md space-y-8">
-          <div className="text-center space-y-3">
-            <h1 className="text-3xl md:text-4xl font-serif font-light">{t("auth_title")}</h1>
-            <p className="text-sm text-muted-foreground font-light">{t("auth_subtitle")}</p>
+          <div className="text-center space-y-3 flex flex-col items-center">
+            <BrandLogo size="lg" showTagline={true} asLink={false} />
+            <p className="text-sm text-muted-foreground font-light pt-2">{t("auth_subtitle")}</p>
           </div>
+
 
           <Tabs defaultValue="login">
             <TabsList className="grid w-full grid-cols-2 mb-8 rounded-none bg-muted/50">
