@@ -110,9 +110,25 @@ const Hero = () => {
           style={{ opacity: i === current ? 1 : 0 }}
         >
           <img src={s.image} alt="" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/65 to-background/10" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(var(--sky-soft))]/80 via-background/70 to-[hsl(var(--primary-soft))]/55" />
         </div>
       ))}
+
+      <img
+        src={sakuraCorner}
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute top-0 right-0 w-[42%] max-w-[520px] opacity-70 mix-blend-multiply select-none -scale-x-100"
+      />
+      <img
+        src={sakuraCorner}
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-0 left-0 w-[32%] max-w-[380px] opacity-50 mix-blend-multiply select-none rotate-180"
+      />
+
+      <FallingPetals count={16} />
+
 
       <div className="relative z-10 h-full flex items-center">
         <div className="container px-4 md:px-8 lg:px-12">
