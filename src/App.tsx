@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import Index from "./pages/Index";
@@ -17,8 +17,20 @@ import CompleteProfile from "./pages/CompleteProfile";
 import Admin from "./pages/Admin";
 import DesignModeOverlay from "./components/design/DesignModeOverlay";
 import NotFound from "./pages/NotFound";
+import FallingPetals from "./components/FallingPetals";
 
 const queryClient = new QueryClient();
+
+const GlobalPetals = () => {
+  const { pathname } = useLocation();
+  // Hide on admin to keep the dashboard distraction-free
+  if (pathname.startsWith("/admin")) return null;
+  return (
+    <div className="pointer-events-none fixed inset-0 z-[5]">
+      <FallingPetals count={14} />
+    </div>
+  );
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -29,6 +41,7 @@ const App = () => (
         <BrowserRouter>
           <AuthProvider>
             <DesignModeOverlay />
+            <GlobalPetals />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/products" element={<Products />} />
