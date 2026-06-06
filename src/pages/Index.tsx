@@ -17,10 +17,8 @@ const Index = () => {
           "linear-gradient(180deg, hsl(var(--sky-soft)) 0%, hsl(var(--background)) 28%, hsl(var(--background)) 70%, hsl(var(--primary-soft)) 100%)",
       }}
     >
-      {/* Page-wide soft falling petals */}
-      <div className="pointer-events-none fixed inset-0 z-[5]">
-        <FallingPetals count={10} />
-      </div>
+      {/* page-wide petals now mounted globally in App.tsx */}
+
 
       <Navigation />
       <Hero />
