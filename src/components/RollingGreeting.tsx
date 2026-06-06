@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Sparkles } from "lucide-react";
 
 // Witty multilingual rolling greeting — always starts in Korean.
 const greetings: { lang: string; flag: string; text: string; dir?: "rtl" }[] = [
@@ -31,8 +30,7 @@ const RollingGreeting = () => {
 
   return (
     <div className="relative overflow-hidden border-b border-primary/15 bg-gradient-to-r from-[hsl(var(--sky-soft))] via-[hsl(var(--primary-soft))] to-[hsl(var(--sky-soft))]">
-      <div className="container px-4 py-2.5 md:py-3 flex items-center justify-center gap-2">
-        <Sparkles className="h-3.5 w-3.5 text-primary shrink-0 animate-pulse" />
+      <div className="container px-4 py-2.5 md:py-3 flex items-center justify-center">
         <div className="relative h-6 md:h-7 w-full max-w-[760px] overflow-hidden">
           {greetings.map((item, idx) => (
             <p
@@ -51,7 +49,6 @@ const RollingGreeting = () => {
             </p>
           ))}
         </div>
-        <Sparkles className="h-3.5 w-3.5 text-primary shrink-0 animate-pulse" />
       </div>
     </div>
   );
