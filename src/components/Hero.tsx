@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import FallingPetals from "@/components/FallingPetals";
 import BrandLogo from "@/components/BrandLogo";
-import FloralDecor from "@/components/FloralDecor";
+
 import heroImg1 from "@/assets/hero-luxury-1.jpg";
 import heroImg2 from "@/assets/hero-luxury-2.jpg";
 import heroImg3 from "@/assets/hero-luxury-3.jpg";
@@ -115,9 +115,6 @@ const Hero = () => {
         </div>
       ))}
 
-      <FloralDecor corner="top-right" size={460} opacity={0.35} delay={200} className="hidden sm:block md:!w-[520px] md:!h-[520px]" />
-      <FloralDecor corner="bottom-left" size={340} opacity={0.28} delay={500} className="hidden sm:block" />
-      <FloralDecor corner="top-left" size={220} opacity={0.22} delay={800} />
 
 
       <FallingPetals count={26} />
