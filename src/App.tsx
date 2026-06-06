@@ -27,9 +27,9 @@ const GlobalPetals = () => {
   if (pathname.startsWith("/admin")) return null;
   return (
     <>
-      <ScatteredFlorals count={10} />
-      <div className="pointer-events-none fixed inset-0 z-[5]">
-        <FallingPetals count={14} />
+      <ScatteredFlorals count={7} />
+      <div className="pointer-events-none fixed inset-0 z-0">
+        <FallingPetals count={8} />
       </div>
     </>
   );
