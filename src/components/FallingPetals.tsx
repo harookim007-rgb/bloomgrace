@@ -30,20 +30,20 @@ const PetalShape = ({ tone = 0 }: { tone?: number }) => {
   );
 };
 
-const FallingPetals = ({ count = 22, className = "" }: FallingPetalsProps) => {
+const FallingPetals = ({ count = 12, className = "" }: FallingPetalsProps) => {
   const petals = useMemo(
     () =>
       Array.from({ length: count }).map((_, i) => ({
         id: i,
         left: Math.random() * 100,
-        size: 8 + Math.random() * 20,
-        duration: 16 + Math.random() * 18,
-        delay: -Math.random() * 26,
-        sway: -60 + Math.random() * 120,
-        rotateSpeed: 5 + Math.random() * 8,
-        opacity: 0.45 + Math.random() * 0.4,
+        size: 6 + Math.random() * 12,
+        duration: 28 + Math.random() * 22,
+        delay: -Math.random() * 40,
+        sway: -40 + Math.random() * 80,
+        rotateSpeed: 8 + Math.random() * 10,
+        opacity: 0.18 + Math.random() * 0.22,
         tone: i % 3,
-        blur: Math.random() > 0.6 ? 0.4 : 0,
+        blur: 0.6 + Math.random() * 0.8,
       })),
     [count]
   );
