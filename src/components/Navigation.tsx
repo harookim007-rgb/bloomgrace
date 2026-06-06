@@ -40,9 +40,7 @@ const Navigation = () => {
     <>
       {/* Rolling multi-language greeting (iPhone hello style) */}
       <RollingGreeting />
-      <div className="hidden">
-        {t("hero_tagline")}
-      </div>
+
 
       <header
         className={`sticky top-0 z-50 w-full transition-all duration-300 ${

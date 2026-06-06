@@ -6,57 +6,57 @@
 
 @layer base {
   :root {
-    --background: 345 55% 97%;
-    --foreground: 340 35% 16%;
+    --background: 340 40% 98%;
+    --foreground: 340 30% 18%;
 
     --card: 0 0% 100%;
-    --card-foreground: 340 35% 16%;
+    --card-foreground: 340 30% 18%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 340 35% 16%;
+    --popover-foreground: 340 30% 18%;
 
-    --primary: 345 70% 68%;
+    --primary: 345 55% 76%;
     --primary-foreground: 0 0% 100%;
-    --primary-soft: 345 80% 93%;
+    --primary-soft: 345 60% 95%;
 
-    /* Sky blue accents */
-    --sky: 205 75% 78%;
-    --sky-soft: 205 80% 94%;
-    --sky-deep: 210 60% 55%;
+    /* Soft sky blue accents */
+    --sky: 205 55% 84%;
+    --sky-soft: 205 65% 96%;
+    --sky-deep: 210 45% 60%;
 
-    --secondary: 205 60% 72%;
+    --secondary: 205 45% 80%;
     --secondary-foreground: 0 0% 100%;
-    --secondary-soft: 205 70% 95%;
+    --secondary-soft: 205 55% 96%;
 
-    --muted: 345 35% 95%;
-    --muted-foreground: 340 18% 40%;
+    --muted: 345 25% 96%;
+    --muted-foreground: 340 15% 45%;
 
-    --accent: 205 70% 92%;
-    --accent-foreground: 210 50% 25%;
+    --accent: 205 55% 95%;
+    --accent-foreground: 210 45% 30%;
 
-    --destructive: 0 72% 50%;
+    --destructive: 0 65% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 345 35% 90%;
-    --input: 345 35% 90%;
-    --ring: 345 65% 65%;
+    --border: 345 25% 92%;
+    --input: 345 25% 92%;
+    --ring: 345 50% 72%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 345 40% 97%;
-    --sidebar-foreground: 340 30% 14%;
-    --sidebar-primary: 345 65% 60%;
+    --sidebar-background: 340 30% 98%;
+    --sidebar-foreground: 340 25% 16%;
+    --sidebar-primary: 345 50% 68%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 205 60% 94%;
-    --sidebar-accent-foreground: 210 50% 25%;
-    --sidebar-border: 345 25% 88%;
-    --sidebar-ring: 345 60% 60%;
+    --sidebar-accent: 205 50% 96%;
+    --sidebar-accent-foreground: 210 45% 30%;
+    --sidebar-border: 345 20% 92%;
+    --sidebar-ring: 345 50% 70%;
 
-    --shadow-soft: 0 2px 16px -2px hsl(345 40% 50% / 0.08);
-    --shadow-elegant: 0 8px 30px -8px hsl(345 50% 45% / 0.15);
-    --shadow-luxury: 0 20px 50px -12px hsl(345 50% 40% / 0.2);
+    --shadow-soft: 0 2px 16px -2px hsl(345 35% 55% / 0.06);
+    --shadow-elegant: 0 8px 30px -8px hsl(345 40% 50% / 0.12);
+    --shadow-luxury: 0 20px 50px -12px hsl(345 40% 45% / 0.16);
 
-    --gradient-sky-pink: linear-gradient(135deg, hsl(205 80% 94%) 0%, hsl(345 70% 96%) 50%, hsl(345 80% 93%) 100%);
+    --gradient-sky-pink: linear-gradient(135deg, hsl(205 65% 96%) 0%, hsl(340 55% 97%) 50%, hsl(345 60% 95%) 100%);
   }
 
   .dark {
@@ -117,8 +117,7 @@
 
   body {
     @apply text-foreground font-sans antialiased;
-    background: linear-gradient(180deg, hsl(205 80% 96%) 0%, hsl(345 65% 97%) 35%, hsl(345 55% 97%) 100%);
-    background-attachment: fixed;
+    background: linear-gradient(180deg, hsl(205 65% 97%) 0%, hsl(340 50% 98%) 40%, hsl(345 45% 98%) 100%);
     font-size: 16px;
     line-height: 1.7;
     font-weight: 400;
