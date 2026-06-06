@@ -108,7 +108,9 @@ const ProductDetail = () => {
                 )}
               </div>
 
-              <p className="text-sm text-muted-foreground font-light leading-relaxed">{product.description}</p>
+              <p className="text-sm text-muted-foreground font-light leading-relaxed">
+                {product.translations?.[language]?.description || product.description}
+              </p>
 
               <p className="text-xs text-muted-foreground">
                 {product.stock > 0 ? `${t("pd_stock")}: ${product.stock}` : <span className="text-destructive">{t("pd_out_of_stock")}</span>}

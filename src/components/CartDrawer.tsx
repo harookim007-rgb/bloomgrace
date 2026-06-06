@@ -7,7 +7,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 const CartDrawer = () => {
   const { items, total, itemCount, updateQuantity, removeItem } = useCart();
-  const { t, formatPrice } = useLanguage();
+  const { t, formatPrice, language } = useLanguage();
+  const productName = (p: any) => p?.translations?.[language]?.name || p?.name || "";
 
   return (
     <Sheet>
@@ -34,11 +35,11 @@ const CartDrawer = () => {
           ) : (
             items.map((item) => (
               <div key={item.id} className="flex gap-4 py-4 border-b border-border">
-                <img src={item.product.image_url || "/placeholder.svg"} alt={item.product.name}
+                <img src={item.product.image_url || "/placeholder.svg"} alt={productName(item.product)}
                   className="w-20 h-24 object-cover bg-muted/30 rounded-sm" />
                 <div className="flex-1 min-w-0 space-y-2">
                   <div className="flex justify-between items-start">
-                    <h4 className="text-sm font-medium leading-snug pr-2">{item.product.name}</h4>
+                    <h4 className="text-sm font-medium leading-snug pr-2">{productName(item.product)}</h4>
                     <button onClick={() => removeItem(item.id)} className="text-muted-foreground hover:text-foreground shrink-0 min-w-[44px] min-h-[44px] flex items-center justify-center">
                       <X className="h-4 w-4" />
                     </button>
