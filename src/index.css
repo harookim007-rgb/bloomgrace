@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700&family=Pinyon+Script&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700&family=Pinyon+Script&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Caveat:wght@500;600;700&family=Nanum+Pen+Script&family=Gaegu:wght@400;700&display=swap');
 
-.font-script { font-family: 'Pinyon Script', 'Great Vibes', cursive; }
+.font-script { font-family: 'Caveat', 'Nanum Pen Script', 'Gaegu', 'Pinyon Script', cursive; }
 .font-elegant { font-family: 'Cormorant Garamond', 'Playfair Display', serif; }
 
 @keyframes floralFadeIn {
