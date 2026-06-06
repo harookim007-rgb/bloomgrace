@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useCart } from "@/hooks/useCart";
 import { useWishlist } from "@/hooks/useWishlist";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { localizeCategory } from "@/lib/categoryI18n";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -28,7 +29,7 @@ const ProductDetail = () => {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const { data } = await supabase.from("products").select("*, categories(name)").eq("slug", slug).single();
+      const { data } = await supabase.from("products").select("*, categories(name, slug)").eq("slug", slug).single();
       setProduct(data);
       if (data) fetchReviews(data.id);
       setIsLoading(false);
@@ -82,11 +83,13 @@ const ProductDetail = () => {
               {product.brand && (
                 <p className="text-[10px] font-sans tracking-[0.3em] uppercase text-muted-foreground">{product.brand}</p>
               )}
-              <h1 className="text-2xl md:text-3xl lg:text-4xl font-serif font-light">{product.name}</h1>
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-serif font-light">
+                {product.translations?.[language]?.name || product.name}
+              </h1>
 
               {product.categories?.name && (
                 <span className="inline-block text-[10px] font-sans tracking-[0.15em] uppercase border border-border px-3 py-1">
-                  {product.categories.name}
+                  {localizeCategory(product.categories, t)}
                 </span>
               )}
 
@@ -105,7 +108,9 @@ const ProductDetail = () => {
                 )}
               </div>
 
-              <p className="text-sm text-muted-foreground font-light leading-relaxed">{product.description}</p>
+              <p className="text-sm text-muted-foreground font-light leading-relaxed">
+                {product.translations?.[language]?.description || product.description}
+              </p>
 
               <p className="text-xs text-muted-foreground">
                 {product.stock > 0 ? `${t("pd_stock")}: ${product.stock}` : <span className="text-destructive">{t("pd_out_of_stock")}</span>}
