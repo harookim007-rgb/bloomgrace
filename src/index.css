@@ -147,6 +147,20 @@
   }
 }
 
+@keyframes petal-fall {
+  0% {
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate3d(var(--sway, 30px), 110vh, 0) rotate(540deg);
+  }
+}
+
+@keyframes petal-sway {
+  0% { margin-left: 0; }
+  100% { margin-left: var(--sway, 30px); }
+}
+
 /* WebView / KakaoTalk compatibility */
 @supports (-webkit-touch-callout: none) {
   .h-screen, [style*="100vh"] {
