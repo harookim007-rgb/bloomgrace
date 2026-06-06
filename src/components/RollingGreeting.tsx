@@ -36,7 +36,7 @@ const RollingGreeting = () => {
             <p
               key={idx}
               dir={item.dir || "ltr"}
-              className={`absolute inset-0 flex items-center justify-center gap-2 text-center font-script text-[18px] md:text-[22px] leading-none tracking-normal text-foreground/90 transition-all duration-[900ms] ease-out ${
+              className={`absolute inset-0 flex items-center justify-center gap-2 text-center font-sans font-medium text-[14px] md:text-[16px] leading-none tracking-[0.01em] text-foreground/85 transition-all duration-[900ms] ease-out ${
                 idx === i
                   ? "opacity-100 translate-y-0 scale-100"
                   : idx === (i - 1 + greetings.length) % greetings.length
