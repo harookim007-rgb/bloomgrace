@@ -304,6 +304,9 @@ export type Database = {
           shipping_address: Json | null
           status: string
           total: number
+          tracking_carrier: string | null
+          tracking_number: string | null
+          tracking_url: string | null
           updated_at: string
           user_id: string
         }
@@ -316,6 +319,9 @@ export type Database = {
           shipping_address?: Json | null
           status?: string
           total?: number
+          tracking_carrier?: string | null
+          tracking_number?: string | null
+          tracking_url?: string | null
           updated_at?: string
           user_id: string
         }
@@ -328,6 +334,9 @@ export type Database = {
           shipping_address?: Json | null
           status?: string
           total?: number
+          tracking_carrier?: string | null
+          tracking_number?: string | null
+          tracking_url?: string | null
           updated_at?: string
           user_id?: string
         }
