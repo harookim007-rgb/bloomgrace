@@ -64,6 +64,7 @@ const AdminCustomers = () => {
             <TableHeader>
               <TableRow>
                 <TableHead>고객명</TableHead>
+                <TableHead>가입방법</TableHead>
                 <TableHead>전화번호</TableHead>
                 <TableHead>가입일</TableHead>
                 <TableHead>주문 수</TableHead>
@@ -75,10 +76,19 @@ const AdminCustomers = () => {
             <TableBody>
               {filtered.map(p => {
                 const stats = getCustomerStats(p.user_id);
+                const provider = p.auth_provider || "email";
                 return (
                   <TableRow key={p.id}>
                     <TableCell className="font-medium">{p.display_name || "이름 없음"}</TableCell>
-                    <TableCell className="text-sm">{p.phone || "-"}</TableCell>
+                    <TableCell>
+                      <Badge variant={provider === "google" ? "default" : "outline"} className="text-[10px] uppercase">
+                        {provider}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-sm">
+                      {p.phone || "-"}
+                      {p.phone_verified && <span className="ml-1 text-green-600 text-xs">✓</span>}
+                    </TableCell>
                     <TableCell className="text-sm">{new Date(p.created_at).toLocaleDateString("ko-KR")}</TableCell>
                     <TableCell><Badge variant="secondary">{stats.orderCount}건</Badge></TableCell>
                     <TableCell className="font-medium">{stats.totalSpent.toLocaleString()}원</TableCell>
@@ -92,7 +102,7 @@ const AdminCustomers = () => {
                 );
               })}
               {filtered.length === 0 && (
-                <TableRow><TableCell colSpan={7} className="text-center py-8 text-muted-foreground">고객이 없습니다.</TableCell></TableRow>
+                <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">고객이 없습니다.</TableCell></TableRow>
               )}
             </TableBody>
           </Table>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminDashboard from "@/components/admin/AdminDashboard";
 import AdminProducts from "@/components/admin/AdminProducts";
@@ -11,6 +12,7 @@ import AdminCoupons from "@/components/admin/AdminCoupons";
 import AdminBanners from "@/components/admin/AdminBanners";
 import AdminReviews from "@/components/admin/AdminReviews";
 import AdminSettings from "@/components/admin/AdminSettings";
+import AdminOtpGate from "@/components/admin/AdminOtpGate";
 
 export type AdminTab = 
   | "dashboard" | "products" | "categories" | "orders" 
@@ -21,6 +23,8 @@ const Admin = () => {
   const { user, isAdmin, isLoading: authLoading } = useAuth();
   const [activeTab, setActiveTab] = useState<AdminTab>("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [isMaster, setIsMaster] = useState<boolean | null>(null);
+  const [otpVerified, setOtpVerified] = useState(false);
 
   useEffect(() => {
     if (!authLoading && (!user || !isAdmin)) {
@@ -28,8 +32,16 @@ const Admin = () => {
     }
   }, [user, isAdmin, authLoading, navigate]);
 
-  if (authLoading) return <div className="min-h-screen flex items-center justify-center text-muted-foreground">로딩 중...</div>;
+  useEffect(() => {
+    if (!user) return;
+    setOtpVerified(sessionStorage.getItem("admin_otp_verified") === "1");
+    supabase.from("user_roles").select("role").eq("user_id", user.id).eq("role", "master_admin").maybeSingle()
+      .then(({ data }) => setIsMaster(!!data));
+  }, [user]);
+
+  if (authLoading || isMaster === null) return <div className="min-h-screen flex items-center justify-center text-muted-foreground">로딩 중...</div>;
   if (!isAdmin) return null;
+  if (isMaster && !otpVerified) return <AdminOtpGate onVerified={() => setOtpVerified(true)} />;
 
   const renderContent = () => {
     switch (activeTab) {

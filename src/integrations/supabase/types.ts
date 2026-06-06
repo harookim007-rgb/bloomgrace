@@ -333,6 +333,42 @@ export type Database = {
         }
         Relationships: []
       }
+      otp_codes: {
+        Row: {
+          attempts: number
+          code: string
+          consumed: boolean
+          created_at: string
+          expires_at: string
+          id: string
+          phone: string
+          purpose: string
+          user_id: string | null
+        }
+        Insert: {
+          attempts?: number
+          code: string
+          consumed?: boolean
+          created_at?: string
+          expires_at?: string
+          id?: string
+          phone: string
+          purpose: string
+          user_id?: string | null
+        }
+        Update: {
+          attempts?: number
+          code?: string
+          consumed?: boolean
+          created_at?: string
+          expires_at?: string
+          id?: string
+          phone?: string
+          purpose?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       products: {
         Row: {
           brand: string | null
@@ -409,29 +445,35 @@ export type Database = {
       }
       profiles: {
         Row: {
+          auth_provider: string
           avatar_url: string | null
           created_at: string
           display_name: string | null
           id: string
           phone: string | null
+          phone_verified: boolean
           updated_at: string
           user_id: string
         }
         Insert: {
+          auth_provider?: string
           avatar_url?: string | null
           created_at?: string
           display_name?: string | null
           id?: string
           phone?: string | null
+          phone_verified?: boolean
           updated_at?: string
           user_id: string
         }
         Update: {
+          auth_provider?: string
           avatar_url?: string | null
           created_at?: string
           display_name?: string | null
           id?: string
           phone?: string | null
+          phone_verified?: boolean
           updated_at?: string
           user_id?: string
         }
@@ -536,7 +578,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "admin" | "moderator" | "user"
+      app_role: "admin" | "moderator" | "user" | "master_admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -664,7 +706,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "moderator", "user"],
+      app_role: ["admin", "moderator", "user", "master_admin"],
     },
   },
 } as const
