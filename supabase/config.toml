@@ -1,1 +1,4 @@
 project_id = "czxbhekqqqvwzapkuuwv"
+
+[functions.grant-admin]
+verify_jwt = false
