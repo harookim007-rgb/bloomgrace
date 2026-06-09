@@ -8,6 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Plus, Pencil, Trash2, GripVertical, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
+import ImageUploader from "./ImageUploader";
 
 const emptyForm = { title: "", subtitle: "", image_url: "", link_url: "", is_active: true, sort_order: "0", starts_at: "", expires_at: "" };
 
@@ -82,12 +83,18 @@ const AdminBanners = () => {
             <div className="space-y-4">
               <div><Label>제목 *</Label><Input value={form.title} onChange={e => setForm({...form, title: e.target.value})} /></div>
               <div><Label>부제</Label><Input value={form.subtitle} onChange={e => setForm({...form, subtitle: e.target.value})} /></div>
-              <div><Label>이미지 URL</Label><Input value={form.image_url} onChange={e => setForm({...form, image_url: e.target.value})} /></div>
-              {form.image_url && (
-                <div><Label className="text-xs text-muted-foreground">미리보기</Label>
-                  <img src={form.image_url} alt="preview" className="w-full h-32 object-cover rounded-lg mt-1" onError={e => (e.currentTarget.style.display='none')} />
-                </div>
-              )}
+              <div>
+                <Label>배너 이미지 (16:9 자동 크롭, 자동 크기 조정)</Label>
+                <ImageUploader
+                  value={form.image_url}
+                  onChange={(url) => setForm({...form, image_url: url})}
+                  folder="banners"
+                  maxWidth={1920}
+                  maxHeight={1080}
+                  aspect="wide"
+                  label="배너 이미지"
+                />
+              </div>
               <div><Label>링크 URL</Label><Input value={form.link_url} onChange={e => setForm({...form, link_url: e.target.value})} placeholder="/products" /></div>
               <div><Label>정렬 순서</Label><Input type="number" value={form.sort_order} onChange={e => setForm({...form, sort_order: e.target.value})} /></div>
               <div className="grid grid-cols-2 gap-4">

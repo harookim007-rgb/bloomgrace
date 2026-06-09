@@ -397,6 +397,7 @@ export type Database = {
           slug: string
           stock: number
           tags: string[] | null
+          thumbnail_url: string | null
           translations: Json | null
           updated_at: string
         }
@@ -418,6 +419,7 @@ export type Database = {
           slug: string
           stock?: number
           tags?: string[] | null
+          thumbnail_url?: string | null
           translations?: Json | null
           updated_at?: string
         }
@@ -439,6 +441,7 @@ export type Database = {
           slug?: string
           stock?: number
           tags?: string[] | null
+          thumbnail_url?: string | null
           translations?: Json | null
           updated_at?: string
         }
