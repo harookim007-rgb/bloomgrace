@@ -202,7 +202,7 @@ CREATE TABLE public.coupons (
 );
 ALTER TABLE public.coupons ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Active coupons viewable by authenticated" ON public.coupons FOR SELECT TO authenticated USING (is_active = true);
-CREATE POLICY "Admins manage coupons" ON public.coupons FOR ALL USING (public.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Admins manage couponsa" ON public.coupons FOR ALL USING (public.has_role(auth.uid(), 'admin'));
 
 -- Banners table (for promotions/events)
 CREATE TABLE public.banners (
