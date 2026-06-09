@@ -294,7 +294,7 @@ const AdminProducts = () => {
                 <TableRow key={p.id} className={selectedIds.has(p.id) ? "bg-primary/5" : ""}>
                   <TableCell><input type="checkbox" checked={selectedIds.has(p.id)} onChange={() => toggleSelect(p.id)} /></TableCell>
                   <TableCell>
-                    {p.image_url ? <img src={p.image_url} className="w-12 h-12 object-cover rounded" /> : <div className="w-12 h-12 bg-muted rounded" />}
+                    {(p.thumbnail_url || p.image_url) ? <img src={p.thumbnail_url || p.image_url} className="w-12 h-12 object-cover rounded" /> : <div className="w-12 h-12 bg-muted rounded" />}
                   </TableCell>
                   <TableCell>
                     <p className="font-medium text-sm">{p.name}</p>

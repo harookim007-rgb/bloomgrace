@@ -13,6 +13,7 @@ interface ProductCardProps {
     price: number;
     original_price: number | null;
     image_url: string | null;
+    thumbnail_url?: string | null;
     brand: string | null;
     rating: number | null;
     review_count: number | null;
@@ -45,7 +46,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       <div className="relative aspect-square overflow-hidden bg-muted/30 mb-2.5 md:mb-4 rounded-sm">
         <Link to={`/products/${product.slug}`}>
           <img
-            src={product.image_url || "/placeholder.svg"}
+            src={product.thumbnail_url || product.image_url || "/placeholder.svg"}
             alt={translatedName}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             loading="lazy"
