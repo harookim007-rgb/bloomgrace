@@ -10,25 +10,108 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Pencil, Trash2, Search, Download, Upload, Copy, X } from "lucide-react";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Plus, Pencil, Trash2, Search, Copy, X, ArrowUp, ArrowDown, Eye } from "lucide-react";
 import { toast } from "sonner";
 import ImageUploader from "./ImageUploader";
+import ProductView from "@/components/ProductView";
 
-const emptyForm = {
-  name: "", slug: "", description: "", price: "", original_price: "", category_id: "",
-  brand: "", image_url: "", thumbnail_url: "", images: [] as string[], stock: "0", is_active: true, is_featured: false, tags: ""
+type DescPos = "none" | "top" | "bottom" | "both";
+
+interface FormState {
+  name: string;
+  slug: string;
+  description: string;
+  description_top: string;
+  description_bottom: string;
+  description_position: DescPos;
+  image_alt: string;
+  price: string;
+  original_price: string;
+  category_id: string;
+  brand: string;
+  image_url: string;        // 대표 이미지
+  images: string[];         // 추가 이미지
+  detail_images: string[];  // 상세 이미지
+  stock: string;
+  is_active: boolean;
+  is_featured: boolean;
+  tags: string;
+}
+
+const emptyForm: FormState = {
+  name: "", slug: "", description: "", description_top: "", description_bottom: "",
+  description_position: "none", image_alt: "",
+  price: "", original_price: "", category_id: "", brand: "",
+  image_url: "", images: [], detail_images: [],
+  stock: "0", is_active: true, is_featured: false, tags: "",
+};
+
+// Sortable image list with up/down/delete
+const SortableImages = ({
+  images, onChange, folder, aspect = "free", label,
+}: {
+  images: string[];
+  onChange: (next: string[]) => void;
+  folder: string;
+  aspect?: "square" | "wide" | "free";
+  label: string;
+}) => {
+  const move = (i: number, dir: -1 | 1) => {
+    const j = i + dir;
+    if (j < 0 || j >= images.length) return;
+    const next = [...images];
+    [next[i], next[j]] = [next[j], next[i]];
+    onChange(next);
+  };
+  const remove = (i: number) => onChange(images.filter((_, idx) => idx !== i));
+
+  return (
+    <div className="space-y-3">
+      {images.length > 0 && (
+        <div className="space-y-2">
+          {images.map((url, i) => (
+            <div key={i} className="flex items-center gap-2 p-2 border rounded">
+              <span className="text-xs font-mono w-6 text-center text-muted-foreground">{i + 1}</span>
+              <img src={url} className="w-16 h-16 object-cover rounded border" alt="" />
+              <div className="flex-1 truncate text-xs text-muted-foreground">{url.split("/").pop()}</div>
+              <Button type="button" size="icon" variant="ghost" disabled={i === 0} onClick={() => move(i, -1)} title="위로">
+                <ArrowUp className="h-4 w-4" />
+              </Button>
+              <Button type="button" size="icon" variant="ghost" disabled={i === images.length - 1} onClick={() => move(i, 1)} title="아래로">
+                <ArrowDown className="h-4 w-4" />
+              </Button>
+              <Button type="button" size="icon" variant="ghost" className="text-destructive" onClick={() => remove(i)} title="삭제">
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          ))}
+        </div>
+      )}
+      <ImageUploader
+        value=""
+        onChange={(url) => url && onChange([...images, url])}
+        folder={folder}
+        aspect={aspect}
+        maxWidth={aspect === "free" ? 1600 : 1600}
+        maxHeight={aspect === "free" ? 4000 : 1600}
+        label={label}
+      />
+    </div>
+  );
 };
 
 const AdminProducts = () => {
   const [products, setProducts] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
-  const [form, setForm] = useState(emptyForm);
+  const [form, setForm] = useState<FormState>(emptyForm);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [filterCategory, setFilterCategory] = useState("all");
   const [filterStatus, setFilterStatus] = useState("all");
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [activeTab, setActiveTab] = useState<"info" | "images" | "description" | "preview">("info");
 
   useEffect(() => { fetchData(); }, []);
 
@@ -41,18 +124,35 @@ const AdminProducts = () => {
     setCategories(c.data || []);
   };
 
+  const validateForm = (): string | null => {
+    if (!form.name.trim()) return "상품명을 입력해주세요.";
+    if (!form.image_url) return "대표 이미지는 필수입니다. 1장 등록해주세요.";
+    if (!form.price || isNaN(parseFloat(form.price))) return "판매가를 입력해주세요.";
+    return null;
+  };
+
   const save = async () => {
+    const err = validateForm();
+    if (err) { toast.error(err); return; }
     const slug = form.slug || form.name.toLowerCase().replace(/[^a-z0-9가-힣]+/g, "-").replace(/-+/g, "-");
     const payload = {
-      name: form.name, slug, description: form.description,
+      name: form.name,
+      slug,
+      description: form.description,
+      description_top: form.description_top || null,
+      description_bottom: form.description_bottom || null,
+      description_position: form.description_position,
+      image_alt: form.image_alt || null,
       price: parseFloat(form.price) || 0,
       original_price: form.original_price ? parseFloat(form.original_price) : null,
       stock: parseInt(form.stock) || 0,
       category_id: form.category_id || null,
       brand: form.brand || null,
       image_url: form.image_url || null,
-      thumbnail_url: form.thumbnail_url || null,
-      images: form.images || [],
+      // keep thumbnail_url in sync with main image for backwards compatibility
+      thumbnail_url: form.image_url || null,
+      images: (form.images || []).filter((u) => u && u !== form.image_url),
+      detail_images: form.detail_images || [],
       is_active: form.is_active,
       is_featured: form.is_featured,
       tags: form.tags ? form.tags.split(",").map(t => t.trim()).filter(Boolean) : [],
@@ -71,31 +171,40 @@ const AdminProducts = () => {
     fetchData();
   };
 
-  const resetForm = () => { setForm(emptyForm); setEditingId(null); setDialogOpen(false); };
+  const resetForm = () => { setForm(emptyForm); setEditingId(null); setDialogOpen(false); setActiveTab("info"); };
+
+  const loadProduct = (p: any, asCopy = false): FormState => ({
+    name: asCopy ? p.name + " (복사)" : p.name,
+    slug: asCopy ? "" : p.slug,
+    description: p.description || "",
+    description_top: p.description_top || "",
+    description_bottom: p.description_bottom || "",
+    description_position: (p.description_position as DescPos) || "none",
+    image_alt: p.image_alt || "",
+    price: String(p.price),
+    original_price: p.original_price ? String(p.original_price) : "",
+    category_id: p.category_id || "",
+    brand: p.brand || "",
+    image_url: p.image_url || "",
+    images: (p.images || []).filter((u: string) => u && u !== p.image_url),
+    detail_images: p.detail_images || [],
+    stock: String(p.stock),
+    is_active: asCopy ? false : p.is_active,
+    is_featured: asCopy ? false : p.is_featured,
+    tags: (p.tags || []).join(", "),
+  });
 
   const editProduct = (p: any) => {
-    setForm({
-      name: p.name, slug: p.slug, description: p.description || "",
-      price: String(p.price), original_price: p.original_price ? String(p.original_price) : "",
-      category_id: p.category_id || "", brand: p.brand || "", image_url: p.image_url || "",
-      thumbnail_url: p.thumbnail_url || "", images: p.images || [],
-      stock: String(p.stock), is_active: p.is_active, is_featured: p.is_featured,
-      tags: (p.tags || []).join(", "),
-    });
+    setForm(loadProduct(p, false));
     setEditingId(p.id);
+    setActiveTab("info");
     setDialogOpen(true);
   };
 
   const duplicateProduct = (p: any) => {
-    setForm({
-      name: p.name + " (복사)", slug: "", description: p.description || "",
-      price: String(p.price), original_price: p.original_price ? String(p.original_price) : "",
-      category_id: p.category_id || "", brand: p.brand || "", image_url: p.image_url || "",
-      thumbnail_url: p.thumbnail_url || "", images: p.images || [],
-      stock: String(p.stock), is_active: false, is_featured: false,
-      tags: (p.tags || []).join(", "),
-    });
+    setForm(loadProduct(p, true));
     setEditingId(null);
+    setActiveTab("info");
     setDialogOpen(true);
   };
 
@@ -147,6 +256,24 @@ const AdminProducts = () => {
     return true;
   });
 
+  // Build preview product object from form
+  const previewProduct = {
+    name: form.name || "(상품명 없음)",
+    brand: form.brand,
+    price: parseFloat(form.price) || 0,
+    original_price: form.original_price ? parseFloat(form.original_price) : null,
+    image_url: form.image_url,
+    images: form.images,
+    detail_images: form.detail_images,
+    description: form.description,
+    description_top: form.description_top,
+    description_bottom: form.description_bottom,
+    description_position: form.description_position,
+    image_alt: form.image_alt,
+    stock: parseInt(form.stock) || 0,
+    categories: categories.find(c => c.id === form.category_id) || null,
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -158,80 +285,161 @@ const AdminProducts = () => {
           <DialogTrigger asChild>
             <Button className="gap-2" onClick={resetForm}><Plus className="h-4 w-4" />상품 추가</Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader><DialogTitle>{editingId ? "상품 수정" : "새 상품 등록"}</DialogTitle></DialogHeader>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="col-span-2"><Label>상품명 *</Label><Input value={form.name} onChange={e => setForm({...form, name: e.target.value})} placeholder="상품명을 입력하세요" /></div>
-              <div><Label>슬러그 (자동 생성)</Label><Input value={form.slug} onChange={e => setForm({...form, slug: e.target.value})} placeholder="auto-generated" /></div>
-              <div><Label>브랜드</Label><Input value={form.brand} onChange={e => setForm({...form, brand: e.target.value})} /></div>
-              <div><Label>판매가 (원) *</Label><Input type="number" value={form.price} onChange={e => setForm({...form, price: e.target.value})} /></div>
-              <div><Label>정가 (원)</Label><Input type="number" value={form.original_price} onChange={e => setForm({...form, original_price: e.target.value})} /></div>
-              <div><Label>카테고리</Label>
-                <Select value={form.category_id} onValueChange={v => setForm({...form, category_id: v})}>
-                  <SelectTrigger><SelectValue placeholder="선택" /></SelectTrigger>
-                  <SelectContent>{categories.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}</SelectContent>
-                </Select>
-              </div>
-              <div><Label>재고</Label><Input type="number" value={form.stock} onChange={e => setForm({...form, stock: e.target.value})} /></div>
-              <div className="col-span-2">
-                <Label>대표 이미지 (정사각형 자동 크롭, 자동 크기 조정)</Label>
-                <ImageUploader
-                  value={form.image_url}
-                  onChange={(url) => setForm({...form, image_url: url})}
-                  folder="products"
-                  maxWidth={1200}
-                  maxHeight={1200}
-                  aspect="square"
-                  label="대표 이미지"
-                />
-              </div>
-              <div className="col-span-2">
-                <Label>썸네일 이미지 (목록용, 비워두면 대표 이미지 사용)</Label>
-                <ImageUploader
-                  value={form.thumbnail_url}
-                  onChange={(url) => setForm({...form, thumbnail_url: url})}
-                  folder="thumbnails"
-                  maxWidth={600}
-                  maxHeight={600}
-                  aspect="square"
-                  label="썸네일"
-                />
-              </div>
-              <div className="col-span-2">
-                <Label>추가 이미지 ({form.images.length}장)</Label>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {form.images.map((url, idx) => (
-                    <div key={idx} className="relative">
-                      <img src={url} className="w-20 h-20 object-cover rounded border" />
-                      <button
-                        type="button"
-                        onClick={() => setForm({...form, images: form.images.filter((_, i) => i !== idx)})}
-                        className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs"
-                      >
-                        <X className="h-3 w-3" />
-                      </button>
-                    </div>
-                  ))}
+          <DialogContent className="max-w-4xl max-h-[92vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>{editingId ? "상품 수정" : "새 상품 등록"}</DialogTitle>
+            </DialogHeader>
+
+            <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as any)} className="w-full">
+              <TabsList className="grid grid-cols-4 w-full">
+                <TabsTrigger value="info">기본 정보</TabsTrigger>
+                <TabsTrigger value="images">이미지 관리</TabsTrigger>
+                <TabsTrigger value="description">상품 설명</TabsTrigger>
+                <TabsTrigger value="preview" className="gap-1"><Eye className="h-3 w-3" />미리보기</TabsTrigger>
+              </TabsList>
+
+              {/* INFO */}
+              <TabsContent value="info" className="mt-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="col-span-2"><Label>상품명 *</Label><Input value={form.name} onChange={e => setForm({...form, name: e.target.value})} placeholder="상품명을 입력하세요" /></div>
+                  <div><Label>슬러그 (자동 생성)</Label><Input value={form.slug} onChange={e => setForm({...form, slug: e.target.value})} placeholder="auto-generated" /></div>
+                  <div><Label>브랜드</Label><Input value={form.brand} onChange={e => setForm({...form, brand: e.target.value})} /></div>
+                  <div><Label>판매가 (원) *</Label><Input type="number" value={form.price} onChange={e => setForm({...form, price: e.target.value})} /></div>
+                  <div><Label>정가 (원)</Label><Input type="number" value={form.original_price} onChange={e => setForm({...form, original_price: e.target.value})} /></div>
+                  <div><Label>카테고리</Label>
+                    <Select value={form.category_id} onValueChange={v => setForm({...form, category_id: v})}>
+                      <SelectTrigger><SelectValue placeholder="선택" /></SelectTrigger>
+                      <SelectContent>{categories.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}</SelectContent>
+                    </Select>
+                  </div>
+                  <div><Label>재고</Label><Input type="number" value={form.stock} onChange={e => setForm({...form, stock: e.target.value})} /></div>
+                  <div className="col-span-2"><Label>태그 (쉼표 구분)</Label><Input value={form.tags} onChange={e => setForm({...form, tags: e.target.value})} placeholder="신상품, 베스트셀러, 한정판" /></div>
+                  <div className="flex items-center gap-6 col-span-2">
+                    <div className="flex items-center gap-2"><Switch checked={form.is_active} onCheckedChange={v => setForm({...form, is_active: v})} /><Label>판매 활성화</Label></div>
+                    <div className="flex items-center gap-2"><Switch checked={form.is_featured} onCheckedChange={v => setForm({...form, is_featured: v})} /><Label>추천 상품</Label></div>
+                  </div>
                 </div>
-                <div className="mt-2">
+              </TabsContent>
+
+              {/* IMAGES */}
+              <TabsContent value="images" className="mt-4 space-y-8">
+                {/* 대표 */}
+                <section className="border rounded-lg p-4 space-y-2">
+                  <div>
+                    <Label className="text-base">대표 이미지 *</Label>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      상품 리스트 · 검색 · 장바구니 · 상세페이지 첫 화면에 표시되는 이미지입니다. (정사각형 자동 크롭, 1장 필수)
+                    </p>
+                  </div>
                   <ImageUploader
-                    value=""
-                    onChange={(url) => url && setForm({...form, images: [...form.images, url]})}
+                    value={form.image_url}
+                    onChange={(url) => setForm({...form, image_url: url})}
                     folder="products"
                     maxWidth={1200}
                     maxHeight={1200}
                     aspect="square"
+                    label="대표 이미지"
+                  />
+                </section>
+
+                {/* 추가 */}
+                <section className="border rounded-lg p-4 space-y-3">
+                  <div>
+                    <Label className="text-base">추가 이미지 ({form.images.length}장)</Label>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      상세페이지 상단 슬라이더에 대표 이미지 다음으로 노출됩니다. 등록한 순서대로 슬라이드됩니다. (대표 이미지는 자동으로 첫 슬라이드)
+                    </p>
+                  </div>
+                  <SortableImages
+                    images={form.images}
+                    onChange={(next) => setForm({...form, images: next})}
+                    folder="products"
+                    aspect="square"
                     label="추가 이미지"
                   />
+                </section>
+
+                {/* 상세 */}
+                <section className="border rounded-lg p-4 space-y-3">
+                  <div>
+                    <Label className="text-base">상세 이미지 ({form.detail_images.length}장)</Label>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      상품 상세페이지 본문에 위에서 아래로 세로 출력되는 긴 설명 이미지입니다. 세로 비율 자유, 여러 장 등록 가능.
+                    </p>
+                  </div>
+                  <SortableImages
+                    images={form.detail_images}
+                    onChange={(next) => setForm({...form, detail_images: next})}
+                    folder="details"
+                    aspect="free"
+                    label="상세 이미지"
+                  />
+                </section>
+
+                <div>
+                  <Label>이미지 대체 텍스트 (alt)</Label>
+                  <Input value={form.image_alt} onChange={(e) => setForm({...form, image_alt: e.target.value})} placeholder="접근성과 SEO를 위한 이미지 설명" />
                 </div>
+              </TabsContent>
+
+              {/* DESCRIPTION */}
+              <TabsContent value="description" className="mt-4 space-y-4">
+                <div>
+                  <Label>상품 설명 노출 위치</Label>
+                  <Select value={form.description_position} onValueChange={(v) => setForm({...form, description_position: v as DescPos})}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">노출 안 함</SelectItem>
+                      <SelectItem value="top">상단에만 노출</SelectItem>
+                      <SelectItem value="bottom">하단에만 노출</SelectItem>
+                      <SelectItem value="both">상단 + 하단 모두 노출</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label>상단 상품 설명 (이미지/가격/구매 버튼 근처)</Label>
+                  <Textarea
+                    value={form.description_top}
+                    onChange={(e) => setForm({...form, description_top: e.target.value})}
+                    rows={5}
+                    placeholder="HTML 사용 가능: <strong>굵게</strong>, <a href='...'>링크</a>, 줄바꿈은 <br/> 또는 <p>"
+                  />
+                </div>
+                <div>
+                  <Label>하단 상품 설명 (상세 이미지 아래)</Label>
+                  <Textarea
+                    value={form.description_bottom}
+                    onChange={(e) => setForm({...form, description_bottom: e.target.value})}
+                    rows={5}
+                    placeholder="HTML 사용 가능"
+                  />
+                </div>
+                <div>
+                  <Label className="text-muted-foreground">기본 설명 (호환용 / 위치 미설정 시 사용)</Label>
+                  <Textarea value={form.description} onChange={e => setForm({...form, description: e.target.value})} rows={3} />
+                </div>
+              </TabsContent>
+
+              {/* PREVIEW */}
+              <TabsContent value="preview" className="mt-4">
+                <div className="border rounded-lg p-4 md:p-6 bg-background">
+                  <ProductView product={previewProduct as any} preview />
+                </div>
+              </TabsContent>
+            </Tabs>
+
+            <div className="flex justify-between items-center gap-2 pt-4 border-t mt-4 sticky bottom-0 bg-background">
+              <Button variant="ghost" onClick={() => setDialogOpen(false)}>돌아가기</Button>
+              <div className="flex gap-2">
+                {activeTab !== "preview" && (
+                  <Button variant="outline" onClick={() => setActiveTab("preview")} className="gap-1">
+                    <Eye className="h-4 w-4" />미리보기
+                  </Button>
+                )}
+                <Button onClick={save}>
+                  {activeTab === "preview" ? "저장 후 적용" : editingId ? "수정 저장" : "상품 등록"}
+                </Button>
               </div>
-              <div className="col-span-2"><Label>태그 (쉼표 구분)</Label><Input value={form.tags} onChange={e => setForm({...form, tags: e.target.value})} placeholder="신상품, 베스트셀러, 한정판" /></div>
-              <div className="col-span-2"><Label>설명</Label><Textarea value={form.description} onChange={e => setForm({...form, description: e.target.value})} rows={4} /></div>
-              <div className="flex items-center gap-6 col-span-2">
-                <div className="flex items-center gap-2"><Switch checked={form.is_active} onCheckedChange={v => setForm({...form, is_active: v})} /><Label>판매 활성화</Label></div>
-                <div className="flex items-center gap-2"><Switch checked={form.is_featured} onCheckedChange={v => setForm({...form, is_featured: v})} /><Label>추천 상품</Label></div>
-              </div>
-              <Button className="col-span-2" onClick={save}>{editingId ? "수정 저장" : "상품 등록"}</Button>
             </div>
           </DialogContent>
         </Dialog>
@@ -262,7 +470,6 @@ const AdminProducts = () => {
         </Select>
       </div>
 
-      {/* Bulk actions */}
       {selectedIds.size > 0 && (
         <div className="flex items-center gap-2 mb-4 p-3 bg-primary/5 rounded-lg">
           <span className="text-sm font-medium">{selectedIds.size}개 선택됨</span>
@@ -280,11 +487,12 @@ const AdminProducts = () => {
                 <TableHead className="w-10">
                   <input type="checkbox" checked={selectedIds.size === filtered.length && filtered.length > 0} onChange={selectAll} className="rounded" />
                 </TableHead>
-                <TableHead className="w-16">이미지</TableHead>
+                <TableHead className="w-16">대표</TableHead>
                 <TableHead>상품명</TableHead>
                 <TableHead>카테고리</TableHead>
                 <TableHead>가격</TableHead>
                 <TableHead>재고</TableHead>
+                <TableHead>이미지</TableHead>
                 <TableHead>상태</TableHead>
                 <TableHead className="text-right">관리</TableHead>
               </TableRow>
@@ -294,7 +502,7 @@ const AdminProducts = () => {
                 <TableRow key={p.id} className={selectedIds.has(p.id) ? "bg-primary/5" : ""}>
                   <TableCell><input type="checkbox" checked={selectedIds.has(p.id)} onChange={() => toggleSelect(p.id)} /></TableCell>
                   <TableCell>
-                    {(p.thumbnail_url || p.image_url) ? <img src={p.thumbnail_url || p.image_url} className="w-12 h-12 object-cover rounded" /> : <div className="w-12 h-12 bg-muted rounded" />}
+                    {p.image_url ? <img src={p.image_url} className="w-12 h-12 object-cover rounded" alt={p.name} /> : <div className="w-12 h-12 bg-muted rounded" />}
                   </TableCell>
                   <TableCell>
                     <p className="font-medium text-sm">{p.name}</p>
@@ -309,6 +517,9 @@ const AdminProducts = () => {
                     <span className={`text-sm font-medium ${p.stock <= 0 ? 'text-destructive' : p.stock <= 10 ? 'text-accent' : ''}`}>
                       {p.stock}
                     </span>
+                  </TableCell>
+                  <TableCell className="text-xs text-muted-foreground">
+                    추가 {(p.images || []).length} · 상세 {(p.detail_images || []).length}
                   </TableCell>
                   <TableCell>
                     <div className="flex gap-1 flex-wrap">
@@ -328,7 +539,7 @@ const AdminProducts = () => {
                 </TableRow>
               ))}
               {filtered.length === 0 && (
-                <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">상품이 없습니다.</TableCell></TableRow>
+                <TableRow><TableCell colSpan={9} className="text-center py-8 text-muted-foreground">상품이 없습니다.</TableCell></TableRow>
               )}
             </TableBody>
           </Table>
