@@ -384,7 +384,12 @@ export type Database = {
           category_id: string | null
           created_at: string
           description: string | null
+          description_bottom: string | null
+          description_position: string
+          description_top: string | null
+          detail_images: string[]
           id: string
+          image_alt: string | null
           image_url: string | null
           images: string[] | null
           is_active: boolean
@@ -406,7 +411,12 @@ export type Database = {
           category_id?: string | null
           created_at?: string
           description?: string | null
+          description_bottom?: string | null
+          description_position?: string
+          description_top?: string | null
+          detail_images?: string[]
           id?: string
+          image_alt?: string | null
           image_url?: string | null
           images?: string[] | null
           is_active?: boolean
@@ -428,7 +438,12 @@ export type Database = {
           category_id?: string | null
           created_at?: string
           description?: string | null
+          description_bottom?: string | null
+          description_position?: string
+          description_top?: string | null
+          detail_images?: string[]
           id?: string
+          image_alt?: string | null
           image_url?: string | null
           images?: string[] | null
           is_active?: boolean
