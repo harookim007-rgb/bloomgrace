@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminDashboard from "@/components/admin/AdminDashboard";
 import AdminProducts from "@/components/admin/AdminProducts";
@@ -27,7 +28,12 @@ const Admin = () => {
   const [otpVerified, setOtpVerified] = useState(false);
 
   useEffect(() => {
-    if (!authLoading && (!user || !isAdmin)) {
+    if (authLoading) return;
+    if (!user) {
+      toast.info("관리자 로그인이 필요합니다.");
+      navigate("/auth?redirect=/admin");
+    } else if (!isAdmin) {
+      toast.error("관리자 권한이 없는 계정입니다.");
       navigate("/");
     }
   }, [user, isAdmin, authLoading, navigate]);
