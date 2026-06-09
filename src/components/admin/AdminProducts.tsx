@@ -10,12 +10,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Pencil, Trash2, Search, Download, Upload, Copy } from "lucide-react";
+import { Plus, Pencil, Trash2, Search, Download, Upload, Copy, X } from "lucide-react";
 import { toast } from "sonner";
+import ImageUploader from "./ImageUploader";
 
 const emptyForm = {
   name: "", slug: "", description: "", price: "", original_price: "", category_id: "",
-  brand: "", image_url: "", stock: "0", is_active: true, is_featured: false, tags: ""
+  brand: "", image_url: "", thumbnail_url: "", images: [] as string[], stock: "0", is_active: true, is_featured: false, tags: ""
 };
 
 const AdminProducts = () => {
@@ -50,6 +51,8 @@ const AdminProducts = () => {
       category_id: form.category_id || null,
       brand: form.brand || null,
       image_url: form.image_url || null,
+      thumbnail_url: form.thumbnail_url || null,
+      images: form.images || [],
       is_active: form.is_active,
       is_featured: form.is_featured,
       tags: form.tags ? form.tags.split(",").map(t => t.trim()).filter(Boolean) : [],
@@ -75,6 +78,7 @@ const AdminProducts = () => {
       name: p.name, slug: p.slug, description: p.description || "",
       price: String(p.price), original_price: p.original_price ? String(p.original_price) : "",
       category_id: p.category_id || "", brand: p.brand || "", image_url: p.image_url || "",
+      thumbnail_url: p.thumbnail_url || "", images: p.images || [],
       stock: String(p.stock), is_active: p.is_active, is_featured: p.is_featured,
       tags: (p.tags || []).join(", "),
     });
@@ -87,6 +91,7 @@ const AdminProducts = () => {
       name: p.name + " (복사)", slug: "", description: p.description || "",
       price: String(p.price), original_price: p.original_price ? String(p.original_price) : "",
       category_id: p.category_id || "", brand: p.brand || "", image_url: p.image_url || "",
+      thumbnail_url: p.thumbnail_url || "", images: p.images || [],
       stock: String(p.stock), is_active: false, is_featured: false,
       tags: (p.tags || []).join(", "),
     });
@@ -168,20 +173,63 @@ const AdminProducts = () => {
                 </Select>
               </div>
               <div><Label>재고</Label><Input type="number" value={form.stock} onChange={e => setForm({...form, stock: e.target.value})} /></div>
-              <div className="col-span-2"><Label>대표 이미지 URL</Label><Input value={form.image_url} onChange={e => setForm({...form, image_url: e.target.value})} /></div>
+              <div className="col-span-2">
+                <Label>대표 이미지 (정사각형 자동 크롭, 자동 크기 조정)</Label>
+                <ImageUploader
+                  value={form.image_url}
+                  onChange={(url) => setForm({...form, image_url: url})}
+                  folder="products"
+                  maxWidth={1200}
+                  maxHeight={1200}
+                  aspect="square"
+                  label="대표 이미지"
+                />
+              </div>
+              <div className="col-span-2">
+                <Label>썸네일 이미지 (목록용, 비워두면 대표 이미지 사용)</Label>
+                <ImageUploader
+                  value={form.thumbnail_url}
+                  onChange={(url) => setForm({...form, thumbnail_url: url})}
+                  folder="thumbnails"
+                  maxWidth={600}
+                  maxHeight={600}
+                  aspect="square"
+                  label="썸네일"
+                />
+              </div>
+              <div className="col-span-2">
+                <Label>추가 이미지 ({form.images.length}장)</Label>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {form.images.map((url, idx) => (
+                    <div key={idx} className="relative">
+                      <img src={url} className="w-20 h-20 object-cover rounded border" />
+                      <button
+                        type="button"
+                        onClick={() => setForm({...form, images: form.images.filter((_, i) => i !== idx)})}
+                        className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-2">
+                  <ImageUploader
+                    value=""
+                    onChange={(url) => url && setForm({...form, images: [...form.images, url]})}
+                    folder="products"
+                    maxWidth={1200}
+                    maxHeight={1200}
+                    aspect="square"
+                    label="추가 이미지"
+                  />
+                </div>
+              </div>
               <div className="col-span-2"><Label>태그 (쉼표 구분)</Label><Input value={form.tags} onChange={e => setForm({...form, tags: e.target.value})} placeholder="신상품, 베스트셀러, 한정판" /></div>
               <div className="col-span-2"><Label>설명</Label><Textarea value={form.description} onChange={e => setForm({...form, description: e.target.value})} rows={4} /></div>
               <div className="flex items-center gap-6 col-span-2">
                 <div className="flex items-center gap-2"><Switch checked={form.is_active} onCheckedChange={v => setForm({...form, is_active: v})} /><Label>판매 활성화</Label></div>
                 <div className="flex items-center gap-2"><Switch checked={form.is_featured} onCheckedChange={v => setForm({...form, is_featured: v})} /><Label>추천 상품</Label></div>
-              </div>
-              <div className="col-span-2">
-                {form.image_url && (
-                  <div className="mt-2">
-                    <Label className="text-xs text-muted-foreground">미리보기</Label>
-                    <img src={form.image_url} alt="preview" className="w-32 h-32 object-cover rounded-lg mt-1 border" onError={e => (e.currentTarget.style.display='none')} />
-                  </div>
-                )}
               </div>
               <Button className="col-span-2" onClick={save}>{editingId ? "수정 저장" : "상품 등록"}</Button>
             </div>
