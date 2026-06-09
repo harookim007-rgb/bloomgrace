@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -34,6 +34,8 @@ const COUNTRY_CODES = [
 
 const Auth = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const redirectTo = searchParams.get("redirect") || "/";
   const { signIn, signUp } = useAuth();
   const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(false);
@@ -103,7 +105,7 @@ const Auth = () => {
     try {
       await signIn(loginForm.email, loginForm.password);
       toast.success(t("auth_login_success"));
-      navigate("/");
+      navigate(redirectTo);
     } catch (err: any) {
       toast.error(err.message || t("auth_login_fail"));
     } finally { setIsLoading(false); }
