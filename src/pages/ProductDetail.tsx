@@ -5,13 +5,13 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useCart } from "@/hooks/useCart";
 import { useWishlist } from "@/hooks/useWishlist";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { localizeCategory } from "@/lib/categoryI18n";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import ProductView from "@/components/ProductView";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Heart, Star, Minus, Plus } from "lucide-react";
+import { Star } from "lucide-react";
 import { toast } from "sonner";
 
 const ProductDetail = () => {
@@ -19,10 +19,9 @@ const ProductDetail = () => {
   const { user } = useAuth();
   const { addToCart } = useCart();
   const { isWishlisted, toggleWishlist } = useWishlist();
-  const { t, formatPrice, language } = useLanguage();
+  const { t, language } = useLanguage();
   const [product, setProduct] = useState<any>(null);
   const [reviews, setReviews] = useState<any[]>([]);
-  const [quantity, setQuantity] = useState(1);
   const [reviewForm, setReviewForm] = useState({ rating: 5, title: "", content: "" });
   const [isLoading, setIsLoading] = useState(true);
   const [filterRating, setFilterRating] = useState(0);
@@ -38,8 +37,11 @@ const ProductDetail = () => {
   }, [slug]);
 
   const fetchReviews = async (productId: string) => {
-    const { data } = await supabase.from("reviews").select("*, profiles(display_name)")
-      .eq("product_id", productId).order("created_at", { ascending: false });
+    const { data } = await supabase
+      .from("reviews")
+      .select("*, profiles(display_name)")
+      .eq("product_id", productId)
+      .order("created_at", { ascending: false });
     setReviews(data || []);
   };
 
@@ -65,83 +67,17 @@ const ProductDetail = () => {
   if (isLoading) return <div className="min-h-screen"><Navigation /><div className="flex items-center justify-center py-32 text-sm text-muted-foreground">{t("pd_loading")}</div></div>;
   if (!product) return <div className="min-h-screen"><Navigation /><div className="flex items-center justify-center py-32 text-sm text-muted-foreground">{t("pd_not_found")}</div></div>;
 
-  const discount = product.original_price ? Math.round((1 - product.price / product.original_price) * 100) : 0;
-
   return (
     <div className="min-h-screen">
       <Navigation />
       <section className="py-8 md:py-16 px-4 md:px-6 lg:px-8">
         <div className="container max-w-6xl">
-          <div className="grid md:grid-cols-2 gap-8 md:gap-16">
-            {/* Image */}
-            <div className="aspect-square overflow-hidden bg-muted/30">
-              <img src={product.image_url || "/placeholder.svg"} alt={product.name} className="w-full h-full object-cover" />
-            </div>
-
-            {/* Info */}
-            <div className="space-y-6 md:py-8">
-              {product.brand && (
-                <p className="text-[10px] font-sans tracking-[0.3em] uppercase text-muted-foreground">{product.brand}</p>
-              )}
-              <h1 className="text-2xl md:text-3xl lg:text-4xl font-serif font-light">
-                {product.translations?.[language]?.name || product.name}
-              </h1>
-
-              {product.categories?.name && (
-                <span className="inline-block text-[10px] font-sans tracking-[0.15em] uppercase border border-border px-3 py-1">
-                  {localizeCategory(product.categories, t)}
-                </span>
-              )}
-
-              <div className="flex items-center gap-2">
-                <div className="flex">{[1,2,3,4,5].map(s => (
-                  <Star key={s} className={`h-4 w-4 ${s <= (product.rating || 0) ? "fill-accent text-accent" : "text-border"}`} />
-                ))}</div>
-                <span className="text-xs text-muted-foreground">({product.review_count || 0})</span>
-              </div>
-
-              <div className="flex items-baseline gap-3 py-4 border-y border-border">
-                {discount > 0 && <span className="text-lg font-sans font-medium text-primary">-{discount}%</span>}
-                <span className="text-2xl font-sans font-medium">{formatPrice(product.price)}</span>
-                {product.original_price && (
-                  <span className="text-sm text-muted-foreground line-through">{formatPrice(product.original_price)}</span>
-                )}
-              </div>
-
-              <p className="text-sm text-muted-foreground font-light leading-relaxed">
-                {product.translations?.[language]?.description || product.description}
-              </p>
-
-              <p className="text-xs text-muted-foreground">
-                {product.stock > 0 ? `${t("pd_stock")}: ${product.stock}` : <span className="text-destructive">{t("pd_out_of_stock")}</span>}
-              </p>
-
-              <div className="flex items-center gap-4 pt-2">
-                <div className="flex items-center border border-border">
-                  <Button variant="ghost" size="icon" className="rounded-none h-10 w-10" onClick={() => setQuantity(Math.max(1, quantity - 1))}>
-                    <Minus className="h-3 w-3" />
-                  </Button>
-                  <span className="w-12 text-center text-sm font-sans">{quantity}</span>
-                  <Button variant="ghost" size="icon" className="rounded-none h-10 w-10" onClick={() => setQuantity(quantity + 1)}>
-                    <Plus className="h-3 w-3" />
-                  </Button>
-                </div>
-              </div>
-
-              <div className="flex gap-3 pt-2">
-                <Button
-                  className="flex-1 rounded-none py-6 text-xs tracking-[0.15em] uppercase"
-                  onClick={() => addToCart(product.id, quantity)}
-                  disabled={product.stock === 0}
-                >
-                  {t("pd_add_to_cart")}
-                </Button>
-                <Button variant="outline" className="rounded-none py-6 px-6" onClick={() => toggleWishlist(product.id)}>
-                  <Heart className={`h-4 w-4 ${isWishlisted(product.id) ? "fill-primary text-primary" : ""}`} />
-                </Button>
-              </div>
-            </div>
-          </div>
+          <ProductView
+            product={product}
+            onAddToCart={() => addToCart(product.id, 1)}
+            onToggleWishlist={() => toggleWishlist(product.id)}
+            isWishlisted={isWishlisted(product.id)}
+          />
 
           {/* Reviews */}
           <div className="mt-20 md:mt-28 space-y-8">
