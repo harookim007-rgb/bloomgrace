@@ -16,8 +16,9 @@ import { toast } from "sonner";
 
 const ProductDetail = () => {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const { user } = useAuth();
-  const { addToCart } = useCart();
+  const { addToCart, adding } = useCart();
   const { isWishlisted, toggleWishlist } = useWishlist();
   const { t, language } = useLanguage();
   const [product, setProduct] = useState<any>(null);
