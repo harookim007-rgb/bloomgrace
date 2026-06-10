@@ -214,14 +214,24 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
             </div>
           </div>
 
-          <div className="flex gap-3 pt-2">
+          <div className="flex flex-col sm:flex-row gap-3 pt-2">
             <Button
               className="flex-1 rounded-none py-6 text-xs tracking-[0.15em] uppercase"
-              onClick={() => !preview && onAddToCart?.()}
-              disabled={preview || (product.stock ?? 0) === 0}
+              onClick={() => !preview && onAddToCart?.(quantity)}
+              disabled={preview || isAddingToCart || (product.stock ?? 0) === 0}
             >
-              {t("pd_add_to_cart")}
+              {isAddingToCart ? <Loader2 className="h-4 w-4 animate-spin" /> : t("pd_add_to_cart")}
             </Button>
+            {onBuyNow && (
+              <Button
+                variant="secondary"
+                className="flex-1 rounded-none py-6 text-xs tracking-[0.15em] uppercase bg-foreground text-background hover:bg-foreground/90"
+                onClick={() => !preview && onBuyNow(quantity)}
+                disabled={preview || (product.stock ?? 0) === 0}
+              >
+                <Zap className="h-3.5 w-3.5 mr-2" /> Buy Now
+              </Button>
+            )}
             <Button
               variant="outline"
               className="rounded-none py-6 px-6"
