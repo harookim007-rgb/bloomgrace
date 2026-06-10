@@ -81,16 +81,17 @@ const Checkout = () => {
       .limit(1)
       .maybeSingle()
       .then(({ data }) => {
-        if (data) {
+        const d: any = data;
+        if (d) {
           setAddress({
-            full_name: data.full_name || data.name || "",
-            phone: data.phone || "",
-            address_line1: data.address_line1 || "",
-            address_line2: data.address_line2 || "",
-            city: data.city || "",
-            state: data.state || "",
-            postal_code: data.postal_code || "",
-            country: data.country || "South Korea",
+            full_name: d.full_name || d.name || "",
+            phone: d.phone || "",
+            address_line1: d.address_line1 || "",
+            address_line2: d.address_line2 || "",
+            city: d.city || "",
+            state: d.state || "",
+            postal_code: d.postal_code || "",
+            country: d.country || "South Korea",
           });
         }
       });
