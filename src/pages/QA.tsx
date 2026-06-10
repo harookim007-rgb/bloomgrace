@@ -34,23 +34,27 @@ const QA = () => {
       <section className="py-16 md:py-24 px-4 md:px-6 lg:px-8">
         <div className="container max-w-4xl">
           <div className="mb-16 space-y-3">
-            <p className="text-xs font-sans tracking-[0.3em] uppercase text-muted-foreground">{t("qa_tagline")}</p>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-light">{t("qa_title")}</h1>
-            <p className="text-sm text-muted-foreground font-light max-w-lg">{t("qa_subtitle")}</p>
+            <p className="text-sm font-sans tracking-[0.3em] uppercase text-muted-foreground">{t("qa_tagline")}</p>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-light">{t("qa_title")}</h1>
+            <p className="text-base md:text-lg text-muted-foreground font-light max-w-lg leading-relaxed">{t("qa_subtitle")}</p>
           </div>
 
-          <div className="space-y-12">
+          <div className="space-y-14">
             {faqs.map((cat, idx) => (
               <div key={idx}>
-                <div className="flex items-center gap-3 mb-6">
-                  <cat.icon className="w-4 h-4 text-muted-foreground" />
-                  <h2 className="text-lg font-serif font-light">{cat.category}</h2>
+                <div className="flex items-center gap-3 mb-7">
+                  <cat.icon className="w-5 h-5 text-muted-foreground" />
+                  <h2 className="text-xl md:text-2xl font-serif font-light">{cat.category}</h2>
                 </div>
                 <Accordion type="single" collapsible className="space-y-0">
                   {cat.questions.map((item, qIdx) => (
                     <AccordionItem key={qIdx} value={`item-${idx}-${qIdx}`} className="border-b border-border px-0">
-                      <AccordionTrigger className="text-left hover:no-underline py-5 text-sm font-sans font-light">{item.q}</AccordionTrigger>
-                      <AccordionContent className="text-sm text-muted-foreground font-light pb-5">{item.a}</AccordionContent>
+                      <AccordionTrigger className="text-left hover:no-underline py-6 text-base md:text-lg font-sans font-medium leading-relaxed">
+                        {item.q.replace(/&amp;/g, "&")}
+                      </AccordionTrigger>
+                      <AccordionContent className="text-base md:text-[17px] text-muted-foreground font-light pb-6 leading-[1.85]">
+                        {item.a.replace(/&amp;/g, "&")}
+                      </AccordionContent>
                     </AccordionItem>
                   ))}
                 </Accordion>
