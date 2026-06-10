@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { ChevronLeft, ChevronRight, Heart, Minus, Plus, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, Heart, Minus, Plus, Star, Loader2, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { localizeCategory } from "@/lib/categoryI18n";
