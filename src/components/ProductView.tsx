@@ -58,7 +58,7 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
   // Embla
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: "start" },
-    [Autoplay({ delay: 4500, stopOnInteraction: false, stopOnMouseEnter: true })],
+    [Autoplay({ delay: 3500, stopOnInteraction: false, stopOnMouseEnter: true })],
   );
   const [selectedIdx, setSelectedIdx] = useState(0);
 
