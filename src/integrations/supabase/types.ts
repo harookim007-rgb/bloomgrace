@@ -19,36 +19,45 @@ export type Database = {
           address_line1: string
           address_line2: string | null
           city: string
+          country: string | null
           created_at: string
+          full_name: string | null
           id: string
           is_default: boolean
           name: string
           phone: string
           postal_code: string
+          state: string | null
           user_id: string
         }
         Insert: {
           address_line1: string
           address_line2?: string | null
           city: string
+          country?: string | null
           created_at?: string
+          full_name?: string | null
           id?: string
           is_default?: boolean
           name: string
           phone: string
           postal_code: string
+          state?: string | null
           user_id: string
         }
         Update: {
           address_line1?: string
           address_line2?: string | null
           city?: string
+          country?: string | null
           created_at?: string
+          full_name?: string | null
           id?: string
           is_default?: boolean
           name?: string
           phone?: string
           postal_code?: string
+          state?: string | null
           user_id?: string
         }
         Relationships: []

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { ChevronLeft, ChevronRight, Heart, Minus, Plus, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, Heart, Minus, Plus, Star, Loader2, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { localizeCategory } from "@/lib/categoryI18n";
@@ -29,14 +29,16 @@ export interface ProductViewData {
 interface Props {
   product: ProductViewData;
   preview?: boolean;
-  onAddToCart?: () => void;
+  onAddToCart?: (qty: number) => void | Promise<void>;
+  onBuyNow?: (qty: number) => void;
   onToggleWishlist?: () => void;
   isWishlisted?: boolean;
+  isAddingToCart?: boolean;
 }
 
 const FALLBACK_IMG = "/placeholder.svg";
 
-const ProductView = ({ product, preview = false, onAddToCart, onToggleWishlist, isWishlisted }: Props) => {
+const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggleWishlist, isWishlisted, isAddingToCart }: Props) => {
   const { t, formatPrice, language } = useLanguage();
   const [quantity, setQuantity] = useState(1);
 
@@ -56,7 +58,7 @@ const ProductView = ({ product, preview = false, onAddToCart, onToggleWishlist, 
   // Embla
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: "start" },
-    [Autoplay({ delay: 4500, stopOnInteraction: false, stopOnMouseEnter: true })],
+    [Autoplay({ delay: 3500, stopOnInteraction: false, stopOnMouseEnter: true })],
   );
   const [selectedIdx, setSelectedIdx] = useState(0);
 
@@ -212,14 +214,24 @@ const ProductView = ({ product, preview = false, onAddToCart, onToggleWishlist, 
             </div>
           </div>
 
-          <div className="flex gap-3 pt-2">
+          <div className="flex flex-col sm:flex-row gap-3 pt-2">
             <Button
               className="flex-1 rounded-none py-6 text-xs tracking-[0.15em] uppercase"
-              onClick={() => !preview && onAddToCart?.()}
-              disabled={preview || (product.stock ?? 0) === 0}
+              onClick={() => !preview && onAddToCart?.(quantity)}
+              disabled={preview || isAddingToCart || (product.stock ?? 0) === 0}
             >
-              {t("pd_add_to_cart")}
+              {isAddingToCart ? <Loader2 className="h-4 w-4 animate-spin" /> : t("pd_add_to_cart")}
             </Button>
+            {onBuyNow && (
+              <Button
+                variant="secondary"
+                className="flex-1 rounded-none py-6 text-xs tracking-[0.15em] uppercase bg-foreground text-background hover:bg-foreground/90"
+                onClick={() => !preview && onBuyNow(quantity)}
+                disabled={preview || (product.stock ?? 0) === 0}
+              >
+                <Zap className="h-3.5 w-3.5 mr-2" /> Buy Now
+              </Button>
+            )}
             <Button
               variant="outline"
               className="rounded-none py-6 px-6"

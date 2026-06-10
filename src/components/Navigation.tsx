@@ -32,7 +32,6 @@ const Navigation = () => {
     { to: "/products", label: t("nav_products") },
     { to: "/products?category=skincare", label: t("nav_skincare") },
     { to: "/products?category=makeup", label: t("nav_makeup") },
-    { to: "/#about", label: t("nav_brand_story") },
     { to: "/contact", label: t("nav_contact") },
   ];
 
