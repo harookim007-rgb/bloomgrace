@@ -1,0 +1,4 @@
+ALTER TABLE public.addresses
+  ADD COLUMN IF NOT EXISTS full_name TEXT,
+  ADD COLUMN IF NOT EXISTS state TEXT,
+  ADD COLUMN IF NOT EXISTS country TEXT;
