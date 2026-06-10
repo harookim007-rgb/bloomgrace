@@ -2,10 +2,9 @@ import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
 import FeaturedProducts from "@/components/FeaturedProducts";
 import BeautyConsultation from "@/components/BeautyConsultation";
-import About from "@/components/About";
 import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
-import FallingPetals from "@/components/FallingPetals";
+
 const Index = () => {
   return (
     <div
@@ -19,7 +18,6 @@ const Index = () => {
       <Hero />
       <FeaturedProducts />
       <BeautyConsultation mode="section" />
-      <About />
 
       <Footer />
       <BeautyConsultation mode="modal" />
@@ -29,3 +27,4 @@ const Index = () => {
 };
 
 export default Index;
+
