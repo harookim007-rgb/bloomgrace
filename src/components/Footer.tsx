@@ -36,7 +36,6 @@ const Footer = () => {
             <h4 className="text-base font-sans font-bold tracking-[0.1em] uppercase">{t("footer_brand")}</h4>
             <ul className="space-y-3">
               <li><Link to="/contact" className="text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_store")}</Link></li>
-              <li><Link to="/contact" className="text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_store")}</Link></li>
               <li><a href="#" className="text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_sustainability")}</a></li>
               <li><a href="#" className="text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_ingredients")}</a></li>
             </ul>
