@@ -29,14 +29,16 @@ export interface ProductViewData {
 interface Props {
   product: ProductViewData;
   preview?: boolean;
-  onAddToCart?: () => void;
+  onAddToCart?: (qty: number) => void | Promise<void>;
+  onBuyNow?: (qty: number) => void;
   onToggleWishlist?: () => void;
   isWishlisted?: boolean;
+  isAddingToCart?: boolean;
 }
 
 const FALLBACK_IMG = "/placeholder.svg";
 
-const ProductView = ({ product, preview = false, onAddToCart, onToggleWishlist, isWishlisted }: Props) => {
+const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggleWishlist, isWishlisted, isAddingToCart }: Props) => {
   const { t, formatPrice, language } = useLanguage();
   const [quantity, setQuantity] = useState(1);
 
