@@ -75,10 +75,26 @@ const ProductDetail = () => {
         <div className="container max-w-6xl">
           <ProductView
             product={product}
-            onAddToCart={() => addToCart(product.id, 1)}
+            isAddingToCart={adding}
+            onAddToCart={async (qty) => {
+              const ok = await addToCart(product.id, qty);
+              if (ok) navigate("/checkout");
+            }}
+            onBuyNow={(qty) => {
+              sessionStorage.setItem("buyNow", JSON.stringify({
+                product_id: product.id,
+                product_name: product.name,
+                product_image: product.image_url,
+                price: product.price,
+                stock: product.stock,
+                quantity: qty,
+              }));
+              navigate("/checkout?buyNow=1");
+            }}
             onToggleWishlist={() => toggleWishlist(product.id)}
             isWishlisted={isWishlisted(product.id)}
           />
+
 
           {/* Reviews */}
           <div className="mt-20 md:mt-28 space-y-8">
