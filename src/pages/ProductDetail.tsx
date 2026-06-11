@@ -22,19 +22,42 @@ const ProductDetail = () => {
   const { isWishlisted, toggleWishlist } = useWishlist();
   const { t, language } = useLanguage();
   const [product, setProduct] = useState<any>(null);
+  const [related, setRelated] = useState<any[]>([]);
   const [reviews, setReviews] = useState<any[]>([]);
   const [reviewForm, setReviewForm] = useState({ rating: 5, title: "", content: "" });
   const [isLoading, setIsLoading] = useState(true);
   const [filterRating, setFilterRating] = useState(0);
 
+  const loadProduct = async () => {
+    const { data } = await supabase.from("products").select("*, categories(name, slug)").eq("slug", slug).single();
+    setProduct(data);
+    if (data) {
+      fetchReviews(data.id);
+      if (data.related_product_ids?.length) {
+        const { data: rel } = await supabase
+          .from("products")
+          .select("id, name, slug, price, original_price, image_url, stock")
+          .in("id", data.related_product_ids)
+          .eq("is_active", true);
+        setRelated(rel || []);
+      } else {
+        setRelated([]);
+      }
+    }
+    setIsLoading(false);
+  };
+
   useEffect(() => {
-    const fetchProduct = async () => {
-      const { data } = await supabase.from("products").select("*, categories(name, slug)").eq("slug", slug).single();
-      setProduct(data);
-      if (data) fetchReviews(data.id);
-      setIsLoading(false);
-    };
-    fetchProduct();
+    loadProduct();
+    // Realtime sync: refetch when this product is updated by admin
+    const ch = supabase
+      .channel(`product-${slug}`)
+      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "products" }, (payload: any) => {
+        if (payload.new?.slug === slug || payload.old?.slug === slug) loadProduct();
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(ch); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
   const fetchReviews = async (productId: string) => {
@@ -94,6 +117,48 @@ const ProductDetail = () => {
             onToggleWishlist={() => toggleWishlist(product.id)}
             isWishlisted={isWishlisted(product.id)}
           />
+
+          {/* Related products */}
+          {related.length > 0 && (
+            <div className="mt-20 md:mt-28">
+              <div className="border-b border-border pb-4 mb-8">
+                <h2 className="text-xl md:text-2xl font-serif font-light">함께 보면 좋은 상품</h2>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                {related.map((r) => (
+                  <div key={r.id} className="group">
+                    <button
+                      onClick={() => navigate(`/product/${r.slug}`)}
+                      className="block w-full aspect-square overflow-hidden bg-muted/30 mb-3"
+                    >
+                      <img
+                        src={r.image_url || "/placeholder.svg"}
+                        alt={r.name}
+                        loading="lazy"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </button>
+                    <button onClick={() => navigate(`/product/${r.slug}`)} className="text-left w-full">
+                      <p className="text-sm font-serif line-clamp-2">{r.name}</p>
+                      <p className="text-sm font-sans mt-1">{Number(r.price).toLocaleString()}원</p>
+                    </button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="w-full rounded-none mt-2 text-[10px] tracking-[0.15em] uppercase"
+                      disabled={r.stock <= 0 || adding}
+                      onClick={async () => {
+                        const ok = await addToCart(r.id, 1, { silent: false });
+                        if (ok) navigate("/checkout");
+                      }}
+                    >
+                      {r.stock <= 0 ? "품절" : "장바구니"}
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
 
           {/* Reviews */}

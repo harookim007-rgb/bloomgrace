@@ -18,6 +18,11 @@ import ProductView from "@/components/ProductView";
 
 type DescPos = "none" | "top" | "bottom" | "both";
 
+export const BENEFIT_OPTIONS = [
+  "보습", "미백", "주름개선", "진정", "탄력",
+  "트러블케어", "자외선차단", "모공케어", "각질케어", "영양",
+];
+
 interface FormState {
   name: string;
   slug: string;
@@ -30,13 +35,15 @@ interface FormState {
   original_price: string;
   category_id: string;
   brand: string;
-  image_url: string;        // 대표 이미지
-  images: string[];         // 추가 이미지
-  detail_images: string[];  // 상세 이미지
+  image_url: string;
+  images: string[];
+  detail_images: string[];
   stock: string;
   is_active: boolean;
   is_featured: boolean;
   tags: string;
+  benefits: string[];
+  related_product_ids: string[];
 }
 
 const emptyForm: FormState = {
@@ -45,6 +52,7 @@ const emptyForm: FormState = {
   price: "", original_price: "", category_id: "", brand: "",
   image_url: "", images: [], detail_images: [],
   stock: "0", is_active: true, is_featured: false, tags: "",
+  benefits: [], related_product_ids: [],
 };
 
 // Sortable image list with up/down/delete
@@ -111,7 +119,7 @@ const AdminProducts = () => {
   const [filterCategory, setFilterCategory] = useState("all");
   const [filterStatus, setFilterStatus] = useState("all");
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
-  const [activeTab, setActiveTab] = useState<"info" | "images" | "description" | "preview">("info");
+  const [activeTab, setActiveTab] = useState<"info" | "images" | "description" | "extras" | "preview">("info");
 
   useEffect(() => { fetchData(); }, []);
 
@@ -156,6 +164,8 @@ const AdminProducts = () => {
       is_active: form.is_active,
       is_featured: form.is_featured,
       tags: form.tags ? form.tags.split(",").map(t => t.trim()).filter(Boolean) : [],
+      benefits: form.benefits || [],
+      related_product_ids: form.related_product_ids || [],
     };
 
     if (editingId) {
@@ -192,6 +202,8 @@ const AdminProducts = () => {
     is_active: asCopy ? false : p.is_active,
     is_featured: asCopy ? false : p.is_featured,
     tags: (p.tags || []).join(", "),
+    benefits: p.benefits || [],
+    related_product_ids: p.related_product_ids || [],
   });
 
   const editProduct = (p: any) => {
@@ -272,6 +284,8 @@ const AdminProducts = () => {
     image_alt: form.image_alt,
     stock: parseInt(form.stock) || 0,
     categories: categories.find(c => c.id === form.category_id) || null,
+    benefits: form.benefits,
+    related_product_ids: form.related_product_ids,
   };
 
   return (
@@ -291,10 +305,11 @@ const AdminProducts = () => {
             </DialogHeader>
 
             <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as any)} className="w-full">
-              <TabsList className="grid grid-cols-4 w-full">
+              <TabsList className="grid grid-cols-5 w-full">
                 <TabsTrigger value="info">기본 정보</TabsTrigger>
                 <TabsTrigger value="images">이미지 관리</TabsTrigger>
                 <TabsTrigger value="description">상품 설명</TabsTrigger>
+                <TabsTrigger value="extras">효능/연계</TabsTrigger>
                 <TabsTrigger value="preview" className="gap-1"><Eye className="h-3 w-3" />미리보기</TabsTrigger>
               </TabsList>
 
@@ -418,6 +433,72 @@ const AdminProducts = () => {
                   <Label className="text-muted-foreground">기본 설명 (호환용 / 위치 미설정 시 사용)</Label>
                   <Textarea value={form.description} onChange={e => setForm({...form, description: e.target.value})} rows={3} />
                 </div>
+              </TabsContent>
+
+              {/* EXTRAS: benefits + related products */}
+              <TabsContent value="extras" className="mt-4 space-y-6">
+                <section className="border rounded-lg p-4 space-y-3">
+                  <div>
+                    <Label className="text-base">상품 효능 ({form.benefits.length}개 선택)</Label>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      상품 상세페이지에 동그라미 아이콘으로 표시됩니다. 선택한 항목만 노출됩니다.
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {BENEFIT_OPTIONS.map((b) => {
+                      const active = form.benefits.includes(b);
+                      return (
+                        <button
+                          key={b}
+                          type="button"
+                          onClick={() => setForm({
+                            ...form,
+                            benefits: active ? form.benefits.filter(x => x !== b) : [...form.benefits, b],
+                          })}
+                          className={`px-3 py-1.5 text-xs rounded-full border transition-colors ${
+                            active ? "bg-primary text-primary-foreground border-primary" : "border-border hover:bg-muted"
+                          }`}
+                        >
+                          {b}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </section>
+
+                <section className="border rounded-lg p-4 space-y-3">
+                  <div>
+                    <Label className="text-base">연계 상품 ({form.related_product_ids.length}개 선택)</Label>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      상품 상세페이지 하단에 추천 상품으로 노출됩니다. 고객이 바로 장바구니에 담을 수 있습니다.
+                    </p>
+                  </div>
+                  <div className="max-h-72 overflow-y-auto border rounded">
+                    {products.filter(p => p.id !== editingId).map((p) => {
+                      const active = form.related_product_ids.includes(p.id);
+                      return (
+                        <label key={p.id} className={`flex items-center gap-3 p-2 border-b cursor-pointer hover:bg-muted/30 ${active ? "bg-primary/5" : ""}`}>
+                          <input
+                            type="checkbox"
+                            checked={active}
+                            onChange={() => setForm({
+                              ...form,
+                              related_product_ids: active
+                                ? form.related_product_ids.filter(x => x !== p.id)
+                                : [...form.related_product_ids, p.id],
+                            })}
+                          />
+                          {p.image_url ? <img src={p.image_url} className="w-10 h-10 object-cover rounded" alt="" /> : <div className="w-10 h-10 bg-muted rounded" />}
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm truncate">{p.name}</p>
+                            <p className="text-xs text-muted-foreground">{Number(p.price).toLocaleString()}원</p>
+                          </div>
+                        </label>
+                      );
+                    })}
+                    {products.length === 0 && <p className="text-xs text-muted-foreground p-3">등록된 상품이 없습니다.</p>}
+                  </div>
+                </section>
               </TabsContent>
 
               {/* PREVIEW */}
