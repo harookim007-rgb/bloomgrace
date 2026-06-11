@@ -389,6 +389,7 @@ export type Database = {
       }
       products: {
         Row: {
+          benefits: string[]
           brand: string | null
           category_id: string | null
           created_at: string
@@ -407,6 +408,7 @@ export type Database = {
           original_price: number | null
           price: number
           rating: number | null
+          related_product_ids: string[]
           review_count: number | null
           slug: string
           stock: number
@@ -416,6 +418,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          benefits?: string[]
           brand?: string | null
           category_id?: string | null
           created_at?: string
@@ -434,6 +437,7 @@ export type Database = {
           original_price?: number | null
           price?: number
           rating?: number | null
+          related_product_ids?: string[]
           review_count?: number | null
           slug: string
           stock?: number
@@ -443,6 +447,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          benefits?: string[]
           brand?: string | null
           category_id?: string | null
           created_at?: string
@@ -461,6 +466,7 @@ export type Database = {
           original_price?: number | null
           price?: number
           rating?: number | null
+          related_product_ids?: string[]
           review_count?: number | null
           slug?: string
           stock?: number
