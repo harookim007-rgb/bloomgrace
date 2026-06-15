@@ -157,17 +157,6 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
           )}
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-serif font-medium text-foreground">{localizedName}</h1>
 
-          <div className="flex items-center gap-2">
-            <div className="flex">
-              {[1, 2, 3, 4, 5].map((s) => (
-                <Star
-                  key={s}
-                  className={`h-4 w-4 ${s <= (product.rating || 0) ? "fill-accent text-accent" : "text-border"}`}
-                />
-              ))}
-            </div>
-            <span className="text-xs text-muted-foreground">({product.review_count || 0})</span>
-          </div>
 
           <div className="flex items-baseline gap-3 py-4 border-y border-border">
             {discount > 0 && <span className="text-lg font-sans font-medium text-primary">-{discount}%</span>}
