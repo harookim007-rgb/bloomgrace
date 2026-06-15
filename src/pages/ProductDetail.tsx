@@ -9,11 +9,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import ProductView from "@/components/ProductView";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Star } from "lucide-react";
-import { toast } from "sonner";
-import ReviewPhotoUploader from "@/components/ReviewPhotoUploader";
 
 const ProductDetail = () => {
   const { slug } = useParams();
@@ -25,7 +21,6 @@ const ProductDetail = () => {
   const [product, setProduct] = useState<any>(null);
   const [related, setRelated] = useState<any[]>([]);
   const [reviews, setReviews] = useState<any[]>([]);
-  const [reviewForm, setReviewForm] = useState<{ rating: number; title: string; content: string; image_urls: string[] }>({ rating: 5, title: "", content: "", image_urls: [] });
   const [isLoading, setIsLoading] = useState(true);
   const [filterRating, setFilterRating] = useState(0);
 
@@ -68,23 +63,6 @@ const ProductDetail = () => {
       .eq("product_id", productId)
       .order("created_at", { ascending: false });
     setReviews(data || []);
-  };
-
-  const submitReview = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!user || !product) return;
-    const { error } = await supabase.from("reviews").insert({
-      user_id: user.id, product_id: product.id,
-      rating: reviewForm.rating, title: reviewForm.title, content: reviewForm.content,
-      image_urls: reviewForm.image_urls,
-    } as any);
-    if (error) {
-      toast.error(error.message.includes("duplicate") ? t("pd_already_reviewed") : t("pd_review_fail"));
-    } else {
-      toast.success(t("pd_review_success") + " · 1000P 적립!");
-      setReviewForm({ rating: 5, title: "", content: "", image_urls: [] });
-      fetchReviews(product.id);
-    }
   };
 
   const filteredReviews = filterRating > 0 ? reviews.filter(r => r.rating >= filterRating) : reviews;
@@ -184,21 +162,17 @@ const ProductDetail = () => {
             </div>
 
 
-            {user && (
-              <form onSubmit={submitReview} className="space-y-4 p-6 border border-border">
-                <h3 className="text-sm font-sans font-medium tracking-wider uppercase">{t("pd_write_review")}</h3>
-                <p className="text-xs text-primary">리뷰 작성 시 <strong>1,000P</strong>가 적립됩니다 (주문 시 사용 가능)</p>
-                <div className="flex gap-1">{[1,2,3,4,5].map(s => (
-                  <button key={s} type="button" onClick={() => setReviewForm({ ...reviewForm, rating: s })}>
-                    <Star className={`h-5 w-5 ${s <= reviewForm.rating ? "fill-accent text-accent" : "text-border"}`} />
-                  </button>
-                ))}</div>
-                <Input placeholder={t("pd_review_title")} className="rounded-none" value={reviewForm.title} onChange={e => setReviewForm({ ...reviewForm, title: e.target.value })} />
-                <Textarea placeholder={t("pd_review_content")} className="rounded-none" value={reviewForm.content} onChange={e => setReviewForm({ ...reviewForm, content: e.target.value })} rows={3} />
-                <ReviewPhotoUploader value={reviewForm.image_urls} onChange={(urls) => setReviewForm({ ...reviewForm, image_urls: urls })} />
-                <Button type="submit" className="rounded-none text-xs tracking-wider uppercase">{t("pd_submit_review")}</Button>
-              </form>
-            )}
+            <div className="p-4 border border-border bg-muted/30 text-xs text-muted-foreground text-center">
+              {{
+                en: "Reviews can only be written from My Page after your order is delivered.",
+                es: "Las reseñas solo se pueden escribir desde Mi Página después de la entrega.",
+                de: "Bewertungen können nur nach Lieferung über Mein Konto verfasst werden.",
+                fr: "Les avis ne peuvent être rédigés que depuis Mon Compte après la livraison.",
+                pt: "As avaliações só podem ser escritas em Minha Conta após a entrega.",
+                ja: "レビューは配送完了後、マイページから作成できます。",
+                ar: "يمكن كتابة التقييمات فقط من حسابي بعد استلام الطلب.",
+              }[language]}
+            </div>
 
             <div className="space-y-0">
               {filteredReviews.map(review => (
