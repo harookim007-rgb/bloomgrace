@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { ChevronLeft, ChevronRight, Heart, Minus, Plus, Star, Loader2, Zap } from "lucide-react";
+import { ChevronLeft, ChevronRight, Heart, Minus, Plus, Star, Loader2, Zap, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { localizeCategory } from "@/lib/categoryI18n";
 
@@ -185,13 +187,9 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
             </p>
           )}
 
-          <p className="text-sm font-medium">
-            {(product.stock ?? 0) > 0 ? (
-              <span className="text-emerald-600">● {t("pd_stock")}</span>
-            ) : (
-              <span className="text-destructive">● {t("pd_out_of_stock")}</span>
-            )}
-          </p>
+          {/* Shipping estimate by country */}
+          <ShippingEstimate />
+
 
           <div className="flex items-center gap-4 pt-2">
             <div className="flex items-center border border-border">
