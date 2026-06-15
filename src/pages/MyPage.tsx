@@ -222,7 +222,7 @@ const MyPage = () => {
                   { label: t("mp_email"), value: user.email },
                   { label: t("mp_name"), value: profile?.display_name || "—" },
                   { label: t("mp_phone"), value: profile?.phone || "—" },
-                  { label: "포인트", value: `${(profile?.points || 0).toLocaleString()} P` },
+                  { label: L.points, value: `${(profile?.points || 0).toLocaleString()} P` },
                 ].map((item, i) => (
                   <div key={i} className="pb-4 border-b border-border">
                     <p className="text-xs font-sans tracking-wider uppercase text-muted-foreground mb-1">{item.label}</p>
