@@ -234,6 +234,33 @@ const MyPage = () => {
           </Tabs>
         </div>
       </section>
+
+      <Dialog open={!!reviewTarget} onOpenChange={(o) => !o && setReviewTarget(null)}>
+        <DialogContent className="max-w-md rounded-none">
+          <DialogHeader>
+            <DialogTitle className="font-serif font-light text-lg">{R.write}</DialogTitle>
+          </DialogHeader>
+          {reviewTarget && (
+            <div className="space-y-4">
+              <p className="text-sm font-medium">{reviewTarget.product_name}</p>
+              <p className="text-xs text-primary bg-primary-soft/30 px-3 py-2 border border-primary/20">{R.notice}</p>
+              <div>
+                <p className="text-xs tracking-wider uppercase text-muted-foreground mb-2">{R.rating}</p>
+                <div className="flex gap-1">{[1,2,3,4,5].map(s => (
+                  <button key={s} type="button" onClick={() => setReviewForm({ ...reviewForm, rating: s })}>
+                    <Star className={`h-6 w-6 ${s <= reviewForm.rating ? "fill-accent text-accent" : "text-border"}`} />
+                  </button>
+                ))}</div>
+              </div>
+              <Input placeholder={R.title} className="rounded-none" value={reviewForm.title} onChange={e => setReviewForm({ ...reviewForm, title: e.target.value })} />
+              <Textarea placeholder={R.content} className="rounded-none" value={reviewForm.content} onChange={e => setReviewForm({ ...reviewForm, content: e.target.value })} rows={4} />
+              <ReviewPhotoUploader value={reviewForm.image_urls} onChange={(urls) => setReviewForm({ ...reviewForm, image_urls: urls })} />
+              <Button onClick={submitReview} disabled={submittingReview} className="w-full rounded-none text-xs tracking-wider uppercase">{R.submit}</Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
       <Footer />
     </div>
   );
