@@ -12,7 +12,7 @@ import BrandLogo from "@/components/BrandLogo";
 import RollingGreeting from "@/components/RollingGreeting";
 
 const langLabels: Record<Language, string> = {
-  en: "English", es: "Español", de: "Deutsch", fr: "Français", pt: "Português", ar: "العربية",
+  en: "English", es: "Español", de: "Deutsch", fr: "Français", pt: "Português", ja: "日本語", ar: "العربية",
 };
 
 const Navigation = () => {

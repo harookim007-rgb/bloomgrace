@@ -8,7 +8,7 @@ const Footer = () => {
   return (
     <footer className="border-t border-border bg-muted/20">
       <div className="container px-4 md:px-6 lg:px-8 py-10 md:py-20">
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-8">
           <div className="space-y-4 col-span-2 md:col-span-2 lg:col-span-1">
             <BrandLogo size="md" showTagline={true} asLink={false} className="items-start" />
             <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{t("footer_desc")}</p>
@@ -32,14 +32,8 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div className="space-y-4">
-            <h4 className="text-base font-sans font-bold tracking-[0.1em] uppercase">{t("footer_brand")}</h4>
-            <ul className="space-y-3">
-              <li><Link to="/contact" className="text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_store")}</Link></li>
-              <li><a href="#" className="text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_sustainability")}</a></li>
-              <li><a href="#" className="text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_ingredients")}</a></li>
-            </ul>
-          </div>
+
+
 
           <div className="space-y-3">
             <h4 className="text-sm md:text-base font-sans font-bold tracking-[0.1em] uppercase">{t("footer_support")}</h4>
