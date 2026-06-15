@@ -39,6 +39,23 @@ const ProductDetail = () => {
       } else {
         setRelated([]);
       }
+      // Auto-translate fallback: if translations missing or still in source language, fill via edge function
+      const tr = (data.translations as any) || {};
+      const needs = ["en","es","de","fr","pt","ja","ar"].some(
+        (l) => !tr?.[l]?.name || tr[l].name === data.name
+      );
+      if (needs) {
+        supabase.functions
+          .invoke("translate-product", { body: { name: data.name, description: data.description || "" } })
+          .then(async ({ data: res }: any) => {
+            if (res?.translations) {
+              const merged = { ...tr, ...res.translations };
+              await supabase.from("products").update({ translations: merged }).eq("id", data.id);
+              setProduct({ ...data, translations: merged });
+            }
+          })
+          .catch(() => {});
+      }
     }
     setIsLoading(false);
   };
