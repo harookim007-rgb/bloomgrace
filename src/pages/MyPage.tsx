@@ -160,30 +160,45 @@ const MyPage = () => {
                     </div>
                     {isPendingBank && order.payment_deadline && (
                       <div className="mb-3 text-xs text-primary flex items-center gap-1.5">
-                        <Clock className="h-3.5 w-3.5" /> 입금 기한: {new Date(order.payment_deadline).toLocaleString(dateFmt)} ({deadlineText(order.payment_deadline)})
+                        <Clock className="h-3.5 w-3.5" /> {L.deadline}: {new Date(order.payment_deadline).toLocaleString(dateFmt)} ({deadlineText(order.payment_deadline)})
                       </div>
                     )}
                     {isCancelled && order.cancel_reason === "payment_timeout" && (
-                      <div className="mb-3 text-xs text-destructive">입금 기한 초과로 자동 취소되었습니다.</div>
+                      <div className="mb-3 text-xs text-destructive">{L.autoCancelled}</div>
                     )}
                     <div className="space-y-2">
-                      {order.order_items?.map((item: any) => (
-                        <div key={item.id} className="flex justify-between text-sm font-light">
-                          <span className={isCancelled ? "line-through" : ""}>{item.product_name} ×{item.quantity}</span>
-                          <span>{formatPrice(item.price * item.quantity)}</span>
-                        </div>
-                      ))}
+                      {order.order_items?.map((item: any) => {
+                        const canReview = order.status === "delivered";
+                        const reviewed = reviewedIds.has(item.product_id);
+                        return (
+                          <div key={item.id} className="flex justify-between items-center gap-3 text-sm font-light flex-wrap">
+                            <span className={`flex-1 min-w-0 ${isCancelled ? "line-through" : ""}`}>{item.product_name} ×{item.quantity}</span>
+                            <div className="flex items-center gap-2">
+                              <span>{formatPrice(item.price * item.quantity)}</span>
+                              {canReview && (
+                                reviewed ? (
+                                  <span className="text-[10px] tracking-wider uppercase px-2 py-1 border border-border text-muted-foreground inline-flex items-center gap-1"><Star className="h-3 w-3 fill-accent text-accent" />{R.done}</span>
+                                ) : (
+                                  <Button size="sm" variant="outline" className="rounded-none h-7 text-[10px] tracking-wider uppercase gap-1" onClick={() => openReview(item)}>
+                                    <PenLine className="h-3 w-3" />{R.write}
+                                  </Button>
+                                )
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
                       <div className="flex justify-between font-medium text-sm pt-3 border-t border-border/50">
                         <span>{t("mp_subtotal")}</span>
                         <span>{formatPrice(Number(order.total))}</span>
                       </div>
                       {Number(order.shipping_fee) > 0 && (
-                        <div className="text-xs text-muted-foreground text-right">상품 {formatPrice(Number(order.subtotal || 0))} + 배송 {formatPrice(Number(order.shipping_fee))}</div>
+                        <div className="text-xs text-muted-foreground text-right">{L.subtotal} {formatPrice(Number(order.subtotal || 0))} + {L.shipping} {formatPrice(Number(order.shipping_fee))}</div>
                       )}
                     </div>
                     {isCancelled && (
                       <Button size="sm" variant="outline" className="mt-3 rounded-none gap-1.5" onClick={() => reorderAll(order)}>
-                        <RotateCcw className="h-3.5 w-3.5" /> 다시 장바구니에 담기
+                        <RotateCcw className="h-3.5 w-3.5" /> {L.reorder}
                       </Button>
                     )}
                   </div>
