@@ -92,54 +92,6 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
     />
   );
 
-  return (
-    <div className="space-y-12 md:space-y-16">
-      {/* Top: image slider + info */}
-      <div className="grid md:grid-cols-2 gap-8 md:gap-16">
-        {/* Slider */}
-        <div className="relative group">
-          <div className="overflow-hidden aspect-square bg-muted/30" ref={emblaRef}>
-            <div className="flex h-full">
-              {slides.map((src, i) => (
-                <div key={i} className="relative min-w-0 shrink-0 grow-0 basis-full h-full">
-                  <img
-                    src={src}
-                    alt={`${altBase} ${i + 1}`}
-                    loading={i === 0 ? "eager" : "lazy"}
-                    className="w-full h-full object-cover"
-                    onError={(e) => ((e.currentTarget as HTMLImageElement).src = FALLBACK_IMG)}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {slides.length > 1 && (
-            <>
-              <button
-                type="button"
-                aria-label="Previous image"
-                onClick={() => emblaApi?.scrollPrev()}
-                className="absolute left-2 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-background/80 backdrop-blur flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity md:opacity-0 max-md:opacity-100"
-              >
-                <ChevronLeft className="h-5 w-5" />
-              </button>
-              <button
-                type="button"
-                aria-label="Next image"
-                onClick={() => emblaApi?.scrollNext()}
-                className="absolute right-2 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-background/80 backdrop-blur flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity md:opacity-0 max-md:opacity-100"
-              >
-                <ChevronRight className="h-5 w-5" />
-              </button>
-              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-background/80 backdrop-blur text-[10px] tracking-widest font-sans">
-                {selectedIdx + 1} / {slides.length}
-              </div>
-            </>
-          )}
-        </div>
-
-  return (
     <div className="space-y-12 md:space-y-16">
       {/* Category badge above image, left aligned in empty whitespace */}
       {product.categories?.name && (
