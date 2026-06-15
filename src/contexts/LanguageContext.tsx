@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 
-export type Language = "en" | "ko" | "es" | "de";
+export type Language = "en" | "es" | "de" | "fr" | "pt" | "ar";
 
 const translations = {
   en: {
@@ -33,7 +33,7 @@ const translations = {
     // Hero
     hero_tagline: "Premium Korean Beauty",
     hero_title: "Bloom & Grace",
-    hero_subtitle: "Premium cosmetics infused with Korean beauty wisdom. Crafted with nature's finest ingredients to complete your elegance.",
+    hero_subtitle: "Infused with Korean beauty wisdom. Crafted with nature's finest ingredients to complete your elegance.",
     hero_shop: "Shop Collection",
     hero_story: "Our Story",
 
@@ -52,7 +52,7 @@ const translations = {
     about_since: "Crafted with care since 2024",
 
     // Footer
-    footer_desc: "Premium cosmetics brand embracing Korean beauty wisdom. Crafted with nature's finest ingredients to complete your elegance.",
+    footer_desc: "A brand embracing Korean beauty wisdom. Crafted with nature's finest ingredients to complete your elegance.",
     footer_products: "Products",
     footer_new: "New Arrivals",
     footer_bestseller: "Bestsellers",
