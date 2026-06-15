@@ -184,21 +184,17 @@ const ProductDetail = () => {
             </div>
 
 
-            {user && (
-              <form onSubmit={submitReview} className="space-y-4 p-6 border border-border">
-                <h3 className="text-sm font-sans font-medium tracking-wider uppercase">{t("pd_write_review")}</h3>
-                <p className="text-xs text-primary">리뷰 작성 시 <strong>1,000P</strong>가 적립됩니다 (주문 시 사용 가능)</p>
-                <div className="flex gap-1">{[1,2,3,4,5].map(s => (
-                  <button key={s} type="button" onClick={() => setReviewForm({ ...reviewForm, rating: s })}>
-                    <Star className={`h-5 w-5 ${s <= reviewForm.rating ? "fill-accent text-accent" : "text-border"}`} />
-                  </button>
-                ))}</div>
-                <Input placeholder={t("pd_review_title")} className="rounded-none" value={reviewForm.title} onChange={e => setReviewForm({ ...reviewForm, title: e.target.value })} />
-                <Textarea placeholder={t("pd_review_content")} className="rounded-none" value={reviewForm.content} onChange={e => setReviewForm({ ...reviewForm, content: e.target.value })} rows={3} />
-                <ReviewPhotoUploader value={reviewForm.image_urls} onChange={(urls) => setReviewForm({ ...reviewForm, image_urls: urls })} />
-                <Button type="submit" className="rounded-none text-xs tracking-wider uppercase">{t("pd_submit_review")}</Button>
-              </form>
-            )}
+            <div className="p-4 border border-border bg-muted/30 text-xs text-muted-foreground text-center">
+              {{
+                en: "Reviews can only be written from My Page after your order is delivered.",
+                es: "Las reseñas solo se pueden escribir desde Mi Página después de la entrega.",
+                de: "Bewertungen können nur über „Mein Konto" nach der Lieferung verfasst werden.",
+                fr: "Les avis ne peuvent être rédigés que depuis Mon Compte après la livraison.",
+                pt: "As avaliações só podem ser escritas em Minha Conta após a entrega.",
+                ja: "レビューは配送完了後、マイページから作成できます。",
+                ar: "يمكن كتابة التقييمات فقط من حسابي بعد استلام الطلب.",
+              }[language]}
+            </div>
 
             <div className="space-y-0">
               {filteredReviews.map(review => (
