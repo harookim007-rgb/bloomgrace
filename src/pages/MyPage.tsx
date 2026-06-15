@@ -9,8 +9,23 @@ import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Clock, RotateCcw } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import ReviewPhotoUploader from "@/components/ReviewPhotoUploader";
+import { Clock, RotateCcw, Star, PenLine } from "lucide-react";
 import { toast } from "sonner";
+
+const REVIEW_I18N: Record<string, { write: string; notice: string; title: string; content: string; submit: string; done: string; success: string; dup: string; fail: string; rating: string; }> = {
+  en: { write: "Write a review", notice: "Earn 1,000P when you write a review (usable at checkout).", title: "Title", content: "Share your experience...", submit: "Submit", done: "Reviewed", success: "Review submitted · 1,000P earned!", dup: "You've already reviewed this product.", fail: "Failed to submit review.", rating: "Rating" },
+  es: { write: "Escribir reseña", notice: "Gana 1.000P al escribir una reseña (usable al pagar).", title: "Título", content: "Comparte tu experiencia...", submit: "Enviar", done: "Reseñado", success: "¡Reseña enviada · 1.000P ganados!", dup: "Ya has reseñado este producto.", fail: "Error al enviar.", rating: "Calificación" },
+  de: { write: "Bewertung schreiben", notice: "Erhalten Sie 1.000P für jede Bewertung (beim Checkout einlösbar).", title: "Titel", content: "Teilen Sie Ihre Erfahrung...", submit: "Senden", done: "Bewertet", success: "Bewertung gesendet · 1.000P erhalten!", dup: "Sie haben dieses Produkt bereits bewertet.", fail: "Senden fehlgeschlagen.", rating: "Bewertung" },
+  fr: { write: "Écrire un avis", notice: "Gagnez 1 000P en publiant un avis (utilisable au paiement).", title: "Titre", content: "Partagez votre expérience...", submit: "Envoyer", done: "Avis publié", success: "Avis publié · 1 000P gagnés !", dup: "Vous avez déjà évalué ce produit.", fail: "Échec de l'envoi.", rating: "Note" },
+  pt: { write: "Escrever avaliação", notice: "Ganhe 1.000P ao escrever uma avaliação (usável no checkout).", title: "Título", content: "Compartilhe sua experiência...", submit: "Enviar", done: "Avaliado", success: "Avaliação enviada · 1.000P ganhos!", dup: "Você já avaliou este produto.", fail: "Falha ao enviar.", rating: "Avaliação" },
+  ja: { write: "レビューを書く", notice: "レビューを書くと1,000Pが貯まります（お支払い時に利用可能）。", title: "タイトル", content: "ご感想をお聞かせください...", submit: "送信", done: "レビュー済み", success: "レビューを送信しました・1,000P獲得！", dup: "この商品はすでにレビュー済みです。", fail: "送信に失敗しました。", rating: "評価" },
+  ar: { write: "اكتب تقييماً", notice: "احصل على 1,000 نقطة عند كتابة تقييم (قابلة للاستخدام عند الدفع).", title: "العنوان", content: "شارك تجربتك...", submit: "إرسال", done: "تم التقييم", success: "تم إرسال التقييم · 1,000 نقطة!", dup: "لقد قمت بتقييم هذا المنتج بالفعل.", fail: "فشل الإرسال.", rating: "التقييم" },
+};
+
 
 const MyPage = () => {
   const { user, signOut } = useAuth();
