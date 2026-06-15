@@ -35,26 +35,34 @@ const MyPage = () => {
   const [orders, setOrders] = useState<any[]>([]);
   const [wishlistProducts, setWishlistProducts] = useState<any[]>([]);
   const [profile, setProfile] = useState<any>(null);
-  const dateFmt = language === "de" ? "de-DE" : language === "es" ? "es-ES" : language === "fr" ? "fr-FR" : language === "pt" ? "pt-BR" : language === "ar" ? "ar-SA" : "en-US";
+  const [reviewedIds, setReviewedIds] = useState<Set<string>>(new Set());
+  const [reviewTarget, setReviewTarget] = useState<{ product_id: string; product_name: string } | null>(null);
+  const [reviewForm, setReviewForm] = useState<{ rating: number; title: string; content: string; image_urls: string[] }>({ rating: 5, title: "", content: "", image_urls: [] });
+  const [submittingReview, setSubmittingReview] = useState(false);
+  const dateFmt = language === "de" ? "de-DE" : language === "es" ? "es-ES" : language === "fr" ? "fr-FR" : language === "pt" ? "pt-BR" : language === "ar" ? "ar-SA" : language === "ja" ? "ja-JP" : "en-US";
+  const L = MP_I18N[language] || MP_I18N.en;
+  const R = REVIEW_I18N[language] || REVIEW_I18N.en;
 
   const fetchData = async () => {
     if (!user) return;
-    const [ordersRes, wishRes, profileRes] = await Promise.all([
+    const [ordersRes, wishRes, profileRes, reviewsRes] = await Promise.all([
       supabase.from("orders").select("*, order_items(*)").eq("user_id", user.id).order("created_at", { ascending: false }),
       supabase.from("wishlists").select("product_id, products(*)").eq("user_id", user.id),
       supabase.from("profiles").select("*").eq("user_id", user.id).single(),
+      supabase.from("reviews").select("product_id").eq("user_id", user.id),
     ]);
     setOrders(ordersRes.data || []);
     setWishlistProducts((wishRes.data || []).map((w: any) => w.products));
     setProfile(profileRes.data);
+    setReviewedIds(new Set((reviewsRes.data || []).map((r: any) => r.product_id)));
   };
   useEffect(() => { fetchData(); /* eslint-disable-next-line */ }, [user]);
 
   if (!user) return <div className="min-h-screen"><Navigation /><div className="text-center py-32 text-sm text-muted-foreground">{t("mp_login_required")}</div><Footer /></div>;
 
   const statusMap: Record<string, string> = {
-    pending: "입금 대기", confirmed: "입금 확인",
-    shipping: "배송 중", delivered: "배송 완료", cancelled: "취소됨",
+    pending: L.statusPending, confirmed: L.statusConfirmed,
+    shipping: L.statusShipping, delivered: L.statusDelivered, cancelled: L.statusCancelled,
   };
 
   const reorderAll = async (order: any) => {
@@ -63,16 +71,39 @@ const MyPage = () => {
       const r = await addToCart(it.product_id, it.quantity, { silent: true });
       if (r) ok++;
     }
-    if (ok > 0) { toast.success(`${ok}개 상품을 장바구니에 담았습니다.`); navigate("/checkout"); }
+    if (ok > 0) { toast.success(L.reorderToast(ok)); navigate("/checkout"); }
   };
 
   const deadlineText = (iso?: string) => {
     if (!iso) return "";
     const ms = new Date(iso).getTime() - Date.now();
-    if (ms <= 0) return "기한 만료";
+    if (ms <= 0) return L.expired;
     const h = Math.floor(ms / 3600000);
     const m = Math.floor((ms % 3600000) / 60000);
-    return `${h}시간 ${m}분 남음`;
+    return `${h}${L.expireH} ${m}${L.expireM}`;
+  };
+
+  const openReview = (item: any) => {
+    setReviewTarget({ product_id: item.product_id, product_name: item.product_name });
+    setReviewForm({ rating: 5, title: "", content: "", image_urls: [] });
+  };
+
+  const submitReview = async () => {
+    if (!user || !reviewTarget) return;
+    setSubmittingReview(true);
+    const { error } = await supabase.from("reviews").insert({
+      user_id: user.id, product_id: reviewTarget.product_id,
+      rating: reviewForm.rating, title: reviewForm.title, content: reviewForm.content,
+      image_urls: reviewForm.image_urls,
+    } as any);
+    setSubmittingReview(false);
+    if (error) {
+      toast.error(error.message.includes("duplicate") ? R.dup : R.fail);
+    } else {
+      toast.success(R.success);
+      setReviewTarget(null);
+      fetchData();
+    }
   };
 
   return (
