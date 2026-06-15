@@ -305,13 +305,21 @@ export type Database = {
       }
       orders: {
         Row: {
+          cancel_reason: string | null
           coupon_code: string | null
           created_at: string
+          depositor_name: string | null
           discount: number | null
           id: string
+          payment_deadline: string | null
           payment_method: string | null
+          points_earned: number
+          points_used: number
           shipping_address: Json | null
+          shipping_country: string | null
+          shipping_fee: number
           status: string
+          subtotal: number | null
           total: number
           tracking_carrier: string | null
           tracking_number: string | null
@@ -320,13 +328,21 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          cancel_reason?: string | null
           coupon_code?: string | null
           created_at?: string
+          depositor_name?: string | null
           discount?: number | null
           id?: string
+          payment_deadline?: string | null
           payment_method?: string | null
+          points_earned?: number
+          points_used?: number
           shipping_address?: Json | null
+          shipping_country?: string | null
+          shipping_fee?: number
           status?: string
+          subtotal?: number | null
           total?: number
           tracking_carrier?: string | null
           tracking_number?: string | null
@@ -335,13 +351,21 @@ export type Database = {
           user_id: string
         }
         Update: {
+          cancel_reason?: string | null
           coupon_code?: string | null
           created_at?: string
+          depositor_name?: string | null
           discount?: number | null
           id?: string
+          payment_deadline?: string | null
           payment_method?: string | null
+          points_earned?: number
+          points_used?: number
           shipping_address?: Json | null
+          shipping_country?: string | null
+          shipping_fee?: number
           status?: string
+          subtotal?: number | null
           total?: number
           tracking_carrier?: string | null
           tracking_number?: string | null
@@ -384,6 +408,72 @@ export type Database = {
           phone?: string
           purpose?: string
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      payment_settings: {
+        Row: {
+          account_holder: string | null
+          account_number: string | null
+          bank_name: string | null
+          business_name: string | null
+          business_number: string | null
+          id: string
+          instructions: string | null
+          payment_deadline_hours: number
+          updated_at: string
+        }
+        Insert: {
+          account_holder?: string | null
+          account_number?: string | null
+          bank_name?: string | null
+          business_name?: string | null
+          business_number?: string | null
+          id?: string
+          instructions?: string | null
+          payment_deadline_hours?: number
+          updated_at?: string
+        }
+        Update: {
+          account_holder?: string | null
+          account_number?: string | null
+          bank_name?: string | null
+          business_name?: string | null
+          business_number?: string | null
+          id?: string
+          instructions?: string | null
+          payment_deadline_hours?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      point_transactions: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          order_id: string | null
+          reason: string
+          review_id: string | null
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          order_id?: string | null
+          reason: string
+          review_id?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          order_id?: string | null
+          reason?: string
+          review_id?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -494,6 +584,7 @@ export type Database = {
           id: string
           phone: string | null
           phone_verified: boolean
+          points: number
           updated_at: string
           user_id: string
         }
@@ -505,6 +596,7 @@ export type Database = {
           id?: string
           phone?: string | null
           phone_verified?: boolean
+          points?: number
           updated_at?: string
           user_id: string
         }
@@ -516,6 +608,7 @@ export type Database = {
           id?: string
           phone?: string | null
           phone_verified?: boolean
+          points?: number
           updated_at?: string
           user_id?: string
         }
@@ -526,6 +619,7 @@ export type Database = {
           content: string | null
           created_at: string
           id: string
+          image_urls: string[]
           product_id: string
           rating: number
           title: string | null
@@ -535,6 +629,7 @@ export type Database = {
           content?: string | null
           created_at?: string
           id?: string
+          image_urls?: string[]
           product_id: string
           rating: number
           title?: string | null
@@ -544,6 +639,7 @@ export type Database = {
           content?: string | null
           created_at?: string
           id?: string
+          image_urls?: string[]
           product_id?: string
           rating?: number
           title?: string | null
@@ -558,6 +654,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      shipping_rates: {
+        Row: {
+          country_code: string
+          country_name: string
+          created_at: string
+          fee: number
+          id: string
+          is_active: boolean
+          max_days: number
+          min_days: number
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          country_code: string
+          country_name: string
+          created_at?: string
+          fee?: number
+          id?: string
+          is_active?: boolean
+          max_days?: number
+          min_days?: number
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          country_code?: string
+          country_name?: string
+          created_at?: string
+          fee?: number
+          id?: string
+          is_active?: boolean
+          max_days?: number
+          min_days?: number
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
       }
       user_roles: {
         Row: {
@@ -611,6 +746,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      auto_cancel_expired_orders: { Args: never; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

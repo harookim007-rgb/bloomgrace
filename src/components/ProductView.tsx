@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { ChevronLeft, ChevronRight, Heart, Minus, Plus, Star, Loader2, Zap } from "lucide-react";
+import { ChevronLeft, ChevronRight, Heart, Minus, Plus, Star, Loader2, Zap, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { localizeCategory } from "@/lib/categoryI18n";
 
@@ -185,13 +187,9 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
             </p>
           )}
 
-          <p className="text-sm font-medium">
-            {(product.stock ?? 0) > 0 ? (
-              <span className="text-emerald-600">● {t("pd_stock")}</span>
-            ) : (
-              <span className="text-destructive">● {t("pd_out_of_stock")}</span>
-            )}
-          </p>
+          {/* Shipping estimate by country */}
+          <ShippingEstimate />
+
 
           <div className="flex items-center gap-4 pt-2">
             <div className="flex items-center border border-border">
@@ -288,4 +286,57 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
   );
 };
 
+const ShippingEstimate = () => {
+  const { formatPrice } = useLanguage();
+  const [rates, setRates] = useState<any[]>([]);
+  const [country, setCountry] = useState<string>("");
+
+  useEffect(() => {
+    supabase.from("shipping_rates").select("*").eq("is_active", true).order("sort_order")
+      .then(({ data }) => {
+        const list = data || [];
+        setRates(list);
+        const saved = typeof window !== "undefined" ? localStorage.getItem("ship_country") : null;
+        const pick = (saved && list.find((r: any) => r.country_code === saved)?.country_code)
+          || list[0]?.country_code || "";
+        setCountry(pick);
+      });
+  }, []);
+
+  const current = rates.find(r => r.country_code === country);
+
+  return (
+    <div className="border border-border bg-muted/20 p-4 space-y-3">
+      <div className="flex items-center gap-2 text-xs tracking-[0.18em] uppercase font-sans font-semibold text-foreground/80">
+        <Truck className="h-4 w-4" /> 배송 정보
+      </div>
+      <div className="grid grid-cols-1 gap-2">
+        <Select value={country} onValueChange={v => { setCountry(v); try { localStorage.setItem("ship_country", v); } catch {} }}>
+          <SelectTrigger className="rounded-none h-10 text-sm"><SelectValue placeholder="배송 국가 선택" /></SelectTrigger>
+          <SelectContent>
+            {rates.map(r => (
+              <SelectItem key={r.country_code} value={r.country_code}>{r.country_name}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        {current ? (
+          <div className="flex justify-between text-sm font-light">
+            <span className="text-muted-foreground">예상 배송비</span>
+            <span className="font-medium">{formatPrice(Number(current.fee))}</span>
+          </div>
+        ) : null}
+        {current ? (
+          <div className="flex justify-between text-sm font-light">
+            <span className="text-muted-foreground">예상 소요 기간</span>
+            <span className="font-medium">{current.min_days}–{current.max_days} 일</span>
+          </div>
+        ) : (
+          <p className="text-xs text-muted-foreground">관리자에서 배송비를 설정해주세요.</p>
+        )}
+      </div>
+    </div>
+  );
+};
+
 export default ProductView;
+

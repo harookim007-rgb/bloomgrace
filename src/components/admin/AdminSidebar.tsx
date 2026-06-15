@@ -1,8 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { 
-  LayoutDashboard, Package, FolderTree, ShoppingCart, Users, 
-  Tag, Image, Star, Settings, ChevronLeft, ChevronRight, LogOut, Home, Paintbrush
+import {
+  LayoutDashboard, Package, FolderTree, ShoppingCart, Users,
+  Tag, Image, Star, Settings, ChevronLeft, ChevronRight, LogOut, Home, Paintbrush,
+  Truck, Wallet,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDesignModeStore } from "@/stores/designModeStore";
@@ -24,6 +25,8 @@ const menuItems: { id: AdminTab; label: string; icon: React.ElementType; }[] = [
   { id: "coupons", label: "쿠폰/이벤트", icon: Tag },
   { id: "banners", label: "배너/프로모션", icon: Image },
   { id: "reviews", label: "리뷰 관리", icon: Star },
+  { id: "shipping", label: "배송비 관리", icon: Truck },
+  { id: "payment", label: "결제 설정", icon: Wallet },
   { id: "settings", label: "사이트 설정", icon: Settings },
 ];
 
@@ -39,7 +42,6 @@ const AdminSidebar = ({ activeTab, setActiveTab, isOpen, setIsOpen }: AdminSideb
 
   return (
     <aside className={`fixed left-0 top-0 h-screen bg-card border-r border-border z-50 flex flex-col transition-all duration-300 ${isOpen ? 'w-64' : 'w-16'}`}>
-      {/* Header */}
       <div className="h-16 flex items-center justify-between px-4 border-b border-border">
         {isOpen && <h1 className="text-lg font-bold font-serif truncate">관리자 패널</h1>}
         <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)} className="shrink-0">
@@ -47,15 +49,14 @@ const AdminSidebar = ({ activeTab, setActiveTab, isOpen, setIsOpen }: AdminSideb
         </Button>
       </div>
 
-      {/* Menu */}
       <nav className="flex-1 py-4 space-y-1 px-2 overflow-y-auto">
         {menuItems.map(item => (
           <button
             key={item.id}
             onClick={() => setActiveTab(item.id)}
             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
-              ${activeTab === item.id 
-                ? 'bg-primary text-primary-foreground' 
+              ${activeTab === item.id
+                ? 'bg-primary text-primary-foreground'
                 : 'text-muted-foreground hover:bg-muted hover:text-foreground'}`}
           >
             <item.icon className="h-5 w-5 shrink-0" />
@@ -64,7 +65,6 @@ const AdminSidebar = ({ activeTab, setActiveTab, isOpen, setIsOpen }: AdminSideb
         ))}
       </nav>
 
-      {/* Footer */}
       <div className="border-t border-border p-2 space-y-1">
         <button
           onClick={handleDesignMode}
