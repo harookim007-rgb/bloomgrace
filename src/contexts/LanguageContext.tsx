@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 
-export type Language = "en" | "es" | "de" | "fr" | "pt" | "ar";
+export type Language = "en" | "es" | "de" | "fr" | "pt" | "ja" | "ar";
 
 const translations = {
   en: {
@@ -1017,6 +1017,65 @@ const translations = {
     currency: "$",
     currency_suffix: "",
   },
+  ja: {
+    nav_home: "ホーム",
+    nav_products: "商品",
+    nav_all_products: "すべての商品",
+    nav_skincare: "スキンケア",
+    nav_makeup: "メイクアップ",
+    nav_haircare: "ヘアケア",
+    nav_fragrance: "フレグランス",
+    nav_bodycare: "ボディケア",
+    nav_health: "健康食品",
+    nav_tools: "ビューティーツール",
+    nav_brand_story: "ブランドストーリー",
+    nav_qa: "Q&A",
+    nav_contact: "お問い合わせ",
+    nav_admin: "管理者",
+    nav_menu: "メニュー",
+    nav_mypage: "マイページ",
+    nav_login: "ログイン",
+    hero_tagline: "プレミアム韓国コスメ",
+    hero_title: "Bloom & Grace",
+    hero_subtitle: "韓国コスメの知恵を込めて。自然の最高の原料であなたの優雅さを完成させます。",
+    hero_shop: "コレクションを見る",
+    hero_story: "ブランドストーリー",
+    featured_tagline: "HOT PRODUCT",
+    featured_title: "おすすめ商品",
+    featured_subtitle: "韓国コスメを纏うビューティーエッセンシャル",
+    featured_view_all: "すべての商品を見る",
+    footer_desc: "韓国コスメの知恵を込めたブランド。自然の最高の原料で優雅さを完成させます。",
+    footer_products: "商品",
+    footer_brand: "ブランド",
+    footer_support: "サポート",
+    footer_rights: "無断複写・転載を禁じます。",
+    products_title: "すべての商品",
+    products_subtitle: "プレミアム韓国コスメコレクション",
+    products_search: "商品を検索...",
+    products_all: "すべて",
+    products_no_results: "商品が見つかりません。",
+    pd_add_to_cart: "カートに追加",
+    pd_review_section: "レビュー",
+    pd_all: "すべて",
+    pd_write_review: "レビューを書く",
+    pd_review_title: "タイトル",
+    pd_review_content: "レビューを書いてください...",
+    pd_submit_review: "送信",
+    pd_no_reviews: "まだレビューはありません。",
+    pd_anonymous: "匿名",
+    pd_loading: "読み込み中...",
+    pd_not_found: "商品が見つかりません。",
+    cart_title: "ショッピングカート",
+    cart_empty: "カートは空です",
+    cart_total: "合計",
+    cart_checkout: "ご購入手続きへ",
+    cart_added: "カートに追加されました！",
+    co_title: "お支払い",
+    co_total: "合計",
+    co_pay: "支払う",
+    currency: "¥",
+    currency_suffix: "",
+  },
 };
 
 
@@ -1036,7 +1095,7 @@ export const useLanguage = () => useContext(LanguageContext);
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const [language, setLanguage] = useState<Language>(() => {
     const saved = localStorage.getItem("bloom-lang");
-    const allowed: Language[] = ["en", "es", "de", "fr", "pt", "ar"];
+    const allowed: Language[] = ["en", "es", "de", "fr", "pt", "ja", "ar"];
     return allowed.includes(saved as Language) ? (saved as Language) : "en";
   });
 
@@ -1051,8 +1110,11 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
 
   const formatPrice = (price: number): string => {
     const curr = translations[language] as any;
-    const rate = language === "de" || language === "fr" ? 1400 : language === "pt" ? 260 : 1300;
-    const converted = (price / rate).toFixed(2);
+    const rate =
+      language === "de" || language === "fr" ? 1400 :
+      language === "pt" ? 260 :
+      language === "ja" ? 10 : 1300;
+    const converted = language === "ja" ? Math.round(price / rate).toString() : (price / rate).toFixed(2);
     return `${curr.currency}${converted}${curr.currency_suffix || ""}`;
   };
 
