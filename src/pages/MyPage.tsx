@@ -129,7 +129,7 @@ const MyPage = () => {
           </div>
           {profile && (
             <div className="mb-10 inline-flex items-center gap-3 px-4 py-2 border border-border bg-primary-soft/30 text-sm">
-              <span className="text-muted-foreground">보유 포인트</span>
+              <span className="text-muted-foreground">{L.points}</span>
               <strong className="text-primary">{(profile.points || 0).toLocaleString()} P</strong>
             </div>
           )}
