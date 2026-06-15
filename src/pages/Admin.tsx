@@ -13,11 +13,14 @@ import AdminCoupons from "@/components/admin/AdminCoupons";
 import AdminBanners from "@/components/admin/AdminBanners";
 import AdminReviews from "@/components/admin/AdminReviews";
 import AdminSettings from "@/components/admin/AdminSettings";
+import AdminShipping from "@/components/admin/AdminShipping";
+import AdminPayment from "@/components/admin/AdminPayment";
 import AdminOtpGate from "@/components/admin/AdminOtpGate";
 
-export type AdminTab = 
-  | "dashboard" | "products" | "categories" | "orders" 
-  | "customers" | "coupons" | "banners" | "reviews" | "settings";
+export type AdminTab =
+  | "dashboard" | "products" | "categories" | "orders"
+  | "customers" | "coupons" | "banners" | "reviews"
+  | "shipping" | "payment" | "settings";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -59,6 +62,8 @@ const Admin = () => {
       case "coupons": return <AdminCoupons />;
       case "banners": return <AdminBanners />;
       case "reviews": return <AdminReviews />;
+      case "shipping": return <AdminShipping />;
+      case "payment": return <AdminPayment />;
       case "settings": return <AdminSettings />;
       default: return <AdminDashboard />;
     }
