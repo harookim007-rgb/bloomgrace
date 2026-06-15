@@ -24,21 +24,9 @@ const heroTexts: Record<string, { titles: string[]; subtitles: string[] }> = {
       "Elevate Your\nSkincare Routine",
     ],
     subtitles: [
-      "Premium cosmetics crafted with nature's finest ingredients",
+      "Crafted with nature's finest ingredients",
       "Hydration that defies time, BLOOM & GRACE",
       "Luxurious beauty, BLOOM & GRACE",
-    ],
-  },
-  ko: {
-    titles: [
-      "피부의 우아함을\n발견하세요",
-      "한 방울에 담긴\n시간을 거스르는 수분",
-      "스킨케어를\n한 단계 높이세요",
-    ],
-    subtitles: [
-      "자연에서 온 귀한 성분으로 완성하는 프리미엄 화장품",
-      "건성을 위한 수분보충, BLOOM & GRACE",
-      "고급스러운 아름다움, BLOOM & GRACE",
     ],
   },
   es: {
@@ -48,7 +36,7 @@ const heroTexts: Record<string, { titles: string[]; subtitles: string[] }> = {
       "Eleva Tu\nRutina de Skincare",
     ],
     subtitles: [
-      "Cosméticos premium elaborados con los mejores ingredientes",
+      "Elaborado con los mejores ingredientes de la naturaleza",
       "Hidratación que desafía el tiempo",
       "Belleza lujosa, BLOOM & GRACE",
     ],
@@ -60,12 +48,49 @@ const heroTexts: Record<string, { titles: string[]; subtitles: string[] }> = {
       "Heben Sie Ihre\nHautpflege-Routine an",
     ],
     subtitles: [
-      "Premium-Kosmetik mit den feinsten Inhaltsstoffen der Natur",
+      "Mit den feinsten Inhaltsstoffen der Natur gefertigt",
       "Feuchtigkeit, die der Zeit trotzt",
       "Luxuriöse Schönheit, BLOOM & GRACE",
     ],
   },
+  fr: {
+    titles: [
+      "Découvrez l'Élégance\nde la Beauté Coréenne",
+      "Une Goutte\nd'Hydratation Intemporelle",
+      "Élevez Votre\nRoutine de Soin",
+    ],
+    subtitles: [
+      "Élaboré avec les plus beaux ingrédients de la nature",
+      "Une hydratation qui défie le temps",
+      "Beauté luxueuse, BLOOM & GRACE",
+    ],
+  },
+  pt: {
+    titles: [
+      "Descubra a Elegância\nda Beleza Coreana",
+      "Uma Gota de\nHidratação Eterna",
+      "Eleve Sua\nRotina de Skincare",
+    ],
+    subtitles: [
+      "Elaborado com os melhores ingredientes da natureza",
+      "Hidratação que desafia o tempo",
+      "Beleza luxuosa, BLOOM & GRACE",
+    ],
+  },
+  ar: {
+    titles: [
+      "اكتشفي أناقة\nالجمال الكوري",
+      "قطرة واحدة من\nالترطيب الخالد",
+      "ارتقي بروتين\nالعناية بالبشرة",
+    ],
+    subtitles: [
+      "مصنوع من أجود مكونات الطبيعة",
+      "ترطيب يتحدى الزمن",
+      "جمال فاخر، BLOOM & GRACE",
+    ],
+  },
 };
+
 
 const Hero = () => {
   const { t, language } = useLanguage();

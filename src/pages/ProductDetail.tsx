@@ -88,7 +88,7 @@ const ProductDetail = () => {
   };
 
   const filteredReviews = filterRating > 0 ? reviews.filter(r => r.rating >= filterRating) : reviews;
-  const dateFmt = language === "ko" ? "ko-KR" : language === "de" ? "de-DE" : language === "es" ? "es-ES" : "en-US";
+  const dateFmt = language === "de" ? "de-DE" : language === "es" ? "es-ES" : language === "fr" ? "fr-FR" : language === "pt" ? "pt-BR" : language === "ar" ? "ar-SA" : "en-US";
 
   if (isLoading) return <div className="min-h-screen"><Navigation /><div className="flex items-center justify-center py-32 text-sm text-muted-foreground">{t("pd_loading")}</div></div>;
   if (!product) return <div className="min-h-screen"><Navigation /><div className="flex items-center justify-center py-32 text-sm text-muted-foreground">{t("pd_not_found")}</div></div>;
@@ -169,8 +169,8 @@ const ProductDetail = () => {
               <h2 className="text-xl md:text-2xl font-serif font-light">{t("pd_review_section")} ({reviews.length})</h2>
             </div>
 
-            <div className="flex gap-2">
-              {[0,5,4,3].map(r => (
+            <div className="flex gap-2 flex-wrap">
+              {[0,5,4,3,2,1].map(r => (
                 <button
                   key={r}
                   onClick={() => setFilterRating(r)}
@@ -178,10 +178,11 @@ const ProductDetail = () => {
                     filterRating === r ? "bg-foreground text-background border-foreground" : "border-border text-muted-foreground"
                   }`}
                 >
-                  {r === 0 ? t("pd_all") : `${r}+ ★`}
+                  {r === 0 ? t("pd_all") : `${r}★ ${t("pd_above")}`}
                 </button>
               ))}
             </div>
+
 
             {user && (
               <form onSubmit={submitReview} className="space-y-4 p-6 border border-border">
