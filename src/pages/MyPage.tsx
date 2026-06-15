@@ -20,7 +20,7 @@ const MyPage = () => {
   const [orders, setOrders] = useState<any[]>([]);
   const [wishlistProducts, setWishlistProducts] = useState<any[]>([]);
   const [profile, setProfile] = useState<any>(null);
-  const dateFmt = language === "ko" ? "ko-KR" : language === "de" ? "de-DE" : language === "es" ? "es-ES" : "en-US";
+  const dateFmt = language === "de" ? "de-DE" : language === "es" ? "es-ES" : language === "fr" ? "fr-FR" : language === "pt" ? "pt-BR" : language === "ar" ? "ar-SA" : "en-US";
 
   const fetchData = async () => {
     if (!user) return;
