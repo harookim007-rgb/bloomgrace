@@ -186,6 +186,7 @@ const ProductDetail = () => {
             {user && (
               <form onSubmit={submitReview} className="space-y-4 p-6 border border-border">
                 <h3 className="text-sm font-sans font-medium tracking-wider uppercase">{t("pd_write_review")}</h3>
+                <p className="text-xs text-primary">리뷰 작성 시 <strong>1,000P</strong>가 적립됩니다 (주문 시 사용 가능)</p>
                 <div className="flex gap-1">{[1,2,3,4,5].map(s => (
                   <button key={s} type="button" onClick={() => setReviewForm({ ...reviewForm, rating: s })}>
                     <Star className={`h-5 w-5 ${s <= reviewForm.rating ? "fill-accent text-accent" : "text-border"}`} />
@@ -193,6 +194,7 @@ const ProductDetail = () => {
                 ))}</div>
                 <Input placeholder={t("pd_review_title")} className="rounded-none" value={reviewForm.title} onChange={e => setReviewForm({ ...reviewForm, title: e.target.value })} />
                 <Textarea placeholder={t("pd_review_content")} className="rounded-none" value={reviewForm.content} onChange={e => setReviewForm({ ...reviewForm, content: e.target.value })} rows={3} />
+                <ReviewPhotoUploader value={reviewForm.image_urls} onChange={(urls) => setReviewForm({ ...reviewForm, image_urls: urls })} />
                 <Button type="submit" className="rounded-none text-xs tracking-wider uppercase">{t("pd_submit_review")}</Button>
               </form>
             )}
@@ -208,7 +210,16 @@ const ProductDetail = () => {
                     <span className="text-xs text-muted-foreground/60">{new Date(review.created_at).toLocaleDateString(dateFmt)}</span>
                   </div>
                   {review.title && <h4 className="text-sm font-medium mb-1">{review.title}</h4>}
-                  {review.content && <p className="text-sm text-muted-foreground font-light">{review.content}</p>}
+                  {review.content && <p className="text-sm text-muted-foreground font-light whitespace-pre-line">{review.content}</p>}
+                  {Array.isArray(review.image_urls) && review.image_urls.length > 0 && (
+                    <div className="flex gap-2 mt-3 flex-wrap">
+                      {review.image_urls.map((u: string, i: number) => (
+                        <a key={i} href={u} target="_blank" rel="noreferrer" className="block w-24 h-24 border border-border">
+                          <img src={u} alt="review" loading="lazy" className="w-full h-full object-cover" />
+                        </a>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
               {filteredReviews.length === 0 && <p className="text-center text-muted-foreground py-12 text-sm">{t("pd_no_reviews")}</p>}
