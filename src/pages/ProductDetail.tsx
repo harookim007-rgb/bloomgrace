@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Star } from "lucide-react";
 import { toast } from "sonner";
+import ReviewPhotoUploader from "@/components/ReviewPhotoUploader";
 
 const ProductDetail = () => {
   const { slug } = useParams();
