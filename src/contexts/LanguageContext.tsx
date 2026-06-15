@@ -38,9 +38,9 @@ const translations = {
     hero_story: "Our Story",
 
     // Featured Products
-    featured_tagline: "Signature Collection",
+    featured_tagline: "HOT PRODUCT",
     featured_title: "Featured Products",
-    featured_subtitle: "Premium beauty essentials embracing Korean beauty",
+    featured_subtitle: "Beauty essentials embracing Korean cosmetic",
     featured_view_all: "View All Products",
 
     // About
@@ -327,9 +327,9 @@ const translations = {
     hero_shop: "컬렉션 보기",
     hero_story: "브랜드 스토리",
 
-    featured_tagline: "Signature Collection",
+    featured_tagline: "HOT PRODUCT",
     featured_title: "추천 상품",
-    featured_subtitle: "한국의 아름다움을 담은 프리미엄 뷰티 에센셜",
+    featured_subtitle: "한국 화장품의 아름다움을 담은 뷰티 에센셜",
     featured_view_all: "전체 상품 보기",
 
     about_tagline: "Our Philosophy",
@@ -600,9 +600,9 @@ const translations = {
     hero_shop: "Ver Colección",
     hero_story: "Nuestra Historia",
 
-    featured_tagline: "Colección Exclusiva",
+    featured_tagline: "HOT PRODUCT",
     featured_title: "Productos Destacados",
-    featured_subtitle: "Esenciales de belleza premium que abrazan la belleza coreana",
+    featured_subtitle: "Esenciales de belleza que abrazan la cosmética coreana",
     featured_view_all: "Ver Todos",
 
     about_tagline: "Nuestra Filosofía",
@@ -873,9 +873,9 @@ const translations = {
     hero_shop: "Kollektion ansehen",
     hero_story: "Unsere Geschichte",
 
-    featured_tagline: "Exklusive Kollektion",
+    featured_tagline: "HOT PRODUCT",
     featured_title: "Empfohlene Produkte",
-    featured_subtitle: "Premium-Beauty-Essentials mit koreanischer Schönheit",
+    featured_subtitle: "Beauty-Essentials mit koreanischer Kosmetik",
     featured_view_all: "Alle Produkte",
 
     about_tagline: "Unsere Philosophie",

@@ -443,7 +443,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
                 {/* Label below image */}
                 <div className="p-4 text-center border-t border-border/20">
                   <h4 className="text-xl font-serif font-bold mb-1">{ct[`${cat.toLowerCase()}` as keyof typeof ct] || cat}</h4>
-                  <p className="text-base text-foreground/70 font-medium">{ct[categoryMeta[cat].descKey]}</p>
+                  <p className="text-base text-foreground/85 font-medium">{ct[categoryMeta[cat].descKey]}</p>
                 </div>
               </button>
             ))}
@@ -457,11 +457,11 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
           <div className="flex items-center justify-between">
             <button
               onClick={() => { setStep(0); setConcern(null); }}
-              className="flex items-center gap-1.5 text-sm text-foreground/70 hover:text-foreground transition-colors tracking-wide uppercase"
+              className="flex items-center gap-1.5 text-sm text-foreground/85 hover:text-foreground transition-colors tracking-wide uppercase"
             >
               <ArrowLeft className="h-3 w-3" /> {ct.back}
             </button>
-            <p className="text-sm font-sans tracking-[0.18em] uppercase text-foreground/65">{ct.step2}</p>
+            <p className="text-sm font-sans tracking-[0.18em] uppercase text-foreground/85">{ct.step2}</p>
             <div className="w-14" />
           </div>
 
@@ -471,7 +471,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
             <div className="absolute inset-0 bg-background/45 flex items-center justify-center backdrop-blur-[1px]">
               <div className="text-center">
                 <h4 className="text-2xl font-serif font-light text-foreground">{category}</h4>
-                <p className="text-[10px] text-foreground/60 tracking-[0.2em] uppercase mt-1">{ct[categoryMeta[category!].descKey]}</p>
+                <p className="text-[12px] text-foreground/85 tracking-[0.2em] uppercase mt-1">{ct[categoryMeta[category!].descKey]}</p>
               </div>
             </div>
           </div>
@@ -490,7 +490,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
                 <div className="flex items-center justify-between">
                   <div className="space-y-1.5">
                     <p className="text-lg font-serif font-bold">{c.label[language] || c.label.en}</p>
-                     <p className="text-base text-foreground/70 leading-relaxed">{c.description[language] || c.description.en}</p>
+                     <p className="text-base text-foreground/85 leading-relaxed">{c.description[language] || c.description.en}</p>
                   </div>
                   <ChevronRight className="h-4 w-4 text-muted-foreground/30 group-hover:text-primary transition-colors flex-shrink-0 ml-3" />
                 </div>
@@ -504,17 +504,17 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
       {step === 2 && (
         <div className="space-y-5">
           <div className="flex items-center justify-between">
-            <button onClick={() => setStep(1)} className="flex items-center gap-1.5 text-[11px] text-muted-foreground hover:text-foreground transition-colors tracking-wider uppercase">
+            <button onClick={() => setStep(1)} className="flex items-center gap-1.5 text-[13px] text-muted-foreground hover:text-foreground transition-colors tracking-wider uppercase">
               <ArrowLeft className="h-3 w-3" /> {ct.back}
             </button>
-            <p className="text-[11px] font-sans tracking-[0.25em] uppercase text-muted-foreground">{category === "Skin" ? ct.step3 : ct.step2}</p>
+            <p className="text-[13px] font-sans tracking-[0.25em] uppercase text-muted-foreground">{category === "Skin" ? ct.step3 : ct.step2}</p>
             <div className="w-14" />
           </div>
 
           {category === "Skin" ? (
             <div className="space-y-6">
               <div className="text-center py-4 border border-border/30 bg-muted/20">
-                <p className="text-xs tracking-[0.12em] uppercase text-foreground/65 mb-1.5">{category}</p>
+                <p className="text-xs tracking-[0.12em] uppercase text-foreground/85 mb-1.5">{category}</p>
                 <p className="text-lg font-serif font-semibold">{getConcerns(category!).find((c) => c.id === concern)?.label[language] || ""}</p>
               </div>
               <div className="flex flex-wrap gap-2 justify-center">
@@ -525,7 +525,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
                     className={`px-5 py-3 text-sm font-medium tracking-[0.1em] uppercase border transition-all duration-300 ${
                       subCategory === sub
                         ? "border-primary bg-primary text-primary-foreground"
-                        : "border-border/60 text-foreground/60 hover:border-primary/40 hover:text-primary"
+                        : "border-border/60 text-foreground/85 hover:border-primary/40 hover:text-primary"
                     }`}
                   >
                     {sub}
@@ -542,7 +542,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
           ) : (
             <div className="space-y-6">
               <div className="text-center py-6 border border-border/30 bg-muted/20">
-                <p className="text-[10px] tracking-[0.15em] uppercase text-muted-foreground mb-1">{category}</p>
+                <p className="text-[12px] tracking-[0.15em] uppercase text-muted-foreground mb-1">{category}</p>
                 <p className="text-sm font-serif">{getConcerns(category!).find((c) => c.id === concern)?.label[language] || ""}</p>
               </div>
               <button
@@ -567,7 +567,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
           </div>
           <div className="text-center space-y-2">
             <p className="text-base font-serif">{ct.analyzing}</p>
-            <p className="text-[10px] text-muted-foreground tracking-[0.3em] uppercase">AI Beauty Advisor</p>
+            <p className="text-[12px] text-muted-foreground tracking-[0.3em] uppercase">AI Beauty Advisor</p>
           </div>
         </div>
       )}
@@ -588,7 +588,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
               <div className="space-y-2">
                 {result.routineOrder.map((s: string, i: number) => (
                   <div key={i} className="flex items-start gap-4 p-3 bg-muted/30">
-                    <span className="flex-shrink-0 w-7 h-7 border border-primary/20 text-primary text-[10px] flex items-center justify-center font-sans font-medium">
+                    <span className="flex-shrink-0 w-7 h-7 border border-primary/20 text-primary text-[12px] flex items-center justify-center font-sans font-medium">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <p className="text-xs leading-relaxed pt-1">{s}</p>
@@ -623,15 +623,15 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
                             </div>
                             {matchedProduct && (
                               <Link to={`/products/${matchedProduct.slug}`} onClick={() => setShowModal(false)} className="flex-shrink-0">
-                                <span className="text-[10px] tracking-[0.1em] uppercase text-primary hover:text-foreground transition-colors border-b border-primary/30 hover:border-foreground/30 pb-px">
+                                <span className="text-[12px] tracking-[0.1em] uppercase text-primary hover:text-foreground transition-colors border-b border-primary/30 hover:border-foreground/30 pb-px">
                                   {ct.viewProduct}
                                 </span>
                               </Link>
                             )}
                           </div>
-                          <p className="text-[11px] text-muted-foreground leading-relaxed line-clamp-2">{rec.reason}</p>
+                          <p className="text-[13px] text-muted-foreground leading-relaxed line-clamp-2">{rec.reason}</p>
                           {matchedProduct && (
-                            <p className="text-xs font-sans font-medium text-foreground/70">{formatPrice(matchedProduct.price)}</p>
+                            <p className="text-xs font-sans font-medium text-foreground/85">{formatPrice(matchedProduct.price)}</p>
                           )}
                         </div>
                       </div>
@@ -648,7 +648,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
               <p className="text-xs font-sans tracking-[0.18em] uppercase text-primary font-semibold">{ct.tips}</p>
               <div className="space-y-2">
                 {result.generalTips.map((tip: string, i: number) => (
-                  <div key={i} className="flex items-start gap-3 text-xs text-foreground/70 leading-relaxed">
+                  <div key={i} className="flex items-start gap-3 text-xs text-foreground/85 leading-relaxed">
                     <span className="flex-shrink-0 w-1 h-1 rounded-full bg-primary mt-1.5" />
                     <span>{tip}</span>
                   </div>
@@ -659,7 +659,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
 
           <button
             onClick={reset}
-            className="w-full py-3 border border-border/40 text-[11px] tracking-[0.2em] uppercase text-foreground/60 hover:text-foreground hover:border-foreground/30 transition-colors duration-300"
+            className="w-full py-3 border border-border/40 text-[13px] tracking-[0.2em] uppercase text-foreground/85 hover:text-foreground hover:border-foreground/30 transition-colors duration-300"
           >
             {ct.startOver}
           </button>
@@ -677,7 +677,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
           <div className="relative px-8 md:px-12 pt-12 pb-8 bg-gradient-to-b from-primary/8 to-transparent">
             <button
               onClick={() => setShowModal(false)}
-              className="absolute top-5 right-5 text-muted-foreground/40 hover:text-foreground transition-colors text-[10px] tracking-[0.2em] uppercase"
+              className="absolute top-5 right-5 text-muted-foreground hover:text-foreground transition-colors text-[12px] tracking-[0.2em] uppercase"
             >
               Close
             </button>
@@ -691,7 +691,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
           <div className="px-8 md:px-12 pb-8">{renderContent()}</div>
           {/* Don't show today */}
           <div className="border-t border-primary/10 px-8 py-4 flex justify-center bg-primary/3">
-            <button onClick={handleDontShowToday} className="text-sm text-foreground/65 hover:text-foreground transition-colors tracking-[0.06em] font-medium">
+            <button onClick={handleDontShowToday} className="text-sm text-foreground/85 hover:text-foreground transition-colors tracking-[0.06em] font-medium">
               {ct.dontShowToday}
             </button>
           </div>

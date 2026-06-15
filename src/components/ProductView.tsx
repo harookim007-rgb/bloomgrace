@@ -140,11 +140,11 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
         {/* Info */}
         <div className="space-y-6 md:py-8">
           {product.brand && (
-            <p className="text-[10px] font-sans tracking-[0.3em] uppercase text-muted-foreground">
+            <p className="text-xs md:text-sm font-sans font-bold tracking-[0.25em] uppercase text-primary">
               {product.brand}
             </p>
           )}
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-serif font-light">{localizedName}</h1>
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-serif font-medium text-foreground">{localizedName}</h1>
 
           {product.categories?.name && (
             <span className="inline-block text-[10px] font-sans tracking-[0.15em] uppercase border border-border px-3 py-1">
@@ -185,11 +185,11 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
             </p>
           )}
 
-          <p className="text-xs text-muted-foreground">
+          <p className="text-sm font-medium">
             {(product.stock ?? 0) > 0 ? (
-              `${t("pd_stock")}: ${product.stock}`
+              <span className="text-emerald-600">● {t("pd_stock")}</span>
             ) : (
-              <span className="text-destructive">{t("pd_out_of_stock")}</span>
+              <span className="text-destructive">● {t("pd_out_of_stock")}</span>
             )}
           </p>
 
@@ -212,23 +212,7 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
               >
                 <Plus className="h-3 w-3" />
               </Button>
-      </div>
-
-      {/* Efficacy / benefits circles */}
-      {(product.benefits && product.benefits.length > 0) && (
-        <div className="max-w-3xl mx-auto">
-          <h3 className="text-center text-xs tracking-[0.3em] uppercase text-muted-foreground mb-6">Key Benefits</h3>
-          <div className="flex flex-wrap justify-center gap-4 md:gap-8">
-            {product.benefits.map((b, i) => (
-              <div key={i} className="flex flex-col items-center gap-2">
-                <div className="w-20 h-20 md:w-24 md:h-24 rounded-full border border-border bg-muted/30 flex items-center justify-center text-center px-2">
-                  <span className="text-xs md:text-sm font-serif font-light leading-tight">{b}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+            </div>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 pt-2">
@@ -260,6 +244,23 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
           </div>
         </div>
       </div>
+
+      {/* Efficacy / benefits circles */}
+      {(product.benefits && product.benefits.length > 0) && (
+        <div className="max-w-3xl mx-auto">
+          <h3 className="text-center text-sm tracking-[0.3em] uppercase text-foreground/70 font-sans font-semibold mb-6">Key Benefits</h3>
+          <div className="flex flex-wrap justify-center gap-4 md:gap-8">
+            {product.benefits.map((b, i) => (
+              <div key={i} className="flex flex-col items-center gap-2">
+                <div className="w-20 h-20 md:w-24 md:h-24 rounded-full border-2 border-primary/30 bg-primary-soft/40 flex items-center justify-center text-center px-2">
+                  <span className="text-xs md:text-sm font-sans font-semibold text-foreground leading-tight">{b}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
 
       {/* Detail images (vertical scroll) */}
       {detailImages.length > 0 && (
