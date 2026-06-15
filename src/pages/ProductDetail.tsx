@@ -188,7 +188,7 @@ const ProductDetail = () => {
               {{
                 en: "Reviews can only be written from My Page after your order is delivered.",
                 es: "Las reseñas solo se pueden escribir desde Mi Página después de la entrega.",
-                de: "Bewertungen können nur über „Mein Konto" nach der Lieferung verfasst werden.",
+                de: "Bewertungen können nur nach Lieferung über Mein Konto verfasst werden.",
                 fr: "Les avis ne peuvent être rédigés que depuis Mon Compte après la livraison.",
                 pt: "As avaliações só podem ser escritas em Minha Conta após a entrega.",
                 ja: "レビューは配送完了後、マイページから作成できます。",
