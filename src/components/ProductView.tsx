@@ -92,6 +92,7 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
     />
   );
 
+  return (
     <div className="space-y-12 md:space-y-16">
       {/* Category badge above image, left aligned in empty whitespace */}
       {product.categories?.name && (
