@@ -25,7 +25,7 @@ const ProductDetail = () => {
   const [product, setProduct] = useState<any>(null);
   const [related, setRelated] = useState<any[]>([]);
   const [reviews, setReviews] = useState<any[]>([]);
-  const [reviewForm, setReviewForm] = useState({ rating: 5, title: "", content: "" });
+  const [reviewForm, setReviewForm] = useState<{ rating: number; title: string; content: string; image_urls: string[] }>({ rating: 5, title: "", content: "", image_urls: [] });
   const [isLoading, setIsLoading] = useState(true);
   const [filterRating, setFilterRating] = useState(0);
 
