@@ -840,7 +840,185 @@ const translations = {
     currency: "€",
     currency_suffix: "",
   },
+  fr: {
+    nav_home: "Accueil",
+    nav_products: "Produits",
+    nav_all_products: "Tous les Produits",
+    nav_skincare: "Soins",
+    nav_makeup: "Maquillage",
+    nav_haircare: "Cheveux",
+    nav_fragrance: "Parfum",
+    nav_bodycare: "Corps",
+    nav_health: "Santé",
+    nav_tools: "Accessoires",
+    nav_brand_story: "Notre Histoire",
+    nav_qa: "Q&R",
+    nav_contact: "Contact",
+    nav_admin: "Admin",
+    nav_menu: "Menu",
+    nav_mypage: "Mon Compte",
+    nav_login: "Connexion",
+    hero_tagline: "Beauté Coréenne Premium",
+    hero_title: "Bloom & Grace",
+    hero_subtitle: "Inspiré par la sagesse de la beauté coréenne. Élaboré avec les meilleurs ingrédients naturels pour sublimer votre élégance.",
+    hero_shop: "Découvrir la Collection",
+    hero_story: "Notre Histoire",
+    featured_tagline: "HOT PRODUCT",
+    featured_title: "Produits Phares",
+    featured_subtitle: "L'essentiel beauté inspiré des cosmétiques coréens",
+    featured_view_all: "Voir Tous les Produits",
+    footer_desc: "Une marque inspirée de la sagesse beauté coréenne. Élaborée avec les meilleurs ingrédients naturels.",
+    footer_products: "Produits",
+    footer_brand: "Marque",
+    footer_support: "Support",
+    footer_rights: "Tous droits réservés.",
+    products_title: "Tous les Produits",
+    products_subtitle: "Collection de cosmétiques coréens premium",
+    products_search: "Rechercher...",
+    products_all: "Tout",
+    products_no_results: "Aucun produit trouvé.",
+    pd_add_to_cart: "Ajouter au panier",
+    pd_review_section: "Avis",
+    pd_all: "Tout",
+    pd_write_review: "Écrire un avis",
+    pd_review_title: "Titre",
+    pd_review_content: "Écrivez votre avis...",
+    pd_submit_review: "Envoyer",
+    pd_no_reviews: "Aucun avis pour le moment.",
+    pd_anonymous: "Anonyme",
+    pd_loading: "Chargement...",
+    pd_not_found: "Produit introuvable.",
+    cart_title: "Panier",
+    cart_empty: "Votre panier est vide",
+    cart_total: "Total",
+    cart_checkout: "Commander",
+    cart_added: "Ajouté au panier !",
+    co_title: "Commande",
+    co_total: "Total",
+    co_pay: "Payer",
+    currency: "€",
+    currency_suffix: "",
+  },
+  pt: {
+    nav_home: "Início",
+    nav_products: "Produtos",
+    nav_all_products: "Todos os Produtos",
+    nav_skincare: "Skincare",
+    nav_makeup: "Maquiagem",
+    nav_haircare: "Cabelo",
+    nav_fragrance: "Perfume",
+    nav_bodycare: "Corpo",
+    nav_health: "Saúde",
+    nav_tools: "Acessórios",
+    nav_brand_story: "Nossa História",
+    nav_qa: "Q&A",
+    nav_contact: "Contato",
+    nav_admin: "Admin",
+    nav_menu: "Menu",
+    nav_mypage: "Minha Conta",
+    nav_login: "Entrar",
+    hero_tagline: "Beleza Coreana Premium",
+    hero_title: "Bloom & Grace",
+    hero_subtitle: "Inspirado na sabedoria da beleza coreana. Elaborado com os melhores ingredientes naturais para realçar sua elegância.",
+    hero_shop: "Ver Coleção",
+    hero_story: "Nossa História",
+    featured_tagline: "HOT PRODUCT",
+    featured_title: "Produtos em Destaque",
+    featured_subtitle: "Essenciais de beleza inspirados nos cosméticos coreanos",
+    featured_view_all: "Ver Todos os Produtos",
+    footer_desc: "Marca inspirada na sabedoria da beleza coreana. Elaborada com os melhores ingredientes naturais.",
+    footer_products: "Produtos",
+    footer_brand: "Marca",
+    footer_support: "Suporte",
+    footer_rights: "Todos os direitos reservados.",
+    products_title: "Todos os Produtos",
+    products_subtitle: "Coleção de cosméticos coreanos premium",
+    products_search: "Buscar...",
+    products_all: "Todos",
+    products_no_results: "Nenhum produto encontrado.",
+    pd_add_to_cart: "Adicionar ao carrinho",
+    pd_review_section: "Avaliações",
+    pd_all: "Tudo",
+    pd_write_review: "Escrever avaliação",
+    pd_review_title: "Título",
+    pd_review_content: "Escreva sua avaliação...",
+    pd_submit_review: "Enviar",
+    pd_no_reviews: "Sem avaliações ainda.",
+    pd_anonymous: "Anônimo",
+    pd_loading: "Carregando...",
+    pd_not_found: "Produto não encontrado.",
+    cart_title: "Carrinho",
+    cart_empty: "Seu carrinho está vazio",
+    cart_total: "Total",
+    cart_checkout: "Finalizar",
+    cart_added: "Adicionado ao carrinho!",
+    co_title: "Checkout",
+    co_total: "Total",
+    co_pay: "Pagar",
+    currency: "R$",
+    currency_suffix: "",
+  },
+  ar: {
+    nav_home: "الرئيسية",
+    nav_products: "المنتجات",
+    nav_all_products: "كل المنتجات",
+    nav_skincare: "العناية بالبشرة",
+    nav_makeup: "المكياج",
+    nav_haircare: "العناية بالشعر",
+    nav_fragrance: "العطور",
+    nav_bodycare: "العناية بالجسم",
+    nav_health: "الصحة",
+    nav_tools: "أدوات الجمال",
+    nav_brand_story: "قصتنا",
+    nav_qa: "أسئلة وأجوبة",
+    nav_contact: "اتصل بنا",
+    nav_admin: "المسؤول",
+    nav_menu: "القائمة",
+    nav_mypage: "حسابي",
+    nav_login: "تسجيل الدخول",
+    hero_tagline: "جمال كوري فاخر",
+    hero_title: "Bloom & Grace",
+    hero_subtitle: "مستوحى من حكمة الجمال الكوري. مصنوع من أجود مكونات الطبيعة لإبراز أناقتك.",
+    hero_shop: "تسوق المجموعة",
+    hero_story: "قصتنا",
+    featured_tagline: "HOT PRODUCT",
+    featured_title: "المنتجات المميزة",
+    featured_subtitle: "أساسيات الجمال المستوحاة من مستحضرات التجميل الكورية",
+    featured_view_all: "عرض كل المنتجات",
+    footer_desc: "علامة تجارية مستوحاة من حكمة الجمال الكوري. مصنوعة من أجود مكونات الطبيعة.",
+    footer_products: "المنتجات",
+    footer_brand: "العلامة التجارية",
+    footer_support: "الدعم",
+    footer_rights: "جميع الحقوق محفوظة.",
+    products_title: "كل المنتجات",
+    products_subtitle: "مجموعة مستحضرات التجميل الكورية الفاخرة",
+    products_search: "بحث...",
+    products_all: "الكل",
+    products_no_results: "لا توجد منتجات.",
+    pd_add_to_cart: "أضف إلى السلة",
+    pd_review_section: "التقييمات",
+    pd_all: "الكل",
+    pd_write_review: "اكتب تقييمًا",
+    pd_review_title: "العنوان",
+    pd_review_content: "اكتب تقييمك...",
+    pd_submit_review: "إرسال",
+    pd_no_reviews: "لا توجد تقييمات بعد.",
+    pd_anonymous: "مجهول",
+    pd_loading: "جار التحميل...",
+    pd_not_found: "المنتج غير موجود.",
+    cart_title: "سلة التسوق",
+    cart_empty: "سلتك فارغة",
+    cart_total: "المجموع",
+    cart_checkout: "إتمام الشراء",
+    cart_added: "تمت الإضافة إلى السلة!",
+    co_title: "الدفع",
+    co_total: "المجموع",
+    co_pay: "ادفع",
+    currency: "$",
+    currency_suffix: "",
+  },
 };
+
 
 type TranslationKey = keyof typeof translations.en;
 
@@ -858,7 +1036,8 @@ export const useLanguage = () => useContext(LanguageContext);
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const [language, setLanguage] = useState<Language>(() => {
     const saved = localStorage.getItem("bloom-lang");
-    return (saved as Language) || "en";
+    const allowed: Language[] = ["en", "es", "de", "fr", "pt", "ar"];
+    return allowed.includes(saved as Language) ? (saved as Language) : "en";
   });
 
   const handleSetLanguage = (lang: Language) => {
@@ -867,18 +1046,16 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const t = (key: TranslationKey): string => {
-    return translations[language]?.[key] || translations.en[key] || key;
+    return (translations[language] as any)?.[key] || translations.en[key] || key;
   };
 
   const formatPrice = (price: number): string => {
-    const curr = translations[language];
-    if (language === "ko") {
-      return `${price.toLocaleString()}${curr.currency_suffix}`;
-    }
-    // Convert KRW to approximate USD/EUR for display
-    const converted = language === "de" ? (price / 1400).toFixed(2) : (price / 1300).toFixed(2);
-    return `${curr.currency}${converted}${curr.currency_suffix}`;
+    const curr = translations[language] as any;
+    const rate = language === "de" || language === "fr" ? 1400 : language === "pt" ? 260 : 1300;
+    const converted = (price / rate).toFixed(2);
+    return `${curr.currency}${converted}${curr.currency_suffix || ""}`;
   };
+
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage, t, formatPrice }}>
