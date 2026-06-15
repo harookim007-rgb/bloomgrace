@@ -65,23 +65,6 @@ const ProductDetail = () => {
     setReviews(data || []);
   };
 
-  const submitReview = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!user || !product) return;
-    const { error } = await supabase.from("reviews").insert({
-      user_id: user.id, product_id: product.id,
-      rating: reviewForm.rating, title: reviewForm.title, content: reviewForm.content,
-      image_urls: reviewForm.image_urls,
-    } as any);
-    if (error) {
-      toast.error(error.message.includes("duplicate") ? t("pd_already_reviewed") : t("pd_review_fail"));
-    } else {
-      toast.success(t("pd_review_success") + " · 1000P 적립!");
-      setReviewForm({ rating: 5, title: "", content: "", image_urls: [] });
-      fetchReviews(product.id);
-    }
-  };
-
   const filteredReviews = filterRating > 0 ? reviews.filter(r => r.rating >= filterRating) : reviews;
   const dateFmt = language === "de" ? "de-DE" : language === "es" ? "es-ES" : language === "fr" ? "fr-FR" : language === "pt" ? "pt-BR" : language === "ar" ? "ar-SA" : "en-US";
 
