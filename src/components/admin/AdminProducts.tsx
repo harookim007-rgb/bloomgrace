@@ -168,18 +168,25 @@ const AdminProducts = () => {
       related_product_ids: form.related_product_ids || [],
     };
 
+    // Auto-translate name & description into all supported languages
+    let translations: any = {};
+    try {
+      const { data: tr } = await supabase.functions.invoke("translate-product", {
+        body: { name: form.name, description: form.description || "" },
+      });
+      if (tr?.translations) translations = tr.translations;
+    } catch (e) {
+      console.warn("translate-product failed", e);
+    }
+
     if (editingId) {
-      // fetch existing translations and overwrite name in every locale so customer-facing translations don't show stale name
       const { data: existing } = await supabase.from("products").select("translations").eq("id", editingId).maybeSingle();
-      const trans = { ...(existing?.translations as any || {}) };
-      for (const lng of Object.keys(trans)) {
-        trans[lng] = { ...(trans[lng] || {}), name: form.name, description: form.description || trans[lng]?.description };
-      }
-      const { error } = await supabase.from("products").update({ ...payload, translations: trans }).eq("id", editingId);
+      const merged = { ...(existing?.translations as any || {}), ...translations };
+      const { error } = await supabase.from("products").update({ ...payload, translations: merged }).eq("id", editingId);
       if (error) { toast.error(error.message); return; }
       toast.success("상품이 수정되었습니다.");
     } else {
-      const { error } = await supabase.from("products").insert(payload);
+      const { error } = await supabase.from("products").insert({ ...payload, translations });
       if (error) { toast.error(error.message); return; }
       toast.success("상품이 등록되었습니다.");
     }
