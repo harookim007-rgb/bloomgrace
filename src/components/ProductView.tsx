@@ -140,11 +140,11 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
         {/* Info */}
         <div className="space-y-6 md:py-8">
           {product.brand && (
-            <p className="text-[10px] font-sans tracking-[0.3em] uppercase text-muted-foreground">
+            <p className="text-xs md:text-sm font-sans font-bold tracking-[0.25em] uppercase text-primary">
               {product.brand}
             </p>
           )}
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-serif font-light">{localizedName}</h1>
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-serif font-medium text-foreground">{localizedName}</h1>
 
           {product.categories?.name && (
             <span className="inline-block text-[10px] font-sans tracking-[0.15em] uppercase border border-border px-3 py-1">
