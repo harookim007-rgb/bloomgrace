@@ -94,6 +94,15 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
 
   return (
     <div className="space-y-12 md:space-y-16">
+      {/* Category badge above image, left aligned in empty whitespace */}
+      {product.categories?.name && (
+        <div className="-mb-8 md:-mb-12">
+          <span className="inline-block text-[10px] md:text-xs font-sans tracking-[0.2em] uppercase border border-border px-3 py-1.5 bg-background">
+            {localizeCategory(product.categories as any, t)}
+          </span>
+        </div>
+      )}
+
       {/* Top: image slider + info */}
       <div className="grid md:grid-cols-2 gap-8 md:gap-16">
         {/* Slider */}
@@ -147,12 +156,6 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
             </p>
           )}
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-serif font-medium text-foreground">{localizedName}</h1>
-
-          {product.categories?.name && (
-            <span className="inline-block text-[10px] font-sans tracking-[0.15em] uppercase border border-border px-3 py-1">
-              {localizeCategory(product.categories as any, t)}
-            </span>
-          )}
 
           <div className="flex items-center gap-2">
             <div className="flex">
