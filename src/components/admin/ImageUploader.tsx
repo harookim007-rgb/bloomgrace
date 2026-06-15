@@ -167,6 +167,7 @@ const ImageUploader = ({
           placeholder="또는 이미지 URL 직접 입력"
           value={value}
           onChange={(e) => onChange(e.target.value)}
+          style={{ fontSize: "16px" }}
         />
       )}
       {value && (
@@ -174,7 +175,8 @@ const ImageUploader = ({
           <img
             src={value}
             alt="preview"
-            className="w-32 h-32 object-cover rounded-lg border"
+            className="w-32 h-32 object-cover rounded-lg border block"
+            style={{ maxWidth: "128px", maxHeight: "128px" }}
             onError={(e) => (e.currentTarget.style.display = "none")}
           />
         </div>
