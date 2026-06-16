@@ -5,7 +5,7 @@ const greetings: { lang: string; flag: string; text: string; dir?: "rtl" }[] = [
   { lang: "ko", flag: "🇰🇷", text: "안녕하세요! 저희는 BLOOM & GRACE 입니다" },
   { lang: "en", flag: "🇺🇸", text: "Hello, gorgeous! We're BLOOM & GRACE" },
   { lang: "ja", flag: "🇯🇵", text: "こんにちは！BLOOM & GRACE です" },
-  { lang: "zh", flag: "🇨🇳", text: "你好！我们是 BLOOM & GRACE" },
+  
   { lang: "es", flag: "🇪🇸", text: "¡Hola, bella! Somos BLOOM & GRACE" },
   { lang: "fr", flag: "🇫🇷", text: "Bonjour ! Nous sommes BLOOM & GRACE" },
   { lang: "de", flag: "🇩🇪", text: "Hallo! Wir sind BLOOM & GRACE" },
