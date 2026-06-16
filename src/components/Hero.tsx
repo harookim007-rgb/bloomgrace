@@ -149,9 +149,6 @@ const Hero = () => {
       <div className="relative z-10 h-full flex items-center">
         <div className="container px-4 md:px-8 lg:px-12">
           <div className="max-w-2xl space-y-4 md:space-y-6">
-            <div className="pb-2 inline-block bg-background/55 backdrop-blur-md rounded-lg px-4 py-3 md:px-6 md:py-4 shadow-soft">
-              <BrandLogo size="md" showTagline={true} asLink={false} className="items-start" />
-            </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-serif font-bold text-foreground leading-[1.12] whitespace-pre-line drop-shadow-[0_2px_8px_rgba(255,255,255,0.6)]">
               {slide.title}
             </h1>
