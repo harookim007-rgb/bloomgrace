@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ShoppingBag, User, Menu, Search, Heart, Globe, X } from "lucide-react";
 import {
@@ -18,6 +18,7 @@ const langLabels: Record<Language, string> = {
 const Navigation = () => {
   const { user, isAdmin } = useAuth();
   const { t, language, setLanguage } = useLanguage();
+  const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -27,11 +28,22 @@ const Navigation = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const navLinks = [
+  const openRoutine = () => {
+    setMobileOpen(false);
+    if (window.location.pathname !== "/") {
+      navigate("/");
+      setTimeout(() => window.dispatchEvent(new Event("open-beauty-advisor")), 300);
+    } else {
+      window.dispatchEvent(new Event("open-beauty-advisor"));
+    }
+  };
+
+  const navLinks: { to?: string; label: string; onClick?: () => void }[] = [
     { to: "/", label: t("nav_home") },
     { to: "/products", label: t("nav_products") },
-    { to: "/products?category=skincare", label: t("nav_skincare") },
-    { to: "/products?category=makeup", label: t("nav_makeup") },
+    { to: "/products?sort=popular", label: t("nav_ranking") },
+    { to: "/products?sale=1", label: t("nav_sale") },
+    { label: t("nav_routine"), onClick: openRoutine },
     { to: "/contact", label: t("nav_contact") },
   ];
 
@@ -63,10 +75,18 @@ const Navigation = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-8">
-            {navLinks.map(link => (
+            {navLinks.map(link => link.onClick ? (
+              <button
+                key={link.label}
+                onClick={link.onClick}
+                className="text-sm font-sans font-semibold tracking-[0.06em] uppercase text-foreground/80 hover:text-primary transition-colors"
+              >
+                {link.label}
+              </button>
+            ) : (
               <Link
                 key={link.to}
-                to={link.to}
+                to={link.to!}
                 className="text-sm font-sans font-semibold tracking-[0.06em] uppercase text-foreground/80 hover:text-primary transition-colors"
               >
                 {link.label}
@@ -136,10 +156,18 @@ const Navigation = () => {
               <BrandLogo size="sm" showTagline={true} asLink={false} className="items-start" />
             </div>
             <nav className="flex flex-col gap-0">
-              {navLinks.map(link => (
+              {navLinks.map(link => link.onClick ? (
+                <button
+                  key={link.label}
+                  onClick={link.onClick}
+                  className="text-left text-base font-sans font-semibold tracking-[0.04em] uppercase py-4 border-b border-border/40 text-foreground/80 hover:text-primary transition-colors min-h-[44px] flex items-center"
+                >
+                  {link.label}
+                </button>
+              ) : (
                 <Link
                   key={link.to}
-                  to={link.to}
+                  to={link.to!}
                   className="text-base font-sans font-semibold tracking-[0.04em] uppercase py-4 border-b border-border/40 text-foreground/80 hover:text-primary transition-colors min-h-[44px] flex items-center"
                   onClick={() => setMobileOpen(false)}
                 >
