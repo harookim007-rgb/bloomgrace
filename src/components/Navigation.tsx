@@ -70,7 +70,14 @@ const Navigation = () => {
           </button>
 
           {/* Logo */}
-          <BrandLogo size="md" showTagline={true} />
+          <div className="flex-1 lg:flex-none flex justify-center lg:justify-start min-w-0 px-2">
+            <div className="lg:hidden">
+              <BrandLogo size="sm" showTagline={false} />
+            </div>
+            <div className="hidden lg:block">
+              <BrandLogo size="md" showTagline={true} />
+            </div>
+          </div>
 
 
           {/* Desktop Navigation */}
