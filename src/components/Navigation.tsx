@@ -190,20 +190,32 @@ const Navigation = () => {
               >
                 {t("nav_qa")}
               </Link>
-              {user ? (
-                <Link to="/mypage" className="text-base font-sans font-semibold tracking-[0.04em] uppercase py-4 border-b border-border/40 text-foreground/80 hover:text-primary min-h-[44px] flex items-center" onClick={() => setMobileOpen(false)}>
-                  {t("nav_mypage")}
-                </Link>
-              ) : (
-                <Link to="/auth" className="text-base font-sans font-semibold tracking-[0.04em] uppercase py-4 border-b border-border/40 text-foreground/80 hover:text-primary min-h-[44px] flex items-center" onClick={() => setMobileOpen(false)}>
-                  {t("nav_login")}
-                </Link>
-              )}
               {isAdmin && (
                 <Link to="/admin" className="text-base font-sans font-semibold tracking-[0.06em] uppercase py-4 border-b border-border/40 text-primary min-h-[44px] flex items-center" onClick={() => setMobileOpen(false)}>
                   {t("nav_admin")}
                 </Link>
               )}
+
+              {/* Sign in / My page — separate prominent button (not a menu item) */}
+              <div className="pt-6">
+                {user ? (
+                  <Link
+                    to="/mypage"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center justify-center gap-2 w-full py-3.5 border border-foreground text-foreground text-sm font-semibold tracking-[0.15em] uppercase hover:bg-foreground hover:text-background transition-colors min-h-[48px]"
+                  >
+                    <User className="h-4 w-4" /> {t("nav_mypage")}
+                  </Link>
+                ) : (
+                  <Link
+                    to="/auth"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center justify-center gap-2 w-full py-3.5 bg-foreground text-background text-sm font-semibold tracking-[0.15em] uppercase hover:bg-foreground/90 transition-colors min-h-[48px]"
+                  >
+                    <User className="h-4 w-4" /> {t("nav_login")}
+                  </Link>
+                )}
+              </div>
 
               {/* Language switcher in mobile */}
               <div className="pt-8">
