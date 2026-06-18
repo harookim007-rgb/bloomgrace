@@ -181,13 +181,13 @@
     transform: translate3d(0, -10vh, 0) rotate(0deg);
   }
   100% {
-    transform: translate3d(var(--sway, 30px), 110vh, 0) rotate(540deg);
+    transform: translate3d(0, 110vh, 0) rotate(360deg);
   }
 }
 
 @keyframes petal-sway {
-  0% { margin-left: 0; }
-  100% { margin-left: var(--sway, 30px); }
+  0% { margin-left: calc(var(--sway, 60px) * -0.5); }
+  100% { margin-left: calc(var(--sway, 60px) * 0.5); }
 }
 
 /* WebView / KakaoTalk compatibility */
