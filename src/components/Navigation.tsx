@@ -59,11 +59,13 @@ const Navigation = () => {
             ? "bg-background/95 backdrop-blur-xl shadow-soft"
             : "bg-background"
         }`}
+        style={{ paddingTop: "env(safe-area-inset-top)", paddingLeft: "env(safe-area-inset-left)", paddingRight: "env(safe-area-inset-right)" }}
       >
-        <div className="container flex h-16 md:h-24 items-center justify-between px-3 md:px-6 lg:px-8">
+        <div className="container flex h-16 md:h-24 items-center justify-between gap-2 px-2 sm:px-3 md:px-6 lg:px-8">
           {/* Mobile menu toggle */}
           <button
-            className="lg:hidden p-2 -ml-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
+            aria-label="Menu"
+            className="lg:hidden p-2 -ml-1 min-w-[44px] min-h-[44px] flex items-center justify-center shrink-0"
             onClick={() => setMobileOpen(!mobileOpen)}
           >
             {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
