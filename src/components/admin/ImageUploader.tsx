@@ -103,6 +103,7 @@ const ImageUploader = ({
 }: ImageUploaderProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState<string>("");
   const [showUrl, setShowUrl] = useState(false);
 
   const handleFile = async (file: File) => {
@@ -110,10 +111,16 @@ const ImageUploader = ({
       toast.error("이미지 파일만 업로드 가능합니다.");
       return;
     }
+    if (file.size > 20 * 1024 * 1024) {
+      toast.error("파일이 너무 큽니다 (최대 20MB).");
+      return;
+    }
     setUploading(true);
+    setProgress("이미지 처리 중...");
     try {
       const force = aspect === "free" ? undefined : aspect;
       const blob = await resizeImage(file, maxWidth, maxHeight, quality, force);
+      setProgress("업로드 중...");
       const ext = "jpg";
       const path = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
       const { error: upErr } = await supabase.storage.from("media").upload(path, blob, {
@@ -121,7 +128,7 @@ const ImageUploader = ({
         upsert: false,
       });
       if (upErr) throw upErr;
-      // long-expiry signed URL (10 years)
+      setProgress("링크 생성 중...");
       const { data: signed, error: sErr } = await supabase.storage
         .from("media")
         .createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
@@ -132,13 +139,24 @@ const ImageUploader = ({
       toast.error("업로드 실패: " + (e?.message || ""));
     } finally {
       setUploading(false);
+      setProgress("");
       if (inputRef.current) inputRef.current.value = "";
     }
   };
 
+  const onDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    const f = e.dataTransfer.files?.[0];
+    if (f) handleFile(f);
+  };
+
   return (
     <div className="space-y-2">
-      <div className="flex items-center gap-2">
+      <div
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={onDrop}
+        className="flex flex-wrap items-center gap-2"
+      >
         <input
           ref={inputRef}
           type="file"
@@ -151,7 +169,7 @@ const ImageUploader = ({
         />
         <Button type="button" variant="outline" size="sm" onClick={() => inputRef.current?.click()} disabled={uploading} className="gap-2">
           {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
-          {uploading ? "업로드 중..." : `${label} 업로드`}
+          {uploading ? (progress || "업로드 중...") : `${label} 업로드`}
         </Button>
         <Button type="button" variant="ghost" size="sm" onClick={() => setShowUrl((v) => !v)} className="gap-1 text-xs">
           <LinkIcon className="h-3 w-3" /> URL
