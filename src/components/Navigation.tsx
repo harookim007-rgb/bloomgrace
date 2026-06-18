@@ -59,19 +59,21 @@ const Navigation = () => {
             ? "bg-background/95 backdrop-blur-xl shadow-soft"
             : "bg-background"
         }`}
+        style={{ paddingTop: "env(safe-area-inset-top)", paddingLeft: "env(safe-area-inset-left)", paddingRight: "env(safe-area-inset-right)" }}
       >
-        <div className="container flex h-16 md:h-24 items-center justify-between px-3 md:px-6 lg:px-8">
+        <div className="container flex h-16 md:h-24 items-center justify-between gap-2 px-2 sm:px-3 md:px-6 lg:px-8">
           {/* Mobile menu toggle */}
           <button
-            className="lg:hidden p-2 -ml-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
+            aria-label="Menu"
+            className="lg:hidden p-2 -ml-1 min-w-[44px] min-h-[44px] flex items-center justify-center shrink-0"
             onClick={() => setMobileOpen(!mobileOpen)}
           >
             {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
 
           {/* Logo */}
-          <div className="flex-1 lg:flex-none flex justify-center lg:justify-start min-w-0 px-2">
-            <div className="lg:hidden">
+          <div className="flex-1 lg:flex-none flex justify-center lg:justify-start min-w-0">
+            <div className="lg:hidden max-w-[60vw] truncate">
               <BrandLogo size="sm" showTagline={false} />
             </div>
             <div className="hidden lg:block">
@@ -114,10 +116,10 @@ const Navigation = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="h-9 w-9 md:h-10 md:w-10 text-foreground/60 hover:text-primary">
-                  <Globe className="h-4 w-4 md:h-[18px] md:w-[18px]" />
+                  <Globe className="h-[18px] w-[18px]" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="min-w-[140px]">
+              <DropdownMenuContent align="end" className="min-w-[140px] z-[70]">
                 {(Object.keys(langLabels) as Language[]).map(lang => (
                   <DropdownMenuItem
                     key={lang}
@@ -131,21 +133,21 @@ const Navigation = () => {
             </DropdownMenu>
 
             <Link to="/products" className="hidden md:inline-flex">
-              <Button variant="ghost" size="icon" className="h-9 w-9 md:h-10 md:w-10 text-foreground/60 hover:text-primary">
-                <Search className="h-4 w-4 md:h-[18px] md:w-[18px]" />
+              <Button variant="ghost" size="icon" className="h-10 w-10 text-foreground/60 hover:text-primary">
+                <Search className="h-[18px] w-[18px]" />
               </Button>
             </Link>
             {user && (
               <Link to="/mypage" className="hidden md:inline-flex">
-                <Button variant="ghost" size="icon" className="h-9 w-9 md:h-10 md:w-10 text-foreground/60 hover:text-primary">
-                  <Heart className="h-4 w-4 md:h-[18px] md:w-[18px]" />
+                <Button variant="ghost" size="icon" className="h-10 w-10 text-foreground/60 hover:text-primary">
+                  <Heart className="h-[18px] w-[18px]" />
                 </Button>
               </Link>
             )}
             <CartDrawer />
-            <Link to={user ? "/mypage" : "/auth"}>
-              <Button variant="ghost" size="icon" className="h-9 w-9 md:h-10 md:w-10 text-foreground/60 hover:text-primary">
-                <User className="h-4 w-4 md:h-[18px] md:w-[18px]" />
+            <Link to={user ? "/mypage" : "/auth"} className="hidden md:inline-flex">
+              <Button variant="ghost" size="icon" className="h-10 w-10 text-foreground/60 hover:text-primary">
+                <User className="h-[18px] w-[18px]" />
               </Button>
             </Link>
           </div>
@@ -188,20 +190,32 @@ const Navigation = () => {
               >
                 {t("nav_qa")}
               </Link>
-              {user ? (
-                <Link to="/mypage" className="text-base font-sans font-semibold tracking-[0.04em] uppercase py-4 border-b border-border/40 text-foreground/80 hover:text-primary min-h-[44px] flex items-center" onClick={() => setMobileOpen(false)}>
-                  {t("nav_mypage")}
-                </Link>
-              ) : (
-                <Link to="/auth" className="text-base font-sans font-semibold tracking-[0.04em] uppercase py-4 border-b border-border/40 text-foreground/80 hover:text-primary min-h-[44px] flex items-center" onClick={() => setMobileOpen(false)}>
-                  {t("nav_login")}
-                </Link>
-              )}
               {isAdmin && (
                 <Link to="/admin" className="text-base font-sans font-semibold tracking-[0.06em] uppercase py-4 border-b border-border/40 text-primary min-h-[44px] flex items-center" onClick={() => setMobileOpen(false)}>
                   {t("nav_admin")}
                 </Link>
               )}
+
+              {/* Sign in / My page — separate prominent button (not a menu item) */}
+              <div className="pt-6">
+                {user ? (
+                  <Link
+                    to="/mypage"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center justify-center gap-2 w-full py-3.5 border border-foreground text-foreground text-sm font-semibold tracking-[0.15em] uppercase hover:bg-foreground hover:text-background transition-colors min-h-[48px]"
+                  >
+                    <User className="h-4 w-4" /> {t("nav_mypage")}
+                  </Link>
+                ) : (
+                  <Link
+                    to="/auth"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center justify-center gap-2 w-full py-3.5 bg-foreground text-background text-sm font-semibold tracking-[0.15em] uppercase hover:bg-foreground/90 transition-colors min-h-[48px]"
+                  >
+                    <User className="h-4 w-4" /> {t("nav_login")}
+                  </Link>
+                )}
+              </div>
 
               {/* Language switcher in mobile */}
               <div className="pt-8">
