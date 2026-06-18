@@ -116,10 +116,10 @@ const Navigation = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="h-9 w-9 md:h-10 md:w-10 text-foreground/60 hover:text-primary">
-                  <Globe className="h-4 w-4 md:h-[18px] md:w-[18px]" />
+                  <Globe className="h-[18px] w-[18px]" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="min-w-[140px]">
+              <DropdownMenuContent align="end" className="min-w-[140px] z-[70]">
                 {(Object.keys(langLabels) as Language[]).map(lang => (
                   <DropdownMenuItem
                     key={lang}
@@ -133,21 +133,21 @@ const Navigation = () => {
             </DropdownMenu>
 
             <Link to="/products" className="hidden md:inline-flex">
-              <Button variant="ghost" size="icon" className="h-9 w-9 md:h-10 md:w-10 text-foreground/60 hover:text-primary">
-                <Search className="h-4 w-4 md:h-[18px] md:w-[18px]" />
+              <Button variant="ghost" size="icon" className="h-10 w-10 text-foreground/60 hover:text-primary">
+                <Search className="h-[18px] w-[18px]" />
               </Button>
             </Link>
             {user && (
               <Link to="/mypage" className="hidden md:inline-flex">
-                <Button variant="ghost" size="icon" className="h-9 w-9 md:h-10 md:w-10 text-foreground/60 hover:text-primary">
-                  <Heart className="h-4 w-4 md:h-[18px] md:w-[18px]" />
+                <Button variant="ghost" size="icon" className="h-10 w-10 text-foreground/60 hover:text-primary">
+                  <Heart className="h-[18px] w-[18px]" />
                 </Button>
               </Link>
             )}
             <CartDrawer />
-            <Link to={user ? "/mypage" : "/auth"}>
-              <Button variant="ghost" size="icon" className="h-9 w-9 md:h-10 md:w-10 text-foreground/60 hover:text-primary">
-                <User className="h-4 w-4 md:h-[18px] md:w-[18px]" />
+            <Link to={user ? "/mypage" : "/auth"} className="hidden md:inline-flex">
+              <Button variant="ghost" size="icon" className="h-10 w-10 text-foreground/60 hover:text-primary">
+                <User className="h-[18px] w-[18px]" />
               </Button>
             </Link>
           </div>
