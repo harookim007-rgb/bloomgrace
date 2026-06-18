@@ -153,7 +153,7 @@ const Products = () => {
           ) : products.length === 0 ? (
             <div className="text-center py-20 text-muted-foreground text-sm">{t("products_no_results")}</div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 lg:gap-8">
+            <div className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 lg:gap-8 transition-opacity duration-200 ${isRefining ? "opacity-60" : "opacity-100"}`}>
               {products.map(product => <ProductCard key={product.id} product={product} />)}
             </div>
           )}
