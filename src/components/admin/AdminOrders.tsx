@@ -194,7 +194,10 @@ const AdminOrders = () => {
                         {o.profiles?.display_name || "알 수 없음"}
                       </span>
                     </TableCell>
-                    <TableCell className="text-sm max-w-[200px] truncate">
+                    <TableCell
+                      className="text-sm max-w-[200px] truncate"
+                      title={(o.order_items || []).map((it: any) => it.product_name).filter(Boolean).join(", ")}
+                    >
                       {o.order_items?.[0]?.product_name || "-"}
                       {(o.order_items?.length || 0) > 1 && <span className="text-muted-foreground"> 외 {o.order_items.length - 1}건</span>}
                     </TableCell>

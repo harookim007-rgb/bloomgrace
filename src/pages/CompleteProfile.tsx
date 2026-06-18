@@ -81,7 +81,7 @@ const CompleteProfile = () => {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-dvh">
       <Navigation />
       <section className="py-12 md:py-20 px-4 flex items-center justify-center">
         <div className="w-full max-w-lg space-y-8">

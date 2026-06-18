@@ -546,14 +546,14 @@ const AdminProducts = () => {
           <Input className="pl-9" placeholder="상품명, 브랜드 검색..." value={search} onChange={e => setSearch(e.target.value)} />
         </div>
         <Select value={filterCategory} onValueChange={setFilterCategory}>
-          <SelectTrigger className="w-[150px]"><SelectValue placeholder="카테고리" /></SelectTrigger>
+          <SelectTrigger className="w-full sm:w-[150px] shrink-0"><SelectValue placeholder="카테고리" /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">전체 카테고리</SelectItem>
             {categories.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
           </SelectContent>
         </Select>
         <Select value={filterStatus} onValueChange={setFilterStatus}>
-          <SelectTrigger className="w-[130px]"><SelectValue placeholder="상태" /></SelectTrigger>
+          <SelectTrigger className="w-full sm:w-[130px] shrink-0"><SelectValue placeholder="상태" /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">전체</SelectItem>
             <SelectItem value="active">활성</SelectItem>

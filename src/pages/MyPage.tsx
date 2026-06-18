@@ -70,7 +70,7 @@ const MyPage = () => {
   };
   useEffect(() => { fetchData(); /* eslint-disable-next-line */ }, [user]);
 
-  if (!user) return <div className="min-h-screen"><Navigation /><div className="text-center py-32 text-sm text-muted-foreground">{t("mp_login_required")}</div><Footer /></div>;
+  if (!user) return <div className="min-h-dvh"><Navigation /><div className="text-center py-32 text-sm text-muted-foreground">{t("mp_login_required")}</div><Footer /></div>;
 
   const statusMap: Record<string, string> = {
     pending: L.statusPending, confirmed: L.statusConfirmed,
@@ -119,7 +119,7 @@ const MyPage = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-dvh">
       <Navigation />
       <section className="py-12 md:py-16 px-4">
         <div className="container max-w-5xl">

@@ -57,7 +57,7 @@ const AdminOtpGate = ({ onVerified }: Props) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-muted/30">
+    <div className="min-h-dvh flex items-center justify-center p-6 bg-muted/30">
       <div className="w-full max-w-sm bg-card p-8 border border-border rounded-lg shadow-elegant space-y-6">
         <div className="text-center space-y-2">
           <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">

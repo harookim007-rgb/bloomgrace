@@ -27,9 +27,18 @@ const AdminBanners = () => {
 
   const save = async () => {
     if (!form.title) { toast.error("제목을 입력하세요."); return; }
+    const link = form.link_url.trim();
+    if (link && !/^(\/|https?:\/\/)/i.test(link)) {
+      toast.error("링크 URL은 '/'로 시작하거나 'http(s)://'로 시작해야 합니다.");
+      return;
+    }
+    if (form.starts_at && form.expires_at && new Date(form.starts_at) >= new Date(form.expires_at)) {
+      toast.error("종료일은 시작일 이후여야 합니다.");
+      return;
+    }
     const payload = {
       title: form.title, subtitle: form.subtitle || null,
-      image_url: form.image_url || null, link_url: form.link_url || null,
+      image_url: form.image_url || null, link_url: link || null,
       is_active: form.is_active, sort_order: parseInt(form.sort_order) || 0,
       starts_at: form.starts_at || null, expires_at: form.expires_at || null,
     };

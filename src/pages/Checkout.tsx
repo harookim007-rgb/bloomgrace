@@ -327,13 +327,13 @@ const Checkout = () => {
     setConfirmOpen(true);
   };
 
-  if (!user) return <div className="min-h-screen"><Navigation /><div className="text-center py-32 text-sm text-muted-foreground">{t.login_req}</div><Footer /></div>;
-  if (items.length === 0 && !completed) return <div className="min-h-screen"><Navigation /><div className="text-center py-32 text-sm text-muted-foreground">{t.cart_empty}</div><Footer /></div>;
+  if (!user) return <div className="min-h-dvh"><Navigation /><div className="text-center py-32 text-sm text-muted-foreground">{t.login_req}</div><Footer /></div>;
+  if (items.length === 0 && !completed) return <div className="min-h-dvh"><Navigation /><div className="text-center py-32 text-sm text-muted-foreground">{t.cart_empty}</div><Footer /></div>;
 
   if (completed) {
     const ord = completed.order;
     return (
-      <div className="min-h-screen">
+      <div className="min-h-dvh">
         <Navigation />
         <section className="py-12 md:py-20 px-4">
           <div className="container max-w-2xl">
@@ -375,7 +375,7 @@ const Checkout = () => {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-dvh">
       <Navigation />
       <section className="py-12 md:py-16 px-4">
         <div className="container max-w-4xl">
