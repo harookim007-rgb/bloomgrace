@@ -156,10 +156,18 @@ const Navigation = () => {
               <BrandLogo size="sm" showTagline={true} asLink={false} className="items-start" />
             </div>
             <nav className="flex flex-col gap-0">
-              {navLinks.map(link => (
+              {navLinks.map(link => link.onClick ? (
+                <button
+                  key={link.label}
+                  onClick={link.onClick}
+                  className="text-left text-base font-sans font-semibold tracking-[0.04em] uppercase py-4 border-b border-border/40 text-foreground/80 hover:text-primary transition-colors min-h-[44px] flex items-center"
+                >
+                  {link.label}
+                </button>
+              ) : (
                 <Link
                   key={link.to}
-                  to={link.to}
+                  to={link.to!}
                   className="text-base font-sans font-semibold tracking-[0.04em] uppercase py-4 border-b border-border/40 text-foreground/80 hover:text-primary transition-colors min-h-[44px] flex items-center"
                   onClick={() => setMobileOpen(false)}
                 >
