@@ -19,8 +19,9 @@ const Products = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState(searchParams.get("q") || "");
   const [category, setCategory] = useState(searchParams.get("category") || "all");
-  const [sort, setSort] = useState("popular");
+  const [sort, setSort] = useState(searchParams.get("sort") || "popular");
   const [priceRange, setPriceRange] = useState("all");
+  const saleOnly = searchParams.get("sale") === "1";
 
   useEffect(() => {
     supabase.from("categories").select("*").order("sort_order").then(({ data }) => setCategories(data || []));
