@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 
 const Trust = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-dvh flex flex-col">
       <Navigation />
       <main className="flex-1 container px-4 md:px-6 lg:px-8 py-12 md:py-20 max-w-3xl">
         <h1 className="font-serif text-3xl md:text-4xl mb-2">Trust & Privacy</h1>

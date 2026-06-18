@@ -48,7 +48,7 @@ const Admin = () => {
       .then(({ data }) => setIsMaster(!!data));
   }, [user]);
 
-  if (authLoading || isMaster === null) return <div className="min-h-screen flex items-center justify-center text-muted-foreground">로딩 중...</div>;
+  if (authLoading || isMaster === null) return <div className="min-h-dvh flex items-center justify-center text-muted-foreground">로딩 중...</div>;
   if (!isAdmin) return null;
   if (isMaster && !otpVerified) return <AdminOtpGate onVerified={() => setOtpVerified(true)} />;
 

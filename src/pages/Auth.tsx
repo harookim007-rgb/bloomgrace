@@ -49,7 +49,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-dvh">
       <Navigation />
       <section className="py-16 md:py-24 px-4 flex items-center justify-center min-h-[70dvh]">
         <div className="w-full max-w-md space-y-8">

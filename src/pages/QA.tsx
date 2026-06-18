@@ -29,7 +29,7 @@ const QA = () => {
   ];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-dvh">
       <Navigation />
       <section className="py-16 md:py-24 px-4 md:px-6 lg:px-8">
         <div className="container max-w-4xl">
