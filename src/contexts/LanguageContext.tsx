@@ -294,6 +294,14 @@ const translations = {
     qa_q14: "Is 1:1 consultation available?",
     qa_a14: "Yes, you can get personalized consultation via our website chat or email (contact@bloomandgrace.com). Feel free to ask about skin concerns, product recommendations, and more.",
 
+    // Shipping widget
+    ship_info: "Shipping Information",
+    ship_country_placeholder: "Select shipping country",
+    ship_fee: "Estimated shipping",
+    ship_eta: "Estimated delivery",
+    ship_days: "days",
+    ship_not_set: "Please configure shipping rates in admin.",
+
     // Currency
     currency: "$",
     currency_suffix: "",
