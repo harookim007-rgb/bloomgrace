@@ -17,6 +17,7 @@ const Products = () => {
   const [products, setProducts] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isRefining, setIsRefining] = useState(false);
   const [search, setSearch] = useState(searchParams.get("q") || "");
   const [category, setCategory] = useState(searchParams.get("category") || "all");
   const [sort, setSort] = useState(searchParams.get("sort") || "popular");
@@ -28,8 +29,13 @@ const Products = () => {
   }, []);
 
   useEffect(() => {
+    // Wait for categories before applying a specific category filter, but
+    // do not block the initial "all" fetch on the categories request.
+    if (category !== "all" && categories.length === 0) return;
+
     const fetchProducts = async () => {
-      setIsLoading(true);
+      if (products.length === 0) setIsLoading(true);
+      else setIsRefining(true);
       let query = supabase.from("products").select("*").eq("is_active", true);
       if (category !== "all") {
         const cat = categories.find(c => c.slug === category);
@@ -49,8 +55,10 @@ const Products = () => {
       if (saleOnly) list = list.filter((p: any) => p.original_price && Number(p.original_price) > Number(p.price));
       setProducts(list);
       setIsLoading(false);
+      setIsRefining(false);
     };
     fetchProducts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category, search, sort, priceRange, categories, saleOnly]);
 
   const handleSearch = (e: React.FormEvent) => {
