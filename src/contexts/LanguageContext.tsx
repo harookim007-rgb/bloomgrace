@@ -579,6 +579,12 @@ const translations = {
     qa_q14: "¿Hay consulta personalizada?",
     qa_a14: "Sí, por chat o email a contact@bloomandgrace.com.",
 
+    ship_info: "Información de Envío",
+    ship_country_placeholder: "Seleccionar país de envío",
+    ship_fee: "Envío estimado",
+    ship_eta: "Entrega estimada",
+    ship_days: "días",
+    ship_not_set: "Configure las tarifas de envío en admin.",
     currency: "$",
     currency_suffix: "",
   },
