@@ -104,11 +104,14 @@ const Hero = () => {
 
   const texts = heroTexts[language] || heroTexts.en;
 
+  const isUsableImage = (url?: string | null) =>
+    !!url && url.trim() !== "" && !url.includes("placeholder");
+
   const slides = banners.length > 0
     ? banners.map((b: any, i: number) => {
         const trans = b.translations?.[language];
         return {
-          image: b.image_url || fallbackSlides[i % 3].image,
+          image: isUsableImage(b.image_url) ? b.image_url : fallbackSlides[i % 3].image,
           title: trans?.title || b.translations?.en?.title || b.title,
           subtitle: trans?.subtitle || b.translations?.en?.subtitle || b.subtitle || "",
         };
