@@ -422,7 +422,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
             <h3 className="text-2xl md:text-4xl font-serif font-bold">{ct.step1}</h3>
             <p className="text-base md:text-lg text-foreground/80 font-medium">{ct.step1Sub}</p>
           </div>
-          <div className="grid grid-cols-3 gap-2 md:gap-4">
+          <div className="grid grid-cols-3 gap-2 md:gap-4 items-stretch">
             {categories.map((cat) => (
               <button
                 key={cat}
@@ -430,19 +430,19 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
                   setCategory(cat);
                   setStep(1);
                 }}
-                className="group relative overflow-hidden bg-card border border-border/40 hover:border-primary/40 transition-all duration-500"
+                className="group flex flex-col h-full overflow-hidden bg-card border border-border/40 hover:border-primary/50 hover:shadow-elegant transition-all duration-500 text-left"
               >
-                <div className="aspect-[3/4] overflow-hidden">
+                <div className="relative aspect-square w-full overflow-hidden bg-muted">
                   <img
                     src={categoryImages[cat]}
                     alt={cat}
                     loading="lazy"
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                   />
                 </div>
-                <div className="p-2 md:p-4 text-center border-t border-border/20">
-                  <h4 className="text-sm md:text-xl font-serif font-bold mb-0.5 md:mb-1">{ct[`${cat.toLowerCase()}` as keyof typeof ct] || cat}</h4>
-                  <p className="text-[11px] leading-snug md:text-base text-foreground/85 font-medium">{ct[categoryMeta[cat].descKey]}</p>
+                <div className="flex-1 flex flex-col justify-center px-2 py-3 md:px-4 md:py-4 text-center border-t border-border/20 min-h-[68px] md:min-h-[88px]">
+                  <h4 className="text-sm md:text-xl font-serif font-bold leading-tight mb-1">{ct[`${cat.toLowerCase()}` as keyof typeof ct] || cat}</h4>
+                  <p className="text-[11px] md:text-sm leading-snug text-foreground/75 font-medium line-clamp-2">{ct[categoryMeta[cat].descKey]}</p>
                 </div>
               </button>
             ))}
