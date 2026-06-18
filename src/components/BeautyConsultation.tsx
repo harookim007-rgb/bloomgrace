@@ -422,7 +422,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
             <h3 className="text-2xl md:text-4xl font-serif font-bold">{ct.step1}</h3>
             <p className="text-base md:text-lg text-foreground/80 font-medium">{ct.step1Sub}</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 gap-2 md:gap-4">
             {categories.map((cat) => (
               <button
                 key={cat}
@@ -432,18 +432,17 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
                 }}
                 className="group relative overflow-hidden bg-card border border-border/40 hover:border-primary/40 transition-all duration-500"
               >
-                {/* Category image — no text overlay */}
                 <div className="aspect-[3/4] overflow-hidden">
                   <img
                     src={categoryImages[cat]}
                     alt={cat}
+                    loading="lazy"
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                 </div>
-                {/* Label below image */}
-                <div className="p-4 text-center border-t border-border/20">
-                  <h4 className="text-xl font-serif font-bold mb-1">{ct[`${cat.toLowerCase()}` as keyof typeof ct] || cat}</h4>
-                  <p className="text-base text-foreground/85 font-medium">{ct[categoryMeta[cat].descKey]}</p>
+                <div className="p-2 md:p-4 text-center border-t border-border/20">
+                  <h4 className="text-sm md:text-xl font-serif font-bold mb-0.5 md:mb-1">{ct[`${cat.toLowerCase()}` as keyof typeof ct] || cat}</h4>
+                  <p className="text-[11px] leading-snug md:text-base text-foreground/85 font-medium">{ct[categoryMeta[cat].descKey]}</p>
                 </div>
               </button>
             ))}
