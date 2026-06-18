@@ -57,6 +57,7 @@ const App = () => (
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/complete-profile" element={<CompleteProfile />} />
               <Route path="/admin" element={<Admin />} />
+              <Route path="/trust" element={<Trust />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
