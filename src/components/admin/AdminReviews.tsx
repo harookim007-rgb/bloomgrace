@@ -59,7 +59,7 @@ const AdminReviews = () => {
           <Input className="pl-9" placeholder="상품명, 작성자, 내용 검색..." value={search} onChange={e => setSearch(e.target.value)} />
         </div>
         <Select value={filterRating} onValueChange={setFilterRating}>
-          <SelectTrigger className="w-[130px]"><SelectValue placeholder="평점" /></SelectTrigger>
+          <SelectTrigger className="w-full sm:w-[130px] shrink-0"><SelectValue placeholder="평점" /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">전체 평점</SelectItem>
             {[5, 4, 3, 2, 1].map(r => <SelectItem key={r} value={String(r)}>{r}점</SelectItem>)}
