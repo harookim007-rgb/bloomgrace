@@ -110,7 +110,7 @@ const Navigation = () => {
           </nav>
 
           {/* Icons */}
-          <div className="flex items-center gap-0">
+          <div className="flex items-center gap-0 shrink-0">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="h-9 w-9 md:h-10 md:w-10 text-foreground/60 hover:text-primary">
@@ -130,13 +130,13 @@ const Navigation = () => {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <Link to="/products">
+            <Link to="/products" className="hidden md:inline-flex">
               <Button variant="ghost" size="icon" className="h-9 w-9 md:h-10 md:w-10 text-foreground/60 hover:text-primary">
                 <Search className="h-4 w-4 md:h-[18px] md:w-[18px]" />
               </Button>
             </Link>
             {user && (
-              <Link to="/mypage">
+              <Link to="/mypage" className="hidden md:inline-flex">
                 <Button variant="ghost" size="icon" className="h-9 w-9 md:h-10 md:w-10 text-foreground/60 hover:text-primary">
                   <Heart className="h-4 w-4 md:h-[18px] md:w-[18px]" />
                 </Button>
