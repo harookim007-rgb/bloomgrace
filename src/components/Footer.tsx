@@ -43,6 +43,7 @@ const Footer = () => {
               <li><a href="#" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_shipping")}</a></li>
               <li><a href="#" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_returns")}</a></li>
               <li><a href="#" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_terms")}</a></li>
+              <li><Link to="/trust" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">Trust &amp; Privacy</Link></li>
             </ul>
           </div>
         </div>
