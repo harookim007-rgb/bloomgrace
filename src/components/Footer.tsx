@@ -40,9 +40,6 @@ const Footer = () => {
             <ul className="space-y-2">
               <li><Link to="/contact" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{t("nav_contact")}</Link></li>
               <li><Link to="/qa" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_faq")}</Link></li>
-              <li><a href="#" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_shipping")}</a></li>
-              <li><a href="#" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_returns")}</a></li>
-              <li><a href="#" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_terms")}</a></li>
               <li><Link to="/trust" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">Trust &amp; Privacy</Link></li>
             </ul>
           </div>
