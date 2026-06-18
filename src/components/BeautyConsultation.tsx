@@ -701,15 +701,15 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
 
   // ── Section mode ──
   return (
-    <section className="py-20 md:py-28 px-4 md:px-6 lg:px-8 bg-muted/20">
-      <div className="container max-w-5xl">
-        <div className="text-center space-y-3 mb-14">
+    <section className="py-14 md:py-28 px-3 md:px-6 lg:px-8 bg-muted/20">
+      <div className="container max-w-5xl px-0">
+        <div className="text-center space-y-3 mb-10 md:mb-14 px-2">
           <p className="text-sm font-sans font-bold tracking-[0.15em] uppercase text-primary">{ct.sectionSubtitle}</p>
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-serif font-bold">{ct.sectionTitle}</h2>
           <p className="text-base md:text-lg text-foreground/80 max-w-xl mx-auto font-medium">{ct.sectionDesc}</p>
         </div>
 
-        <div className="bg-background border border-border/30 p-8 md:p-12 shadow-elegant">
+        <div className="bg-background border border-border/30 p-4 md:p-12 shadow-elegant">
           {renderContent()}
         </div>
       </div>
