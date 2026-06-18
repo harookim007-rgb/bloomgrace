@@ -145,7 +145,7 @@ const Navigation = () => {
               </Link>
             )}
             <CartDrawer />
-            <Link to={user ? "/mypage" : "/auth"} className="hidden md:inline-flex">
+            <Link to={user ? "/mypage" : "/auth"} className="inline-flex" aria-label={user ? t("nav_mypage") : t("nav_login")}>
               <Button variant="ghost" size="icon" className="h-10 w-10 text-foreground/60 hover:text-primary">
                 <User className="h-[18px] w-[18px]" />
               </Button>
