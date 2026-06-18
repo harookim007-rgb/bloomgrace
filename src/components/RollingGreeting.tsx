@@ -30,22 +30,22 @@ const RollingGreeting = () => {
 
   return (
     <div className="relative overflow-hidden border-b border-primary/15 bg-gradient-to-r from-[hsl(var(--sky-soft))] via-[hsl(var(--primary-soft))] to-[hsl(var(--sky-soft))]">
-      <div className="container px-4 py-2.5 md:py-3 flex items-center justify-center">
-        <div className="relative h-7 md:h-8 w-full max-w-[760px] overflow-hidden">
+      <div className="container px-3 py-2 md:py-3 flex items-center justify-center">
+        <div className="relative h-6 md:h-8 w-full max-w-[760px] overflow-hidden">
           {greetings.map((item, idx) => (
             <p
               key={idx}
               dir={item.dir || "ltr"}
-              className={`absolute inset-0 flex items-center justify-center gap-2 text-center font-sans font-medium text-[14px] md:text-[16px] leading-none tracking-[0.01em] text-foreground/85 transition-all duration-[900ms] ease-out ${
+              className={`absolute inset-0 flex items-center justify-center gap-1.5 md:gap-2 text-center font-sans font-medium text-[11px] xs:text-[12px] sm:text-[14px] md:text-[16px] leading-none tracking-[0.01em] text-foreground/85 whitespace-nowrap transition-all duration-[900ms] ease-out ${
                 idx === i
                   ? "opacity-100 translate-y-0 scale-100"
                   : idx === (i - 1 + greetings.length) % greetings.length
-                  ? "opacity-0 -translate-y-4 scale-95"
-                  : "opacity-0 translate-y-4 scale-95"
+                  ? "opacity-0 -translate-y-3 scale-95"
+                  : "opacity-0 translate-y-3 scale-95"
               }`}
             >
-              <span className="text-base md:text-lg leading-none" style={{ fontFamily: '"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif' }}>{item.flag}</span>
-              <span>{item.text}</span>
+              <span className="text-sm md:text-lg leading-none shrink-0" style={{ fontFamily: '"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif' }}>{item.flag}</span>
+              <span className="truncate">{item.text}</span>
             </p>
           ))}
         </div>

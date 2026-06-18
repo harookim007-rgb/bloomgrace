@@ -72,8 +72,8 @@ const Navigation = () => {
           </button>
 
           {/* Logo */}
-          <div className="flex-1 lg:flex-none flex justify-center lg:justify-start min-w-0">
-            <div className="lg:hidden max-w-[60vw] truncate">
+          <div className="flex-1 lg:flex-none flex justify-center lg:justify-start min-w-0 overflow-hidden">
+            <div className="lg:hidden">
               <BrandLogo size="sm" showTagline={false} />
             </div>
             <div className="hidden lg:block">

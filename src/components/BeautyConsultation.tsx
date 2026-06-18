@@ -440,9 +440,9 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
                     className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                   />
                 </div>
-                <div className="flex-1 flex flex-col justify-center px-2 py-3 md:px-4 md:py-4 text-center border-t border-border/20 min-h-[68px] md:min-h-[88px]">
-                  <h4 className="text-sm md:text-xl font-serif font-bold leading-tight mb-1">{ct[`${cat.toLowerCase()}` as keyof typeof ct] || cat}</h4>
-                  <p className="text-[11px] md:text-sm leading-snug text-foreground/75 font-medium line-clamp-2">{ct[categoryMeta[cat].descKey]}</p>
+                <div className="flex-1 flex flex-col justify-center px-1.5 py-2.5 md:px-4 md:py-4 text-center border-t border-border/20 min-h-[78px] md:min-h-[96px]">
+                  <h4 className="text-[13px] md:text-xl font-serif font-bold leading-tight mb-1">{ct[`${cat.toLowerCase()}` as keyof typeof ct] || cat}</h4>
+                  <p className="text-[10px] md:text-sm leading-tight text-foreground/75 font-medium">{ct[categoryMeta[cat].descKey]}</p>
                 </div>
               </button>
             ))}
@@ -701,15 +701,15 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
 
   // ── Section mode ──
   return (
-    <section className="py-20 md:py-28 px-4 md:px-6 lg:px-8 bg-muted/20">
-      <div className="container max-w-5xl">
-        <div className="text-center space-y-3 mb-14">
+    <section className="py-14 md:py-28 px-3 md:px-6 lg:px-8 bg-muted/20">
+      <div className="container max-w-5xl px-0">
+        <div className="text-center space-y-3 mb-10 md:mb-14 px-2">
           <p className="text-sm font-sans font-bold tracking-[0.15em] uppercase text-primary">{ct.sectionSubtitle}</p>
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-serif font-bold">{ct.sectionTitle}</h2>
           <p className="text-base md:text-lg text-foreground/80 max-w-xl mx-auto font-medium">{ct.sectionDesc}</p>
         </div>
 
-        <div className="bg-background border border-border/30 p-8 md:p-12 shadow-elegant">
+        <div className="bg-background border border-border/30 p-4 md:p-12 shadow-elegant">
           {renderContent()}
         </div>
       </div>
