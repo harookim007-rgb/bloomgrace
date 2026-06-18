@@ -5,53 +5,54 @@ interface FallingPetalsProps {
   className?: string;
 }
 
-// Sakura petal (pink) or leaf (green) — soft watercolor, no stroke
+// Soft watercolor sakura petal / leaf — no stroke, ultra-refined gradient
 const PetalShape = ({ kind = "petal", tone = 0 }: { kind?: "petal" | "leaf"; tone?: number }) => {
   const id = `${kind}Grad-${tone}-${Math.random().toString(36).slice(2, 7)}`;
 
   if (kind === "leaf") {
+    // Muted sage / olive / soft jade — luxurious botanical palette
     const stops = [
-      ["95 55% 88%", "120 40% 70%", "135 45% 50%"], // fresh green
-      ["80 50% 85%", "110 38% 65%", "140 42% 48%"], // sage green
-      ["105 50% 90%", "125 42% 72%", "145 40% 52%"], // soft leaf
+      ["100 35% 92%", "120 28% 74%", "135 30% 54%"], // soft sage
+      ["85 30% 90%", "110 24% 68%", "140 28% 50%"],  // dusty olive
+      ["110 32% 93%", "125 26% 72%", "145 26% 56%"], // pale jade
     ][tone % 3];
     return (
       <svg viewBox="-20 -20 40 40" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
         <defs>
-          <radialGradient id={id} cx="50%" cy="40%" r="75%">
-            <stop offset="0%" stopColor={`hsl(${stops[0]})`} stopOpacity="0.95" />
-            <stop offset="55%" stopColor={`hsl(${stops[1]})`} stopOpacity="0.85" />
-            <stop offset="100%" stopColor={`hsl(${stops[2]})`} stopOpacity="0.65" />
+          <radialGradient id={id} cx="50%" cy="38%" r="78%">
+            <stop offset="0%" stopColor={`hsl(${stops[0]})`} stopOpacity="0.9" />
+            <stop offset="55%" stopColor={`hsl(${stops[1]})`} stopOpacity="0.78" />
+            <stop offset="100%" stopColor={`hsl(${stops[2]})`} stopOpacity="0.55" />
           </radialGradient>
         </defs>
-        {/* Pointed oval leaf */}
         <path
-          d="M0 -16 C 9 -10, 12 0, 9 9 C 5 14, 0 16, 0 16 C 0 16, -5 14, -9 9 C -12 0, -9 -10, 0 -16 Z"
+          d="M0 -16 C 8 -10, 11 0, 8 9 C 4 14, 0 16, 0 16 C 0 16, -4 14, -8 9 C -11 0, -8 -10, 0 -16 Z"
           fill={`url(#${id})`}
         />
         <path
-          d="M0 -14 L0 14"
+          d="M0 -13 L0 13"
           stroke={`hsl(${stops[2]})`}
-          strokeWidth="0.6"
-          strokeOpacity="0.5"
+          strokeWidth="0.4"
+          strokeOpacity="0.35"
           fill="none"
         />
       </svg>
     );
   }
 
+  // Refined pink palettes — blush, rose, champagne-rose
   const stops = [
-    ["348 100% 98%", "345 85% 90%", "345 75% 82%"],
-    ["350 95% 97%", "348 80% 88%", "345 70% 80%"],
-    ["345 100% 99%", "345 75% 92%", "340 65% 84%"],
+    ["348 100% 98%", "345 70% 91%", "345 55% 84%"], // blush
+    ["350 90% 97%", "348 65% 89%", "344 55% 82%"],  // rose
+    ["20 40% 96%", "350 50% 92%", "342 45% 85%"],   // champagne rose
   ][tone % 3];
   return (
     <svg viewBox="-20 -20 40 40" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
       <defs>
-        <radialGradient id={id} cx="50%" cy="35%" r="70%">
+        <radialGradient id={id} cx="50%" cy="32%" r="72%">
           <stop offset="0%" stopColor={`hsl(${stops[0]})`} stopOpacity="0.95" />
-          <stop offset="55%" stopColor={`hsl(${stops[1]})`} stopOpacity="0.85" />
-          <stop offset="100%" stopColor={`hsl(${stops[2]})`} stopOpacity="0.6" />
+          <stop offset="55%" stopColor={`hsl(${stops[1]})`} stopOpacity="0.82" />
+          <stop offset="100%" stopColor={`hsl(${stops[2]})`} stopOpacity="0.55" />
         </radialGradient>
       </defs>
       <path
@@ -68,20 +69,23 @@ const FallingPetals = ({ count = 14, className = "" }: FallingPetalsProps) => {
       Array.from({ length: count }).map((_, i) => ({
         id: i,
         left: Math.random() * 100,
-        size: 7 + Math.random() * 13,
-        // Slower, more drifting fall
-        duration: 42 + Math.random() * 30,
-        delay: -Math.random() * 60,
-        // Wider wind sway
-        sway: 80 + Math.random() * 140,
+        // Slightly smaller, more refined sizes
+        size: 6 + Math.random() * 11,
+        // Slower, more luxurious drift
+        duration: 55 + Math.random() * 35,
+        delay: -Math.random() * 80,
+        // Wider gentle wind sway
+        sway: 100 + Math.random() * 160,
         swayDir: Math.random() > 0.5 ? 1 : -1,
-        // Slow gentle side-to-side
-        swaySpeed: 5 + Math.random() * 5,
-        opacity: 0.2 + Math.random() * 0.25,
+        // Very slow side-to-side breeze
+        swaySpeed: 7 + Math.random() * 6,
+        // Softer, more subtle opacity
+        opacity: 0.18 + Math.random() * 0.22,
         tone: i % 3,
-        blur: 0.4 + Math.random() * 0.9,
-        // Mix: ~55% pink petals, ~45% green leaves
-        kind: (Math.random() < 0.55 ? "petal" : "leaf") as "petal" | "leaf",
+        // Finer, more dreamy blur
+        blur: 0.6 + Math.random() * 1.1,
+        // Mix: ~50% pink petals, ~50% green leaves
+        kind: (Math.random() < 0.5 ? "petal" : "leaf") as "petal" | "leaf",
       })),
     [count]
   );

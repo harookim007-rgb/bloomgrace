@@ -279,7 +279,7 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
 };
 
 const ShippingEstimate = () => {
-  const { formatPrice } = useLanguage();
+  const { formatPrice, t } = useLanguage();
   const [rates, setRates] = useState<any[]>([]);
   const [country, setCountry] = useState<string>("");
 
@@ -300,11 +300,11 @@ const ShippingEstimate = () => {
   return (
     <div className="border border-border bg-muted/20 p-4 space-y-3">
       <div className="flex items-center gap-2 text-xs tracking-[0.18em] uppercase font-sans font-semibold text-foreground/80">
-        <Truck className="h-4 w-4" /> 배송 정보
+        <Truck className="h-4 w-4" /> {t("ship_info" as any)}
       </div>
       <div className="grid grid-cols-1 gap-2">
         <Select value={country} onValueChange={v => { setCountry(v); try { localStorage.setItem("ship_country", v); } catch {} }}>
-          <SelectTrigger className="rounded-none h-10 text-sm"><SelectValue placeholder="배송 국가 선택" /></SelectTrigger>
+          <SelectTrigger className="rounded-none h-10 text-sm"><SelectValue placeholder={t("ship_country_placeholder" as any)} /></SelectTrigger>
           <SelectContent>
             {rates.map(r => (
               <SelectItem key={r.country_code} value={r.country_code}>{r.country_name}</SelectItem>
@@ -313,17 +313,17 @@ const ShippingEstimate = () => {
         </Select>
         {current ? (
           <div className="flex justify-between text-sm font-light">
-            <span className="text-muted-foreground">예상 배송비</span>
+            <span className="text-muted-foreground">{t("ship_fee" as any)}</span>
             <span className="font-medium">{formatPrice(Number(current.fee))}</span>
           </div>
         ) : null}
         {current ? (
           <div className="flex justify-between text-sm font-light">
-            <span className="text-muted-foreground">예상 소요 기간</span>
-            <span className="font-medium">{current.min_days}–{current.max_days} 일</span>
+            <span className="text-muted-foreground">{t("ship_eta" as any)}</span>
+            <span className="font-medium">{current.min_days}–{current.max_days} {t("ship_days" as any)}</span>
           </div>
         ) : (
-          <p className="text-xs text-muted-foreground">관리자에서 배송비를 설정해주세요.</p>
+          <p className="text-xs text-muted-foreground">{t("ship_not_set" as any)}</p>
         )}
       </div>
     </div>
