@@ -927,7 +927,6 @@ const translations = {
     nav_ranking: "Ranking",
     nav_sale: "Promoção",
     nav_routine: "Sua Rotina",
-    nav_contato: "Contato",
     nav_contact: "Contato",
     nav_admin: "Admin",
     nav_menu: "Menu",
