@@ -70,15 +70,15 @@ const Admin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-muted/30 flex">
+    <div className="min-h-dvh bg-muted/30 flex">
       <AdminSidebar 
         activeTab={activeTab} 
         setActiveTab={setActiveTab} 
         isOpen={sidebarOpen} 
         setIsOpen={setSidebarOpen} 
       />
-      <main className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-16'}`}>
-        <div className="p-6 max-w-[1400px]">
+      <main className={`flex-1 min-w-0 transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-16'}`}>
+        <div className="p-4 md:p-6 max-w-[1400px] mx-auto w-full">
           {renderContent()}
         </div>
       </main>
