@@ -18,6 +18,7 @@ const langLabels: Record<Language, string> = {
 const Navigation = () => {
   const { user, isAdmin } = useAuth();
   const { t, language, setLanguage } = useLanguage();
+  const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -27,11 +28,22 @@ const Navigation = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const navLinks = [
+  const openRoutine = () => {
+    setMobileOpen(false);
+    if (window.location.pathname !== "/") {
+      navigate("/");
+      setTimeout(() => window.dispatchEvent(new Event("open-beauty-advisor")), 300);
+    } else {
+      window.dispatchEvent(new Event("open-beauty-advisor"));
+    }
+  };
+
+  const navLinks: { to?: string; label: string; onClick?: () => void }[] = [
     { to: "/", label: t("nav_home") },
     { to: "/products", label: t("nav_products") },
-    { to: "/products?category=skincare", label: t("nav_skincare") },
-    { to: "/products?category=makeup", label: t("nav_makeup") },
+    { to: "/products?sort=popular", label: t("nav_ranking") },
+    { to: "/products?sale=1", label: t("nav_sale") },
+    { label: t("nav_routine"), onClick: openRoutine },
     { to: "/contact", label: t("nav_contact") },
   ];
 
