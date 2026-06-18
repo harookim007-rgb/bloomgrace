@@ -860,6 +860,12 @@ const translations = {
     qa_q14: "Gibt es persönliche Beratung?",
     qa_a14: "Ja, per Chat oder E-Mail an contact@bloomandgrace.com.",
 
+    ship_info: "Versandinformationen",
+    ship_country_placeholder: "Versandland auswählen",
+    ship_fee: "Geschätzter Versand",
+    ship_eta: "Voraussichtliche Lieferung",
+    ship_days: "Tage",
+    ship_not_set: "Bitte Versandkosten im Admin einrichten.",
     currency: "€",
     currency_suffix: "",
   },
