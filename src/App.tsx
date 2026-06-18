@@ -17,6 +17,7 @@ import CompleteProfile from "./pages/CompleteProfile";
 import Admin from "./pages/Admin";
 import DesignModeOverlay from "./components/design/DesignModeOverlay";
 import NotFound from "./pages/NotFound";
+import Trust from "./pages/Trust";
 import FallingPetals from "./components/FallingPetals";
 import ScatteredFlorals from "./components/FloralDecor";
 
@@ -56,6 +57,7 @@ const App = () => (
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/complete-profile" element={<CompleteProfile />} />
               <Route path="/admin" element={<Admin />} />
+              <Route path="/trust" element={<Trust />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
