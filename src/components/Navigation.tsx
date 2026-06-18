@@ -75,10 +75,18 @@ const Navigation = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-8">
-            {navLinks.map(link => (
+            {navLinks.map(link => link.onClick ? (
+              <button
+                key={link.label}
+                onClick={link.onClick}
+                className="text-sm font-sans font-semibold tracking-[0.06em] uppercase text-foreground/80 hover:text-primary transition-colors"
+              >
+                {link.label}
+              </button>
+            ) : (
               <Link
                 key={link.to}
-                to={link.to}
+                to={link.to!}
                 className="text-sm font-sans font-semibold tracking-[0.06em] uppercase text-foreground/80 hover:text-primary transition-colors"
               >
                 {link.label}
