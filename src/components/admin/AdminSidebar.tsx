@@ -41,7 +41,7 @@ const AdminSidebar = ({ activeTab, setActiveTab, isOpen, setIsOpen }: AdminSideb
   };
 
   return (
-    <aside className={`fixed left-0 top-0 h-screen bg-card border-r border-border z-50 flex flex-col transition-all duration-300 ${isOpen ? 'w-64' : 'w-16'}`}>
+    <aside className={`fixed left-0 top-0 h-dvh bg-card border-r border-border z-50 flex flex-col transition-all duration-300 ${isOpen ? 'w-64' : 'w-16'}`}>
       <div className="h-16 flex items-center justify-between px-4 border-b border-border">
         {isOpen && <h1 className="text-lg font-bold font-serif truncate">관리자 패널</h1>}
         <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)} className="shrink-0">
