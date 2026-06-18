@@ -95,7 +95,7 @@ const AdminReviews = () => {
                     </div>
                   </TableCell>
                   <TableCell className="text-sm">{r.title || "-"}</TableCell>
-                  <TableCell className="text-sm max-w-[200px] truncate">{r.content || "-"}</TableCell>
+                  <TableCell className="text-sm max-w-[200px] truncate" title={r.content || ""}>{r.content || "-"}</TableCell>
                   <TableCell className="text-right">
                     <Button size="icon" variant="ghost" className="text-destructive" onClick={() => remove(r.id)}><Trash2 className="h-4 w-4" /></Button>
                   </TableCell>
