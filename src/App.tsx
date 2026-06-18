@@ -30,7 +30,7 @@ const GlobalPetals = () => {
     <>
       <ScatteredFlorals count={7} />
       <div className="pointer-events-none fixed inset-0 z-0">
-        <FallingPetals count={8} />
+        <FallingPetals count={12} />
       </div>
     </>
   );
