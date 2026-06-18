@@ -45,11 +45,13 @@ const Products = () => {
       else if (sort === "price-high") query = query.order("price", { ascending: false });
       else if (sort === "rating") query = query.order("rating", { ascending: false });
       const { data } = await query;
-      setProducts(data || []);
+      let list = data || [];
+      if (saleOnly) list = list.filter((p: any) => p.original_price && Number(p.original_price) > Number(p.price));
+      setProducts(list);
       setIsLoading(false);
     };
     fetchProducts();
-  }, [category, search, sort, priceRange, categories]);
+  }, [category, search, sort, priceRange, categories, saleOnly]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
