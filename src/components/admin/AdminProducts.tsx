@@ -345,6 +345,22 @@ const AdminProducts = () => {
                   </div>
                   <div><Label>재고</Label><Input type="number" value={form.stock} onChange={e => setForm({...form, stock: e.target.value})} /></div>
                   <div className="col-span-2"><Label>태그 (쉼표 구분)</Label><Input value={form.tags} onChange={e => setForm({...form, tags: e.target.value})} placeholder="신상품, 베스트셀러, 한정판" /></div>
+                  <div className="col-span-2">
+                    <Label>피부 타입 (랭킹 분류)</Label>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {(["dry","oily","combination","sensitive","dehydrated_oily","acne_prone"] as const).map(s => {
+                        const labelMap: Record<string,string> = { dry:"건성", oily:"지성", combination:"복합성", sensitive:"민감성", dehydrated_oily:"수부지", acne_prone:"여드름성" };
+                        const active = form.skin_types.includes(s);
+                        return (
+                          <button type="button" key={s}
+                            onClick={() => setForm({ ...form, skin_types: active ? form.skin_types.filter(x => x !== s) : [...form.skin_types, s] })}
+                            className={`px-3 py-1.5 text-xs rounded-full border transition-colors ${active ? "bg-foreground text-background border-foreground" : "border-border text-muted-foreground hover:text-foreground"}`}>
+                            {labelMap[s]}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
                   <div className="flex items-center gap-6 col-span-2">
                     <div className="flex items-center gap-2"><Switch checked={form.is_active} onCheckedChange={v => setForm({...form, is_active: v})} /><Label>판매 활성화</Label></div>
                     <div className="flex items-center gap-2"><Switch checked={form.is_featured} onCheckedChange={v => setForm({...form, is_featured: v})} /><Label>추천 상품</Label></div>
