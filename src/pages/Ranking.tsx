@@ -6,184 +6,188 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { useLanguage, type Language } from "@/contexts/LanguageContext";
 
-type SkinTypeKey =
-  | "dry"
-  | "oily"
-  | "combination"
-  | "sensitive"
-  | "dehydrated_oily"
-  | "acne_prone";
+type CategoryKey =
+  | "all"
+  | "toner"
+  | "serum"
+  | "ampoule"
+  | "cream"
+  | "sunscreen"
+  | "facial_pack"
+  | "cleanser"
+  | "hair_care"
+  | "body_care"
+  | "lip_care";
 
-const SKIN_TYPES: SkinTypeKey[] = [
-  "dry",
-  "oily",
-  "combination",
-  "sensitive",
-  "dehydrated_oily",
-  "acne_prone",
+const CATEGORIES: CategoryKey[] = [
+  "all",
+  "toner",
+  "serum",
+  "ampoule",
+  "cream",
+  "sunscreen",
+  "facial_pack",
+  "cleanser",
+  "hair_care",
+  "body_care",
+  "lip_care",
 ];
+
+// Keywords (multi-language / synonym) used to match a product to a category
+// by scanning its tags and names. Lowercased substring matching.
+const CATEGORY_KEYWORDS: Record<Exclude<CategoryKey, "all">, string[]> = {
+  toner: ["toner", "토너", "化粧水", "تونر"],
+  serum: ["serum", "세럼", "美容液", "سيروم", "sérum"],
+  ampoule: ["ampoule", "ampule", "앰플", "アンプル", "أمبولة"],
+  cream: ["cream", "크림", "クリーム", "crema", "creme", "crème", "كريم"],
+  sunscreen: ["sunscreen", "sun cream", "sun-cream", "spf", "선크림", "선블록", "日焼け止め", "واقي شمس", "protector solar", "sonnenschutz"],
+  facial_pack: ["mask", "pack", "팩", "마스크", "パック", "マスク", "mascarilla", "masque", "ماسك", "قناع"],
+  cleanser: ["cleanser", "cleansing", "foam", "wash", "클렌저", "클렌징", "폼", "洗顔", "クレンジング", "limpiador", "nettoyant", "منظف"],
+  hair_care: ["shampoo", "conditioner", "hair", "헤어", "샴푸", "린스", "트리트먼트", "ヘア", "シャンプー", "cabello", "cheveux", "شعر"],
+  body_care: ["body", "lotion", "바디", "로션", "ボディ", "cuerpo", "corps", "جسم"],
+  lip_care: ["lip", "balm", "tint", "립", "lèvre", "labio", "リップ", "شفاه"],
+};
 
 const I18N: Record<Language, Record<string, string>> = {
   en: {
     title: "Ranking",
-    subtitle: "Most-loved products this week, ranked by real orders.",
-    tab_hot: "HOT",
-    tab_skin: "BY SKIN TYPE",
-    hot_caption: "Weekly Top 30 — across all categories",
-    skin_caption: "Top 30 best-sellers for your skin",
     updated: "Updated",
     sold: "sold",
-    no_data: "Not enough orders yet for this week's ranking.",
-    skin_dry: "Dry",
-    skin_oily: "Oily",
-    skin_combination: "Combination",
-    skin_sensitive: "Sensitive",
-    skin_dehydrated_oily: "Dehydrated-Oily",
-    skin_acne_prone: "Acne-Prone",
-    skin_dry_desc: "Tightness, flakes, rough texture",
-    skin_oily_desc: "Excess sebum, shine, visible pores",
-    skin_combination_desc: "Oily T-zone, dry cheeks",
-    skin_sensitive_desc: "Easily reddens, stings, reacts",
-    skin_dehydrated_oily_desc: "Dry inside, oily on the surface",
-    skin_acne_prone_desc: "Breakouts, congestion, inflammation",
+    no_data: "Not enough orders yet for this ranking.",
+    period_week: "Weekly",
+    period_month: "Monthly",
+    period_all: "All time",
+    cat_all: "All",
+    cat_toner: "Toner",
+    cat_serum: "Serum",
+    cat_ampoule: "Ampoule",
+    cat_cream: "Cream",
+    cat_sunscreen: "Sunscreen",
+    cat_facial_pack: "Facial Pack",
+    cat_cleanser: "Cleanser",
+    cat_hair_care: "Hair Care",
+    cat_body_care: "Body Care",
+    cat_lip_care: "Lip Care",
   },
   es: {
     title: "Ranking",
-    subtitle: "Los productos más queridos esta semana, según pedidos reales.",
-    tab_hot: "HOT",
-    tab_skin: "POR TIPO DE PIEL",
-    hot_caption: "Top 30 semanal — todas las categorías",
-    skin_caption: "Top 30 para tu tipo de piel",
     updated: "Actualizado",
     sold: "vendidos",
-    no_data: "Aún no hay suficientes pedidos para el ranking de esta semana.",
-    skin_dry: "Seca",
-    skin_oily: "Grasa",
-    skin_combination: "Mixta",
-    skin_sensitive: "Sensible",
-    skin_dehydrated_oily: "Deshidratada-Grasa",
-    skin_acne_prone: "Con Acné",
-    skin_dry_desc: "Tirantez, descamación, textura áspera",
-    skin_oily_desc: "Exceso de sebo, brillo, poros visibles",
-    skin_combination_desc: "Zona T grasa, mejillas secas",
-    skin_sensitive_desc: "Se enrojece fácilmente, escuece, reacciona",
-    skin_dehydrated_oily_desc: "Seca por dentro, grasa por fuera",
-    skin_acne_prone_desc: "Granos, congestión, inflamación",
+    no_data: "Aún no hay pedidos suficientes para este ranking.",
+    period_week: "Semanal",
+    period_month: "Mensual",
+    period_all: "Todo",
+    cat_all: "Todo",
+    cat_toner: "Tónico",
+    cat_serum: "Sérum",
+    cat_ampoule: "Ampolla",
+    cat_cream: "Crema",
+    cat_sunscreen: "Protector Solar",
+    cat_facial_pack: "Mascarilla",
+    cat_cleanser: "Limpiador",
+    cat_hair_care: "Cabello",
+    cat_body_care: "Cuerpo",
+    cat_lip_care: "Labios",
   },
   de: {
     title: "Ranking",
-    subtitle: "Die beliebtesten Produkte der Woche – nach echten Bestellungen.",
-    tab_hot: "HOT",
-    tab_skin: "NACH HAUTTYP",
-    hot_caption: "Wöchentliche Top 30 – über alle Kategorien",
-    skin_caption: "Top 30 für deinen Hauttyp",
     updated: "Aktualisiert",
     sold: "verkauft",
-    no_data: "Noch nicht genug Bestellungen für das Wochen-Ranking.",
-    skin_dry: "Trocken",
-    skin_oily: "Fettig",
-    skin_combination: "Misch",
-    skin_sensitive: "Empfindlich",
-    skin_dehydrated_oily: "Dehydriert-Fettig",
-    skin_acne_prone: "Akne-anfällig",
-    skin_dry_desc: "Spannungsgefühl, Schuppen, raue Textur",
-    skin_oily_desc: "Überschüssiger Talg, Glanz, sichtbare Poren",
-    skin_combination_desc: "Fettige T-Zone, trockene Wangen",
-    skin_sensitive_desc: "Wird schnell rot, brennt, reagiert",
-    skin_dehydrated_oily_desc: "Innen trocken, außen fettig",
-    skin_acne_prone_desc: "Unreinheiten, Verstopfung, Entzündung",
+    no_data: "Noch nicht genug Bestellungen für dieses Ranking.",
+    period_week: "Wöchentlich",
+    period_month: "Monatlich",
+    period_all: "Gesamt",
+    cat_all: "Alle",
+    cat_toner: "Toner",
+    cat_serum: "Serum",
+    cat_ampoule: "Ampulle",
+    cat_cream: "Creme",
+    cat_sunscreen: "Sonnenschutz",
+    cat_facial_pack: "Gesichtsmaske",
+    cat_cleanser: "Reiniger",
+    cat_hair_care: "Haarpflege",
+    cat_body_care: "Körperpflege",
+    cat_lip_care: "Lippenpflege",
   },
   fr: {
     title: "Classement",
-    subtitle: "Les produits les plus aimés cette semaine, basés sur les commandes.",
-    tab_hot: "HOT",
-    tab_skin: "PAR TYPE DE PEAU",
-    hot_caption: "Top 30 hebdomadaire — toutes catégories",
-    skin_caption: "Top 30 pour votre type de peau",
     updated: "Mis à jour",
     sold: "vendus",
-    no_data: "Pas encore assez de commandes pour le classement de la semaine.",
-    skin_dry: "Sèche",
-    skin_oily: "Grasse",
-    skin_combination: "Mixte",
-    skin_sensitive: "Sensible",
-    skin_dehydrated_oily: "Déshydratée-Grasse",
-    skin_acne_prone: "Acnéique",
-    skin_dry_desc: "Tiraillements, desquamation, texture rugueuse",
-    skin_oily_desc: "Excès de sébum, brillance, pores visibles",
-    skin_combination_desc: "Zone T grasse, joues sèches",
-    skin_sensitive_desc: "Rougit facilement, picote, réagit",
-    skin_dehydrated_oily_desc: "Sèche à l'intérieur, grasse en surface",
-    skin_acne_prone_desc: "Boutons, congestion, inflammation",
+    no_data: "Pas encore assez de commandes pour ce classement.",
+    period_week: "Hebdomadaire",
+    period_month: "Mensuel",
+    period_all: "Tout",
+    cat_all: "Tout",
+    cat_toner: "Tonique",
+    cat_serum: "Sérum",
+    cat_ampoule: "Ampoule",
+    cat_cream: "Crème",
+    cat_sunscreen: "Écran Solaire",
+    cat_facial_pack: "Masque",
+    cat_cleanser: "Nettoyant",
+    cat_hair_care: "Cheveux",
+    cat_body_care: "Corps",
+    cat_lip_care: "Lèvres",
   },
   pt: {
     title: "Ranking",
-    subtitle: "Os produtos mais amados da semana, com base em pedidos reais.",
-    tab_hot: "HOT",
-    tab_skin: "POR TIPO DE PELE",
-    hot_caption: "Top 30 semanal — todas as categorias",
-    skin_caption: "Top 30 para o seu tipo de pele",
     updated: "Atualizado",
     sold: "vendidos",
-    no_data: "Ainda não há pedidos suficientes para o ranking desta semana.",
-    skin_dry: "Seca",
-    skin_oily: "Oleosa",
-    skin_combination: "Mista",
-    skin_sensitive: "Sensível",
-    skin_dehydrated_oily: "Desidratada-Oleosa",
-    skin_acne_prone: "Acneica",
-    skin_dry_desc: "Repuxa, descamação, textura áspera",
-    skin_oily_desc: "Excesso de oleosidade, brilho, poros visíveis",
-    skin_combination_desc: "Zona T oleosa, bochechas secas",
-    skin_sensitive_desc: "Avermelha fácil, arde, reage",
-    skin_dehydrated_oily_desc: "Seca por dentro, oleosa por fora",
-    skin_acne_prone_desc: "Espinhas, cravos, inflamação",
+    no_data: "Ainda não há pedidos suficientes para este ranking.",
+    period_week: "Semanal",
+    period_month: "Mensal",
+    period_all: "Todo",
+    cat_all: "Todos",
+    cat_toner: "Tônico",
+    cat_serum: "Sérum",
+    cat_ampoule: "Ampola",
+    cat_cream: "Creme",
+    cat_sunscreen: "Protetor Solar",
+    cat_facial_pack: "Máscara Facial",
+    cat_cleanser: "Limpador",
+    cat_hair_care: "Cabelo",
+    cat_body_care: "Corpo",
+    cat_lip_care: "Lábios",
   },
   ja: {
     title: "ランキング",
-    subtitle: "実際の注文に基づく、今週もっとも愛された商品。",
-    tab_hot: "HOT",
-    tab_skin: "肌タイプ別",
-    hot_caption: "週間TOP30 — 全カテゴリー",
-    skin_caption: "あなたの肌タイプ別TOP30",
     updated: "更新日",
     sold: "個販売",
-    no_data: "今週のランキングを作成するための注文がまだ不足しています。",
-    skin_dry: "乾燥肌",
-    skin_oily: "脂性肌",
-    skin_combination: "混合肌",
-    skin_sensitive: "敏感肌",
-    skin_dehydrated_oily: "インナードライ",
-    skin_acne_prone: "ニキビ肌",
-    skin_dry_desc: "つっぱり、粉吹き、ざらつき",
-    skin_oily_desc: "皮脂が多い、テカリ、毛穴の目立ち",
-    skin_combination_desc: "Tゾーンはテカり、頬は乾燥",
-    skin_sensitive_desc: "赤くなりやすい、刺激に弱い",
-    skin_dehydrated_oily_desc: "内側は乾燥、表面はテカり",
-    skin_acne_prone_desc: "ニキビ、詰まり、炎症",
+    no_data: "このランキングを作成するための注文がまだ不足しています。",
+    period_week: "週間",
+    period_month: "月間",
+    period_all: "全期間",
+    cat_all: "すべて",
+    cat_toner: "化粧水",
+    cat_serum: "美容液",
+    cat_ampoule: "アンプル",
+    cat_cream: "クリーム",
+    cat_sunscreen: "日焼け止め",
+    cat_facial_pack: "パック",
+    cat_cleanser: "クレンザー",
+    cat_hair_care: "ヘアケア",
+    cat_body_care: "ボディケア",
+    cat_lip_care: "リップケア",
   },
   ar: {
     title: "الترتيب",
-    subtitle: "المنتجات الأكثر إعجاباً هذا الأسبوع، بناءً على الطلبات الفعلية.",
-    tab_hot: "الأكثر رواجاً",
-    tab_skin: "حسب نوع البشرة",
-    hot_caption: "أفضل 30 أسبوعياً — جميع الفئات",
-    skin_caption: "أفضل 30 لنوع بشرتك",
     updated: "تم التحديث",
     sold: "مبيعاً",
-    no_data: "لا توجد طلبات كافية بعد لترتيب هذا الأسبوع.",
-    skin_dry: "جافة",
-    skin_oily: "دهنية",
-    skin_combination: "مختلطة",
-    skin_sensitive: "حساسة",
-    skin_dehydrated_oily: "جافة-دهنية",
-    skin_acne_prone: "معرضة لحب الشباب",
-    skin_dry_desc: "شد، تقشر، ملمس خشن",
-    skin_oily_desc: "زيوت زائدة، لمعان، مسام واضحة",
-    skin_combination_desc: "منطقة T دهنية، خدود جافة",
-    skin_sensitive_desc: "تحمر بسهولة، تلسع، تتفاعل",
-    skin_dehydrated_oily_desc: "جافة من الداخل، دهنية من الخارج",
-    skin_acne_prone_desc: "بثور، انسداد، التهاب",
+    no_data: "لا توجد طلبات كافية بعد لهذا الترتيب.",
+    period_week: "أسبوعي",
+    period_month: "شهري",
+    period_all: "كل الوقت",
+    cat_all: "الكل",
+    cat_toner: "تونر",
+    cat_serum: "سيروم",
+    cat_ampoule: "أمبولة",
+    cat_cream: "كريم",
+    cat_sunscreen: "واقي شمس",
+    cat_facial_pack: "قناع وجه",
+    cat_cleanser: "منظف",
+    cat_hair_care: "العناية بالشعر",
+    cat_body_care: "العناية بالجسم",
+    cat_lip_care: "العناية بالشفاه",
   },
 };
 
@@ -192,6 +196,9 @@ const useRankI18n = () => {
   const dict = I18N[language] || I18N.en;
   return (k: string) => dict[k] || I18N.en[k] || k;
 };
+
+type Period = "week" | "month" | "all";
+const PERIOD_DAYS: Record<Period, number> = { week: 7, month: 30, all: 3650 };
 
 type RankRow = { product_id: string; sales_count: number; rank: number };
 type Product = {
@@ -205,7 +212,25 @@ type Product = {
   thumbnail_url: string | null;
   rating: number | null;
   review_count: number | null;
+  tags: string[] | null;
+  is_active: boolean;
   translations?: any;
+};
+
+const matchesCategory = (product: Product, cat: CategoryKey): boolean => {
+  if (cat === "all") return true;
+  const keywords = CATEGORY_KEYWORDS[cat];
+  if (!keywords) return false;
+  const haystack: string[] = [];
+  (product.tags || []).forEach((t) => t && haystack.push(t));
+  if (product.name) haystack.push(product.name);
+  if (product.translations && typeof product.translations === "object") {
+    Object.values(product.translations).forEach((v: any) => {
+      if (v?.name) haystack.push(String(v.name));
+    });
+  }
+  const blob = haystack.join(" ").toLowerCase();
+  return keywords.some((k) => blob.includes(k.toLowerCase()));
 };
 
 const RankMedal = ({ rank }: { rank: number }) => {
@@ -236,17 +261,19 @@ const RankMedal = ({ rank }: { rank: number }) => {
 
 const RankingRow = ({
   product,
-  row,
+  rank,
+  salesCount,
   soldLabel,
 }: {
   product: Product;
-  row: RankRow;
+  rank: number;
+  salesCount: number;
   soldLabel: string;
 }) => {
   const { language, formatPrice } = useLanguage();
   const translatedName = product.translations?.[language]?.name || product.name;
   const img = product.thumbnail_url || product.image_url || "/placeholder.svg";
-  const isTop3 = row.rank <= 3;
+  const isTop3 = rank <= 3;
 
   return (
     <Link
@@ -255,7 +282,7 @@ const RankingRow = ({
         isTop3 ? "bg-muted/20" : ""
       }`}
     >
-      <RankMedal rank={row.rank} />
+      <RankMedal rank={rank} />
       <div className="relative h-16 w-16 md:h-20 md:w-20 shrink-0 overflow-hidden bg-muted">
         <img
           src={img}
@@ -287,7 +314,7 @@ const RankingRow = ({
           {soldLabel}
         </div>
         <div className="text-sm md:text-base font-serif tabular-nums">
-          {row.sales_count.toLocaleString()}
+          {salesCount.toLocaleString()}
         </div>
       </div>
     </Link>
@@ -296,26 +323,22 @@ const RankingRow = ({
 
 const Ranking = () => {
   const tr = useRankI18n();
-  const [tab, setTab] = useState<"hot" | "skin">("hot");
-  const [skinType, setSkinType] = useState<SkinTypeKey>("dry");
+  const [period, setPeriod] = useState<Period>("week");
+  const [category, setCategory] = useState<CategoryKey>("all");
   const [rows, setRows] = useState<RankRow[]>([]);
   const [productsById, setProductsById] = useState<Record<string, Product>>({});
   const [loading, setLoading] = useState(true);
 
-  const updatedLabel = useMemo(() => {
-    const d = new Date();
-    return d.toLocaleDateString();
-  }, []);
+  const updatedLabel = useMemo(() => new Date().toLocaleDateString(), []);
 
   useEffect(() => {
     let alive = true;
     const load = async () => {
       setLoading(true);
-      const skinArg = tab === "skin" ? skinType : null;
       const { data, error } = await supabase.rpc("get_top_selling_products", {
-        p_skin_type: skinArg,
-        p_days: 7,
-        p_limit: 30,
+        p_skin_type: null,
+        p_days: PERIOD_DAYS[period],
+        p_limit: 500,
       });
       if (!alive) return;
       if (error || !data) {
@@ -329,20 +352,22 @@ const Ranking = () => {
         sales_count: Number(r.sales_count),
         rank: Number(r.rank),
       }));
-      setRows(ranked);
       const ids = ranked.map((r) => r.product_id);
       if (ids.length === 0) {
+        setRows([]);
         setProductsById({});
         setLoading(false);
         return;
       }
       const { data: prods } = await supabase
         .from("products")
-        .select("id,name,slug,brand,price,original_price,image_url,thumbnail_url,rating,review_count,translations")
-        .in("id", ids);
+        .select("id,name,slug,brand,price,original_price,image_url,thumbnail_url,rating,review_count,tags,is_active,translations")
+        .in("id", ids)
+        .eq("is_active", true);
       if (!alive) return;
       const map: Record<string, Product> = {};
       (prods || []).forEach((p: any) => (map[p.id] = p));
+      setRows(ranked);
       setProductsById(map);
       setLoading(false);
     };
@@ -350,9 +375,18 @@ const Ranking = () => {
     return () => {
       alive = false;
     };
-  }, [tab, skinType]);
+  }, [period]);
 
-  const orderedRows = rows.filter((r) => productsById[r.product_id]);
+  // Filter, then re-rank within filtered set, take top 30
+  const visible = useMemo(() => {
+    const filtered = rows
+      .filter((r) => {
+        const p = productsById[r.product_id];
+        return p && p.is_active && matchesCategory(p, category);
+      })
+      .slice(0, 30);
+    return filtered.map((r, i) => ({ ...r, rank: i + 1 }));
+  }, [rows, productsById, category]);
 
   return (
     <div className="min-h-dvh">
@@ -365,59 +399,47 @@ const Ranking = () => {
               <Sparkles className="h-3.5 w-3.5" />
               <span>{tr("updated")} · {updatedLabel}</span>
             </div>
-            <h1 className="text-3xl md:text-5xl font-serif font-light mb-3">
+            <h1 className="text-3xl md:text-5xl font-serif font-light">
               {tr("title")}
             </h1>
-            <p className="text-sm md:text-base text-muted-foreground max-w-xl mx-auto">
-              {tr("subtitle")}
-            </p>
           </div>
 
-          {/* Tabs */}
-          <div className="flex justify-center mb-6 md:mb-8 border-b border-border">
-            {(["hot", "skin"] as const).map((k) => (
-              <button
-                key={k}
-                onClick={() => setTab(k)}
-                className={`relative px-6 md:px-10 py-3 md:py-4 text-xs md:text-sm tracking-[0.2em] uppercase transition-colors min-h-[44px] ${
-                  tab === k ? "text-foreground" : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {k === "hot" ? tr("tab_hot") : tr("tab_skin")}
-                {tab === k && (
-                  <span className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-foreground" />
-                )}
-              </button>
-            ))}
-          </div>
-
-          {/* Skin type pills */}
-          {tab === "skin" && (
-            <div className="mb-6 md:mb-8">
-              <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-1 px-1">
-                {SKIN_TYPES.map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => setSkinType(s)}
-                    className={`whitespace-nowrap px-4 py-2 rounded-full text-xs md:text-sm tracking-wider border transition-colors min-h-[40px] ${
-                      skinType === s
-                        ? "bg-foreground text-background border-foreground"
-                        : "border-border text-muted-foreground hover:text-foreground hover:border-foreground"
-                    }`}
-                  >
-                    {tr(`skin_${s}`)}
-                  </button>
-                ))}
-              </div>
-              <p className="text-center text-xs md:text-sm text-muted-foreground mt-3 italic">
-                {tr(`skin_${skinType}_desc`)}
-              </p>
+          {/* Period toggle */}
+          <div className="flex justify-center mb-5 md:mb-6">
+            <div className="inline-flex border border-border rounded-full p-1 bg-background/40 backdrop-blur-sm">
+              {(["week", "month", "all"] as Period[]).map((p) => (
+                <button
+                  key={p}
+                  onClick={() => setPeriod(p)}
+                  className={`px-4 md:px-6 py-2 text-xs md:text-sm tracking-wider rounded-full transition-colors min-h-[36px] ${
+                    period === p
+                      ? "bg-foreground text-background"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {tr(`period_${p}`)}
+                </button>
+              ))}
             </div>
-          )}
+          </div>
 
-          {/* Caption */}
-          <div className="text-center text-[11px] md:text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4 md:mb-6">
-            {tab === "hot" ? tr("hot_caption") : tr("skin_caption")}
+          {/* Category pills */}
+          <div className="mb-6 md:mb-8">
+            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-1 px-1 justify-start md:justify-center">
+              {CATEGORIES.map((c) => (
+                <button
+                  key={c}
+                  onClick={() => setCategory(c)}
+                  className={`whitespace-nowrap px-4 py-2 rounded-full text-xs md:text-sm tracking-wider border transition-colors min-h-[40px] ${
+                    category === c
+                      ? "bg-foreground text-background border-foreground"
+                      : "border-border text-muted-foreground hover:text-foreground hover:border-foreground"
+                  }`}
+                >
+                  {tr(`cat_${c}`)}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* List */}
@@ -435,15 +457,16 @@ const Ranking = () => {
                   </div>
                 ))}
               </div>
-            ) : orderedRows.length === 0 ? (
+            ) : visible.length === 0 ? (
               <div className="py-20 text-center text-muted-foreground text-sm">
                 {tr("no_data")}
               </div>
             ) : (
-              orderedRows.map((r) => (
+              visible.map((r) => (
                 <RankingRow
                   key={r.product_id}
-                  row={r}
+                  rank={r.rank}
+                  salesCount={r.sales_count}
                   product={productsById[r.product_id]}
                   soldLabel={tr("sold")}
                 />
