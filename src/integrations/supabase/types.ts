@@ -494,6 +494,7 @@ export type Database = {
           images: string[] | null
           is_active: boolean
           is_featured: boolean
+          manual_rank: number | null
           name: string
           original_price: number | null
           price: number
@@ -524,6 +525,7 @@ export type Database = {
           images?: string[] | null
           is_active?: boolean
           is_featured?: boolean
+          manual_rank?: number | null
           name: string
           original_price?: number | null
           price?: number
@@ -554,6 +556,7 @@ export type Database = {
           images?: string[] | null
           is_active?: boolean
           is_featured?: boolean
+          manual_rank?: number | null
           name?: string
           original_price?: number | null
           price?: number
