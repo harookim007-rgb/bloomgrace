@@ -16,11 +16,12 @@ import AdminSettings from "@/components/admin/AdminSettings";
 import AdminShipping from "@/components/admin/AdminShipping";
 import AdminPayment from "@/components/admin/AdminPayment";
 import AdminOtpGate from "@/components/admin/AdminOtpGate";
+import AdminRanking from "@/components/admin/AdminRanking";
 
 export type AdminTab =
   | "dashboard" | "products" | "categories" | "orders"
   | "customers" | "coupons" | "banners" | "reviews"
-  | "shipping" | "payment" | "settings";
+  | "shipping" | "payment" | "settings" | "ranking";
 
 const Admin = () => {
   const navigate = useNavigate();
