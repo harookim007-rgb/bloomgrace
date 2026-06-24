@@ -53,7 +53,7 @@ const emptyForm: FormState = {
   price: "", original_price: "", category_id: "", brand: "",
   image_url: "", images: [], detail_images: [],
   stock: "0", is_active: true, is_featured: false, tags: "",
-  benefits: [], related_product_ids: [],
+  benefits: [], skin_types: [], related_product_ids: [],
 };
 
 // Sortable image list with up/down/delete
