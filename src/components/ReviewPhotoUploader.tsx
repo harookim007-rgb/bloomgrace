@@ -43,13 +43,17 @@ const ReviewPhotoUploader = ({ value, onChange, max = 5 }: Props) => {
       toast.error(`최대 ${max}장까지 업로드 가능합니다.`);
       return;
     }
+    const { data: auth } = await supabase.auth.getUser();
+    const uid = auth.user?.id;
+    if (!uid) { toast.error("로그인이 필요합니다."); return; }
     setBusy(true);
     try {
       const uploaded: string[] = [];
       for (const f of Array.from(files)) {
         if (!f.type.startsWith("image/")) continue;
         const blob = await shrink(f);
-        const path = `reviews/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.jpg`;
+        const path = `reviews/${uid}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.jpg`;
+
         const { error } = await supabase.storage.from("media").upload(path, blob, {
           contentType: "image/jpeg", upsert: false,
         });
