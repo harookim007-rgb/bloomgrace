@@ -395,10 +395,6 @@ const Ranking = () => {
         <div className="container max-w-4xl">
           {/* Header */}
           <div className="mb-8 md:mb-12 text-center">
-            <div className="flex items-center justify-center gap-2 text-xs uppercase tracking-[0.25em] text-primary mb-3">
-              <Sparkles className="h-3.5 w-3.5" />
-              <span>{tr("updated")} · {updatedLabel}</span>
-            </div>
             <h1 className="text-3xl md:text-5xl font-serif font-light">
               {tr("title")}
             </h1>
@@ -407,7 +403,7 @@ const Ranking = () => {
           {/* Period toggle */}
           <div className="flex justify-center mb-5 md:mb-6">
             <div className="inline-flex border border-border rounded-full p-1 bg-background/40 backdrop-blur-sm">
-              {(["week", "month", "all"] as Period[]).map((p) => (
+              {(["week", "month"] as Period[]).map((p) => (
                 <button
                   key={p}
                   onClick={() => setPeriod(p)}
@@ -422,6 +418,7 @@ const Ranking = () => {
               ))}
             </div>
           </div>
+
 
           {/* Category pills */}
           <div className="mb-6 md:mb-8">
