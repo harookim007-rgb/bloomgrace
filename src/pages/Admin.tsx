@@ -65,6 +65,7 @@ const Admin = () => {
       case "reviews": return <AdminReviews />;
       case "shipping": return <AdminShipping />;
       case "payment": return <AdminPayment />;
+      case "ranking": return <AdminRanking />;
       case "settings": return <AdminSettings />;
       default: return <AdminDashboard />;
     }
