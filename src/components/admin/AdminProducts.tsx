@@ -43,6 +43,7 @@ interface FormState {
   is_featured: boolean;
   tags: string;
   benefits: string[];
+  skin_types: string[];
   related_product_ids: string[];
 }
 
