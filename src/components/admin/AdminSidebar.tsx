@@ -25,6 +25,7 @@ const menuItems: { id: AdminTab; label: string; icon: React.ElementType; }[] = [
   { id: "coupons", label: "쿠폰/이벤트", icon: Tag },
   { id: "banners", label: "배너/프로모션", icon: Image },
   { id: "reviews", label: "리뷰 관리", icon: Star },
+  { id: "ranking", label: "랭킹 관리", icon: Trophy },
   { id: "shipping", label: "배송비 관리", icon: Truck },
   { id: "payment", label: "결제 설정", icon: Wallet },
   { id: "settings", label: "사이트 설정", icon: Settings },
