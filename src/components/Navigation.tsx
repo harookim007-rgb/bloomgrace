@@ -41,7 +41,7 @@ const Navigation = () => {
   const navLinks: { to?: string; label: string; onClick?: () => void }[] = [
     { to: "/", label: t("nav_home") },
     { to: "/products", label: t("nav_products") },
-    { to: "/products?sort=popular", label: t("nav_ranking") },
+    { to: "/ranking", label: t("nav_ranking") },
     { to: "/products?sale=1", label: t("nav_sale") },
     { label: t("nav_routine"), onClick: openRoutine },
     { to: "/contact", label: t("nav_contact") },

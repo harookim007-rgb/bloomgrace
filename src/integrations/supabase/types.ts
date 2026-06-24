@@ -500,6 +500,7 @@ export type Database = {
           rating: number | null
           related_product_ids: string[]
           review_count: number | null
+          skin_types: string[]
           slug: string
           stock: number
           tags: string[] | null
@@ -529,6 +530,7 @@ export type Database = {
           rating?: number | null
           related_product_ids?: string[]
           review_count?: number | null
+          skin_types?: string[]
           slug: string
           stock?: number
           tags?: string[] | null
@@ -558,6 +560,7 @@ export type Database = {
           rating?: number | null
           related_product_ids?: string[]
           review_count?: number | null
+          skin_types?: string[]
           slug?: string
           stock?: number
           tags?: string[] | null
@@ -746,7 +749,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_top_selling_products: {
+        Args: { p_days?: number; p_limit?: number; p_skin_type?: string }
+        Returns: {
+          product_id: string
+          rank: number
+          sales_count: number
+        }[]
+      }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user" | "master_admin"
