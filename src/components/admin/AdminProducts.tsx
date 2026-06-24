@@ -166,6 +166,7 @@ const AdminProducts = () => {
       is_featured: form.is_featured,
       tags: form.tags ? form.tags.split(",").map(t => t.trim()).filter(Boolean) : [],
       benefits: form.benefits || [],
+      skin_types: form.skin_types || [],
       related_product_ids: form.related_product_ids || [],
     };
 
