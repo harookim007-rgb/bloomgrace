@@ -217,6 +217,7 @@ const AdminProducts = () => {
     is_featured: asCopy ? false : p.is_featured,
     tags: (p.tags || []).join(", "),
     benefits: p.benefits || [],
+    skin_types: p.skin_types || [],
     related_product_ids: p.related_product_ids || [],
   });
 
