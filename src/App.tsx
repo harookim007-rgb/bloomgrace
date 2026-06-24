@@ -18,6 +18,7 @@ import Admin from "./pages/Admin";
 import DesignModeOverlay from "./components/design/DesignModeOverlay";
 import NotFound from "./pages/NotFound";
 import Trust from "./pages/Trust";
+import Ranking from "./pages/Ranking";
 import FallingPetals from "./components/FallingPetals";
 import ScatteredFlorals from "./components/FloralDecor";
 
