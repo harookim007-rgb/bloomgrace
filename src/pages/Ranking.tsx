@@ -87,6 +87,7 @@ const Ranking = () => {
   const [period, setPeriod] = useState<Period>("week");
   const [items, setItems] = useState<RankItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const periods: Period[] = ["week", "month"];
 
   useEffect(() => {
     let alive = true;
@@ -147,7 +148,7 @@ const Ranking = () => {
   const visible = useMemo(() => items.map((it, i) => ({ ...it, rank: i + 1 })), [items]);
 
   return (
-    <div className="min-h-dvh">
+    <div className="min-h-dvh" data-ranking-page="sales-only">
       <Navigation />
       <section className="py-8 md:py-16 px-3 md:px-6 lg:px-8">
         <div className="container max-w-4xl">
@@ -157,7 +158,7 @@ const Ranking = () => {
 
           <div className="flex justify-center mb-6 md:mb-8">
             <div className="inline-flex border border-border rounded-full p-1 bg-background/40 backdrop-blur-sm">
-              {(["week", "month"] as Period[]).map((p) => (
+              {periods.map((p) => (
                 <button
                   key={p}
                   onClick={() => setPeriod(p)}
