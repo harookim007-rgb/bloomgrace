@@ -96,9 +96,12 @@ export const getLocalizedProductName = (product: any, language: Language): strin
 
 export const getLocalizedBrand = (product: any, language: Language): string => {
   const translated = clean(product?.translations?.[language]?.brand);
-  if (translated && !containsHangul(translated)) return translated;
   const raw = clean(product?.brand);
   const fallback = brandFallbacks[raw.toLowerCase()]?.[language] || brandFallbacks[raw]?.[language];
+  // If the DB translation simply repeats the source brand, prefer our localized
+  // storefront label for languages where the brand is intentionally localized.
+  if (fallback && language !== "en" && (!translated || translated.toLowerCase() === raw.toLowerCase())) return fallback;
+  if (translated && !containsHangul(translated)) return translated;
   if (fallback) return fallback;
   const english = clean(product?.translations?.en?.brand);
   if (english && !containsHangul(english)) return english;
