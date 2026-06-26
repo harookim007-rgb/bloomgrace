@@ -1,9 +1,19 @@
 import { Link } from "react-router-dom";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useLanguage, type Language } from "@/contexts/LanguageContext";
 import BrandLogo from "@/components/BrandLogo";
 
+const trustLabel: Record<Language, string> = {
+  en: "Trust & Privacy",
+  es: "Confianza y Privacidad",
+  de: "Vertrauen & Datenschutz",
+  fr: "Confiance & Confidentialité",
+  pt: "Confiança e Privacidade",
+  ja: "信頼とプライバシー",
+  ar: "الثقة والخصوصية",
+};
+
 const Footer = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   return (
     <footer className="border-t border-border bg-muted/20">
@@ -40,7 +50,7 @@ const Footer = () => {
             <ul className="space-y-2">
               <li><Link to="/contact" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{t("nav_contact")}</Link></li>
               <li><Link to="/qa" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_faq")}</Link></li>
-              <li><Link to="/trust" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">Trust &amp; Privacy</Link></li>
+              <li><Link to="/trust" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{trustLabel[language]}</Link></li>
             </ul>
           </div>
         </div>
