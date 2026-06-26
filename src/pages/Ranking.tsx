@@ -94,9 +94,10 @@ const Ranking = () => {
     const load = async () => {
       setLoading(true);
       // 1. Top selling
-      const { data: salesData } = await supabase.rpc("get_top_selling_products", {
-        p_skin_type: null, p_days: PERIOD_DAYS[period], p_limit: 200,
+      const { data: salesResp } = await supabase.functions.invoke("top-selling-products", {
+        body: { p_skin_type: null, p_days: PERIOD_DAYS[period], p_limit: 100 },
       });
+      const salesData = (salesResp as any)?.data ?? [];
       // 2. Manually pinned products (always shown)
       const { data: pinnedData } = await supabase
         .from("products")
