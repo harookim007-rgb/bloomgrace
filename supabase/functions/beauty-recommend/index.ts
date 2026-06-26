@@ -14,7 +14,7 @@ serve(async (req) => {
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
     const langMap: Record<string, string> = {
-      en: "English", ko: "Korean", es: "Spanish", de: "German"
+      en: "English", es: "Spanish", de: "German", fr: "French", pt: "Portuguese (Brazil)", ja: "Japanese", ar: "Arabic",
     };
     const outputLang = langMap[language] || "English";
 
@@ -54,15 +54,18 @@ Type/Concern: ${skinType}
 ${subCategory && subCategory !== "All" ? `Sub-category filter: ${subCategory}` : "Show all relevant products"}
 
 Available products from our store:
-${JSON.stringify(products.map((p: any) => ({
+${JSON.stringify(products.map((p: any) => {
+  const localized = p.translations?.[language] || p.translations?.en || {};
+  return {
   id: p.id,
-  name: p.name,
-  description: p.description,
+  name: localized.name || p.name,
+  description: localized.description || p.description,
   tags: p.tags,
-  brand: p.brand,
+  brand: localized.brand || p.brand,
   price: p.price,
   category_id: p.category_id,
-})), null, 2)}
+  };
+}), null, 2)}
 
 Please recommend the best products for this customer and provide a complete beauty routine.`;
 

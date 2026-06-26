@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { localizeCategory } from "@/lib/categoryI18n";
+import { getLocalizedBenefit, getLocalizedBrand, getLocalizedDescription, getLocalizedProductName, productUi } from "@/lib/productI18n";
 
 export interface ProductViewData {
   name: string;
@@ -56,7 +57,11 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
   const pos = product.description_position || "none";
   const showTop = pos === "top" || pos === "both";
   const showBottom = pos === "bottom" || pos === "both";
-  const altBase = product.image_alt || product.name || "product image";
+  const localizedName = getLocalizedProductName(product, language);
+  const localizedBrand = getLocalizedBrand(product, language);
+  const localizedDescription = getLocalizedDescription(product, language);
+  const labels = productUi(language);
+  const altBase = product.image_alt || localizedName || "product image";
 
   // Embla
   const [emblaRef, emblaApi] = useEmblaCarousel(
@@ -80,10 +85,6 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
   const discount = product.original_price
     ? Math.round((1 - product.price / Number(product.original_price)) * 100)
     : 0;
-
-  const localizedName = product.translations?.[language]?.name || product.name;
-  const localizedDescription =
-    product.translations?.[language]?.description || product.description;
 
   const DescriptionBlock = ({ html }: { html: string }) => (
     <div
@@ -150,9 +151,9 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
 
         {/* Info */}
         <div className="space-y-6 md:py-8">
-          {product.brand && (
+          {localizedBrand && (
             <p className="text-xs md:text-sm font-sans font-bold tracking-[0.25em] uppercase text-primary">
-              {product.brand}
+              {localizedBrand}
             </p>
           )}
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-serif font-medium text-foreground">{localizedName}</h1>
@@ -220,7 +221,7 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
                 onClick={() => !preview && onBuyNow(quantity)}
                 disabled={preview || (product.stock ?? 0) === 0}
               >
-                <Zap className="h-3.5 w-3.5 mr-2" /> Buy Now
+                <Zap className="h-3.5 w-3.5 mr-2" /> {labels.buyNow}
               </Button>
             )}
             <Button
@@ -238,12 +239,12 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
       {/* Efficacy / benefits circles */}
       {(product.benefits && product.benefits.length > 0) && (
         <div className="max-w-3xl mx-auto">
-          <h3 className="text-center text-sm tracking-[0.3em] uppercase text-foreground/70 font-sans font-semibold mb-6">Key Benefits</h3>
+          <h3 className="text-center text-sm tracking-[0.3em] uppercase text-foreground/70 font-sans font-semibold mb-6">{labels.keyBenefits}</h3>
           <div className="flex flex-wrap justify-center gap-4 md:gap-8">
             {product.benefits.map((b, i) => (
               <div key={i} className="flex flex-col items-center gap-2">
                 <div className="w-20 h-20 md:w-24 md:h-24 rounded-full border-2 border-primary/30 bg-primary-soft/40 flex items-center justify-center text-center px-2">
-                  <span className="text-xs md:text-sm font-sans font-semibold text-foreground leading-tight">{b}</span>
+                  <span className="text-xs md:text-sm font-sans font-semibold text-foreground leading-tight">{getLocalizedBenefit(b, language)}</span>
                 </div>
               </div>
             ))}

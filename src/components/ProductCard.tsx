@@ -7,6 +7,7 @@ import { useCart } from "@/hooks/useCart";
 import { useWishlist } from "@/hooks/useWishlist";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Badge } from "@/components/ui/badge";
+import { getLocalizedBrand, getLocalizedProductName, productUi } from "@/lib/productI18n";
 
 interface ProductCardProps {
   product: {
@@ -36,7 +37,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
     ? Math.round((1 - product.price / product.original_price) * 100)
     : 0;
 
-  const translatedName = product.translations?.[language]?.name || product.name;
+  const translatedName = getLocalizedProductName(product, language);
+  const translatedBrand = getLocalizedBrand(product, language);
+  const labels = productUi(language);
   const isNew = product.created_at
     ? Date.now() - new Date(product.created_at).getTime() < 30 * 24 * 60 * 60 * 1000
     : false;
@@ -105,12 +108,12 @@ const ProductCard = ({ product }: ProductCardProps) => {
           )}
           {isNew && (
             <Badge className="rounded-sm text-[10px] md:text-[11px] font-sans font-bold px-1.5 md:px-2.5 py-0.5 bg-primary-soft text-primary border-primary/20">
-              NEW
+              {labels.new}
             </Badge>
           )}
           {isBest && !isNew && (
             <Badge className="rounded-sm text-[10px] md:text-[11px] font-sans font-bold px-1.5 md:px-2.5 py-0.5 bg-secondary text-secondary-foreground border-secondary">
-              BEST
+              {labels.best}
             </Badge>
           )}
         </div>
@@ -131,8 +134,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
       </div>
 
       <div className="space-y-1 md:space-y-2 px-0.5">
-        {product.brand && (
-          <p className="text-[10px] md:text-xs font-sans font-semibold tracking-[0.12em] md:tracking-[0.15em] uppercase text-muted-foreground">{product.brand}</p>
+        {translatedBrand && (
+          <p className="text-[10px] md:text-xs font-sans font-semibold tracking-[0.12em] md:tracking-[0.15em] uppercase text-muted-foreground">{translatedBrand}</p>
         )}
         <Link to={`/products/${product.slug}`}>
           <h3 className="text-[13px] md:text-base font-sans font-medium leading-snug line-clamp-2 text-foreground">

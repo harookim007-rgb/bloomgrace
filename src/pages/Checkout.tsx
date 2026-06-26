@@ -14,6 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Copy, Wallet, Clock } from "lucide-react";
 import { toast } from "sonner";
+import { getLocalizedProductName } from "@/lib/productI18n";
 
 const emptyAddress = {
   full_name: "", phone: "", address_line1: "", address_line2: "",
@@ -206,6 +207,8 @@ const Checkout = () => {
           id: buyNowItem.product_id, name: buyNowItem.product_name,
           price: buyNowItem.price, image_url: buyNowItem.product_image,
           stock: buyNowItem.stock, original_price: null,
+          brand: buyNowItem.product_brand || null,
+          translations: buyNowItem.product_translations || null,
         },
       }]
     : cartItems;
@@ -290,7 +293,7 @@ const Checkout = () => {
 
       const orderItems = items.map(it => ({
         order_id: order.id, product_id: it.product_id,
-        product_name: it.product.name, product_image: it.product.image_url,
+        product_name: getLocalizedProductName(it.product, language as LangKey), product_image: it.product.image_url,
         price: it.product.price, quantity: it.quantity,
       }));
       await supabase.from("order_items").insert(orderItems);
@@ -437,7 +440,7 @@ const Checkout = () => {
                 <h2 className="text-sm font-sans font-medium tracking-[0.15em] uppercase">{t.summary}</h2>
                 {items.map(it => (
                   <div key={it.id} className="flex justify-between text-sm font-light">
-                    <span className="truncate flex-1 pr-2">{it.product.name} ×{it.quantity}</span>
+                    <span className="truncate flex-1 pr-2">{getLocalizedProductName(it.product, language as LangKey)} ×{it.quantity}</span>
                     <span>{formatPrice(it.product.price * it.quantity)}</span>
                   </div>
                 ))}

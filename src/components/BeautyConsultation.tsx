@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { getLocalizedBrand, getLocalizedProductName } from "@/lib/productI18n";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ArrowRight, ArrowLeft, Loader2, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -604,6 +605,8 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
               <div className="space-y-3">
                 {result.recommendations.map((rec: any, i: number) => {
                   const matchedProduct = rec.productId ? products.find((p) => p.id === rec.productId) : null;
+                  const displayName = matchedProduct ? getLocalizedProductName(matchedProduct, language) : rec.productName;
+                  const displayBrand = matchedProduct ? getLocalizedBrand(matchedProduct, language) : "";
                   return (
                     <div key={i} className="border border-border/30 bg-card overflow-hidden">
                       <div className="flex gap-0">
@@ -617,7 +620,8 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
                         <div className="flex-1 p-3 md:p-4 space-y-1.5">
                           <div className="flex items-start justify-between gap-2">
                             <div className="space-y-0.5">
-                              <p className="text-sm font-serif font-medium leading-tight">{rec.productName}</p>
+                              {displayBrand && <p className="text-[9px] text-muted-foreground tracking-[0.15em] uppercase">{displayBrand}</p>}
+                              <p className="text-sm font-serif font-medium leading-tight">{displayName}</p>
                               {rec.step && <p className="text-[9px] text-primary tracking-[0.15em] uppercase">{rec.step}</p>}
                             </div>
                             {matchedProduct && (

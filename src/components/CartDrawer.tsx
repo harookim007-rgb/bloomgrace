@@ -4,11 +4,12 @@ import { Button } from "@/components/ui/button";
 import { ShoppingBag, Plus, Minus, X } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { getLocalizedProductName } from "@/lib/productI18n";
 
 const CartDrawer = () => {
   const { items, total, itemCount, updateQuantity, removeItem } = useCart();
   const { t, formatPrice, language } = useLanguage();
-  const productName = (p: any) => p?.translations?.[language]?.name || p?.name || "";
+  const productName = (p: any) => getLocalizedProductName(p, language);
 
   return (
     <Sheet>

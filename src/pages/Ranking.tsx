@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { useLanguage, type Language } from "@/contexts/LanguageContext";
+import { getLocalizedBrand, getLocalizedProductName } from "@/lib/productI18n";
 
 const I18N: Record<Language, Record<string, string>> = {
   en: { title: "Ranking", sold: "sold", no_data: "Not enough orders yet for this ranking.", period_week: "Weekly", period_month: "Monthly" },
@@ -48,7 +49,8 @@ const RankMedal = ({ rank }: { rank: number }) => {
 
 const RankingRow = ({ product, rank, salesCount, soldLabel }: { product: Product; rank: number; salesCount: number; soldLabel: string }) => {
   const { language, formatPrice } = useLanguage();
-  const translatedName = product.translations?.[language]?.name || product.name;
+  const translatedName = getLocalizedProductName(product, language);
+  const translatedBrand = getLocalizedBrand(product, language);
   const img = product.thumbnail_url || product.image_url || "/placeholder.svg";
   const isTop3 = rank <= 3;
   return (
@@ -61,7 +63,7 @@ const RankingRow = ({ product, rank, salesCount, soldLabel }: { product: Product
         <img src={img} alt={translatedName} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
       </div>
       <div className="flex-1 min-w-0">
-        {product.brand && <div className="text-[10px] md:text-xs uppercase tracking-[0.15em] text-muted-foreground mb-1 truncate">{product.brand}</div>}
+        {translatedBrand && <div className="text-[10px] md:text-xs uppercase tracking-[0.15em] text-muted-foreground mb-1 truncate">{translatedBrand}</div>}
         <div className="text-sm md:text-base font-serif leading-snug line-clamp-2 group-hover:text-primary transition-colors">{translatedName}</div>
         <div className="mt-1 flex items-center gap-2 text-xs md:text-sm">
           <span className="font-medium">{formatPrice(Number(product.price))}</span>
