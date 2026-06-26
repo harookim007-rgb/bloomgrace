@@ -639,7 +639,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
                         : "border-border/60 text-foreground/85 hover:border-primary/40 hover:text-primary"
                     }`}
                   >
-                    {sub}
+                    {localizedSubCategory(sub)}
                   </button>
                 ))}
               </div>
@@ -793,7 +793,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
               onClick={() => setShowModal(false)}
               className="absolute top-5 right-5 text-muted-foreground hover:text-foreground transition-colors text-[12px] tracking-[0.2em] uppercase"
             >
-              Close
+              {ct.close}
             </button>
             <div className="text-center space-y-4">
               <p className="text-sm tracking-[0.25em] uppercase text-primary font-sans font-semibold">{ct.sectionSubtitle}</p>
