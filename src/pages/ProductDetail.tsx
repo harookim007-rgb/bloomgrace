@@ -10,6 +10,8 @@ import Footer from "@/components/Footer";
 import ProductView from "@/components/ProductView";
 import { Button } from "@/components/ui/button";
 import { Star } from "lucide-react";
+import ProductCard from "@/components/ProductCard";
+import { containsHangul, getLocalizedProductName, productUi, SUPPORTED_PRODUCT_LANGUAGES } from "@/lib/productI18n";
 
 const ProductDetail = () => {
   const { slug } = useParams();
@@ -32,7 +34,7 @@ const ProductDetail = () => {
       if (data.related_product_ids?.length) {
         const { data: rel } = await supabase
           .from("products")
-          .select("id, name, slug, price, original_price, image_url, stock")
+          .select("*")
           .in("id", data.related_product_ids)
           .eq("is_active", true);
         setRelated(rel || []);
@@ -41,12 +43,12 @@ const ProductDetail = () => {
       }
       // Auto-translate fallback: if translations missing or still in source language, fill via edge function
       const tr = (data.translations as any) || {};
-      const needs = ["en","es","de","fr","pt","ja","ar"].some(
-        (l) => !tr?.[l]?.name || tr[l].name === data.name
+      const needs = SUPPORTED_PRODUCT_LANGUAGES.some(
+        (l) => !tr?.[l]?.name || containsHangul(tr[l].name) || !tr?.[l]?.brand
       );
       if (needs) {
         supabase.functions
-          .invoke("translate-product", { body: { name: data.name, description: data.description || "" } })
+          .invoke("translate-product", { body: { name: data.name, brand: data.brand || "", description: data.description || "" } })
           .then(async ({ data: res }: any) => {
             if (res?.translations) {
               const merged = { ...tr, ...res.translations };
@@ -103,8 +105,10 @@ const ProductDetail = () => {
             onBuyNow={(qty) => {
               sessionStorage.setItem("buyNow", JSON.stringify({
                 product_id: product.id,
-                product_name: product.name,
+                product_name: getLocalizedProductName(product, language),
                 product_image: product.image_url,
+                product_brand: product.brand,
+                product_translations: product.translations,
                 price: product.price,
                 stock: product.stock,
                 quantity: qty,
@@ -119,40 +123,10 @@ const ProductDetail = () => {
           {related.length > 0 && (
             <div className="mt-20 md:mt-28">
               <div className="border-b border-border pb-4 mb-8">
-                <h2 className="text-xl md:text-2xl font-serif font-light">함께 보면 좋은 상품</h2>
+                <h2 className="text-xl md:text-2xl font-serif font-light">{productUi(language).related}</h2>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-                {related.map((r) => (
-                  <div key={r.id} className="group">
-                    <button
-                      onClick={() => navigate(`/product/${r.slug}`)}
-                      className="block w-full aspect-square overflow-hidden bg-muted/30 mb-3"
-                    >
-                      <img
-                        src={r.image_url || "/placeholder.svg"}
-                        alt={r.name}
-                        loading="lazy"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                    </button>
-                    <button onClick={() => navigate(`/product/${r.slug}`)} className="text-left w-full">
-                      <p className="text-sm font-serif line-clamp-2">{r.name}</p>
-                      <p className="text-sm font-sans mt-1">{Number(r.price).toLocaleString()}원</p>
-                    </button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="w-full rounded-none mt-2 text-[10px] tracking-[0.15em] uppercase"
-                      disabled={r.stock <= 0 || adding}
-                      onClick={async () => {
-                        const ok = await addToCart(r.id, 1, { silent: false });
-                        if (ok) navigate("/checkout");
-                      }}
-                    >
-                      {r.stock <= 0 ? "품절" : "장바구니"}
-                    </Button>
-                  </div>
-                ))}
+                {related.map((r) => <ProductCard key={r.id} product={r} />)}
               </div>
             </div>
           )}

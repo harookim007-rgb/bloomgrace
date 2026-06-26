@@ -18,17 +18,18 @@ const LANGS: Record<string, string> = {
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
   try {
-    const { name, description } = await req.json();
+    const { name, brand, description } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY missing");
 
-    const prompt = `Translate the product name and description into these languages: ${Object.values(LANGS).join(", ")}.
+    const prompt = `Translate the product name, brand display name, and description into these languages: ${Object.values(LANGS).join(", ")}.
 Return STRICT JSON only, no commentary, shape:
-{ "en": {"name": "...", "description": "..."}, "es": {...}, "de": {...}, "fr": {...}, "pt": {...}, "ja": {...}, "ar": {...} }
+{ "en": {"name": "...", "brand": "...", "description": "..."}, "es": {...}, "de": {...}, "fr": {...}, "pt": {...}, "ja": {...}, "ar": {...} }
 
-Keep names natural and concise. Preserve brand/product feel. Do NOT keep the original language if it differs from the target.
+Keep product names natural and concise. Romanize or translate Korean product names for English/Spanish/German/French/Portuguese, transliterate naturally for Japanese/Arabic when needed. Do NOT keep Korean text in non-Korean outputs. Preserve proper brand feel, but localize Korean brand text.
 
 NAME: ${name}
+BRAND: ${brand || ""}
 DESCRIPTION: ${description || ""}`;
 
     const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -54,6 +55,7 @@ DESCRIPTION: ${description || ""}`;
       if (json[code]?.name) {
         translations[code] = {
           name: String(json[code].name),
+          brand: String(json[code].brand || brand || ""),
           description: String(json[code].description || ""),
         };
       }

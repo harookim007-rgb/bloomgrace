@@ -22,17 +22,6 @@ const messengerTexts: Record<string, Record<string, string>> = {
     error: "Failed to send message. Please try again.",
     greeting: "Hello! How can we help you today?",
   },
-  ko: {
-    title: "고객 상담",
-    subtitle: "보통 몇 시간 이내에 답변드립니다",
-    placeholder: "메시지를 입력하세요...",
-    send: "전송",
-    name: "이름",
-    email: "이메일",
-    sent: "메시지가 전송되었습니다! 곧 답변드리겠습니다.",
-    error: "메시지 전송에 실패했습니다. 다시 시도해주세요.",
-    greeting: "안녕하세요! 무엇을 도와드릴까요?",
-  },
   es: {
     title: "Atención al Cliente",
     subtitle: "Respondemos en pocas horas",
@@ -55,13 +44,60 @@ const messengerTexts: Record<string, Record<string, string>> = {
     error: "Senden fehlgeschlagen. Bitte versuchen Sie es erneut.",
     greeting: "Hallo! Wie können wir Ihnen helfen?",
   },
+  fr: {
+    title: "Service Client",
+    subtitle: "Nous répondons généralement en quelques heures",
+    placeholder: "Écrivez votre message...",
+    send: "Envoyer",
+    name: "Votre nom",
+    email: "Votre email",
+    sent: "Message envoyé ! Nous vous répondrons bientôt.",
+    error: "Échec de l’envoi. Veuillez réessayer.",
+    greeting: "Bonjour ! Comment pouvons-nous vous aider ?",
+  },
+  pt: {
+    title: "Atendimento ao Cliente",
+    subtitle: "Normalmente respondemos em poucas horas",
+    placeholder: "Digite sua mensagem...",
+    send: "Enviar",
+    name: "Seu nome",
+    email: "Seu email",
+    sent: "Mensagem enviada! Responderemos em breve.",
+    error: "Falha ao enviar. Tente novamente.",
+    greeting: "Olá! Como podemos ajudar?",
+  },
+  ja: {
+    title: "カスタマーサポート",
+    subtitle: "通常、数時間以内に返信します",
+    placeholder: "メッセージを入力...",
+    send: "送信",
+    name: "お名前",
+    email: "メールアドレス",
+    sent: "メッセージを送信しました。まもなく返信いたします。",
+    error: "送信に失敗しました。もう一度お試しください。",
+    greeting: "こんにちは！どのようにお手伝いできますか？",
+  },
+  ar: {
+    title: "دعم العملاء",
+    subtitle: "نرد عادة خلال بضع ساعات",
+    placeholder: "اكتب رسالتك...",
+    send: "إرسال",
+    name: "اسمك",
+    email: "بريدك الإلكتروني",
+    sent: "تم إرسال الرسالة! سنرد عليك قريباً.",
+    error: "فشل الإرسال. يرجى المحاولة مرة أخرى.",
+    greeting: "مرحباً! كيف يمكننا مساعدتك؟",
+  },
 };
 
-const bookmarkTexts: Record<string, { line1: string; line2: string; hover: string }> = {
-  en: { line1: "MAKE YOUR", line2: "ROUTINE", hover: "Personalize your beauty routine with our AI advisor. Discover products perfectly matched to your skin, body & hair." },
-  ko: { line1: "나만의", line2: "루틴 만들기", hover: "AI 어드바이저로 나만의 뷰티 루틴을 완성하세요. 피부, 바디, 헤어에 맞는 제품을 추천받으세요." },
-  es: { line1: "CREA TU", line2: "RUTINA", hover: "Personaliza tu rutina de belleza con nuestro asesor IA. Descubre productos perfectos para ti." },
-  de: { line1: "DEINE", line2: "ROUTINE", hover: "Personalisieren Sie Ihre Beauty-Routine mit unserem KI-Berater. Entdecken Sie perfekt abgestimmte Produkte." },
+const bookmarkTexts: Record<string, { line1: string; line2: string; title: string; subtitle: string; hover: string; cats: string[] }> = {
+  en: { line1: "MAKE YOUR", line2: "ROUTINE", title: "Personalized Beauty", subtitle: "Personalize Your Routine", hover: "Personalize your beauty routine with our AI advisor. Discover products perfectly matched to your skin, body & hair.", cats: ["Skin", "Body", "Hair"] },
+  es: { line1: "CREA TU", line2: "RUTINA", title: "Belleza Personalizada", subtitle: "Personaliza Tu Rutina", hover: "Personaliza tu rutina de belleza con nuestro asesor IA. Descubre productos perfectos para ti.", cats: ["Piel", "Cuerpo", "Cabello"] },
+  de: { line1: "DEINE", line2: "ROUTINE", title: "Personalisierte Schönheit", subtitle: "Deine Routine", hover: "Personalisieren Sie Ihre Beauty-Routine mit unserem KI-Berater. Entdecken Sie perfekt abgestimmte Produkte.", cats: ["Haut", "Körper", "Haar"] },
+  fr: { line1: "VOTRE", line2: "ROUTINE", title: "Beauté Personnalisée", subtitle: "Personnalisez Votre Routine", hover: "Personnalisez votre routine beauté avec notre conseiller IA. Découvrez des produits faits pour vous.", cats: ["Peau", "Corps", "Cheveux"] },
+  pt: { line1: "SUA", line2: "ROTINA", title: "Beleza Personalizada", subtitle: "Personalize Sua Rotina", hover: "Personalize sua rotina de beleza com nosso consultor IA. Descubra produtos perfeitos para você.", cats: ["Pele", "Corpo", "Cabelo"] },
+  ja: { line1: "あなたの", line2: "ルーティン", title: "パーソナルビューティー", subtitle: "あなたのルーティンを作る", hover: "AIアドバイザーが肌・ボディ・髪に合う商品を提案します。", cats: ["スキン", "ボディ", "ヘア"] },
+  ar: { line1: "اصنعي", line2: "روتينك", title: "جمالك المخصص", subtitle: "اصنعي روتينك", hover: "خصصي روتين جمالك مع مستشار الذكاء الاصطناعي واكتشفي المنتجات المناسبة لك.", cats: ["البشرة", "الجسم", "الشعر"] },
 };
 
 const FloatingButtons = () => {
@@ -135,12 +171,12 @@ const FloatingButtons = () => {
           <HoverCardContent side="left" sideOffset={8} className="w-72 bg-background/95 backdrop-blur-md border-border/30 shadow-luxury p-5">
             <div className="space-y-3">
               <div>
-              <p className="text-lg font-serif font-bold">Personalized Beauty</p>
-                <p className="text-sm text-foreground/70 tracking-[0.1em] uppercase mt-0.5 font-semibold">Personalize Your Routine</p>
+              <p className="text-lg font-serif font-bold">{bt.title}</p>
+                <p className="text-sm text-foreground/70 tracking-[0.1em] uppercase mt-0.5 font-semibold">{bt.subtitle}</p>
               </div>
               <p className="text-base text-foreground/80 leading-relaxed">{bt.hover}</p>
               <div className="flex gap-2">
-                {["Skin", "Body", "Hair"].map(cat => (
+                {bt.cats.map(cat => (
                   <span key={cat} className="text-xs px-2.5 py-1 bg-muted text-foreground/80 border border-border/40 tracking-[0.08em] uppercase font-medium">{cat}</span>
                 ))}
               </div>

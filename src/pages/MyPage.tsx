@@ -15,6 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import ReviewPhotoUploader from "@/components/ReviewPhotoUploader";
 import { Clock, RotateCcw, Star, PenLine } from "lucide-react";
 import { toast } from "sonner";
+import { getLocalizedProductName } from "@/lib/productI18n";
 
 const REVIEW_I18N: Record<string, { write: string; notice: string; title: string; content: string; submit: string; done: string; success: string; dup: string; fail: string; rating: string; }> = {
   en: { write: "Write a review", notice: "Earn 1,000P when you write a review (usable at checkout).", title: "Title", content: "Share your experience...", submit: "Submit", done: "Reviewed", success: "Review submitted · 1,000P earned!", dup: "You've already reviewed this product.", fail: "Failed to submit review.", rating: "Rating" },
@@ -58,7 +59,7 @@ const MyPage = () => {
   const fetchData = async () => {
     if (!user) return;
     const [ordersRes, wishRes, profileRes, reviewsRes] = await Promise.all([
-      supabase.from("orders").select("*, order_items(*)").eq("user_id", user.id).order("created_at", { ascending: false }),
+      supabase.from("orders").select("*, order_items(*, products(id,name,slug,brand,translations))").eq("user_id", user.id).order("created_at", { ascending: false }),
       supabase.from("wishlists").select("product_id, products(*)").eq("user_id", user.id),
       supabase.from("profiles").select("*").eq("user_id", user.id).single(),
       supabase.from("reviews").select("product_id").eq("user_id", user.id),
@@ -96,7 +97,7 @@ const MyPage = () => {
   };
 
   const openReview = (item: any) => {
-    setReviewTarget({ product_id: item.product_id, product_name: item.product_name });
+    setReviewTarget({ product_id: item.product_id, product_name: getLocalizedProductName(item.products || { name: item.product_name }, language as any) });
     setReviewForm({ rating: 5, title: "", content: "", image_urls: [] });
   };
 
@@ -172,7 +173,7 @@ const MyPage = () => {
                         const reviewed = reviewedIds.has(item.product_id);
                         return (
                           <div key={item.id} className="flex justify-between items-center gap-3 text-sm font-light flex-wrap">
-                            <span className={`flex-1 min-w-0 ${isCancelled ? "line-through" : ""}`}>{item.product_name} ×{item.quantity}</span>
+                            <span className={`flex-1 min-w-0 ${isCancelled ? "line-through" : ""}`}>{getLocalizedProductName(item.products || { name: item.product_name }, language as any)} ×{item.quantity}</span>
                             <div className="flex items-center gap-2">
                               <span>{formatPrice(item.price * item.quantity)}</span>
                               {canReview && (

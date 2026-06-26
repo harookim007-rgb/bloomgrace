@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export interface CartItem {
   id: string;
@@ -14,11 +15,25 @@ export interface CartItem {
     original_price: number | null;
     image_url: string | null;
     stock: number;
+    brand?: string | null;
+    translations?: any;
   };
 }
 
+const CART_MSG = {
+  en: { login: "Please sign in first.", added: "Added to cart!", fail: "Failed to add to cart." },
+  es: { login: "Inicia sesión primero.", added: "¡Agregado al carrito!", fail: "Error al agregar al carrito." },
+  de: { login: "Bitte melden Sie sich zuerst an.", added: "Zum Warenkorb hinzugefügt!", fail: "Hinzufügen fehlgeschlagen." },
+  fr: { login: "Veuillez vous connecter.", added: "Ajouté au panier !", fail: "Échec de l’ajout au panier." },
+  pt: { login: "Faça login primeiro.", added: "Adicionado ao carrinho!", fail: "Falha ao adicionar ao carrinho." },
+  ja: { login: "ログインしてください。", added: "カートに追加しました！", fail: "カートへの追加に失敗しました。" },
+  ar: { login: "يرجى تسجيل الدخول أولاً.", added: "تمت الإضافة إلى السلة!", fail: "فشلت الإضافة إلى السلة." },
+};
+
 export const useCart = () => {
   const { user } = useAuth();
+  const { language } = useLanguage();
+  const msg = CART_MSG[language] || CART_MSG.en;
   const [items, setItems] = useState<CartItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [adding, setAdding] = useState(false);
@@ -28,7 +43,7 @@ export const useCart = () => {
     setIsLoading(true);
     const { data } = await supabase
       .from("cart_items")
-      .select("id, product_id, quantity, products(id, name, price, original_price, image_url, stock)")
+      .select("id, product_id, quantity, products(id, name, price, original_price, image_url, stock, brand, translations)")
       .eq("user_id", user.id);
     setItems((data || []).map((item: any) => ({ ...item, product: item.products })));
     setIsLoading(false);
@@ -37,7 +52,7 @@ export const useCart = () => {
   useEffect(() => { fetchCart(); }, [fetchCart]);
 
   const addToCart = useCallback(async (productId: string, qty = 1, opts: { silent?: boolean } = {}): Promise<boolean> => {
-    if (!user) { toast.error("로그인이 필요합니다."); return false; }
+    if (!user) { toast.error(msg.login); return false; }
     if (adding) return false;
     setAdding(true);
     try {
@@ -49,11 +64,11 @@ export const useCart = () => {
         const { error } = await supabase.from("cart_items").insert({ user_id: user.id, product_id: productId, quantity: qty });
         if (error) throw error;
       }
-      if (!opts.silent) toast.success("장바구니에 추가되었습니다!");
+      if (!opts.silent) toast.success(msg.added);
       await fetchCart();
       return true;
     } catch (e: any) {
-      toast.error(e?.message || "장바구니 추가 실패");
+      toast.error(e?.message || msg.fail);
       return false;
     } finally {
       setAdding(false);

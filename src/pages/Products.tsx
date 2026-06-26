@@ -10,9 +10,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Search } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { localizeCategory } from "@/lib/categoryI18n";
+import { getLocalizedBrand, getLocalizedProductName } from "@/lib/productI18n";
 
 const Products = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
@@ -41,7 +42,6 @@ const Products = () => {
         const cat = categories.find(c => c.slug === category);
         if (cat) query = query.eq("category_id", cat.id);
       }
-      if (search) query = query.ilike("name", `%${search}%`);
       if (priceRange === "under20000") query = query.lt("price", 20000);
       else if (priceRange === "20000-50000") query = query.gte("price", 20000).lte("price", 50000);
       else if (priceRange === "over50000") query = query.gt("price", 50000);
@@ -52,6 +52,15 @@ const Products = () => {
       else if (sort === "rating") query = query.order("rating", { ascending: false });
       const { data } = await query;
       let list = data || [];
+      if (search.trim()) {
+        const q = search.trim().toLowerCase();
+        list = list.filter((p: any) => [
+          getLocalizedProductName(p, language),
+          getLocalizedBrand(p, language),
+          p.name,
+          p.brand,
+        ].some((v) => String(v || "").toLowerCase().includes(q)));
+      }
       if (saleOnly) list = list.filter((p: any) => p.original_price && Number(p.original_price) > Number(p.price));
       setProducts(list);
       setIsLoading(false);
@@ -59,7 +68,7 @@ const Products = () => {
     };
     fetchProducts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [category, search, sort, priceRange, categories, saleOnly]);
+  }, [category, search, sort, priceRange, categories, saleOnly, language]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();

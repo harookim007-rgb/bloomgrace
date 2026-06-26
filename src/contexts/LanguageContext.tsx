@@ -1143,6 +1143,57 @@ const translations = {
   },
 };
 
+const fallbacks: Partial<Record<Language, Partial<Record<keyof typeof translations.en, string>>>> = {
+  es: {
+    featured_tagline: "PRODUCTO DESTACADO",
+  },
+  de: {
+    featured_tagline: "TOP-PRODUKT",
+  },
+  fr: {
+    featured_tagline: "PRODUIT PHARE",
+    footer_new: "Nouveautés", footer_bestseller: "Meilleures ventes", footer_faq: "FAQ", footer_cs: "Service client : 1588-1234 | Email : contact@bloomandgrace.com",
+    products_search_btn: "Rechercher", products_category: "Catégorie", products_popular: "Populaire", products_newest: "Nouveautés", products_price_low: "Prix croissant", products_price_high: "Prix décroissant", products_rating: "Mieux notés", products_all_prices: "Tous les prix", products_under_20k: "Moins de 20 $", products_20k_50k: "20 $ - 50 $", products_over_50k: "Plus de 50 $",
+    pd_reviews: "avis", pd_stock: "En stock", pd_out_of_stock: "Épuisé", pd_already_reviewed: "Vous avez déjà laissé un avis.", pd_review_fail: "Échec de l’envoi de l’avis.", pd_review_success: "Avis envoyé avec succès !",
+    pc_add_to_cart: "Ajouter au panier", cart_login_required: "Veuillez vous connecter.",
+    auth_google_signin: "Se connecter avec Google", auth_google_signup: "S’inscrire avec Google",
+    mp_title: "Mon Compte", mp_logout: "Déconnexion", mp_orders: "Commandes", mp_wishlist: "Favoris", mp_profile: "Profil", mp_no_orders: "Aucune commande.", mp_order_date: "Commande", mp_subtotal: "Sous-total", mp_no_wishlist: "Aucun favori.", mp_email: "Email", mp_name: "Nom", mp_phone: "Téléphone", mp_login_required: "Veuillez vous connecter.",
+  },
+  pt: {
+    featured_tagline: "PRODUTO EM DESTAQUE",
+    footer_new: "Novidades", footer_bestseller: "Mais vendidos", footer_faq: "FAQ", footer_cs: "Atendimento: 1588-1234 | Email: contact@bloomandgrace.com",
+    products_search_btn: "Buscar", products_category: "Categoria", products_popular: "Popular", products_newest: "Mais recentes", products_price_low: "Menor preço", products_price_high: "Maior preço", products_rating: "Melhor avaliados", products_all_prices: "Todos os preços", products_under_20k: "Abaixo de $20", products_20k_50k: "$20 - $50", products_over_50k: "Acima de $50",
+    pd_reviews: "avaliações", pd_stock: "Em estoque", pd_out_of_stock: "Esgotado", pd_already_reviewed: "Você já avaliou este produto.", pd_review_fail: "Falha ao enviar avaliação.", pd_review_success: "Avaliação enviada com sucesso!",
+    pc_add_to_cart: "Adicionar ao carrinho", cart_login_required: "Faça login primeiro.",
+    auth_google_signin: "Entrar com Google", auth_google_signup: "Cadastrar com Google",
+    mp_title: "Minha Conta", mp_logout: "Sair", mp_orders: "Pedidos", mp_wishlist: "Favoritos", mp_profile: "Perfil", mp_no_orders: "Nenhum pedido.", mp_order_date: "Pedido", mp_subtotal: "Subtotal", mp_no_wishlist: "Nenhum favorito.", mp_email: "Email", mp_name: "Nome", mp_phone: "Telefone", mp_login_required: "Faça login primeiro.",
+  },
+  ja: {
+    featured_tagline: "注目商品",
+    footer_new: "新着商品", footer_bestseller: "ベストセラー", footer_faq: "FAQ", footer_cs: "カスタマーサービス: 1588-1234 | Email: contact@bloomandgrace.com",
+    products_search_btn: "検索", products_category: "カテゴリー", products_popular: "人気順", products_newest: "新着順", products_price_low: "価格の安い順", products_price_high: "価格の高い順", products_rating: "評価順", products_all_prices: "すべての価格", products_under_20k: "$20未満", products_20k_50k: "$20 - $50", products_over_50k: "$50以上",
+    pd_reviews: "レビュー", pd_stock: "在庫あり", pd_out_of_stock: "在庫切れ", pd_already_reviewed: "この商品はすでにレビュー済みです。", pd_review_fail: "レビュー送信に失敗しました。", pd_review_success: "レビューを送信しました！",
+    pc_add_to_cart: "カートに追加", cart_login_required: "ログインしてください。",
+    auth_google_signin: "Googleでログイン", auth_google_signup: "Googleで登録",
+    mp_title: "マイページ", mp_logout: "ログアウト", mp_orders: "注文履歴", mp_wishlist: "お気に入り", mp_profile: "プロフィール", mp_no_orders: "注文はまだありません。", mp_order_date: "注文", mp_subtotal: "小計", mp_no_wishlist: "お気に入りはありません。", mp_email: "メール", mp_name: "名前", mp_phone: "電話番号", mp_login_required: "ログインしてください。",
+  },
+  ar: {
+    featured_tagline: "منتج مميز",
+    footer_new: "وصل حديثاً", footer_bestseller: "الأكثر مبيعاً", footer_faq: "الأسئلة الشائعة", footer_cs: "خدمة العملاء: 1588-1234 | البريد: contact@bloomandgrace.com",
+    products_search_btn: "بحث", products_category: "الفئة", products_popular: "الأكثر شعبية", products_newest: "الأحدث", products_price_low: "السعر: من الأقل", products_price_high: "السعر: من الأعلى", products_rating: "الأعلى تقييماً", products_all_prices: "كل الأسعار", products_under_20k: "أقل من $20", products_20k_50k: "$20 - $50", products_over_50k: "أكثر من $50",
+    pd_reviews: "تقييمات", pd_stock: "متوفر", pd_out_of_stock: "غير متوفر", pd_already_reviewed: "لقد قيّمت هذا المنتج بالفعل.", pd_review_fail: "فشل إرسال التقييم.", pd_review_success: "تم إرسال التقييم بنجاح!",
+    pc_add_to_cart: "أضف إلى السلة", cart_login_required: "يرجى تسجيل الدخول أولاً.",
+    auth_google_signin: "تسجيل الدخول بواسطة Google", auth_google_signup: "التسجيل بواسطة Google",
+    mp_title: "حسابي", mp_logout: "تسجيل الخروج", mp_orders: "الطلبات", mp_wishlist: "المفضلة", mp_profile: "الملف الشخصي", mp_no_orders: "لا توجد طلبات بعد.", mp_order_date: "طلب", mp_subtotal: "المجموع الفرعي", mp_no_wishlist: "لا توجد عناصر مفضلة.", mp_email: "البريد الإلكتروني", mp_name: "الاسم", mp_phone: "الهاتف", mp_login_required: "يرجى تسجيل الدخول أولاً.",
+  },
+};
+
+const getDictionary = (language: Language) => ({
+  ...translations.en,
+  ...(translations[language] as any),
+  ...(fallbacks[language] as any),
+});
+
 
 type TranslationKey = keyof typeof translations.en;
 
@@ -1170,11 +1221,11 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const t = (key: TranslationKey): string => {
-    return (translations[language] as any)?.[key] || translations.en[key] || key;
+    return (getDictionary(language) as any)?.[key] || translations.en[key] || key;
   };
 
   const formatPrice = (price: number): string => {
-    const curr = translations[language] as any;
+    const curr = getDictionary(language) as any;
     const rate =
       language === "de" || language === "fr" ? 1400 :
       language === "pt" ? 260 :

@@ -174,7 +174,7 @@ const AdminProducts = () => {
     let translations: any = {};
     try {
       const { data: tr } = await supabase.functions.invoke("translate-product", {
-        body: { name: form.name, description: form.description || "" },
+        body: { name: form.name, brand: form.brand || "", description: form.description || "" },
       });
       if (tr?.translations) translations = tr.translations;
     } catch (e) {
