@@ -34,9 +34,9 @@ const translations = {
     nav_login: "Sign In",
 
     // Hero
-    hero_tagline: "Premium Korean Beauty",
+    hero_tagline: "K-Beauty Shop",
     hero_title: "Bloom & Grace",
-    hero_subtitle: "Infused with Korean beauty wisdom. Crafted with nature's finest ingredients to complete your elegance.",
+    hero_subtitle: "Beauty should be for everyone. Discover K-beauty cosmetics from home with just a click",
     hero_shop: "Shop Collection",
     hero_story: "Our Story",
 
@@ -49,13 +49,17 @@ const translations = {
     // About
     about_tagline: "Our Philosophy",
     about_title: "Our Story",
-    about_p1: "Welcome to Bloom & Grace, where Korean beauty wisdom meets autumn's gentle embrace. Like walking through a serene garden kissed by fall's golden light, where soft pink petals rest on verdant grass, our boutique is a sanctuary of refined elegance.",
-    about_p2: "Every product in our collection embodies the meticulous care of Korean beauty traditions—infused with natural botanicals, autumn herbs, and the gentle touch of nature's finest ingredients. We believe beauty should feel as luxurious and comforting as the warm glow of an autumn afternoon, where every detail whispers sophistication.",
-    about_p3: "From our signature formulations to our thoughtfully designed packaging, each element is crafted to enhance your natural radiance while nourishing your skin with the purity of nature. Join us in celebrating beauty that blooms gracefully from within, just like the changing seasons.",
+    about_p1:
+      "Welcome to Bloom & Grace, where Korean beauty wisdom meets autumn's gentle embrace. Like walking through a serene garden kissed by fall's golden light, where soft pink petals rest on verdant grass, our boutique is a sanctuary of refined elegance.",
+    about_p2:
+      "Every product in our collection embodies the meticulous care of Korean beauty traditions—infused with natural botanicals, autumn herbs, and the gentle touch of nature's finest ingredients. We believe beauty should feel as luxurious and comforting as the warm glow of an autumn afternoon, where every detail whispers sophistication.",
+    about_p3:
+      "From our signature formulations to our thoughtfully designed packaging, each element is crafted to enhance your natural radiance while nourishing your skin with the purity of nature. Join us in celebrating beauty that blooms gracefully from within, just like the changing seasons.",
     about_since: "Crafted with care since 2024",
 
     // Footer
-    footer_desc: "A brand embracing Korean beauty wisdom. Crafted with nature's finest ingredients to complete your elegance.",
+    footer_desc:
+      "A brand embracing Korean beauty wisdom. Crafted with nature's finest ingredients to complete your elegance.",
     footer_products: "Products",
     footer_new: "New Arrivals",
     footer_bestseller: "Bestsellers",
@@ -74,7 +78,6 @@ const translations = {
 
     // Products page
     products_title: "All Products",
-    products_subtitle: "Premium Korean cosmetics collection",
     products_search: "Search products...",
     products_search_btn: "Search",
     products_all: "All",
@@ -85,9 +88,6 @@ const translations = {
     products_price_high: "Price: High to Low",
     products_rating: "Top Rated",
     products_all_prices: "All Prices",
-    products_under_20k: "Under $20",
-    products_20k_50k: "$20 - $50",
-    products_over_50k: "Over $50",
     products_no_results: "No products found.",
 
     // Product Detail
@@ -266,33 +266,47 @@ const translations = {
     qa_cat_support: "Customer Support",
     // QA Questions
     qa_q1: "What ingredients are your products made of?",
-    qa_a1: "Our products are made with premium Korean natural ingredients including green tea extract, rose essence, yuzu extract, and pearl powder. We never use parabens, artificial fragrances, or animal-derived ingredients.",
+    qa_a1:
+      "Our products are made with premium Korean natural ingredients including green tea extract, rose essence, yuzu extract, and pearl powder. We never use parabens, artificial fragrances, or animal-derived ingredients.",
     qa_q2: "How do I choose products for my skin type?",
-    qa_a2: "Each product page displays the recommended skin type. We offer gentle lines for sensitive skin, intensive moisture lines for dry skin, and sebum care lines for oily skin. Please don't hesitate to contact us.",
+    qa_a2:
+      "Each product page displays the recommended skin type. We offer gentle lines for sensitive skin, intensive moisture lines for dry skin, and sebum care lines for oily skin. Please don't hesitate to contact us.",
     qa_q3: "Do you test on animals?",
-    qa_a3: "Absolutely not. Bloom & Grace is committed to being cruelty-free, and all our products are certified. We pursue ethical and sustainable beauty.",
+    qa_a3:
+      "Absolutely not. Bloom & Grace is committed to being cruelty-free, and all our products are certified. We pursue ethical and sustainable beauty.",
     qa_q4: "How long does shipping take?",
-    qa_a4: "Domestic shipping arrives within 2-3 business days. International shipping takes 5-10 business days. Remote areas may require 1-2 additional days. Tracking numbers are sent via text and email.",
+    qa_a4:
+      "Domestic shipping arrives within 2-3 business days. International shipping takes 5-10 business days. Remote areas may require 1-2 additional days. Tracking numbers are sent via text and email.",
     qa_q5: "What are the shipping costs?",
-    qa_a5: "Free domestic shipping on orders over $50. Orders under $50 have a $3 shipping fee. International shipping varies by country and is calculated at checkout.",
+    qa_a5:
+      "Free domestic shipping on orders over $50. Orders under $50 have a $3 shipping fee. International shipping varies by country and is calculated at checkout.",
     qa_q6: "Can I cancel or modify my order?",
-    qa_a6: "Orders can be cancelled or modified through customer service until the 'preparing shipment' stage. After shipping begins, you'll need to use the returns/exchange process.",
+    qa_a6:
+      "Orders can be cancelled or modified through customer service until the 'preparing shipment' stage. After shipping begins, you'll need to use the returns/exchange process.",
     qa_q7: "How do I return or exchange a product?",
-    qa_a7: "Returns and exchanges are available within 7 days of receipt for unopened products. Contact customer service for return address and procedures. Return shipping for change of mind is the customer's responsibility.",
+    qa_a7:
+      "Returns and exchanges are available within 7 days of receipt for unopened products. Contact customer service for return address and procedures. Return shipping for change of mind is the customer's responsibility.",
     qa_q8: "I received a defective product.",
-    qa_a8: "We offer full refunds or exchanges for defective products. Please contact customer service with photos, and we'll handle it promptly. We cover the return shipping cost.",
+    qa_a8:
+      "We offer full refunds or exchanges for defective products. Please contact customer service with photos, and we'll handle it promptly. We cover the return shipping cost.",
     qa_q9: "Are there sign-up benefits?",
-    qa_a9: "New members receive a 10% discount coupon, and 3% of purchases are accumulated as points. Special coupons and gifts are provided during your birthday month.",
+    qa_a9:
+      "New members receive a 10% discount coupon, and 3% of purchases are accumulated as points. Special coupons and gifts are provided during your birthday month.",
     qa_q10: "How do I use reward points?",
-    qa_a10: "Points can be used starting from $1 and work like cash for product purchases. Points are valid for 2 years from the date earned.",
+    qa_a10:
+      "Points can be used starting from $1 and work like cash for product purchases. Points are valid for 2 years from the date earned.",
     qa_q11: "Do you use eco-friendly packaging?",
-    qa_a11: "Yes, all products are packaged with recyclable materials and we minimize unnecessary plastic use. We use FSC-certified paper and biodegradable materials.",
+    qa_a11:
+      "Yes, all products are packaged with recyclable materials and we minimize unnecessary plastic use. We use FSC-certified paper and biodegradable materials.",
     qa_q12: "Do you offer refill products?",
-    qa_a12: "Main skincare lines offer refill products at 20% less than regular prices. You can return empty containers to our store for reward points.",
+    qa_a12:
+      "Main skincare lines offer refill products at 20% less than regular prices. You can return empty containers to our store for reward points.",
     qa_q13: "What are customer service hours?",
-    qa_a13: "We operate weekdays from 10 AM to 6 PM, with a lunch break from 12 PM to 1 PM. Weekends and holidays are closed. Email inquiries are accepted 24/7.",
+    qa_a13:
+      "We operate weekdays from 10 AM to 6 PM, with a lunch break from 12 PM to 1 PM. Weekends and holidays are closed. Email inquiries are accepted 24/7.",
     qa_q14: "Is 1:1 consultation available?",
-    qa_a14: "Yes, you can get personalized consultation via our website chat or email (contact@bloomandgrace.com). Feel free to ask about skin concerns, product recommendations, and more.",
+    qa_a14:
+      "Yes, you can get personalized consultation via our website chat or email (contact@bloomandgrace.com). Feel free to ask about skin concerns, product recommendations, and more.",
 
     // Shipping widget
     ship_info: "Shipping Information",
@@ -337,7 +351,8 @@ const translations = {
 
     hero_tagline: "Belleza Coreana Premium",
     hero_title: "Bloom & Grace",
-    hero_subtitle: "Cosméticos premium con la sabiduría de la belleza coreana. Elaborados con los mejores ingredientes naturales para completar tu elegancia.",
+    hero_subtitle:
+      "Cosméticos premium con la sabiduría de la belleza coreana. Elaborados con los mejores ingredientes naturales para completar tu elegancia.",
     hero_shop: "Ver Colección",
     hero_story: "Nuestra Historia",
 
@@ -348,9 +363,12 @@ const translations = {
 
     about_tagline: "Nuestra Filosofía",
     about_title: "Nuestra Historia",
-    about_p1: "Bienvenidos a Bloom & Grace, donde la sabiduría de la belleza coreana se encuentra con el suave abrazo del otoño. Como caminar por un jardín sereno besado por la luz dorada del otoño, nuestra boutique es un santuario de elegancia refinada.",
-    about_p2: "Cada producto encarna el cuidado meticuloso de las tradiciones de belleza coreana—infundido con botánicos naturales, hierbas otoñales y el toque suave de los mejores ingredientes de la naturaleza.",
-    about_p3: "Desde nuestras formulaciones exclusivas hasta nuestro empaque cuidadosamente diseñado, cada elemento está elaborado para realzar tu resplandor natural mientras nutre tu piel con la pureza de la naturaleza.",
+    about_p1:
+      "Bienvenidos a Bloom & Grace, donde la sabiduría de la belleza coreana se encuentra con el suave abrazo del otoño. Como caminar por un jardín sereno besado por la luz dorada del otoño, nuestra boutique es un santuario de elegancia refinada.",
+    about_p2:
+      "Cada producto encarna el cuidado meticuloso de las tradiciones de belleza coreana—infundido con botánicos naturales, hierbas otoñales y el toque suave de los mejores ingredientes de la naturaleza.",
+    about_p3:
+      "Desde nuestras formulaciones exclusivas hasta nuestro empaque cuidadosamente diseñado, cada elemento está elaborado para realzar tu resplandor natural mientras nutre tu piel con la pureza de la naturaleza.",
     about_since: "Elaborado con cuidado desde 2024",
 
     footer_desc: "Marca de cosméticos premium que abraza la sabiduría de la belleza coreana.",
@@ -619,7 +637,8 @@ const translations = {
 
     hero_tagline: "Premium Koreanische Schönheit",
     hero_title: "Bloom & Grace",
-    hero_subtitle: "Premium-Kosmetik mit der Weisheit koreanischer Schönheit. Mit den besten natürlichen Zutaten für Ihre Eleganz.",
+    hero_subtitle:
+      "Premium-Kosmetik mit der Weisheit koreanischer Schönheit. Mit den besten natürlichen Zutaten für Ihre Eleganz.",
     hero_shop: "Kollektion ansehen",
     hero_story: "Unsere Geschichte",
 
@@ -630,9 +649,12 @@ const translations = {
 
     about_tagline: "Unsere Philosophie",
     about_title: "Unsere Geschichte",
-    about_p1: "Willkommen bei Bloom & Grace, wo koreanische Schönheitsweisheit auf die sanfte Umarmung des Herbstes trifft. Unsere Boutique ist ein Refugium raffinierter Eleganz.",
-    about_p2: "Jedes Produkt verkörpert die sorgfältige Pflege koreanischer Schönheitstraditionen—durchdrungen von natürlichen Pflanzenextrakten und den besten Zutaten der Natur.",
-    about_p3: "Von unseren exklusiven Formulierungen bis zu unserem durchdacht gestalteten Verpackungsdesign ist jedes Element darauf ausgerichtet, Ihre natürliche Ausstrahlung zu verstärken.",
+    about_p1:
+      "Willkommen bei Bloom & Grace, wo koreanische Schönheitsweisheit auf die sanfte Umarmung des Herbstes trifft. Unsere Boutique ist ein Refugium raffinierter Eleganz.",
+    about_p2:
+      "Jedes Produkt verkörpert die sorgfältige Pflege koreanischer Schönheitstraditionen—durchdrungen von natürlichen Pflanzenextrakten und den besten Zutaten der Natur.",
+    about_p3:
+      "Von unseren exklusiven Formulierungen bis zu unserem durchdacht gestalteten Verpackungsdesign ist jedes Element darauf ausgerichtet, Ihre natürliche Ausstrahlung zu verstärken.",
     about_since: "Mit Sorgfalt gefertigt seit 2024",
 
     footer_desc: "Premium-Kosmetikmarke mit koreanischer Schönheitsweisheit.",
@@ -892,7 +914,8 @@ const translations = {
     nav_login: "Connexion",
     hero_tagline: "Beauté Coréenne Premium",
     hero_title: "Bloom & Grace",
-    hero_subtitle: "Inspiré par la sagesse de la beauté coréenne. Élaboré avec les meilleurs ingrédients naturels pour sublimer votre élégance.",
+    hero_subtitle:
+      "Inspiré par la sagesse de la beauté coréenne. Élaboré avec les meilleurs ingrédients naturels pour sublimer votre élégance.",
     hero_shop: "Découvrir la Collection",
     hero_story: "Notre Histoire",
     featured_tagline: "HOT PRODUCT",
@@ -960,7 +983,8 @@ const translations = {
     nav_login: "Entrar",
     hero_tagline: "Beleza Coreana Premium",
     hero_title: "Bloom & Grace",
-    hero_subtitle: "Inspirado na sabedoria da beleza coreana. Elaborado com os melhores ingredientes naturais para realçar sua elegância.",
+    hero_subtitle:
+      "Inspirado na sabedoria da beleza coreana. Elaborado com os melhores ingredientes naturais para realçar sua elegância.",
     hero_shop: "Ver Coleção",
     hero_story: "Nossa História",
     featured_tagline: "HOT PRODUCT",
@@ -1152,39 +1176,167 @@ const fallbacks: Partial<Record<Language, Partial<Record<keyof typeof translatio
   },
   fr: {
     featured_tagline: "PRODUIT PHARE",
-    footer_new: "Nouveautés", footer_bestseller: "Meilleures ventes", footer_faq: "FAQ", footer_cs: "Service client : 1588-1234 | Email : contact@bloomandgrace.com",
-    products_search_btn: "Rechercher", products_category: "Catégorie", products_popular: "Populaire", products_newest: "Nouveautés", products_price_low: "Prix croissant", products_price_high: "Prix décroissant", products_rating: "Mieux notés", products_all_prices: "Tous les prix", products_under_20k: "Moins de 20 $", products_20k_50k: "20 $ - 50 $", products_over_50k: "Plus de 50 $",
-    pd_reviews: "avis", pd_stock: "En stock", pd_out_of_stock: "Épuisé", pd_already_reviewed: "Vous avez déjà laissé un avis.", pd_review_fail: "Échec de l’envoi de l’avis.", pd_review_success: "Avis envoyé avec succès !",
-    pc_add_to_cart: "Ajouter au panier", cart_login_required: "Veuillez vous connecter.",
-    auth_google_signin: "Se connecter avec Google", auth_google_signup: "S’inscrire avec Google",
-    mp_title: "Mon Compte", mp_logout: "Déconnexion", mp_orders: "Commandes", mp_wishlist: "Favoris", mp_profile: "Profil", mp_no_orders: "Aucune commande.", mp_order_date: "Commande", mp_subtotal: "Sous-total", mp_no_wishlist: "Aucun favori.", mp_email: "Email", mp_name: "Nom", mp_phone: "Téléphone", mp_login_required: "Veuillez vous connecter.",
+    footer_new: "Nouveautés",
+    footer_bestseller: "Meilleures ventes",
+    footer_faq: "FAQ",
+    footer_cs: "Service client : 1588-1234 | Email : contact@bloomandgrace.com",
+    products_search_btn: "Rechercher",
+    products_category: "Catégorie",
+    products_popular: "Populaire",
+    products_newest: "Nouveautés",
+    products_price_low: "Prix croissant",
+    products_price_high: "Prix décroissant",
+    products_rating: "Mieux notés",
+    products_all_prices: "Tous les prix",
+    products_under_20k: "Moins de 20 $",
+    products_20k_50k: "20 $ - 50 $",
+    products_over_50k: "Plus de 50 $",
+    pd_reviews: "avis",
+    pd_stock: "En stock",
+    pd_out_of_stock: "Épuisé",
+    pd_already_reviewed: "Vous avez déjà laissé un avis.",
+    pd_review_fail: "Échec de l’envoi de l’avis.",
+    pd_review_success: "Avis envoyé avec succès !",
+    pc_add_to_cart: "Ajouter au panier",
+    cart_login_required: "Veuillez vous connecter.",
+    auth_google_signin: "Se connecter avec Google",
+    auth_google_signup: "S’inscrire avec Google",
+    mp_title: "Mon Compte",
+    mp_logout: "Déconnexion",
+    mp_orders: "Commandes",
+    mp_wishlist: "Favoris",
+    mp_profile: "Profil",
+    mp_no_orders: "Aucune commande.",
+    mp_order_date: "Commande",
+    mp_subtotal: "Sous-total",
+    mp_no_wishlist: "Aucun favori.",
+    mp_email: "Email",
+    mp_name: "Nom",
+    mp_phone: "Téléphone",
+    mp_login_required: "Veuillez vous connecter.",
   },
   pt: {
     featured_tagline: "PRODUTO EM DESTAQUE",
-    footer_new: "Novidades", footer_bestseller: "Mais vendidos", footer_faq: "FAQ", footer_cs: "Atendimento: 1588-1234 | Email: contact@bloomandgrace.com",
-    products_search_btn: "Buscar", products_category: "Categoria", products_popular: "Popular", products_newest: "Mais recentes", products_price_low: "Menor preço", products_price_high: "Maior preço", products_rating: "Melhor avaliados", products_all_prices: "Todos os preços", products_under_20k: "Abaixo de $20", products_20k_50k: "$20 - $50", products_over_50k: "Acima de $50",
-    pd_reviews: "avaliações", pd_stock: "Em estoque", pd_out_of_stock: "Esgotado", pd_already_reviewed: "Você já avaliou este produto.", pd_review_fail: "Falha ao enviar avaliação.", pd_review_success: "Avaliação enviada com sucesso!",
-    pc_add_to_cart: "Adicionar ao carrinho", cart_login_required: "Faça login primeiro.",
-    auth_google_signin: "Entrar com Google", auth_google_signup: "Cadastrar com Google",
-    mp_title: "Minha Conta", mp_logout: "Sair", mp_orders: "Pedidos", mp_wishlist: "Favoritos", mp_profile: "Perfil", mp_no_orders: "Nenhum pedido.", mp_order_date: "Pedido", mp_subtotal: "Subtotal", mp_no_wishlist: "Nenhum favorito.", mp_email: "Email", mp_name: "Nome", mp_phone: "Telefone", mp_login_required: "Faça login primeiro.",
+    footer_new: "Novidades",
+    footer_bestseller: "Mais vendidos",
+    footer_faq: "FAQ",
+    footer_cs: "Atendimento: 1588-1234 | Email: contact@bloomandgrace.com",
+    products_search_btn: "Buscar",
+    products_category: "Categoria",
+    products_popular: "Popular",
+    products_newest: "Mais recentes",
+    products_price_low: "Menor preço",
+    products_price_high: "Maior preço",
+    products_rating: "Melhor avaliados",
+    products_all_prices: "Todos os preços",
+    products_under_20k: "Abaixo de $20",
+    products_20k_50k: "$20 - $50",
+    products_over_50k: "Acima de $50",
+    pd_reviews: "avaliações",
+    pd_stock: "Em estoque",
+    pd_out_of_stock: "Esgotado",
+    pd_already_reviewed: "Você já avaliou este produto.",
+    pd_review_fail: "Falha ao enviar avaliação.",
+    pd_review_success: "Avaliação enviada com sucesso!",
+    pc_add_to_cart: "Adicionar ao carrinho",
+    cart_login_required: "Faça login primeiro.",
+    auth_google_signin: "Entrar com Google",
+    auth_google_signup: "Cadastrar com Google",
+    mp_title: "Minha Conta",
+    mp_logout: "Sair",
+    mp_orders: "Pedidos",
+    mp_wishlist: "Favoritos",
+    mp_profile: "Perfil",
+    mp_no_orders: "Nenhum pedido.",
+    mp_order_date: "Pedido",
+    mp_subtotal: "Subtotal",
+    mp_no_wishlist: "Nenhum favorito.",
+    mp_email: "Email",
+    mp_name: "Nome",
+    mp_phone: "Telefone",
+    mp_login_required: "Faça login primeiro.",
   },
   ja: {
     featured_tagline: "注目商品",
-    footer_new: "新着商品", footer_bestseller: "ベストセラー", footer_faq: "FAQ", footer_cs: "カスタマーサービス: 1588-1234 | Email: contact@bloomandgrace.com",
-    products_search_btn: "検索", products_category: "カテゴリー", products_popular: "人気順", products_newest: "新着順", products_price_low: "価格の安い順", products_price_high: "価格の高い順", products_rating: "評価順", products_all_prices: "すべての価格", products_under_20k: "$20未満", products_20k_50k: "$20 - $50", products_over_50k: "$50以上",
-    pd_reviews: "レビュー", pd_stock: "在庫あり", pd_out_of_stock: "在庫切れ", pd_already_reviewed: "この商品はすでにレビュー済みです。", pd_review_fail: "レビュー送信に失敗しました。", pd_review_success: "レビューを送信しました！",
-    pc_add_to_cart: "カートに追加", cart_login_required: "ログインしてください。",
-    auth_google_signin: "Googleでログイン", auth_google_signup: "Googleで登録",
-    mp_title: "マイページ", mp_logout: "ログアウト", mp_orders: "注文履歴", mp_wishlist: "お気に入り", mp_profile: "プロフィール", mp_no_orders: "注文はまだありません。", mp_order_date: "注文", mp_subtotal: "小計", mp_no_wishlist: "お気に入りはありません。", mp_email: "メール", mp_name: "名前", mp_phone: "電話番号", mp_login_required: "ログインしてください。",
+    footer_new: "新着商品",
+    footer_bestseller: "ベストセラー",
+    footer_faq: "FAQ",
+    footer_cs: "カスタマーサービス: 1588-1234 | Email: contact@bloomandgrace.com",
+    products_search_btn: "検索",
+    products_category: "カテゴリー",
+    products_popular: "人気順",
+    products_newest: "新着順",
+    products_price_low: "価格の安い順",
+    products_price_high: "価格の高い順",
+    products_rating: "評価順",
+    products_all_prices: "すべての価格",
+    products_under_20k: "$20未満",
+    products_20k_50k: "$20 - $50",
+    products_over_50k: "$50以上",
+    pd_reviews: "レビュー",
+    pd_stock: "在庫あり",
+    pd_out_of_stock: "在庫切れ",
+    pd_already_reviewed: "この商品はすでにレビュー済みです。",
+    pd_review_fail: "レビュー送信に失敗しました。",
+    pd_review_success: "レビューを送信しました！",
+    pc_add_to_cart: "カートに追加",
+    cart_login_required: "ログインしてください。",
+    auth_google_signin: "Googleでログイン",
+    auth_google_signup: "Googleで登録",
+    mp_title: "マイページ",
+    mp_logout: "ログアウト",
+    mp_orders: "注文履歴",
+    mp_wishlist: "お気に入り",
+    mp_profile: "プロフィール",
+    mp_no_orders: "注文はまだありません。",
+    mp_order_date: "注文",
+    mp_subtotal: "小計",
+    mp_no_wishlist: "お気に入りはありません。",
+    mp_email: "メール",
+    mp_name: "名前",
+    mp_phone: "電話番号",
+    mp_login_required: "ログインしてください。",
   },
   ar: {
     featured_tagline: "منتج مميز",
-    footer_new: "وصل حديثاً", footer_bestseller: "الأكثر مبيعاً", footer_faq: "الأسئلة الشائعة", footer_cs: "خدمة العملاء: 1588-1234 | البريد: contact@bloomandgrace.com",
-    products_search_btn: "بحث", products_category: "الفئة", products_popular: "الأكثر شعبية", products_newest: "الأحدث", products_price_low: "السعر: من الأقل", products_price_high: "السعر: من الأعلى", products_rating: "الأعلى تقييماً", products_all_prices: "كل الأسعار", products_under_20k: "أقل من $20", products_20k_50k: "$20 - $50", products_over_50k: "أكثر من $50",
-    pd_reviews: "تقييمات", pd_stock: "متوفر", pd_out_of_stock: "غير متوفر", pd_already_reviewed: "لقد قيّمت هذا المنتج بالفعل.", pd_review_fail: "فشل إرسال التقييم.", pd_review_success: "تم إرسال التقييم بنجاح!",
-    pc_add_to_cart: "أضف إلى السلة", cart_login_required: "يرجى تسجيل الدخول أولاً.",
-    auth_google_signin: "تسجيل الدخول بواسطة Google", auth_google_signup: "التسجيل بواسطة Google",
-    mp_title: "حسابي", mp_logout: "تسجيل الخروج", mp_orders: "الطلبات", mp_wishlist: "المفضلة", mp_profile: "الملف الشخصي", mp_no_orders: "لا توجد طلبات بعد.", mp_order_date: "طلب", mp_subtotal: "المجموع الفرعي", mp_no_wishlist: "لا توجد عناصر مفضلة.", mp_email: "البريد الإلكتروني", mp_name: "الاسم", mp_phone: "الهاتف", mp_login_required: "يرجى تسجيل الدخول أولاً.",
+    footer_new: "وصل حديثاً",
+    footer_bestseller: "الأكثر مبيعاً",
+    footer_faq: "الأسئلة الشائعة",
+    footer_cs: "خدمة العملاء: 1588-1234 | البريد: contact@bloomandgrace.com",
+    products_search_btn: "بحث",
+    products_category: "الفئة",
+    products_popular: "الأكثر شعبية",
+    products_newest: "الأحدث",
+    products_price_low: "السعر: من الأقل",
+    products_price_high: "السعر: من الأعلى",
+    products_rating: "الأعلى تقييماً",
+    products_all_prices: "كل الأسعار",
+    products_under_20k: "أقل من $20",
+    products_20k_50k: "$20 - $50",
+    products_over_50k: "أكثر من $50",
+    pd_reviews: "تقييمات",
+    pd_stock: "متوفر",
+    pd_out_of_stock: "غير متوفر",
+    pd_already_reviewed: "لقد قيّمت هذا المنتج بالفعل.",
+    pd_review_fail: "فشل إرسال التقييم.",
+    pd_review_success: "تم إرسال التقييم بنجاح!",
+    pc_add_to_cart: "أضف إلى السلة",
+    cart_login_required: "يرجى تسجيل الدخول أولاً.",
+    auth_google_signin: "تسجيل الدخول بواسطة Google",
+    auth_google_signup: "التسجيل بواسطة Google",
+    mp_title: "حسابي",
+    mp_logout: "تسجيل الخروج",
+    mp_orders: "الطلبات",
+    mp_wishlist: "المفضلة",
+    mp_profile: "الملف الشخصي",
+    mp_no_orders: "لا توجد طلبات بعد.",
+    mp_order_date: "طلب",
+    mp_subtotal: "المجموع الفرعي",
+    mp_no_wishlist: "لا توجد عناصر مفضلة.",
+    mp_email: "البريد الإلكتروني",
+    mp_name: "الاسم",
+    mp_phone: "الهاتف",
+    mp_login_required: "يرجى تسجيل الدخول أولاً.",
   },
 };
 
@@ -1193,7 +1345,6 @@ const getDictionary = (language: Language) => ({
   ...(translations[language] as any),
   ...(fallbacks[language] as any),
 });
-
 
 type TranslationKey = keyof typeof translations.en;
 
@@ -1227,13 +1378,10 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const formatPrice = (price: number): string => {
     const curr = getDictionary(language) as any;
     const rate =
-      language === "de" || language === "fr" ? 1400 :
-      language === "pt" ? 260 :
-      language === "ja" ? 10 : 1300;
+      language === "de" || language === "fr" ? 1400 : language === "pt" ? 260 : language === "ja" ? 10 : 1300;
     const converted = language === "ja" ? Math.round(price / rate).toString() : (price / rate).toFixed(2);
     return `${curr.currency}${converted}${curr.currency_suffix || ""}`;
   };
-
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage, t, formatPrice }}>
