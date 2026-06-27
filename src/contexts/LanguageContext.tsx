@@ -31,7 +31,6 @@ const translations = {
     hero_title: "Bloom & Grace",
     hero_subtitle: "Beauty should be for everyone. Discover K-beauty cosmetics from home with just a click",
     hero_shop: "Shop Collection",
-    hero_story: "Our Story",
 
     // Featured Products
     featured_tagline: "HOT PRODUCT",
