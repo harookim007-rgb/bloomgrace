@@ -62,7 +62,7 @@ const skinConcerns: ConcernOption[] = [
     id: "acne",
     label: { en: "Acne-Prone", es: "Piel con Acné", de: "Akne-anfällige Haut" },
     description: {
-      en: "Frequent pimples, blackheads/whiteheads, post-acne marks, clogged pores"
+      en: "Frequent pimples, blackheads/whiteheads, post-acne marks, clogged pores",
       es: "Granos frecuentes, puntos negros, marcas post-acné",
       de: "Häufige Pickel, Mitesser, Aknenarben, verstopfte Poren",
     },
