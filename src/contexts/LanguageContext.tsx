@@ -1152,7 +1152,7 @@ const fallbacks: Partial<Record<Language, Partial<Record<keyof typeof translatio
     footer_new: "Nouveautés",
     footer_bestseller: "Meilleures ventes",
     footer_faq: "FAQ",
-    footer_cs: "Service client : 1588-1234 | Email : contact@bloomandgrace.com",
+    footer_cs: "Customer support: offical@bloomgrace.shop",
     products_search_btn: "Rechercher",
     products_category: "Catégorie",
     products_popular: "Populaire",
