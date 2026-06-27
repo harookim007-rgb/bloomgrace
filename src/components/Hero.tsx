@@ -102,6 +102,30 @@ const Hero = () => {
       .then(({ data }) => setBanners(data || []));
   }, []);
 
+  const containsHangul = (v?: string | null) => /[가-힣]/.test(v || "");
+
+  // Auto-translate any banner missing the current language (or still containing Korean)
+  useEffect(() => {
+    if (!banners.length) return;
+    banners.forEach(async (b: any) => {
+      const tr = (b.translations || {}) as any;
+      const cur = tr?.[language];
+      const ok = cur?.title && !containsHangul(cur.title) && !containsHangul(cur.subtitle);
+      if (ok) return;
+      try {
+        const { data: res } = await supabase.functions.invoke("translate-banner", {
+          body: { title: b.title, subtitle: b.subtitle || "" },
+        });
+        if (res?.translations) {
+          const merged = { ...tr, ...res.translations };
+          await supabase.from("banners").update({ translations: merged }).eq("id", b.id);
+          setBanners((prev) => prev.map((x) => (x.id === b.id ? { ...x, translations: merged } : x)));
+        }
+      } catch (e) { /* ignore */ }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [language, banners.length]);
+
   const texts = heroTexts[language] || heroTexts.en;
 
   const isUsableImage = (url?: string | null) =>
@@ -109,11 +133,19 @@ const Hero = () => {
 
   const slides = banners.length > 0
     ? banners.map((b: any, i: number) => {
-        const trans = b.translations?.[language];
+        const tr = (b.translations || {}) as any;
+        const cur = tr?.[language];
+        const en = tr?.en;
+        const pickTitle = (cur?.title && !containsHangul(cur.title)) ? cur.title
+          : (en?.title && !containsHangul(en.title)) ? en.title
+          : (!containsHangul(b.title) ? b.title : "");
+        const pickSub = (cur?.subtitle && !containsHangul(cur.subtitle)) ? cur.subtitle
+          : (en?.subtitle && !containsHangul(en.subtitle)) ? en.subtitle
+          : (!containsHangul(b.subtitle || "") ? (b.subtitle || "") : "");
         return {
           image: isUsableImage(b.image_url) ? b.image_url : fallbackSlides[i % 3].image,
-          title: trans?.title || b.translations?.en?.title || b.title,
-          subtitle: trans?.subtitle || b.translations?.en?.subtitle || b.subtitle || "",
+          title: pickTitle,
+          subtitle: pickSub,
         };
       })
     : fallbackSlides.map((s, i) => ({
