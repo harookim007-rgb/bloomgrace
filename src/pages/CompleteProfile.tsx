@@ -12,19 +12,22 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner";
 
 const countries = [
-  { code: "KR", name: "South Korea / 대한민국", phoneCode: "+82", needsCustoms: false },
   { code: "US", name: "United States", phoneCode: "+1", needsCustoms: true },
-  { code: "JP", name: "Japan / 日本", phoneCode: "+81", needsCustoms: true },
-  { code: "CN", name: "China / 中国", phoneCode: "+86", needsCustoms: true },
-  { code: "DE", name: "Germany / Deutschland", phoneCode: "+49", needsCustoms: true },
-  { code: "ES", name: "Spain / España", phoneCode: "+34", needsCustoms: true },
-  { code: "FR", name: "France", phoneCode: "+33", needsCustoms: true },
   { code: "GB", name: "United Kingdom", phoneCode: "+44", needsCustoms: true },
+  { code: "DE", name: "Germany", phoneCode: "+49", needsCustoms: true },
+  { code: "FR", name: "France", phoneCode: "+33", needsCustoms: true },
+  { code: "ES", name: "Spain", phoneCode: "+34", needsCustoms: true },
+  { code: "PT", name: "Portugal", phoneCode: "+351", needsCustoms: true },
+  { code: "JP", name: "Japan", phoneCode: "+81", needsCustoms: true },
+  { code: "SA", name: "Saudi Arabia", phoneCode: "+966", needsCustoms: true },
+  { code: "AE", name: "United Arab Emirates", phoneCode: "+971", needsCustoms: true },
   { code: "CA", name: "Canada", phoneCode: "+1", needsCustoms: true },
   { code: "AU", name: "Australia", phoneCode: "+61", needsCustoms: true },
   { code: "SG", name: "Singapore", phoneCode: "+65", needsCustoms: true },
-  { code: "TH", name: "Thailand / ไทย", phoneCode: "+66", needsCustoms: true },
-  { code: "VN", name: "Vietnam / Việt Nam", phoneCode: "+84", needsCustoms: true },
+  { code: "TH", name: "Thailand", phoneCode: "+66", needsCustoms: true },
+  { code: "VN", name: "Vietnam", phoneCode: "+84", needsCustoms: true },
+  { code: "CN", name: "China", phoneCode: "+86", needsCustoms: true },
+  { code: "KR", name: "South Korea", phoneCode: "+82", needsCustoms: false },
 ];
 
 const CompleteProfile = () => {
@@ -32,7 +35,7 @@ const CompleteProfile = () => {
   const { user } = useAuth();
   const { t } = useLanguage();
   const [isSaving, setIsSaving] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState("KR");
+  const [selectedCountry, setSelectedCountry] = useState("US");
   const [form, setForm] = useState({
     phone: "",
     address_line1: "",
