@@ -240,7 +240,7 @@ const translations = {
     // QA Questions
     qa_q1: "What ingredients are your products made of?",
     qa_a1:
-      "Our products are made with premium Korean natural ingredients including green tea extract, rose essence, yuzu extract, and pearl powder. We never use parabens, artificial fragrances, or animal-derived ingredients.",
+      "Our products are made with Korean natural ingredients including green tea extract, rose essence, yuzu extract, and pearl powder. We never use parabens, artificial fragrances, or animal-derived ingredients.",
     qa_q2: "How do I choose products for my skin type?",
     qa_a2:
       "Each product page displays the recommended skin type. We offer gentle lines for sensitive skin, intensive moisture lines for dry skin, and sebum care lines for oily skin. Please don't hesitate to contact us.",
