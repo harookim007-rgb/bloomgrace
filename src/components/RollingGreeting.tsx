@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 // Multilingual rolling greeting — flag always in front, no trailing emojis.
 const greetings: { lang: string; flag: string; text: string; dir?: "rtl" }[] = [
-  { lang: "ko", flag: "🇰🇷", text: "안녕하세요! 저희는 BLOOM & GRACE 입니다" },
+  
   { lang: "en", flag: "🇺🇸", text: "Hello, gorgeous! We're BLOOM & GRACE" },
   { lang: "ja", flag: "🇯🇵", text: "こんにちは！BLOOM & GRACE です" },
   

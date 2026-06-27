@@ -36,19 +36,32 @@ const AdminBanners = () => {
       toast.error("종료일은 시작일 이후여야 합니다.");
       return;
     }
-    const payload = {
+    const payload: any = {
       title: form.title, subtitle: form.subtitle || null,
       image_url: form.image_url || null, link_url: link || null,
       is_active: form.is_active, sort_order: parseInt(form.sort_order) || 0,
       starts_at: form.starts_at || null, expires_at: form.expires_at || null,
     };
 
+    // Auto-translate title/subtitle into all storefront languages
+    let translations: any = {};
+    try {
+      const { data: tr } = await supabase.functions.invoke("translate-banner", {
+        body: { title: form.title, subtitle: form.subtitle || "" },
+      });
+      if (tr?.translations) translations = tr.translations;
+    } catch (e) {
+      console.warn("translate-banner failed", e);
+    }
+
     if (editingId) {
-      const { error } = await supabase.from("banners").update(payload).eq("id", editingId);
+      const { data: existing } = await supabase.from("banners").select("translations").eq("id", editingId).maybeSingle();
+      const merged = { ...((existing?.translations as any) || {}), ...translations };
+      const { error } = await supabase.from("banners").update({ ...payload, translations: merged }).eq("id", editingId);
       if (error) { toast.error(error.message); return; }
       toast.success("배너가 수정되었습니다.");
     } else {
-      const { error } = await supabase.from("banners").insert(payload);
+      const { error } = await supabase.from("banners").insert({ ...payload, translations });
       if (error) { toast.error(error.message); return; }
       toast.success("배너가 등록되었습니다.");
     }
