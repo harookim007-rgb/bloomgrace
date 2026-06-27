@@ -666,7 +666,7 @@ const translations = {
 
     pd_reviews: "Bewertungen",
     pd_stock: "Auf Lager",
-    pd_out_of_stock: "Ausverkauft",
+    pd_out_of_stock: "Ausverkauft",            
     pd_add_to_cart: "In den Warenkorb",
     pd_review_section: "Bewertungen",
     pd_all: "Alle",
