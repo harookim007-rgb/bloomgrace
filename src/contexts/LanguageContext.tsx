@@ -66,7 +66,7 @@ const translations = {
     footer_returns: "Returns & Exchanges",
     footer_terms: "Terms of Service",
     footer_rights: "All rights reserved.",
-    footer_cs: "Customer Service: 1588-1234 | Email: contact@bloomandgrace.com",
+    footer_cs: "Customer support: "offical@bloomgrace.shop",
 
     // Products page
     products_title: "All Products",
@@ -79,7 +79,6 @@ const translations = {
     products_price_low: "Price: Low to High",
     products_price_high: "Price: High to Low",
     products_rating: "Top Rated",
-    products_all_prices: "All Prices",
     products_no_results: "No products found.",
 
     // Product Detail
@@ -115,7 +114,7 @@ const translations = {
 
     // Auth
     auth_title: "Bloom & Grace",
-    auth_subtitle: "Premium Korean Cosmetics",
+    auth_subtitle: "Your K-Beauty Shop",
     auth_login: "Sign In",
     auth_signup: "Join Us",
     auth_email: "Email",
@@ -140,10 +139,7 @@ const translations = {
     auth_password_mismatch: "Passwords do not match.",
     auth_agree_required: "Please agree to the terms.",
     auth_terms_agree: "I agree to the Terms of Service and Privacy Policy.",
-    auth_benefits_title: "Member Benefits",
-    auth_benefit_1: "10% welcome coupon on sign-up",
-    auth_benefit_2: "3% reward points on every purchase",
-    auth_benefit_3: "Birthday month special gifts & coupons",
+    
     // Profile Completion
     cp_title: "Complete Your Profile",
     cp_subtitle: "Please fill in your shipping details to start shopping.",
@@ -174,9 +170,7 @@ const translations = {
     co_city: "City",
     co_payment: "Payment Method",
     co_card: "Credit Card",
-    co_bank: "Bank Transfer",
-    co_kakao: "KakaoPay",
-    co_naver: "NaverPay",
+    co_bank: "Bank Transfer"
     co_summary: "Order Summary",
     co_coupon: "Coupon Code",
     co_apply: "Apply",
@@ -227,20 +221,8 @@ const translations = {
     contact_message_placeholder: "Tell us what's on your mind...",
     contact_submit: "Send Message",
     contact_info: "Contact Information",
-    contact_address_title: "Headquarters",
-    contact_address_value: "123 Teheranro, Gangnam-gu\nSeoul, South Korea",
-    contact_phone_title: "Phone",
-    contact_phone_value: "Main: +82-2-1234-5678\nSupport: 1588-1234",
-    contact_email_title: "Email",
-    contact_email_value: "General: contact@bloomandgrace.com\nPartners: partnership@bloomandgrace.com",
-    contact_hours_title: "Business Hours",
-    contact_hours_value: "Weekdays: 10:00 AM - 6:00 PM\nLunch: 12:00 PM - 1:00 PM\nWeekends & Holidays: Closed",
-    contact_visit: "Book a Visit",
-    contact_visit_desc: "Reserve ahead for a more convenient consultation experience.",
-    contact_reserve: "Reserve",
-    contact_map: "Directions",
-    contact_map_desc: "Map area (Google Maps or Kakao Map integration)",
-
+    contact_email_title: "Email: offical@bloomgrace.shop"
+  
     // QA
     qa_tagline: "Frequently Asked Questions",
     qa_title: "Q&A",
