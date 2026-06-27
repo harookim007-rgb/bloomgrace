@@ -42,7 +42,7 @@ CREATE POLICY "payment_settings admin write" ON public.payment_settings FOR ALL 
 CREATE TRIGGER trg_payment_settings_updated BEFORE UPDATE ON public.payment_settings
   FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
 INSERT INTO public.payment_settings (bank_name, account_number, account_holder, business_name)
-  VALUES ('국민은행','000-00-0000','BLOOM & GRACE','BLOOM & GRACE Co., Ltd.')
+  VALUES ('HANA BANK','3949-1050-354-207','BLOOM & GRACE','BLOOM & GRACE Co., Ltd.')
   ON CONFLICT DO NOTHING;
 
 -- point_transactions

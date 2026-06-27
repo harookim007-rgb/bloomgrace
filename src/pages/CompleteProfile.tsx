@@ -16,6 +16,7 @@ const countries = [
   { code: "GB", name: "United Kingdom", phoneCode: "+44", needsCustoms: true },
   { code: "DE", name: "Germany", phoneCode: "+49", needsCustoms: true },
   { code: "FR", name: "France", phoneCode: "+33", needsCustoms: true },
+  { code: "IT", name: "Italy", phoneCode: "+39", needsCustoms: true },
   { code: "ES", name: "Spain", phoneCode: "+34", needsCustoms: true },
   { code: "PT", name: "Portugal", phoneCode: "+351", needsCustoms: true },
   { code: "JP", name: "Japan", phoneCode: "+81", needsCustoms: true },
@@ -46,7 +47,7 @@ const CompleteProfile = () => {
     customs_number: "",
   });
 
-  const country = countries.find(c => c.code === selectedCountry) || countries[0];
+  const country = countries.find((c) => c.code === selectedCountry) || countries[0];
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,7 +55,10 @@ const CompleteProfile = () => {
     setIsSaving(true);
     try {
       // Update profile phone
-      await supabase.from("profiles").update({ phone: `${country.phoneCode} ${form.phone}` }).eq("user_id", user.id);
+      await supabase
+        .from("profiles")
+        .update({ phone: `${country.phoneCode} ${form.phone}` })
+        .eq("user_id", user.id);
 
       // Save address
       const { error } = await supabase.from("addresses").insert({
@@ -102,8 +106,10 @@ const CompleteProfile = () => {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {countries.map(c => (
-                    <SelectItem key={c.code} value={c.code}>{c.name}</SelectItem>
+                  {countries.map((c) => (
+                    <SelectItem key={c.code} value={c.code}>
+                      {c.name}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -120,7 +126,7 @@ const CompleteProfile = () => {
                   type="tel"
                   className="rounded-none flex-1"
                   value={form.phone}
-                  onChange={e => setForm({ ...form, phone: e.target.value })}
+                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
                   required
                 />
               </div>
@@ -129,26 +135,41 @@ const CompleteProfile = () => {
             {/* Address */}
             <div className="space-y-2">
               <Label className="text-xs tracking-wider uppercase">{t("cp_address")}</Label>
-              <Input className="rounded-none" value={form.address_line1}
-                onChange={e => setForm({ ...form, address_line1: e.target.value })} required />
+              <Input
+                className="rounded-none"
+                value={form.address_line1}
+                onChange={(e) => setForm({ ...form, address_line1: e.target.value })}
+                required
+              />
             </div>
 
             <div className="space-y-2">
               <Label className="text-xs tracking-wider uppercase">{t("cp_detail_address")}</Label>
-              <Input className="rounded-none" value={form.address_line2}
-                onChange={e => setForm({ ...form, address_line2: e.target.value })} />
+              <Input
+                className="rounded-none"
+                value={form.address_line2}
+                onChange={(e) => setForm({ ...form, address_line2: e.target.value })}
+              />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label className="text-xs tracking-wider uppercase">{t("cp_postal")}</Label>
-                <Input className="rounded-none" value={form.postal_code}
-                  onChange={e => setForm({ ...form, postal_code: e.target.value })} required />
+                <Input
+                  className="rounded-none"
+                  value={form.postal_code}
+                  onChange={(e) => setForm({ ...form, postal_code: e.target.value })}
+                  required
+                />
               </div>
               <div className="space-y-2">
                 <Label className="text-xs tracking-wider uppercase">{t("cp_city")}</Label>
-                <Input className="rounded-none" value={form.city}
-                  onChange={e => setForm({ ...form, city: e.target.value })} required />
+                <Input
+                  className="rounded-none"
+                  value={form.city}
+                  onChange={(e) => setForm({ ...form, city: e.target.value })}
+                  required
+                />
               </div>
             </div>
 
@@ -156,19 +177,30 @@ const CompleteProfile = () => {
             {country.needsCustoms && (
               <div className="space-y-2">
                 <Label className="text-xs tracking-wider uppercase">{t("cp_customs_number")}</Label>
-                <Input className="rounded-none" value={form.customs_number}
-                  onChange={e => setForm({ ...form, customs_number: e.target.value })}
-                  placeholder="P000-0000-0000" />
+                <Input
+                  className="rounded-none"
+                  value={form.customs_number}
+                  onChange={(e) => setForm({ ...form, customs_number: e.target.value })}
+                  placeholder="P000-0000-0000"
+                />
                 <p className="text-[11px] text-muted-foreground">{t("cp_customs_hint")}</p>
               </div>
             )}
 
             <div className="pt-4 space-y-3">
-              <Button type="submit" className="w-full rounded-none py-6 text-xs tracking-[0.15em] uppercase" disabled={isSaving}>
+              <Button
+                type="submit"
+                className="w-full rounded-none py-6 text-xs tracking-[0.15em] uppercase"
+                disabled={isSaving}
+              >
                 {isSaving ? t("cp_saving") : t("cp_save")}
               </Button>
-              <Button type="button" variant="ghost" className="w-full text-xs tracking-wider uppercase text-muted-foreground"
-                onClick={() => navigate("/")}>
+              <Button
+                type="button"
+                variant="ghost"
+                className="w-full text-xs tracking-wider uppercase text-muted-foreground"
+                onClick={() => navigate("/")}
+              >
                 {t("cp_skip")}
               </Button>
             </div>
