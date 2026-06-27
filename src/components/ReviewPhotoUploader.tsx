@@ -3,12 +3,23 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Camera, Loader2, X } from "lucide-react";
 import { toast } from "sonner";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Props {
   value: string[];
   onChange: (urls: string[]) => void;
   max?: number;
 }
+
+const I18N: Record<string, { attach: string; max: (n: number) => string; login: string; fail: string }> = {
+  en: { attach: "Attach Photos", max: (n) => `You can upload up to ${n} photos.`, login: "Please sign in.", fail: "Photo upload failed" },
+  es: { attach: "Adjuntar Fotos", max: (n) => `Puedes subir hasta ${n} fotos.`, login: "Inicia sesión.", fail: "Error al subir foto" },
+  de: { attach: "Fotos anhängen", max: (n) => `Sie können bis zu ${n} Fotos hochladen.`, login: "Bitte anmelden.", fail: "Foto-Upload fehlgeschlagen" },
+  fr: { attach: "Ajouter des photos", max: (n) => `Vous pouvez télécharger jusqu'à ${n} photos.`, login: "Veuillez vous connecter.", fail: "Échec du téléchargement" },
+  pt: { attach: "Anexar fotos", max: (n) => `Você pode enviar até ${n} fotos.`, login: "Faça login.", fail: "Falha no upload" },
+  ja: { attach: "写真を添付", max: (n) => `最大${n}枚までアップロードできます。`, login: "ログインしてください。", fail: "写真のアップロードに失敗" },
+  ar: { attach: "إرفاق الصور", max: (n) => `يمكنك رفع حتى ${n} صور.`, login: "الرجاء تسجيل الدخول.", fail: "فشل رفع الصورة" },
+};
 
 async function shrink(file: File, max = 1280, quality = 0.85): Promise<Blob> {
   const dataUrl = await new Promise<string>((r, j) => {
@@ -35,17 +46,19 @@ async function shrink(file: File, max = 1280, quality = 0.85): Promise<Blob> {
 }
 
 const ReviewPhotoUploader = ({ value, onChange, max = 5 }: Props) => {
+  const { language } = useLanguage();
+  const t = I18N[language] || I18N.en;
   const inputRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
 
   const handleFiles = async (files: FileList) => {
     if (value.length + files.length > max) {
-      toast.error(`최대 ${max}장까지 업로드 가능합니다.`);
+      toast.error(t.max(max));
       return;
     }
     const { data: auth } = await supabase.auth.getUser();
     const uid = auth.user?.id;
-    if (!uid) { toast.error("로그인이 필요합니다."); return; }
+    if (!uid) { toast.error(t.login); return; }
     setBusy(true);
     try {
       const uploaded: string[] = [];
@@ -64,7 +77,7 @@ const ReviewPhotoUploader = ({ value, onChange, max = 5 }: Props) => {
       }
       onChange([...value, ...uploaded]);
     } catch (e: any) {
-      toast.error("사진 업로드 실패: " + (e?.message || ""));
+      toast.error(`${t.fail}: ${e?.message || ""}`);
     } finally {
       setBusy(false);
       if (inputRef.current) inputRef.current.value = "";
@@ -79,7 +92,7 @@ const ReviewPhotoUploader = ({ value, onChange, max = 5 }: Props) => {
         <Button type="button" size="sm" variant="outline" className="rounded-none gap-2"
           disabled={busy || value.length >= max} onClick={() => inputRef.current?.click()}>
           {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Camera className="h-3.5 w-3.5" />}
-          사진 첨부 ({value.length}/{max})
+          {t.attach} ({value.length}/{max})
         </Button>
       </div>
       {value.length > 0 && (
