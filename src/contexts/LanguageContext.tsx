@@ -80,6 +80,10 @@ const translations = {
     products_price_high: "Price: High to Low",
     products_rating: "Top Rated",
     products_no_results: "No products found.",
+    products_all_prices: "All Prices",
+    products_under_20k: "Under $20",
+    products_20k_50k: "$20 - $50",
+    products_over_50k: "Over $50",
 
     // Product Detail
     pd_reviews: "reviews",
