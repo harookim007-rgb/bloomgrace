@@ -66,7 +66,7 @@ const translations = {
     footer_returns: "Returns & Exchanges",
     footer_terms: "Terms of Service",
     footer_rights: "All rights reserved.",
-    footer_cs: "Customer support: "offical@bloomgrace.shop",
+    footer_cs: "Customer support: offical@bloomgrace.shop",
 
     // Products page
     products_title: "All Products",
