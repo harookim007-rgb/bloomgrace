@@ -245,6 +245,7 @@ const translations = {
     qa_not_found: "Couldn't find your answer?",
     qa_not_found_desc: "Contact our support team and we'll be happy to help.",
     qa_email_btn: "Email Us",
+    qa_phone_btn: "Call Us",
     // QA Categories
     qa_cat_product: "Products",
     qa_cat_shipping: "Shipping & Orders",
