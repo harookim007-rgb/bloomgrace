@@ -221,7 +221,7 @@ const translations = {
     contact_message_placeholder: "Tell us what's on your mind...",
     contact_submit: "Send Message",
     contact_info: "Contact Information",
-    contact_email_title: "Email: offical@bloomgrace.shop"
+    contact_email_title: "Email: offical@bloomgrace.shop",
   
     // QA
     qa_tagline: "Frequently Asked Questions",
