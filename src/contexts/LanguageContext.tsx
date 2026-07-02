@@ -143,6 +143,10 @@ const translations = {
     auth_password_mismatch: "Passwords do not match.",
     auth_agree_required: "Please agree to the terms.",
     auth_terms_agree: "I agree to the Terms of Service and Privacy Policy.",
+    auth_benefits_title: "Membership Benefits",
+    auth_benefit_1: "10% welcome coupon on sign-up",
+    auth_benefit_2: "3% reward points on every purchase",
+    auth_benefit_3: "Special gifts during your birthday month",
     
     // Profile Completion
     cp_title: "Complete Your Profile",
