@@ -170,7 +170,7 @@ const translations = {
     co_city: "City",
     co_payment: "Payment Method",
     co_card: "Credit Card",
-    co_bank: "Bank Transfer"
+    co_bank: "Bank Transfer",
     co_summary: "Order Summary",
     co_coupon: "Coupon Code",
     co_apply: "Apply",
