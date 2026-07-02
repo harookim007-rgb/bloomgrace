@@ -752,6 +752,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_checkout_payment_info: {
+        Args: never
+        Returns: {
+          account_holder: string
+          account_number: string
+          bank_name: string
+          business_name: string
+          instructions: string
+          payment_deadline_hours: number
+        }[]
+      }
       get_top_selling_products: {
         Args: { p_days?: number; p_limit?: number; p_skin_type?: string }
         Returns: {
