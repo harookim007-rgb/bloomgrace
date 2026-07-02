@@ -230,6 +230,13 @@ const translations = {
     contact_submit: "Send Message",
     contact_info: "Contact Information",
     contact_email_title: "Email: offical@bloomgrace.shop",
+    contact_address_title: "Headquarters",
+    contact_address_value: "123 Teheranro, Gangnam-gu\nSeoul, South Korea",
+    contact_phone_title: "Phone",
+    contact_phone_value: "Main: +82-2-1234-5678\nSupport: 1588-1234",
+    contact_email_value: "General: contact@bloomandgrace.com\nPartners: partnership@bloomandgrace.com",
+    contact_hours_title: "Hours",
+    contact_hours_value: "Mon-Fri: 10:00 - 18:00\nLunch: 12:00 - 13:00\nWeekends: Closed",
   
     // QA
     qa_tagline: "Frequently Asked Questions",
