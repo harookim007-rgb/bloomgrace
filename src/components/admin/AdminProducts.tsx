@@ -9,6 +9,16 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Plus, Pencil, Trash2, Search, Copy, X, ArrowUp, ArrowDown, Eye } from "lucide-react";
@@ -121,6 +131,8 @@ const AdminProducts = () => {
   const [filterStatus, setFilterStatus] = useState("all");
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [activeTab, setActiveTab] = useState<"info" | "images" | "description" | "extras" | "preview">("info");
+  const [pendingDelete, setPendingDelete] = useState<{ ids: string[]; label: string } | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => { fetchData(); }, []);
 
@@ -236,22 +248,51 @@ const AdminProducts = () => {
     setDialogOpen(true);
   };
 
-  const deleteProduct = async (id: string) => {
-    if (!confirm("정말 삭제하시겠습니까?")) return;
-    await supabase.from("products").delete().eq("id", id);
-    toast.success("삭제되었습니다.");
-    fetchData();
+  const requestDeleteProduct = (p: any) => setPendingDelete({ ids: [p.id], label: p.name });
+  const requestBulkDelete = () => {
+    if (selectedIds.size === 0) return;
+    setPendingDelete({ ids: Array.from(selectedIds), label: `${selectedIds.size}개 상품` });
   };
 
-  const bulkDelete = async () => {
-    if (selectedIds.size === 0) return;
-    if (!confirm(`${selectedIds.size}개 상품을 삭제하시겠습니까?`)) return;
-    for (const id of selectedIds) {
-      await supabase.from("products").delete().eq("id", id);
+  const explainDeleteError = (err: any): string => {
+    const code = err?.code || "";
+    const msg = err?.message || String(err || "");
+    if (code === "23503" || /foreign key/i.test(msg)) {
+      return "이 상품은 다른 데이터에서 참조하고 있어 삭제할 수 없습니다. 잠시 후 다시 시도하거나 비활성화하세요.";
+    }
+    if (code === "42501" || /permission|rls/i.test(msg)) {
+      return "삭제 권한이 없습니다. 관리자 계정으로 로그인했는지 확인하세요.";
+    }
+    if (/network|fetch/i.test(msg)) return "네트워크 오류로 삭제하지 못했습니다. 연결 상태를 확인해주세요.";
+    return msg || "알 수 없는 오류가 발생했습니다.";
+  };
+
+  const confirmDelete = async () => {
+    if (!pendingDelete) return;
+    setDeleting(true);
+    const ids = pendingDelete.ids;
+    // Optimistic UI removal
+    const snapshot = products;
+    setProducts((prev) => prev.filter((p) => !ids.includes(p.id)));
+    const { error, count } = await supabase
+      .from("products")
+      .delete({ count: "exact" })
+      .in("id", ids);
+    setDeleting(false);
+    if (error) {
+      setProducts(snapshot); // rollback
+      toast.error(`삭제 실패: ${explainDeleteError(error)}`);
+      return;
+    }
+    if ((count ?? 0) === 0) {
+      setProducts(snapshot);
+      toast.error("삭제된 항목이 없습니다. 권한이 없거나 이미 삭제된 상품일 수 있습니다.");
+      await fetchData();
+      return;
     }
     setSelectedIds(new Set());
-    toast.success("일괄 삭제 완료");
-    fetchData();
+    setPendingDelete(null);
+    toast.success(ids.length > 1 ? `${count}개 상품이 삭제되었습니다.` : "상품이 삭제되었습니다.");
   };
 
   const bulkToggleActive = async (active: boolean) => {
@@ -588,7 +629,7 @@ const AdminProducts = () => {
           <span className="text-sm font-medium">{selectedIds.size}개 선택됨</span>
           <Button size="sm" variant="outline" onClick={() => bulkToggleActive(true)}>활성화</Button>
           <Button size="sm" variant="outline" onClick={() => bulkToggleActive(false)}>비활성화</Button>
-          <Button size="sm" variant="destructive" onClick={bulkDelete}>일괄 삭제</Button>
+          <Button size="sm" variant="destructive" onClick={requestBulkDelete}>일괄 삭제</Button>
         </div>
       )}
 
@@ -646,7 +687,7 @@ const AdminProducts = () => {
                     <div className="flex justify-end gap-1">
                       <Button size="icon" variant="ghost" onClick={() => editProduct(p)} title="수정"><Pencil className="h-4 w-4" /></Button>
                       <Button size="icon" variant="ghost" onClick={() => duplicateProduct(p)} title="복사"><Copy className="h-4 w-4" /></Button>
-                      <Button size="icon" variant="ghost" className="text-destructive" onClick={() => deleteProduct(p.id)} title="삭제"><Trash2 className="h-4 w-4" /></Button>
+                      <Button size="icon" variant="ghost" className="text-destructive" onClick={() => requestDeleteProduct(p)} title="삭제"><Trash2 className="h-4 w-4" /></Button>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -658,6 +699,28 @@ const AdminProducts = () => {
           </Table>
         </CardContent>
       </Card>
+
+      <AlertDialog open={!!pendingDelete} onOpenChange={(o) => !o && !deleting && setPendingDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>정말 삭제하시겠습니까?</AlertDialogTitle>
+            <AlertDialogDescription>
+              <span className="font-medium text-foreground">{pendingDelete?.label}</span>
+              {"을(를) 삭제합니다. 이 작업은 되돌릴 수 없으며, 과거 주문 내역은 상품명·가격 정보만 보존됩니다."}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleting}>취소</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={(e) => { e.preventDefault(); confirmDelete(); }}
+              disabled={deleting}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {deleting ? "삭제 중..." : "삭제"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
