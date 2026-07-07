@@ -15,3 +15,5 @@ USING (
 -- 3. Lock down SECURITY DEFINER ranking function from anon/authenticated
 REVOKE EXECUTE ON FUNCTION public.get_top_selling_products(text, integer, integer) FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.get_top_selling_products(text, integer, integer) TO service_role;
+
+
