@@ -122,6 +122,7 @@ const SortableImages = ({
 };
 
 const AdminProducts = () => {
+  const navigate = useNavigate();
   const [products, setProducts] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [form, setForm] = useState<FormState>(emptyForm);
