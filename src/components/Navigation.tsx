@@ -24,11 +24,27 @@ const Navigation = () => {
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Task 10: dynamic menu from DB
+  useEffect(() => {
+    let mounted = true;
+    supabase.from("menu_items").select("*").eq("is_visible", true).order("sort_order")
+      .then(({ data }) => { if (mounted && data) setMenuItems(data as MenuItem[]); });
+    const ch = supabase
+      .channel("menu-items-live")
+      .on("postgres_changes", { event: "*", schema: "public", table: "menu_items" }, () => {
+        supabase.from("menu_items").select("*").eq("is_visible", true).order("sort_order")
+          .then(({ data }) => { if (mounted && data) setMenuItems(data as MenuItem[]); });
+      })
+      .subscribe();
+    return () => { mounted = false; supabase.removeChannel(ch); };
   }, []);
 
   const openRoutine = () => {
@@ -41,13 +57,21 @@ const Navigation = () => {
     }
   };
 
-  const navLinks: { to?: string; label: string; onClick?: () => void }[] = [
-    { to: "/", label: t("nav_home") },
-    { to: "/products", label: t("nav_products") },
-    { to: "/ranking", label: t("nav_ranking") },
-    { label: t("nav_routine"), onClick: openRoutine },
-    { to: "/contact", label: t("nav_contact") },
-  ];
+  // Resolve label: if starts with "nav_" treat as i18n key, else literal
+  const resolveLabel = (raw: string) => (raw.startsWith("nav_") ? t(raw) : raw);
+
+  const navLinks: { to?: string; label: string; onClick?: () => void }[] = menuItems.length > 0
+    ? menuItems.map((m) => {
+        if (m.link === "__routine__") return { label: resolveLabel(m.label), onClick: openRoutine };
+        return { to: m.link, label: resolveLabel(m.label) };
+      })
+    : [
+        { to: "/", label: t("nav_home") },
+        { to: "/products", label: t("nav_products") },
+        { to: "/ranking", label: t("nav_ranking") },
+        { label: t("nav_routine"), onClick: openRoutine },
+        { to: "/contact", label: t("nav_contact") },
+      ];
 
   return (
     <>
