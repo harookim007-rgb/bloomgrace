@@ -15,6 +15,7 @@ import MyPage from "./pages/MyPage";
 import Checkout from "./pages/Checkout";
 import CompleteProfile from "./pages/CompleteProfile";
 import Admin from "./pages/Admin";
+import ProductEditPage from "./pages/ProductEditPage";
 import DesignModeOverlay from "./components/design/DesignModeOverlay";
 import NotFound from "./pages/NotFound";
 import Trust from "./pages/Trust";
