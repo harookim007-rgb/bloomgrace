@@ -58,7 +58,7 @@ const Navigation = () => {
   };
 
   // Resolve label: if starts with "nav_" treat as i18n key, else literal
-  const resolveLabel = (raw: string) => (raw.startsWith("nav_") ? t(raw) : raw);
+  const resolveLabel = (raw: string) => (raw.startsWith("nav_") ? (t as any)(raw) : raw);
 
   const navLinks: { to?: string; label: string; onClick?: () => void }[] = menuItems.length > 0
     ? menuItems.map((m) => {
