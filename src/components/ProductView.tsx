@@ -279,6 +279,15 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
           <DescriptionBlock html={product.description_bottom || localizedDescription || ""} />
         </div>
       )}
+
+      {lightbox && (
+        <ImageLightbox
+          images={lightbox.images}
+          index={lightbox.index}
+          alt={altBase}
+          onClose={() => setLightbox(null)}
+        />
+      )}
     </div>
   );
 };
