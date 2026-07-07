@@ -138,7 +138,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
           <p className="text-[10px] md:text-xs font-sans font-semibold tracking-[0.12em] md:tracking-[0.15em] uppercase text-muted-foreground">{translatedBrand}</p>
         )}
         <Link to={`/products/${product.slug}`}>
-          <h3 className="text-[13px] md:text-base font-sans font-medium leading-snug line-clamp-2 text-foreground">
+          <h3
+            title={translatedName}
+            className="text-[13px] md:text-base font-sans font-medium leading-snug line-clamp-2 text-foreground min-h-[2.4em]"
+          >
             {translatedName}
           </h3>
         </Link>
