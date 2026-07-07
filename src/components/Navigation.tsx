@@ -42,7 +42,6 @@ const Navigation = () => {
     { to: "/", label: t("nav_home") },
     { to: "/products", label: t("nav_products") },
     { to: "/ranking", label: t("nav_ranking") },
-    { to: "/products?sale=1", label: t("nav_sale") },
     { label: t("nav_routine"), onClick: openRoutine },
     { to: "/contact", label: t("nav_contact") },
   ];
