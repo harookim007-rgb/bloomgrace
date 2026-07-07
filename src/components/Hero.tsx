@@ -136,11 +136,13 @@ const Hero = () => {
   // Reset carousel index when language changes so we don't land on an out-of-range slide
   useEffect(() => { setCurrent(0); }, [language]);
 
+  const [paused, setPaused] = useState(false);
+
   useEffect(() => {
-    if (slides.length <= 1) return;
+    if (slides.length <= 1 || paused) return;
     const timer = setInterval(() => setCurrent(c => (c + 1) % slides.length), 6000);
     return () => clearInterval(timer);
-  }, [slides.length]);
+  }, [slides.length, paused]);
 
   const slide = slides[current];
 
