@@ -687,7 +687,7 @@ const AdminProducts = () => {
                     <div className="flex justify-end gap-1">
                       <Button size="icon" variant="ghost" onClick={() => editProduct(p)} title="수정"><Pencil className="h-4 w-4" /></Button>
                       <Button size="icon" variant="ghost" onClick={() => duplicateProduct(p)} title="복사"><Copy className="h-4 w-4" /></Button>
-                      <Button size="icon" variant="ghost" className="text-destructive" onClick={() => deleteProduct(p.id)} title="삭제"><Trash2 className="h-4 w-4" /></Button>
+                      <Button size="icon" variant="ghost" className="text-destructive" onClick={() => requestDeleteProduct(p)} title="삭제"><Trash2 className="h-4 w-4" /></Button>
                     </div>
                   </TableCell>
                 </TableRow>
