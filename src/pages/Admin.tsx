@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminDashboard from "@/components/admin/AdminDashboard";
@@ -17,18 +16,20 @@ import AdminShipping from "@/components/admin/AdminShipping";
 import AdminPayment from "@/components/admin/AdminPayment";
 import AdminOtpGate from "@/components/admin/AdminOtpGate";
 import AdminRanking from "@/components/admin/AdminRanking";
+import AdminMenus from "@/components/admin/AdminMenus";
+import AdminWhitelist from "@/components/admin/AdminWhitelist";
 
 export type AdminTab =
   | "dashboard" | "products" | "categories" | "orders"
   | "customers" | "coupons" | "banners" | "reviews"
-  | "shipping" | "payment" | "settings" | "ranking";
+  | "shipping" | "payment" | "settings" | "ranking"
+  | "menus" | "whitelist";
 
 const Admin = () => {
   const navigate = useNavigate();
   const { user, isAdmin, isLoading: authLoading } = useAuth();
   const [activeTab, setActiveTab] = useState<AdminTab>("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [isMaster, setIsMaster] = useState<boolean | null>(null);
   const [otpVerified, setOtpVerified] = useState(false);
 
   useEffect(() => {
@@ -45,13 +46,11 @@ const Admin = () => {
   useEffect(() => {
     if (!user) return;
     setOtpVerified(sessionStorage.getItem("admin_otp_verified") === "1");
-    supabase.from("user_roles").select("role").eq("user_id", user.id).eq("role", "master_admin").maybeSingle()
-      .then(({ data }) => setIsMaster(!!data));
   }, [user]);
 
-  if (authLoading || isMaster === null) return <div className="min-h-dvh flex items-center justify-center text-muted-foreground">로딩 중...</div>;
+  if (authLoading) return <div className="min-h-dvh flex items-center justify-center text-muted-foreground">로딩 중...</div>;
   if (!isAdmin) return null;
-  if (isMaster && !otpVerified) return <AdminOtpGate onVerified={() => setOtpVerified(true)} />;
+  if (!otpVerified) return <AdminOtpGate onVerified={() => setOtpVerified(true)} />;
 
   const renderContent = () => {
     switch (activeTab) {
@@ -66,6 +65,8 @@ const Admin = () => {
       case "shipping": return <AdminShipping />;
       case "payment": return <AdminPayment />;
       case "ranking": return <AdminRanking />;
+      case "menus": return <AdminMenus />;
+      case "whitelist": return <AdminWhitelist />;
       case "settings": return <AdminSettings />;
       default: return <AdminDashboard />;
     }
