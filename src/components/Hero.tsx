@@ -147,7 +147,12 @@ const Hero = () => {
   const slide = slides[current];
 
   return (
-    <section className="relative w-full min-h-[400px] md:min-h-[500px] max-h-[920px] overflow-hidden" style={{ height: '85dvh' }}>
+    <section
+      className="relative w-full min-h-[400px] md:min-h-[500px] max-h-[920px] overflow-hidden"
+      style={{ height: '85dvh' }}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
       {slides.map((s, i) => (
         <div
           key={i}
