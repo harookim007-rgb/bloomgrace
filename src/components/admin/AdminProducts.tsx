@@ -629,7 +629,7 @@ const AdminProducts = () => {
           <span className="text-sm font-medium">{selectedIds.size}개 선택됨</span>
           <Button size="sm" variant="outline" onClick={() => bulkToggleActive(true)}>활성화</Button>
           <Button size="sm" variant="outline" onClick={() => bulkToggleActive(false)}>비활성화</Button>
-          <Button size="sm" variant="destructive" onClick={bulkDelete}>일괄 삭제</Button>
+          <Button size="sm" variant="destructive" onClick={requestBulkDelete}>일괄 삭제</Button>
         </div>
       )}
 
