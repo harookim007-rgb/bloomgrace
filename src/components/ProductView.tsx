@@ -70,6 +70,7 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
     [Autoplay({ delay: 3500, stopOnInteraction: false, stopOnMouseEnter: true })],
   );
   const [selectedIdx, setSelectedIdx] = useState(0);
+  const [lightbox, setLightbox] = useState<{ images: string[]; index: number } | null>(null);
 
   useEffect(() => {
     if (!emblaApi) return;
