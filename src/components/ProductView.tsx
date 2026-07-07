@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { localizeCategory } from "@/lib/categoryI18n";
 import { getLocalizedBenefit, getLocalizedBrand, getLocalizedDescription, getLocalizedProductName, productUi } from "@/lib/productI18n";
+import ImageLightbox from "@/components/ImageLightbox";
 
 export interface ProductViewData {
   name: string;
@@ -69,6 +70,7 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
     [Autoplay({ delay: 3500, stopOnInteraction: false, stopOnMouseEnter: true })],
   );
   const [selectedIdx, setSelectedIdx] = useState(0);
+  const [lightbox, setLightbox] = useState<{ images: string[]; index: number } | null>(null);
 
   useEffect(() => {
     if (!emblaApi) return;
@@ -116,7 +118,8 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
                     src={src}
                     alt={`${altBase} ${i + 1}`}
                     loading={i === 0 ? "eager" : "lazy"}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover cursor-zoom-in"
+                    onClick={() => !preview && setLightbox({ images: slides, index: i })}
                     onError={(e) => ((e.currentTarget as HTMLImageElement).src = FALLBACK_IMG)}
                   />
                 </div>
@@ -262,7 +265,8 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
               src={src}
               alt={`${altBase} detail ${i + 1}`}
               loading="lazy"
-              className="w-full h-auto block"
+              className="w-full h-auto block cursor-zoom-in"
+              onClick={() => !preview && setLightbox({ images: detailImages, index: i })}
               onError={(e) => ((e.currentTarget as HTMLImageElement).src = FALLBACK_IMG)}
             />
           ))}
@@ -274,6 +278,15 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
         <div className="max-w-3xl mx-auto">
           <DescriptionBlock html={product.description_bottom || localizedDescription || ""} />
         </div>
+      )}
+
+      {lightbox && (
+        <ImageLightbox
+          images={lightbox.images}
+          index={lightbox.index}
+          alt={altBase}
+          onClose={() => setLightbox(null)}
+        />
       )}
     </div>
   );
