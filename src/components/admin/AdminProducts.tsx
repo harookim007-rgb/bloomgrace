@@ -237,10 +237,8 @@ const AdminProducts = () => {
   });
 
   const editProduct = (p: any) => {
-    setForm(loadProduct(p, false));
-    setEditingId(p.id);
-    setActiveTab("info");
-    setDialogOpen(true);
+    // Task 3: dedicated edit page instead of dialog
+    navigate(`/admin/products/${p.id}/edit`);
   };
 
   const duplicateProduct = (p: any) => {
