@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import {
   LayoutDashboard, Package, FolderTree, ShoppingCart, Users,
   Tag, Image, Star, Settings, ChevronLeft, ChevronRight, LogOut, Home, Paintbrush,
-  Truck, Wallet, Trophy,
+  Truck, Wallet, Trophy, Menu as MenuIcon, ShieldCheck,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDesignModeStore } from "@/stores/designModeStore";
