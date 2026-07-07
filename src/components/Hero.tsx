@@ -104,55 +104,37 @@ const Hero = () => {
 
   const containsHangul = (v?: string | null) => /[가-힣]/.test(v || "");
 
-  // Auto-translate any banner missing the current language (or still containing Korean)
-  useEffect(() => {
-    if (!banners.length) return;
-    banners.forEach(async (b: any) => {
-      const tr = (b.translations || {}) as any;
-      const cur = tr?.[language];
-      const ok = cur?.title && !containsHangul(cur.title) && !containsHangul(cur.subtitle);
-      if (ok) return;
-      try {
-        const { data: res } = await supabase.functions.invoke("translate-banner", {
-          body: { title: b.title, subtitle: b.subtitle || "" },
-        });
-        if (res?.translations) {
-          const merged = { ...tr, ...res.translations };
-          await supabase.from("banners").update({ translations: merged }).eq("id", b.id);
-          setBanners((prev) => prev.map((x) => (x.id === b.id ? { ...x, translations: merged } : x)));
-        }
-      } catch (e) { /* ignore */ }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [language, banners.length]);
-
   const texts = heroTexts[language] || heroTexts.en;
 
   const isUsableImage = (url?: string | null) =>
     !!url && url.trim() !== "" && !url.includes("placeholder");
 
-  const slides = banners.length > 0
-    ? banners.map((b: any, i: number) => {
-        const tr = (b.translations || {}) as any;
-        const cur = tr?.[language];
-        const en = tr?.en;
-        const pickTitle = (cur?.title && !containsHangul(cur.title)) ? cur.title
-          : (en?.title && !containsHangul(en.title)) ? en.title
-          : (!containsHangul(b.title) ? b.title : "");
-        const pickSub = (cur?.subtitle && !containsHangul(cur.subtitle)) ? cur.subtitle
-          : (en?.subtitle && !containsHangul(en.subtitle)) ? en.subtitle
-          : (!containsHangul(b.subtitle || "") ? (b.subtitle || "") : "");
-        return {
-          image: isUsableImage(b.image_url) ? b.image_url : fallbackSlides[i % 3].image,
-          title: pickTitle,
-          subtitle: pickSub,
-        };
-      })
+  // Only include banners that already have a clean translation for the current language.
+  // Never fall back to a different language — that would look like the site is switching languages.
+  const translatedBanners = banners
+    .map((b: any, i: number) => {
+      const cur = (b.translations || {})?.[language];
+      const title = cur?.title && !containsHangul(cur.title) ? cur.title : null;
+      const subtitle = cur?.subtitle && !containsHangul(cur.subtitle) ? cur.subtitle : "";
+      if (!title) return null;
+      return {
+        image: isUsableImage(b.image_url) ? b.image_url : fallbackSlides[i % 3].image,
+        title,
+        subtitle,
+      };
+    })
+    .filter(Boolean) as { image: string; title: string; subtitle: string }[];
+
+  const slides = translatedBanners.length > 0
+    ? translatedBanners
     : fallbackSlides.map((s, i) => ({
         image: s.image,
         title: texts.titles[i] || texts.titles[0],
         subtitle: texts.subtitles[i] || texts.subtitles[0],
       }));
+
+  // Reset carousel index when language changes so we don't land on an out-of-range slide
+  useEffect(() => { setCurrent(0); }, [language]);
 
   useEffect(() => {
     if (slides.length <= 1) return;
