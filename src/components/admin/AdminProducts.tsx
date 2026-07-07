@@ -131,6 +131,8 @@ const AdminProducts = () => {
   const [filterStatus, setFilterStatus] = useState("all");
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [activeTab, setActiveTab] = useState<"info" | "images" | "description" | "extras" | "preview">("info");
+  const [pendingDelete, setPendingDelete] = useState<{ ids: string[]; label: string } | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => { fetchData(); }, []);
 
