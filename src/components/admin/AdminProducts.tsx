@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -121,6 +122,7 @@ const SortableImages = ({
 };
 
 const AdminProducts = () => {
+  const navigate = useNavigate();
   const [products, setProducts] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [form, setForm] = useState<FormState>(emptyForm);
@@ -235,10 +237,8 @@ const AdminProducts = () => {
   });
 
   const editProduct = (p: any) => {
-    setForm(loadProduct(p, false));
-    setEditingId(p.id);
-    setActiveTab("info");
-    setDialogOpen(true);
+    // Task 3: dedicated edit page instead of dialog
+    navigate(`/admin/products/${p.id}/edit`);
   };
 
   const duplicateProduct = (p: any) => {

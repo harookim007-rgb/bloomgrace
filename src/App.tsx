@@ -15,6 +15,7 @@ import MyPage from "./pages/MyPage";
 import Checkout from "./pages/Checkout";
 import CompleteProfile from "./pages/CompleteProfile";
 import Admin from "./pages/Admin";
+import ProductEditPage from "./pages/ProductEditPage";
 import DesignModeOverlay from "./components/design/DesignModeOverlay";
 import NotFound from "./pages/NotFound";
 import Trust from "./pages/Trust";
@@ -58,6 +59,7 @@ const App = () => (
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/complete-profile" element={<CompleteProfile />} />
               <Route path="/admin" element={<Admin />} />
+              <Route path="/admin/products/:id/edit" element={<ProductEditPage />} />
               <Route path="/trust" element={<Trust />} />
               <Route path="/ranking" element={<Ranking />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

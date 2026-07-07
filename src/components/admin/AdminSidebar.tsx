@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import {
   LayoutDashboard, Package, FolderTree, ShoppingCart, Users,
   Tag, Image, Star, Settings, ChevronLeft, ChevronRight, LogOut, Home, Paintbrush,
-  Truck, Wallet, Trophy,
+  Truck, Wallet, Trophy, Menu as MenuIcon, ShieldCheck,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDesignModeStore } from "@/stores/designModeStore";
@@ -42,6 +42,7 @@ const menuGroups: { title: string; items: { id: AdminTab; label: string; icon: R
       { id: "products", label: "상품 관리", icon: Package },
       { id: "categories", label: "카테고리 관리", icon: FolderTree },
       { id: "banners", label: "배너/프로모션", icon: Image },
+      { id: "menus", label: "메뉴 관리", icon: MenuIcon },
     ],
   },
   {
@@ -49,6 +50,7 @@ const menuGroups: { title: string; items: { id: AdminTab; label: string; icon: R
     items: [
       { id: "shipping", label: "배송비 관리", icon: Truck },
       { id: "payment", label: "결제 설정", icon: Wallet },
+      { id: "whitelist", label: "관리자 화이트리스트", icon: ShieldCheck },
       { id: "settings", label: "사이트 설정", icon: Settings },
     ],
   },
