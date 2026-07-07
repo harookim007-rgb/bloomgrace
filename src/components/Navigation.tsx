@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage, Language } from "@/contexts/LanguageContext";
+import { supabase } from "@/integrations/supabase/client";
 import CartDrawer from "@/components/CartDrawer";
 import BrandLogo from "@/components/BrandLogo";
 import RollingGreeting from "@/components/RollingGreeting";
@@ -14,6 +15,8 @@ import RollingGreeting from "@/components/RollingGreeting";
 const langLabels: Record<Language, string> = {
   en: "English", es: "Español", de: "Deutsch", fr: "Français", pt: "Português", ja: "日本語", ar: "العربية",
 };
+
+type MenuItem = { id: string; label: string; link: string; sort_order: number; is_visible: boolean };
 
 const Navigation = () => {
   const { user, isAdmin } = useAuth();
