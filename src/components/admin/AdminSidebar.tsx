@@ -16,19 +16,42 @@ interface AdminSidebarProps {
   setIsOpen: (open: boolean) => void;
 }
 
-const menuItems: { id: AdminTab; label: string; icon: React.ElementType; }[] = [
-  { id: "dashboard", label: "대시보드", icon: LayoutDashboard },
-  { id: "products", label: "상품 관리", icon: Package },
-  { id: "categories", label: "카테고리 관리", icon: FolderTree },
-  { id: "orders", label: "주문 관리", icon: ShoppingCart },
-  { id: "customers", label: "고객 관리", icon: Users },
-  { id: "coupons", label: "쿠폰/이벤트", icon: Tag },
-  { id: "banners", label: "배너/프로모션", icon: Image },
-  { id: "reviews", label: "리뷰 관리", icon: Star },
-  { id: "ranking", label: "랭킹 관리", icon: Trophy },
-  { id: "shipping", label: "배송비 관리", icon: Truck },
-  { id: "payment", label: "결제 설정", icon: Wallet },
-  { id: "settings", label: "사이트 설정", icon: Settings },
+const menuGroups: { title: string; items: { id: AdminTab; label: string; icon: React.ElementType }[] }[] = [
+  {
+    title: "개요",
+    items: [{ id: "dashboard", label: "대시보드", icon: LayoutDashboard }],
+  },
+  {
+    title: "판매",
+    items: [
+      { id: "orders", label: "주문 관리", icon: ShoppingCart },
+      { id: "coupons", label: "쿠폰/이벤트", icon: Tag },
+      { id: "ranking", label: "랭킹 관리", icon: Trophy },
+    ],
+  },
+  {
+    title: "회원",
+    items: [
+      { id: "customers", label: "고객 관리", icon: Users },
+      { id: "reviews", label: "리뷰 관리", icon: Star },
+    ],
+  },
+  {
+    title: "콘텐츠",
+    items: [
+      { id: "products", label: "상품 관리", icon: Package },
+      { id: "categories", label: "카테고리 관리", icon: FolderTree },
+      { id: "banners", label: "배너/프로모션", icon: Image },
+    ],
+  },
+  {
+    title: "설정",
+    items: [
+      { id: "shipping", label: "배송비 관리", icon: Truck },
+      { id: "payment", label: "결제 설정", icon: Wallet },
+      { id: "settings", label: "사이트 설정", icon: Settings },
+    ],
+  },
 ];
 
 const AdminSidebar = ({ activeTab, setActiveTab, isOpen, setIsOpen }: AdminSidebarProps) => {
@@ -50,19 +73,31 @@ const AdminSidebar = ({ activeTab, setActiveTab, isOpen, setIsOpen }: AdminSideb
         </Button>
       </div>
 
-      <nav className="flex-1 py-4 space-y-1 px-2 overflow-y-auto">
-        {menuItems.map(item => (
-          <button
-            key={item.id}
-            onClick={() => setActiveTab(item.id)}
-            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
-              ${activeTab === item.id
-                ? 'bg-primary text-primary-foreground'
-                : 'text-muted-foreground hover:bg-muted hover:text-foreground'}`}
-          >
-            <item.icon className="h-5 w-5 shrink-0" />
-            {isOpen && <span className="truncate">{item.label}</span>}
-          </button>
+      <nav className="flex-1 py-4 px-2 overflow-y-auto">
+        {menuGroups.map(group => (
+          <div key={group.title} className="mb-4">
+            {isOpen && (
+              <p className="px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground/70">
+                {group.title}
+              </p>
+            )}
+            <div className="space-y-1 mt-1">
+              {group.items.map(item => (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveTab(item.id)}
+                  title={!isOpen ? item.label : undefined}
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
+                    ${activeTab === item.id
+                      ? 'bg-primary text-primary-foreground'
+                      : 'text-muted-foreground hover:bg-muted hover:text-foreground'}`}
+                >
+                  <item.icon className="h-5 w-5 shrink-0" />
+                  {isOpen && <span className="truncate">{item.label}</span>}
+                </button>
+              ))}
+            </div>
+          </div>
         ))}
       </nav>
 
