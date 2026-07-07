@@ -62,6 +62,60 @@ export type Database = {
         }
         Relationships: []
       }
+      admin_otp: {
+        Row: {
+          attempts: number
+          code_hash: string
+          consumed: boolean
+          created_at: string
+          email: string
+          expires_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          attempts?: number
+          code_hash: string
+          consumed?: boolean
+          created_at?: string
+          email: string
+          expires_at: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          attempts?: number
+          code_hash?: string
+          consumed?: boolean
+          created_at?: string
+          email?: string
+          expires_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      admin_whitelist: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          note: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          note?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          note?: string | null
+        }
+        Relationships: []
+      }
       banners: {
         Row: {
           created_at: string
@@ -255,6 +309,36 @@ export type Database = {
           name?: string
           status?: string | null
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      menu_items: {
+        Row: {
+          created_at: string
+          id: string
+          is_visible: boolean
+          label: string
+          link: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_visible?: boolean
+          label: string
+          link: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_visible?: boolean
+          label?: string
+          link?: string
+          sort_order?: number
+          updated_at?: string
         }
         Relationships: []
       }
@@ -490,6 +574,7 @@ export type Database = {
           detail_images: string[]
           id: string
           image_alt: string | null
+          image_links: Json
           image_url: string | null
           images: string[] | null
           is_active: boolean
@@ -521,6 +606,7 @@ export type Database = {
           detail_images?: string[]
           id?: string
           image_alt?: string | null
+          image_links?: Json
           image_url?: string | null
           images?: string[] | null
           is_active?: boolean
@@ -552,6 +638,7 @@ export type Database = {
           detail_images?: string[]
           id?: string
           image_alt?: string | null
+          image_links?: Json
           image_url?: string | null
           images?: string[] | null
           is_active?: boolean
@@ -771,6 +858,7 @@ export type Database = {
           sales_count: number
         }[]
       }
+      is_admin_email: { Args: { _email: string }; Returns: boolean }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user" | "master_admin"
