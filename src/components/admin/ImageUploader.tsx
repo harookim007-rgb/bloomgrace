@@ -115,6 +115,12 @@ const ImageUploader = ({
       toast.error("파일이 너무 큽니다 (최대 20MB).");
       return;
     }
+    // Pre-check auth session — private bucket requires admin role
+    const { data: sessionData } = await supabase.auth.getSession();
+    if (!sessionData.session) {
+      toast.error("세션이 만료되었습니다. 다시 로그인해 주세요.");
+      return;
+    }
     setUploading(true);
     setProgress("이미지 처리 중...");
     try {
@@ -126,17 +132,26 @@ const ImageUploader = ({
       const { error: upErr } = await supabase.storage.from("media").upload(path, blob, {
         contentType: "image/jpeg",
         upsert: false,
+        cacheControl: "31536000",
       });
-      if (upErr) throw upErr;
+      if (upErr) {
+        const msg = upErr.message || "";
+        if (/row-level security|not authorized|permission/i.test(msg)) {
+          throw new Error("업로드 권한이 없습니다 (관리자 전용).");
+        }
+        throw upErr;
+      }
       setProgress("링크 생성 중...");
+      // 1 year signed URL — well within Supabase limits, refreshable on read
       const { data: signed, error: sErr } = await supabase.storage
         .from("media")
-        .createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
-      if (sErr || !signed) throw sErr || new Error("signed url failed");
+        .createSignedUrl(path, 60 * 60 * 24 * 365);
+      if (sErr || !signed?.signedUrl) throw sErr || new Error("서명 URL 생성 실패");
       onChange(signed.signedUrl);
       toast.success("이미지 업로드 완료");
     } catch (e: any) {
-      toast.error("업로드 실패: " + (e?.message || ""));
+      console.error("[ImageUploader] upload failed", e);
+      toast.error("업로드 실패: " + (e?.message || "알 수 없는 오류"));
     } finally {
       setUploading(false);
       setProgress("");
