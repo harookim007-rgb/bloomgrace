@@ -265,7 +265,8 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
               src={src}
               alt={`${altBase} detail ${i + 1}`}
               loading="lazy"
-              className="w-full h-auto block"
+              className="w-full h-auto block cursor-zoom-in"
+              onClick={() => !preview && setLightbox({ images: detailImages, index: i })}
               onError={(e) => ((e.currentTarget as HTMLImageElement).src = FALLBACK_IMG)}
             />
           ))}
