@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { localizeCategory } from "@/lib/categoryI18n";
 import { getLocalizedBenefit, getLocalizedBrand, getLocalizedDescription, getLocalizedProductName, productUi } from "@/lib/productI18n";
+import ImageLightbox from "@/components/ImageLightbox";
 
 export interface ProductViewData {
   name: string;
