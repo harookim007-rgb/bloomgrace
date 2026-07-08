@@ -9,6 +9,8 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import ProductView from "@/components/ProductView";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+
 import { Star } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import { containsHangul, getLocalizedProductName, productUi, SUPPORTED_PRODUCT_LANGUAGES } from "@/lib/productI18n";
