@@ -209,8 +209,34 @@ const ProductDetail = () => {
           </div>
         </div>
       </section>
+
+      <Dialog open={addedOpen} onOpenChange={setAddedOpen}>
+        <DialogContent className="max-w-sm rounded-none">
+          <DialogHeader>
+            <DialogTitle className="font-serif font-light text-lg">{AD.title}</DialogTitle>
+            <DialogDescription className="text-sm text-muted-foreground pt-1">{AD.msg}</DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col sm:flex-row gap-2 pt-2">
+            <Button
+              variant="outline"
+              className="flex-1 rounded-none text-xs tracking-[0.15em] uppercase py-6"
+              onClick={() => setAddedOpen(false)}
+            >
+              {AD.keep}
+            </Button>
+            <Button
+              className="flex-1 rounded-none text-xs tracking-[0.15em] uppercase py-6"
+              onClick={() => { setAddedOpen(false); navigate("/checkout"); }}
+            >
+              {AD.checkout}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       <Footer />
     </div>
+
   );
 };
 
