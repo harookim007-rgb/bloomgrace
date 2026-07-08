@@ -30,6 +30,25 @@ const safeExt = (file: File) => {
   return named || "jpg";
 };
 
+const getUploadErrorMessage = (error: unknown) => {
+  if (!error) return "알 수 없는 오류";
+  if (typeof error === "string") return error;
+  if (error instanceof Error && error.message) return error.message;
+
+  if (typeof error === "object") {
+    const record = error as Record<string, unknown>;
+    for (const key of ["message", "error", "msg", "details", "hint"]) {
+      const value = record[key];
+      if (typeof value === "string" && value.trim()) return value;
+    }
+
+    const status = record.statusCode || record.status;
+    if (status) return `이미지 저장소 오류 (${status})`;
+  }
+
+  return "이미지 처리 중 오류가 발생했습니다.";
+};
+
 // Product/admin uploads must keep the exact original pixels. Do not redraw through
 // canvas here: even contain-fit canvas output can make users perceive lost edges.
 async function fitImageWithinLimit(
@@ -83,23 +102,25 @@ const ImageUploader = ({
         cacheControl: "31536000",
       });
       if (upErr) {
-        const msg = upErr.message || "";
+        const msg = getUploadErrorMessage(upErr);
         if (/row-level security|not authorized|permission/i.test(msg)) {
           throw new Error("업로드 권한이 없습니다 (관리자 전용).");
         }
-        throw upErr;
+        throw new Error(msg);
       }
       setProgress("링크 생성 중...");
       // 1 year signed URL — well within Supabase limits, refreshable on read
       const { data: signed, error: sErr } = await supabase.storage
         .from("media")
         .createSignedUrl(path, 60 * 60 * 24 * 365);
-      if (sErr || !signed?.signedUrl) throw sErr || new Error("서명 URL 생성 실패");
+      if (sErr || !signed?.signedUrl) {
+        throw new Error(sErr ? getUploadErrorMessage(sErr) : "서명 URL 생성 실패");
+      }
       onChange(signed.signedUrl);
       toast.success("이미지 업로드 완료");
     } catch (e: any) {
       console.error("[ImageUploader] upload failed", e);
-      toast.error("업로드 실패: " + (e?.message || "알 수 없는 오류"));
+      toast.error("업로드 실패: " + getUploadErrorMessage(e));
     } finally {
       setUploading(false);
       setProgress("");

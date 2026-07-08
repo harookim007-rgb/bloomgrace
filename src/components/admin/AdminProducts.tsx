@@ -238,7 +238,7 @@ const AdminProducts = () => {
 
   const editProduct = (p: any) => {
     // Task 3: dedicated edit page instead of dialog
-    navigate(`/admin/products/${p.id}/edit`);
+    navigate(`/admin/products/${p.id}/edit`, { state: { returnTo: "/admin?tab=products" } });
   };
 
   const duplicateProduct = (p: any) => {
