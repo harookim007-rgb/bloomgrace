@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import CartDrawer from "@/components/CartDrawer";
 import BrandLogo from "@/components/BrandLogo";
 import RollingGreeting from "@/components/RollingGreeting";
+import { CurrencyToggle } from "@/components/CurrencyToggle";
 
 const langLabels: Record<Language, string> = {
   en: "English", es: "Español", de: "Deutsch", fr: "Français", pt: "Português", ja: "日本語", ar: "العربية",
@@ -138,7 +139,8 @@ const Navigation = () => {
           </nav>
 
           {/* Icons */}
-          <div className="flex items-center gap-0 shrink-0">
+          <div className="flex items-center gap-2 shrink-0">
+            <CurrencyToggle />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="h-9 w-9 md:h-10 md:w-10 text-foreground/60 hover:text-primary">

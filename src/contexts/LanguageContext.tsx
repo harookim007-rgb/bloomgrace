@@ -1,4 +1,17 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+
+export type CurrencyMode = "USD" | "EUR";
+
+// Localized tooltip shown next to the currency toggle
+export const currencyNoticeMap: Record<string, string> = {
+  en: "Prices are USD-based. Live rate may vary slightly.",
+  es: "Los precios son en USD. La tasa en vivo puede variar ligeramente.",
+  de: "Preise basieren auf USD. Der Live-Kurs kann leicht abweichen.",
+  fr: "Les prix sont en USD. Le taux en direct peut légèrement varier.",
+  pt: "Preços em USD. A taxa ao vivo pode variar ligeiramente.",
+  ja: "価格はUSD基準です。実勢レートにより多少異なる場合があります。",
+  ar: "الأسعار بالدولار الأمريكي. قد يختلف السعر الحي قليلاً.",
+};
 
 export type Language = "en" | "es" | "de" | "fr" | "pt" | "ja" | "ar";
 
@@ -1342,6 +1355,10 @@ interface LanguageContextType {
   setLanguage: (lang: Language) => void;
   t: (key: TranslationKey) => string;
   formatPrice: (price: number) => string;
+  currencyMode: CurrencyMode;
+  setCurrencyMode: (mode: CurrencyMode) => void;
+  eurRate: number;
+  currencyNotice: string;
 }
 
 const LanguageContext = createContext<LanguageContextType>({} as LanguageContextType);
@@ -1355,25 +1372,78 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     return allowed.includes(saved as Language) ? (saved as Language) : "en";
   });
 
+  const [currencyMode, setCurrencyModeState] = useState<CurrencyMode>(() => {
+    const saved = localStorage.getItem("bloom-currency");
+    return saved === "EUR" ? "EUR" : "USD";
+  });
+
+  const [eurRate, setEurRate] = useState<number>(() => {
+    const cached = localStorage.getItem("bloom-eur-rate");
+    return cached ? parseFloat(cached) || 0.92 : 0.92;
+  });
+
+  useEffect(() => {
+    // Live USD -> EUR rate
+    const fetchRate = async () => {
+      const endpoints = [
+        "https://open.er-api.com/v6/latest/USD",
+        "https://api.exchangerate.host/latest?base=USD&symbols=EUR",
+      ];
+      for (const url of endpoints) {
+        try {
+          const res = await fetch(url);
+          const j = await res.json();
+          const r = j?.rates?.EUR;
+          if (typeof r === "number" && r > 0) {
+            setEurRate(r);
+            localStorage.setItem("bloom-eur-rate", String(r));
+            localStorage.setItem("bloom-eur-rate-ts", String(Date.now()));
+            return;
+          }
+        } catch {}
+      }
+    };
+    const cachedTs = parseInt(localStorage.getItem("bloom-eur-rate-ts") || "0", 10);
+    if (!cachedTs || Date.now() - cachedTs > 60 * 60 * 1000) fetchRate();
+  }, []);
+
   const handleSetLanguage = (lang: Language) => {
     setLanguage(lang);
     localStorage.setItem("bloom-lang", lang);
+  };
+
+  const setCurrencyMode = (mode: CurrencyMode) => {
+    setCurrencyModeState(mode);
+    localStorage.setItem("bloom-currency", mode);
   };
 
   const t = (key: TranslationKey): string => {
     return (getDictionary(language) as any)?.[key] || translations.en[key] || key;
   };
 
+  // Prices in DB are treated as USD amounts, regardless of language.
   const formatPrice = (price: number): string => {
-    const curr = getDictionary(language) as any;
-    const rate =
-      language === "de" || language === "fr" ? 1400 : language === "pt" ? 260 : language === "ja" ? 10 : 1300;
-    const converted = language === "ja" ? Math.round(price / rate).toString() : (price / rate).toFixed(2);
-    return `${curr.currency}${converted}${curr.currency_suffix || ""}`;
+    if (currencyMode === "EUR") {
+      return `€${(price * eurRate).toFixed(2)}`;
+    }
+    return `$${price.toFixed(2)}`;
   };
 
+  const currencyNotice = currencyNoticeMap[language] || currencyNoticeMap.en;
+
   return (
-    <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage, t, formatPrice }}>
+    <LanguageContext.Provider
+      value={{
+        language,
+        setLanguage: handleSetLanguage,
+        t,
+        formatPrice,
+        currencyMode,
+        setCurrencyMode,
+        eurRate,
+        currencyNotice,
+      }}
+    >
       {children}
     </LanguageContext.Provider>
   );
