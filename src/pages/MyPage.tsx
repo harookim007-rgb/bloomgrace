@@ -61,18 +61,21 @@ const MyPage = () => {
 
   const fetchData = async () => {
     if (!user) return;
-    const [ordersRes, wishRes, profileRes, reviewsRes] = await Promise.all([
+    const [ordersRes, wishRes, profileRes, reviewsRes, payRes] = await Promise.all([
       supabase.from("orders").select("*, order_items(*, products(id,name,slug,brand,translations))").eq("user_id", user.id).order("created_at", { ascending: false }),
       supabase.from("wishlists").select("product_id, products(*)").eq("user_id", user.id),
       supabase.from("profiles").select("*").eq("user_id", user.id).single(),
       supabase.from("reviews").select("product_id").eq("user_id", user.id),
+      supabase.rpc("get_checkout_payment_info"),
     ]);
     setOrders(ordersRes.data || []);
     setWishlistProducts((wishRes.data || []).map((w: any) => w.products));
     setProfile(profileRes.data);
     setReviewedIds(new Set((reviewsRes.data || []).map((r: any) => r.product_id)));
+    setPaymentInfo(Array.isArray(payRes.data) ? payRes.data[0] : payRes.data);
   };
   useEffect(() => { fetchData(); /* eslint-disable-next-line */ }, [user]);
+
 
   if (!user) return <div className="min-h-dvh"><Navigation /><div className="text-center py-32 text-sm text-muted-foreground">{t("mp_login_required")}</div><Footer /></div>;
 
