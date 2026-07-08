@@ -112,9 +112,10 @@ const ProductDetail = () => {
             product={product}
             isAddingToCart={adding}
             onAddToCart={async (qty) => {
-              const ok = await addToCart(product.id, qty);
-              if (ok) navigate("/checkout");
+              const ok = await addToCart(product.id, qty, { silent: true });
+              if (ok) setAddedOpen(true);
             }}
+
             onBuyNow={(qty) => {
               sessionStorage.setItem("buyNow", JSON.stringify({
                 product_id: product.id,
