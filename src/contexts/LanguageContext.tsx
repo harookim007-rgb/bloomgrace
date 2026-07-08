@@ -1383,9 +1383,10 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   });
 
   useEffect(() => {
-    // Live USD -> EUR rate
+    // Live USD -> EUR rate, refresh every 30 minutes
     const fetchRate = async () => {
       const endpoints = [
+        "https://api.frankfurter.app/latest?from=USD&to=EUR",
         "https://open.er-api.com/v6/latest/USD",
         "https://api.exchangerate.host/latest?base=USD&symbols=EUR",
       ];
@@ -1403,8 +1404,11 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
         } catch {}
       }
     };
+    const THIRTY_MIN = 30 * 60 * 1000;
     const cachedTs = parseInt(localStorage.getItem("bloom-eur-rate-ts") || "0", 10);
-    if (!cachedTs || Date.now() - cachedTs > 60 * 60 * 1000) fetchRate();
+    if (!cachedTs || Date.now() - cachedTs > THIRTY_MIN) fetchRate();
+    const id = setInterval(fetchRate, THIRTY_MIN);
+    return () => clearInterval(id);
   }, []);
 
   const handleSetLanguage = (lang: Language) => {
