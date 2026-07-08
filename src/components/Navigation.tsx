@@ -138,7 +138,8 @@ const Navigation = () => {
           </nav>
 
           {/* Icons */}
-          <div className="flex items-center gap-0 shrink-0">
+          <div className="flex items-center gap-2 shrink-0">
+            <CurrencyToggle />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="h-9 w-9 md:h-10 md:w-10 text-foreground/60 hover:text-primary">
