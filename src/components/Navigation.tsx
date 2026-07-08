@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import CartDrawer from "@/components/CartDrawer";
 import BrandLogo from "@/components/BrandLogo";
 import RollingGreeting from "@/components/RollingGreeting";
+import { CurrencyToggle } from "@/components/CurrencyToggle";
 
 const langLabels: Record<Language, string> = {
   en: "English", es: "Español", de: "Deutsch", fr: "Français", pt: "Português", ja: "日本語", ar: "العربية",
