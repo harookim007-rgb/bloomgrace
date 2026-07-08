@@ -314,6 +314,11 @@ const Checkout = () => {
 
       if (buyNowItem) sessionStorage.removeItem("buyNow"); else await clearCart();
 
+      // Fire-and-forget order confirmation email
+      supabase.functions.invoke("send-order-confirmation", {
+        body: { orderId: order.id },
+      }).catch((err) => console.error("order confirmation email failed:", err));
+
       setCompleted({ order, deadline });
       toast.success(t.success);
     } catch (err: any) {

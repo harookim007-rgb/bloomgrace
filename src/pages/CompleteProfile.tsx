@@ -73,6 +73,11 @@ const CompleteProfile = () => {
       });
       if (error) throw error;
 
+      // Fire-and-forget welcome email (do not block profile save if email fails)
+      supabase.functions.invoke("send-welcome-email", {
+        body: { name: user.user_metadata?.display_name || user.email?.split("@")[0] || "" },
+      }).catch((err) => console.error("welcome email failed:", err));
+
       toast.success(t("cp_success"));
       navigate("/");
     } catch {
