@@ -97,7 +97,7 @@ Deno.serve(async (req) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Admin Login <onboarding@resend.dev>",
+        from: "Bloom & Grace Admin <welcometo@bloomgrace.shop>",
         to: [email],
         subject,
         html,
