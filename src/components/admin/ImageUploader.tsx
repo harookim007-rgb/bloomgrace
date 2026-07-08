@@ -30,47 +30,15 @@ const safeExt = (file: File) => {
   return named || "jpg";
 };
 
-// Resize only when truly needed. Product/admin uploads should keep the original pixels
-// whenever the file is within limits, so no edge can be cropped by canvas processing.
+// Product/admin uploads must keep the exact original pixels. Do not redraw through
+// canvas here: even contain-fit canvas output can make users perceive lost edges.
 async function fitImageWithinLimit(
   file: File,
-  maxW: number,
-  maxH: number,
-  quality: number,
+  _maxW: number,
+  _maxH: number,
+  _quality: number,
 ): Promise<{ blob: Blob; contentType: string; ext: string }> {
-  const dataUrl = await new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-
-  const img = await new Promise<HTMLImageElement>((resolve, reject) => {
-    const i = new Image();
-    i.onload = () => resolve(i);
-    i.onerror = reject;
-    i.src = dataUrl;
-  });
-
-  let targetW = img.width;
-  let targetH = img.height;
-
-  // free aspect — fit within max
-  if (targetW <= maxW && targetH <= maxH) {
-    return { blob: file, contentType: file.type || "application/octet-stream", ext: safeExt(file) };
-  }
-
-  const ratio = Math.min(maxW / targetW, maxH / targetH);
-  targetW = Math.round(targetW * ratio);
-  targetH = Math.round(targetH * ratio);
-  const canvas = document.createElement("canvas");
-  canvas.width = targetW;
-  canvas.height = targetH;
-  const ctx = canvas.getContext("2d")!;
-  ctx.imageSmoothingQuality = "high";
-  ctx.drawImage(img, 0, 0, targetW, targetH);
-  const blob = await new Promise<Blob>((res) => canvas.toBlob((b) => res(b!), "image/jpeg", quality));
-  return { blob, contentType: "image/jpeg", ext: "jpg" };
+  return { blob: file, contentType: file.type || "application/octet-stream", ext: safeExt(file) };
 }
 
 const ImageUploader = ({

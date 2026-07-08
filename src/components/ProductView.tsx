@@ -110,15 +110,15 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
       <div className="grid md:grid-cols-2 gap-8 md:gap-16">
         {/* Slider */}
         <div className="relative group">
-          <div className="overflow-hidden aspect-square bg-muted/30" ref={emblaRef}>
+          <div className="overflow-hidden min-h-[320px] md:min-h-[520px] bg-muted/30 flex items-center" ref={emblaRef}>
             <div className="flex h-full">
               {slides.map((src, i) => (
-                <div key={i} className="relative min-w-0 shrink-0 grow-0 basis-full h-full">
+                <div key={i} className="relative min-w-0 shrink-0 grow-0 basis-full min-h-[320px] md:min-h-[520px] flex items-center justify-center">
                   <img
                     src={src}
                     alt={`${altBase} ${i + 1}`}
                     loading={i === 0 ? "eager" : "lazy"}
-                    className="w-full h-full object-contain cursor-zoom-in"
+                    className="block max-w-full max-h-[72vh] w-auto h-auto object-contain cursor-zoom-in"
                     onClick={() => !preview && setLightbox({ images: slides, index: i })}
                     onError={(e) => ((e.currentTarget as HTMLImageElement).src = FALLBACK_IMG)}
                   />
