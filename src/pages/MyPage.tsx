@@ -52,24 +52,30 @@ const MyPage = () => {
   const [reviewTarget, setReviewTarget] = useState<{ product_id: string; product_name: string } | null>(null);
   const [reviewForm, setReviewForm] = useState<{ rating: number; title: string; content: string; image_urls: string[] }>({ rating: 5, title: "", content: "", image_urls: [] });
   const [submittingReview, setSubmittingReview] = useState(false);
+  const [paymentInfo, setPaymentInfo] = useState<any>(null);
+  const [openBankId, setOpenBankId] = useState<string | null>(null);
   const dateFmt = language === "de" ? "de-DE" : language === "es" ? "es-ES" : language === "fr" ? "fr-FR" : language === "pt" ? "pt-BR" : language === "ar" ? "ar-SA" : language === "ja" ? "ja-JP" : "en-US";
+
   const L = MP_I18N[language] || MP_I18N.en;
   const R = REVIEW_I18N[language] || REVIEW_I18N.en;
 
   const fetchData = async () => {
     if (!user) return;
-    const [ordersRes, wishRes, profileRes, reviewsRes] = await Promise.all([
+    const [ordersRes, wishRes, profileRes, reviewsRes, payRes] = await Promise.all([
       supabase.from("orders").select("*, order_items(*, products(id,name,slug,brand,translations))").eq("user_id", user.id).order("created_at", { ascending: false }),
       supabase.from("wishlists").select("product_id, products(*)").eq("user_id", user.id),
       supabase.from("profiles").select("*").eq("user_id", user.id).single(),
       supabase.from("reviews").select("product_id").eq("user_id", user.id),
+      supabase.rpc("get_checkout_payment_info"),
     ]);
     setOrders(ordersRes.data || []);
     setWishlistProducts((wishRes.data || []).map((w: any) => w.products));
     setProfile(profileRes.data);
     setReviewedIds(new Set((reviewsRes.data || []).map((r: any) => r.product_id)));
+    setPaymentInfo(Array.isArray(payRes.data) ? payRes.data[0] : payRes.data);
   };
   useEffect(() => { fetchData(); /* eslint-disable-next-line */ }, [user]);
+
 
   if (!user) return <div className="min-h-dvh"><Navigation /><div className="text-center py-32 text-sm text-muted-foreground">{t("mp_login_required")}</div><Footer /></div>;
 
@@ -160,10 +166,29 @@ const MyPage = () => {
                       </span>
                     </div>
                     {isPendingBank && order.payment_deadline && (
-                      <div className="mb-3 text-xs text-primary flex items-center gap-1.5">
+                      <div className="mb-3 text-xs text-primary flex items-center gap-1.5 flex-wrap">
                         <Clock className="h-3.5 w-3.5" /> {L.deadline}: {new Date(order.payment_deadline).toLocaleString(dateFmt)} ({deadlineText(order.payment_deadline)})
+                        {paymentInfo && (
+                          <button
+                            type="button"
+                            onClick={() => setOpenBankId(openBankId === order.id ? null : order.id)}
+                            className="ml-auto text-[10px] tracking-[0.15em] uppercase px-2 py-1 border border-primary/40 text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+                          >
+                            {openBankId === order.id ? "− " : "+ "}입금계좌 확인
+                          </button>
+                        )}
                       </div>
                     )}
+                    {isPendingBank && openBankId === order.id && paymentInfo && (
+                      <div className="mb-3 p-3 border border-primary/30 bg-primary-soft/20 text-xs space-y-1 font-sans">
+                        <div className="flex justify-between"><span className="text-muted-foreground">Bank</span><span className="font-medium">{paymentInfo.bank_name}</span></div>
+                        <div className="flex justify-between"><span className="text-muted-foreground">Account</span><span className="font-medium">{paymentInfo.account_number}</span></div>
+                        <div className="flex justify-between"><span className="text-muted-foreground">Holder</span><span className="font-medium">{paymentInfo.account_holder}</span></div>
+                        <div className="flex justify-between"><span className="text-muted-foreground">Amount</span><span className="font-medium">{formatPrice(Number(order.total))}</span></div>
+                        {paymentInfo.instructions && <p className="pt-1 text-muted-foreground whitespace-pre-line">{paymentInfo.instructions}</p>}
+                      </div>
+                    )}
+
                     {isCancelled && order.cancel_reason === "payment_timeout" && (
                       <div className="mb-3 text-xs text-destructive">{L.autoCancelled}</div>
                     )}
