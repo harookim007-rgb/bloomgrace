@@ -1,4 +1,17 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+
+export type CurrencyMode = "USD" | "EUR";
+
+// Localized tooltip shown next to the currency toggle
+export const currencyNoticeMap: Record<string, string> = {
+  en: "Prices are USD-based. Live rate may vary slightly.",
+  es: "Los precios son en USD. La tasa en vivo puede variar ligeramente.",
+  de: "Preise basieren auf USD. Der Live-Kurs kann leicht abweichen.",
+  fr: "Les prix sont en USD. Le taux en direct peut légèrement varier.",
+  pt: "Preços em USD. A taxa ao vivo pode variar ligeiramente.",
+  ja: "価格はUSD基準です。実勢レートにより多少異なる場合があります。",
+  ar: "الأسعار بالدولار الأمريكي. قد يختلف السعر الحي قليلاً.",
+};
 
 export type Language = "en" | "es" | "de" | "fr" | "pt" | "ja" | "ar";
 
