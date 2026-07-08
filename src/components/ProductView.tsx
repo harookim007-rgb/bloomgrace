@@ -9,6 +9,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { localizeCategory } from "@/lib/categoryI18n";
 import { getLocalizedBenefit, getLocalizedBrand, getLocalizedDescription, getLocalizedProductName, productUi } from "@/lib/productI18n";
 import ImageLightbox from "@/components/ImageLightbox";
+import { CurrencyToggle } from "@/components/CurrencyToggle";
 
 export interface ProductViewData {
   name: string;
@@ -162,7 +163,7 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-serif font-medium text-foreground">{localizedName}</h1>
 
 
-          <div className="flex items-baseline gap-3 py-4 border-y border-border">
+          <div className="flex items-baseline gap-3 py-4 border-y border-border flex-wrap">
             {discount > 0 && <span className="text-lg font-sans font-medium text-primary">-{discount}%</span>}
             <span className="text-2xl font-sans font-medium">{formatPrice(product.price)}</span>
             {product.original_price && (
@@ -170,6 +171,9 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
                 {formatPrice(Number(product.original_price))}
               </span>
             )}
+            <div className="ml-auto self-center">
+              <CurrencyToggle />
+            </div>
           </div>
 
           {/* Top description */}
