@@ -69,7 +69,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
                   <img
                     src={src}
                     alt={translatedName}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="w-full h-full object-contain transition-transform duration-700"
                     loading="lazy"
                     onError={(e) => ((e.currentTarget as HTMLImageElement).src = "/placeholder.svg")}
                   />
