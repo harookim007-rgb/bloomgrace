@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -143,6 +143,7 @@ const HorizontalImages = ({
 const ProductEditPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const { isAdmin, isLoading: authLoading } = useAuth();
   const [form, setForm] = useState<FormState>(emptyForm);
   const [categories, setCategories] = useState<any[]>([]);
@@ -155,6 +156,7 @@ const ProductEditPage = () => {
   const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const saveTimerRef = useRef<number | null>(null);
   const inFlightRef = useRef(false);
+  const returnTo = (location.state as { returnTo?: string } | null)?.returnTo || "/admin?tab=products";
 
   // Guard
   useEffect(() => {
@@ -176,7 +178,7 @@ const ProductEditPage = () => {
       ]);
       setCategories(c.data || []);
       setAllProducts(all.data || []);
-      if (!p.data) { toast.error("상품을 찾을 수 없습니다."); navigate("/admin"); return; }
+      if (!p.data) { toast.error("상품을 찾을 수 없습니다."); navigate("/admin?tab=products"); return; }
       const d = p.data;
       const next: FormState = {
         name: d.name || "",
@@ -224,11 +226,11 @@ const ProductEditPage = () => {
     return () => window.removeEventListener("beforeunload", onBeforeUnload);
   }, [dirty]);
 
-  const doSave = useCallback(async (silent = true) => {
-    if (!id || inFlightRef.current) return;
+  const doSave = useCallback(async (silent = true): Promise<boolean> => {
+    if (!id || inFlightRef.current) return false;
     if (!form.name.trim() || !form.price) {
       if (!silent) toast.error("상품명과 판매가는 필수입니다.");
-      return;
+      return false;
     }
     inFlightRef.current = true;
     setStatus("saving");
@@ -262,13 +264,14 @@ const ProductEditPage = () => {
     if (error) {
       setStatus("error");
       if (!silent) toast.error("저장 실패: " + error.message);
-      return;
+      return false;
     }
     initialFormRef.current = JSON.stringify(form);
     setDirty(false);
     setStatus("saved");
     if (!silent) toast.success("저장되었습니다.");
     window.setTimeout(() => setStatus(s => (s === "saved" ? "idle" : s)), 2000);
+    return true;
   }, [id, form]);
 
   // Task 4: debounced autosave
@@ -284,7 +287,12 @@ const ProductEditPage = () => {
       const ok = window.confirm("저장되지 않은 변경사항이 있습니다. 정말 나가시겠습니까?");
       if (!ok) return;
     }
-    navigate("/admin");
+    navigate(returnTo, { replace: true });
+  };
+
+  const handleSaveAndReturn = async () => {
+    const saved = await doSave(false);
+    if (saved) navigate(returnTo, { replace: true });
   };
 
   if (loading) {
@@ -336,8 +344,8 @@ const ProductEditPage = () => {
             </div>
           </div>
           <div className="flex items-center gap-2 shrink-0">
-            <Button variant="outline" size="sm" onClick={() => doSave(false)} disabled={status === "saving"}>
-              지금 저장
+            <Button variant="outline" size="sm" onClick={handleSaveAndReturn} disabled={status === "saving"}>
+              저장 후 목록
             </Button>
           </div>
         </div>

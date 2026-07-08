@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import AdminSidebar from "@/components/admin/AdminSidebar";
@@ -25,12 +25,33 @@ export type AdminTab =
   | "shipping" | "payment" | "settings" | "ranking"
   | "menus" | "whitelist";
 
+const adminTabs: AdminTab[] = [
+  "dashboard", "products", "categories", "orders", "customers", "coupons",
+  "banners", "reviews", "shipping", "payment", "settings", "ranking",
+  "menus", "whitelist",
+];
+
+const getAdminTab = (value: string | null): AdminTab | null => {
+  return value && adminTabs.includes(value as AdminTab) ? (value as AdminTab) : null;
+};
+
 const Admin = () => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { user, isAdmin, isLoading: authLoading } = useAuth();
-  const [activeTab, setActiveTab] = useState<AdminTab>("dashboard");
+  const [activeTab, setActiveTabState] = useState<AdminTab>(() => getAdminTab(searchParams.get("tab")) || "dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [otpVerified, setOtpVerified] = useState(false);
+
+  useEffect(() => {
+    const tab = getAdminTab(searchParams.get("tab"));
+    if (tab && tab !== activeTab) setActiveTabState(tab);
+  }, [searchParams, activeTab]);
+
+  const setActiveTab = (tab: AdminTab) => {
+    setActiveTabState(tab);
+    setSearchParams(tab === "dashboard" ? {} : { tab });
+  };
 
   useEffect(() => {
     if (authLoading) return;
