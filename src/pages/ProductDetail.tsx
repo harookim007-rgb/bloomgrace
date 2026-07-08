@@ -13,6 +13,16 @@ import { Star } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import { containsHangul, getLocalizedProductName, productUi, SUPPORTED_PRODUCT_LANGUAGES } from "@/lib/productI18n";
 
+const ADDED_I18N: Record<string, { title: string; msg: string; checkout: string; keep: string }> = {
+  en: { title: "Added to cart", msg: "This product has been added to your cart.", checkout: "Checkout now", keep: "Continue shopping" },
+  es: { title: "Añadido al carrito", msg: "El producto se ha añadido al carrito.", checkout: "Pagar ahora", keep: "Seguir comprando" },
+  de: { title: "Zum Warenkorb hinzugefügt", msg: "Das Produkt wurde in den Warenkorb gelegt.", checkout: "Jetzt bezahlen", keep: "Weiter einkaufen" },
+  fr: { title: "Ajouté au panier", msg: "Le produit a été ajouté au panier.", checkout: "Payer maintenant", keep: "Continuer les achats" },
+  pt: { title: "Adicionado ao carrinho", msg: "O produto foi adicionado ao carrinho.", checkout: "Finalizar compra", keep: "Continuar comprando" },
+  ja: { title: "カートに追加しました", msg: "この商品がカートに追加されました。", checkout: "今すぐ購入", keep: "買い物を続ける" },
+  ar: { title: "تمت الإضافة إلى السلة", msg: "تمت إضافة هذا المنتج إلى السلة.", checkout: "الدفع الآن", keep: "متابعة التسوق" },
+};
+
 const ProductDetail = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -25,6 +35,9 @@ const ProductDetail = () => {
   const [reviews, setReviews] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filterRating, setFilterRating] = useState(0);
+  const [addedOpen, setAddedOpen] = useState(false);
+  const AD = ADDED_I18N[language] || ADDED_I18N.en;
+
 
   const loadProduct = async () => {
     const { data } = await supabase.from("products").select("*, categories(name, slug)").eq("slug", slug).single();
