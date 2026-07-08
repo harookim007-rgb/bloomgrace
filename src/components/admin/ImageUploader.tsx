@@ -16,15 +16,28 @@ interface ImageUploaderProps {
   label?: string;
 }
 
-// Resize image client-side using canvas. Preserves the whole image.
-// For fixed display ratios, the image is fitted inside the canvas instead of cropped.
-async function resizeImage(
+const safeExt = (file: File) => {
+  const byType: Record<string, string> = {
+    "image/jpeg": "jpg",
+    "image/png": "png",
+    "image/webp": "webp",
+    "image/gif": "gif",
+    "image/avif": "avif",
+  };
+  const typed = byType[file.type];
+  if (typed) return typed;
+  const named = file.name.split(".").pop()?.toLowerCase().replace(/[^a-z0-9]/g, "");
+  return named || "jpg";
+};
+
+// Resize only when truly needed. Product/admin uploads should keep the original pixels
+// whenever the file is within limits, so no edge can be cropped by canvas processing.
+async function fitImageWithinLimit(
   file: File,
   maxW: number,
   maxH: number,
   quality: number,
-  forceAspect?: "square" | "wide"
-): Promise<Blob> {
+): Promise<{ blob: Blob; contentType: string; ext: string }> {
   const dataUrl = await new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve(reader.result as string);
@@ -42,57 +55,22 @@ async function resizeImage(
   let targetW = img.width;
   let targetH = img.height;
 
-  if (forceAspect === "square") {
-    const out = Math.min(maxW, maxH);
-    const canvas = document.createElement("canvas");
-    canvas.width = out;
-    canvas.height = out;
-    const ctx = canvas.getContext("2d")!;
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, out, out);
-    ctx.imageSmoothingQuality = "high";
-    const ratio = Math.min(out / img.width, out / img.height);
-    const drawW = Math.round(img.width * ratio);
-    const drawH = Math.round(img.height * ratio);
-    const dx = Math.round((out - drawW) / 2);
-    const dy = Math.round((out - drawH) / 2);
-    ctx.drawImage(img, 0, 0, img.width, img.height, dx, dy, drawW, drawH);
-    return await new Promise<Blob>((res) => canvas.toBlob((b) => res(b!), "image/jpeg", quality));
-  }
-
-  if (forceAspect === "wide") {
-    const targetRatio = 16 / 9;
-    const outW = Math.min(maxW, Math.max(1, img.width));
-    const outH = Math.round(outW / targetRatio);
-    const canvas = document.createElement("canvas");
-    canvas.width = outW;
-    canvas.height = outH;
-    const ctx = canvas.getContext("2d")!;
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, outW, outH);
-    ctx.imageSmoothingQuality = "high";
-    const ratio = Math.min(outW / img.width, outH / img.height);
-    const drawW = Math.round(img.width * ratio);
-    const drawH = Math.round(img.height * ratio);
-    const dx = Math.round((outW - drawW) / 2);
-    const dy = Math.round((outH - drawH) / 2);
-    ctx.drawImage(img, 0, 0, img.width, img.height, dx, dy, drawW, drawH);
-    return await new Promise<Blob>((res) => canvas.toBlob((b) => res(b!), "image/jpeg", quality));
-  }
-
   // free aspect — fit within max
-  if (targetW > maxW || targetH > maxH) {
-    const ratio = Math.min(maxW / targetW, maxH / targetH);
-    targetW = Math.round(targetW * ratio);
-    targetH = Math.round(targetH * ratio);
+  if (targetW <= maxW && targetH <= maxH) {
+    return { blob: file, contentType: file.type || "application/octet-stream", ext: safeExt(file) };
   }
+
+  const ratio = Math.min(maxW / targetW, maxH / targetH);
+  targetW = Math.round(targetW * ratio);
+  targetH = Math.round(targetH * ratio);
   const canvas = document.createElement("canvas");
   canvas.width = targetW;
   canvas.height = targetH;
   const ctx = canvas.getContext("2d")!;
   ctx.imageSmoothingQuality = "high";
   ctx.drawImage(img, 0, 0, targetW, targetH);
-  return await new Promise<Blob>((res) => canvas.toBlob((b) => res(b!), "image/jpeg", quality));
+  const blob = await new Promise<Blob>((res) => canvas.toBlob((b) => res(b!), "image/jpeg", quality));
+  return { blob, contentType: "image/jpeg", ext: "jpg" };
 }
 
 const ImageUploader = ({
@@ -128,13 +106,11 @@ const ImageUploader = ({
     setUploading(true);
     setProgress("이미지 처리 중...");
     try {
-      const force = aspect === "free" ? undefined : aspect;
-      const blob = await resizeImage(file, maxWidth, maxHeight, quality, force);
+      const { blob, contentType, ext } = await fitImageWithinLimit(file, maxWidth, maxHeight, quality);
       setProgress("업로드 중...");
-      const ext = "jpg";
       const path = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
       const { error: upErr } = await supabase.storage.from("media").upload(path, blob, {
-        contentType: "image/jpeg",
+        contentType,
         upsert: false,
         cacheControl: "31536000",
       });
