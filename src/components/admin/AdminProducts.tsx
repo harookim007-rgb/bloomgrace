@@ -93,7 +93,7 @@ const SortableImages = ({
           {images.map((url, i) => (
             <div key={i} className="flex items-center gap-2 p-2 border rounded">
               <span className="text-xs font-mono w-6 text-center text-muted-foreground">{i + 1}</span>
-              <img src={url} className="w-16 h-16 object-cover rounded border" alt="" />
+              <img src={url} className="w-16 h-16 object-contain bg-muted/30 rounded border" alt="" />
               <div className="flex-1 truncate text-xs text-muted-foreground">{url.split("/").pop()}</div>
               <Button type="button" size="icon" variant="ghost" disabled={i === 0} onClick={() => move(i, -1)} title="위로">
                 <ArrowUp className="h-4 w-4" />
@@ -416,7 +416,7 @@ const AdminProducts = () => {
                   <div>
                     <Label className="text-base">대표 이미지 *</Label>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      상품 리스트 · 검색 · 장바구니 · 상세페이지 첫 화면에 표시되는 이미지입니다. (정사각형 자동 크롭, 1장 필수)
+                      상품 리스트 · 검색 · 장바구니 · 상세페이지 첫 화면에 표시되는 이미지입니다. (원본 전체가 보이도록 여백 포함, 1장 필수)
                     </p>
                   </div>
                   <ImageUploader
@@ -561,7 +561,7 @@ const AdminProducts = () => {
                                 : [...form.related_product_ids, p.id],
                             })}
                           />
-                          {p.image_url ? <img src={p.image_url} className="w-10 h-10 object-cover rounded" alt="" /> : <div className="w-10 h-10 bg-muted rounded" />}
+                          {p.image_url ? <img src={p.image_url} className="w-10 h-10 object-contain bg-muted/30 rounded" alt="" /> : <div className="w-10 h-10 bg-muted rounded" />}
                           <div className="flex-1 min-w-0">
                             <p className="text-sm truncate">{p.name}</p>
                             <p className="text-xs text-muted-foreground">{Number(p.price).toLocaleString()}원</p>
@@ -656,7 +656,7 @@ const AdminProducts = () => {
                 <TableRow key={p.id} className={selectedIds.has(p.id) ? "bg-primary/5" : ""}>
                   <TableCell><input type="checkbox" checked={selectedIds.has(p.id)} onChange={() => toggleSelect(p.id)} /></TableCell>
                   <TableCell>
-                    {p.image_url ? <img src={p.image_url} className="w-12 h-12 object-cover rounded" alt={p.name} /> : <div className="w-12 h-12 bg-muted rounded" />}
+                    {p.image_url ? <img src={p.image_url} className="w-12 h-12 object-contain bg-muted/30 rounded" alt={p.name} /> : <div className="w-12 h-12 bg-muted rounded" />}
                   </TableCell>
                   <TableCell>
                     <p className="font-medium text-sm">{p.name}</p>

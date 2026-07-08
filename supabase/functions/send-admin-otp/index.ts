@@ -64,15 +64,6 @@ Deno.serve(async (req) => {
     const code_hash = await sha256(`${userId}:${code}`);
     const expires_at = new Date(Date.now() + OTP_TTL_MS).toISOString();
 
-    // Consume/expire old codes
-    await admin.from("admin_otp").update({ consumed: true })
-      .eq("user_id", userId).eq("consumed", false);
-
-    const { error: insErr } = await admin.from("admin_otp").insert({
-      user_id: userId, email, code_hash, expires_at,
-    });
-    if (insErr) return json({ error: "OTP 저장 실패", details: insErr.message }, 500);
-
     // Send via Resend
     if (!RESEND_API_KEY) {
       console.warn("[send-admin-otp] RESEND_API_KEY missing — returning dev code");
@@ -109,6 +100,15 @@ Deno.serve(async (req) => {
       console.error(`[send-admin-otp] Resend failed ${resendRes.status}:`, details);
       return json({ error: "이메일 발송 실패", status: resendRes.status, details }, resendRes.status);
     }
+
+    // Only activate a code after the email provider accepts the message.
+    await admin.from("admin_otp").update({ consumed: true })
+      .eq("user_id", userId).eq("consumed", false);
+
+    const { error: insErr } = await admin.from("admin_otp").insert({
+      user_id: userId, email, code_hash, expires_at,
+    });
+    if (insErr) return json({ error: "OTP 저장 실패", details: insErr.message }, 500);
 
     const masked = email.replace(/(.{2}).+(@.+)/, "$1***$2");
     return json({ success: true, masked_email: masked });

@@ -94,7 +94,7 @@ const HorizontalImages = ({
                 className="w-[180px] shrink-0 border border-border rounded-md bg-card overflow-hidden"
               >
                 <div className="relative aspect-square bg-muted">
-                  <img src={url} alt="" className="w-full h-full object-cover" />
+                  <img src={url} alt="" className="w-full h-full object-contain" />
                   <div className="absolute top-1 left-1 flex items-center gap-1 bg-background/80 backdrop-blur px-1.5 py-0.5 rounded text-[10px] font-mono">
                     <GripVertical className="h-3 w-3" /> {i + 1}
                   </div>
@@ -396,7 +396,7 @@ const ProductEditPage = () => {
           <TabsContent value="images" className="mt-4 space-y-6">
             <Card><CardContent className="pt-6 space-y-2">
               <Label className="text-base">대표 이미지 *</Label>
-              <p className="text-xs text-muted-foreground">리스트 · 장바구니 · 상세페이지 첫 화면에 표시 (정사각형)</p>
+              <p className="text-xs text-muted-foreground">리스트 · 장바구니 · 상세페이지 첫 화면에 표시 (원본 전체가 보이도록 여백 포함)</p>
               <ImageUploader value={form.image_url} onChange={(url) => setForm({ ...form, image_url: url })} folder="products" aspect="square" maxWidth={1200} maxHeight={1200} label="대표 이미지" />
             </CardContent></Card>
 
@@ -489,7 +489,7 @@ const ProductEditPage = () => {
                             : [...form.related_product_ids, p.id],
                         })}
                       />
-                      {p.image_url ? <img src={p.image_url} className="w-10 h-10 object-cover rounded" alt="" /> : <div className="w-10 h-10 bg-muted rounded" />}
+                      {p.image_url ? <img src={p.image_url} className="w-10 h-10 object-contain bg-muted/30 rounded" alt="" /> : <div className="w-10 h-10 bg-muted rounded" />}
                       <div className="flex-1 min-w-0">
                         <p className="text-sm truncate">{p.name}</p>
                         <p className="text-xs text-muted-foreground">{Number(p.price).toLocaleString()}원</p>

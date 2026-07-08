@@ -37,7 +37,7 @@ const CartDrawer = () => {
             items.map((item) => (
               <div key={item.id} className="flex gap-4 py-4 border-b border-border">
                 <img src={item.product.image_url || "/placeholder.svg"} alt={productName(item.product)}
-                  className="w-20 h-24 object-cover bg-muted/30 rounded-sm" />
+                  className="w-20 h-24 object-contain bg-muted/30 rounded-sm" />
                 <div className="flex-1 min-w-0 space-y-2">
                   <div className="flex justify-between items-start">
                     <h4 className="text-sm font-medium leading-snug pr-2">{productName(item.product)}</h4>

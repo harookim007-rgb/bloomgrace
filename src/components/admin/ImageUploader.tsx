@@ -16,7 +16,8 @@ interface ImageUploaderProps {
   label?: string;
 }
 
-// Resize image client-side using canvas. Preserves aspect by default.
+// Resize image client-side using canvas. Preserves the whole image.
+// For fixed display ratios, the image is fitted inside the canvas instead of cropped.
 async function resizeImage(
   file: File,
   maxW: number,
@@ -42,37 +43,40 @@ async function resizeImage(
   let targetH = img.height;
 
   if (forceAspect === "square") {
-    const size = Math.min(img.width, img.height);
+    const out = Math.min(maxW, maxH);
     const canvas = document.createElement("canvas");
-    const out = Math.min(size, maxW);
     canvas.width = out;
     canvas.height = out;
     const ctx = canvas.getContext("2d")!;
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, out, out);
     ctx.imageSmoothingQuality = "high";
-    ctx.drawImage(img, (img.width - size) / 2, (img.height - size) / 2, size, size, 0, 0, out, out);
+    const ratio = Math.min(out / img.width, out / img.height);
+    const drawW = Math.round(img.width * ratio);
+    const drawH = Math.round(img.height * ratio);
+    const dx = Math.round((out - drawW) / 2);
+    const dy = Math.round((out - drawH) / 2);
+    ctx.drawImage(img, 0, 0, img.width, img.height, dx, dy, drawW, drawH);
     return await new Promise<Blob>((res) => canvas.toBlob((b) => res(b!), "image/jpeg", quality));
   }
 
   if (forceAspect === "wide") {
-    // 16:9 crop
     const targetRatio = 16 / 9;
-    const srcRatio = img.width / img.height;
-    let sw = img.width, sh = img.height, sx = 0, sy = 0;
-    if (srcRatio > targetRatio) {
-      sw = img.height * targetRatio;
-      sx = (img.width - sw) / 2;
-    } else {
-      sh = img.width / targetRatio;
-      sy = (img.height - sh) / 2;
-    }
-    const outW = Math.min(maxW, sw);
-    const outH = outW / targetRatio;
+    const outW = Math.min(maxW, Math.max(1, img.width));
+    const outH = Math.round(outW / targetRatio);
     const canvas = document.createElement("canvas");
     canvas.width = outW;
     canvas.height = outH;
     const ctx = canvas.getContext("2d")!;
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, outW, outH);
     ctx.imageSmoothingQuality = "high";
-    ctx.drawImage(img, sx, sy, sw, sh, 0, 0, outW, outH);
+    const ratio = Math.min(outW / img.width, outH / img.height);
+    const drawW = Math.round(img.width * ratio);
+    const drawH = Math.round(img.height * ratio);
+    const dx = Math.round((outW - drawW) / 2);
+    const dy = Math.round((outH - drawH) / 2);
+    ctx.drawImage(img, 0, 0, img.width, img.height, dx, dy, drawW, drawH);
     return await new Promise<Blob>((res) => canvas.toBlob((b) => res(b!), "image/jpeg", quality));
   }
 
@@ -208,7 +212,7 @@ const ImageUploader = ({
           <img
             src={value}
             alt="preview"
-            className="w-32 h-32 object-cover rounded-lg border block"
+            className="w-32 h-32 object-contain rounded-lg border block bg-muted/30"
             style={{ maxWidth: "128px", maxHeight: "128px" }}
             onError={(e) => (e.currentTarget.style.display = "none")}
           />
