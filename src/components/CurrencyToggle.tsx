@@ -14,8 +14,8 @@ export const CurrencyToggle = () => {
       onMouseLeave={() => setShowTip(false)}
     >
       {showTip && (
-        <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 whitespace-nowrap max-w-[240px] text-[10px] leading-tight bg-foreground text-background px-2 py-1 rounded-md shadow-md z-[80]">
-          <span className="block whitespace-normal text-center">{currencyNotice}</span>
+        <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 whitespace-nowrap text-[11px] leading-none bg-foreground text-background px-3 py-1.5 rounded-md shadow-md z-[80]">
+          {currencyNotice}
           <span className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[4px] border-r-[4px] border-t-[4px] border-l-transparent border-r-transparent border-t-foreground" />
         </div>
       )}
