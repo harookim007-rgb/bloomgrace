@@ -60,7 +60,7 @@ const RankingRow = ({ product, rank, salesCount, soldLabel }: { product: Product
     >
       <RankMedal rank={rank} />
       <div className="relative h-16 w-16 md:h-20 md:w-20 shrink-0 overflow-hidden bg-muted">
-        <img src={img} alt={translatedName} className="h-full w-full object-contain group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+        <img src={img} alt={translatedName} className="h-full w-full object-contain transition-transform duration-500" loading="lazy" />
       </div>
       <div className="flex-1 min-w-0">
         {translatedBrand && <div className="text-[10px] md:text-xs uppercase tracking-[0.15em] text-muted-foreground mb-1 truncate">{translatedBrand}</div>}
