@@ -52,7 +52,10 @@ const MyPage = () => {
   const [reviewTarget, setReviewTarget] = useState<{ product_id: string; product_name: string } | null>(null);
   const [reviewForm, setReviewForm] = useState<{ rating: number; title: string; content: string; image_urls: string[] }>({ rating: 5, title: "", content: "", image_urls: [] });
   const [submittingReview, setSubmittingReview] = useState(false);
+  const [paymentInfo, setPaymentInfo] = useState<any>(null);
+  const [openBankId, setOpenBankId] = useState<string | null>(null);
   const dateFmt = language === "de" ? "de-DE" : language === "es" ? "es-ES" : language === "fr" ? "fr-FR" : language === "pt" ? "pt-BR" : language === "ar" ? "ar-SA" : language === "ja" ? "ja-JP" : "en-US";
+
   const L = MP_I18N[language] || MP_I18N.en;
   const R = REVIEW_I18N[language] || REVIEW_I18N.en;
 
