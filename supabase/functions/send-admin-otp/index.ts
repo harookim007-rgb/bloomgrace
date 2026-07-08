@@ -5,6 +5,7 @@ const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+const ADMIN_OTP_FROM = Deno.env.get("ADMIN_OTP_FROM") || "Bloom & Grace Admin <admin@bloomgrace.shop>";
 
 const RESEND_COOLDOWN_MS = 45_000;
 const OTP_TTL_MS = 5 * 60 * 1000;
@@ -98,7 +99,7 @@ Deno.serve(async (req) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Bloom & Grace Admin <welcometo@bloomgrace.shop>",
+        from: ADMIN_OTP_FROM,
         to: [email],
         subject,
         html,
