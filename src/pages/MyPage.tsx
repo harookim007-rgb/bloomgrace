@@ -166,10 +166,29 @@ const MyPage = () => {
                       </span>
                     </div>
                     {isPendingBank && order.payment_deadline && (
-                      <div className="mb-3 text-xs text-primary flex items-center gap-1.5">
+                      <div className="mb-3 text-xs text-primary flex items-center gap-1.5 flex-wrap">
                         <Clock className="h-3.5 w-3.5" /> {L.deadline}: {new Date(order.payment_deadline).toLocaleString(dateFmt)} ({deadlineText(order.payment_deadline)})
+                        {paymentInfo && (
+                          <button
+                            type="button"
+                            onClick={() => setOpenBankId(openBankId === order.id ? null : order.id)}
+                            className="ml-auto text-[10px] tracking-[0.15em] uppercase px-2 py-1 border border-primary/40 text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+                          >
+                            {openBankId === order.id ? "− " : "+ "}입금계좌 확인
+                          </button>
+                        )}
                       </div>
                     )}
+                    {isPendingBank && openBankId === order.id && paymentInfo && (
+                      <div className="mb-3 p-3 border border-primary/30 bg-primary-soft/20 text-xs space-y-1 font-sans">
+                        <div className="flex justify-between"><span className="text-muted-foreground">Bank</span><span className="font-medium">{paymentInfo.bank_name}</span></div>
+                        <div className="flex justify-between"><span className="text-muted-foreground">Account</span><span className="font-medium">{paymentInfo.account_number}</span></div>
+                        <div className="flex justify-between"><span className="text-muted-foreground">Holder</span><span className="font-medium">{paymentInfo.account_holder}</span></div>
+                        <div className="flex justify-between"><span className="text-muted-foreground">Amount</span><span className="font-medium">{formatPrice(Number(order.total))}</span></div>
+                        {paymentInfo.instructions && <p className="pt-1 text-muted-foreground whitespace-pre-line">{paymentInfo.instructions}</p>}
+                      </div>
+                    )}
+
                     {isCancelled && order.cancel_reason === "payment_timeout" && (
                       <div className="mb-3 text-xs text-destructive">{L.autoCancelled}</div>
                     )}
