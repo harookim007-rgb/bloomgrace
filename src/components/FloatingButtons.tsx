@@ -196,7 +196,7 @@ const FloatingButtons = () => {
                   <h4 className="text-sm font-serif font-medium">{mt.title}</h4>
                   <p className="text-[10px] text-muted-foreground mt-0.5">{mt.subtitle}</p>
                 </div>
-                <button onClick={() => setMessengerOpen(false)} className="text-muted-foreground/50 hover:text-foreground transition-colors">
+                <button onClick={() => setMessengerOpen(false)} aria-label="Close support chat" className="text-muted-foreground/50 hover:text-foreground transition-colors">
                   <X className="h-4 w-4" />
                 </button>
               </div>

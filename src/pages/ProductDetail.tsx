@@ -7,6 +7,7 @@ import { useWishlist } from "@/hooks/useWishlist";
 import { useLanguage } from "@/contexts/LanguageContext";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
 import ProductView from "@/components/ProductView";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -105,8 +106,34 @@ const ProductDetail = () => {
   if (isLoading) return <div className="min-h-dvh"><Navigation /><div className="flex items-center justify-center py-32 text-sm text-muted-foreground">{t("pd_loading")}</div></div>;
   if (!product) return <div className="min-h-dvh"><Navigation /><div className="flex items-center justify-center py-32 text-sm text-muted-foreground">{t("pd_not_found")}</div></div>;
 
+  const pdName = getLocalizedProductName(product, language) || product.name;
+  const pdDesc = (product.translations?.[language]?.description || product.description || `${pdName} — Bloom & Grace K-Beauty`).toString().replace(/<[^>]*>/g, "").slice(0, 158);
+  const pdImage = product.image_url || product.thumbnail_url || undefined;
+  const pdJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: pdName,
+    image: pdImage ? [pdImage] : undefined,
+    description: pdDesc,
+    brand: product.brand ? { "@type": "Brand", name: product.brand } : undefined,
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "USD",
+      price: product.price,
+      availability: (product.stock ?? 1) > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      url: `https://bloomgrace.shop/products/${product.slug}`,
+    },
+  };
   return (
     <div className="min-h-dvh">
+      <SEO
+        title={`${pdName} | Bloom & Grace`.slice(0, 60)}
+        description={pdDesc}
+        path={`/products/${product.slug}`}
+        image={pdImage}
+        type="product"
+        jsonLd={pdJsonLd}
+      />
       <Navigation />
       <section className="py-8 md:py-16 px-4 md:px-6 lg:px-8">
         <div className="container max-w-6xl">

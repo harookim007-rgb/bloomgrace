@@ -120,6 +120,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
         <button
           onClick={() => toggleWishlist(product.id)}
+          aria-label={`${isWishlisted(product.id) ? "Remove" : "Add"} ${translatedName} ${isWishlisted(product.id) ? "from" : "to"} wishlist`}
+          aria-pressed={isWishlisted(product.id)}
           className="absolute top-2 md:top-3 right-2 md:right-3 w-8 h-8 md:w-10 md:h-10 flex items-center justify-center bg-background/90 backdrop-blur-sm rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-soft z-10"
         >
           <Heart className={`h-3.5 w-3.5 md:h-4 md:w-4 ${isWishlisted(product.id) ? "fill-primary text-primary" : "text-foreground/60"}`} />
@@ -127,6 +129,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
         <button
           onClick={() => addToCart(product.id)}
+          aria-label={`Add ${translatedName} to cart`}
           className="absolute bottom-2 md:bottom-3 right-2 md:right-3 w-8 h-8 md:w-10 md:h-10 flex items-center justify-center bg-primary text-primary-foreground rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-elegant hover:scale-110 z-10"
         >
           <ShoppingBag className="h-3.5 w-3.5 md:h-4 md:w-4" />

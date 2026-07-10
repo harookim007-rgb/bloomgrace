@@ -1,0 +1,18 @@
+# Bloom & Grace
+
+> Bloom & Grace is a Korean beauty (K-Beauty) boutique offering elegant, natural skincare, makeup, and personal care products with worldwide shipping.
+
+Bloom & Grace curates premium Korean beauty products across skincare, makeup, body and hair care. Shoppers can browse the catalog, view daily rankings, get AI-personalized routine recommendations, and read a multilingual Q&A. The site supports English, Spanish, German, French, Portuguese, Japanese and Arabic, with prices shown in USD (with a EUR toggle).
+
+## Pages
+
+- [Home](/): Featured K-beauty products and brand story.
+- [Shop All Products](/products): Full catalog with category filters and search.
+- [Daily Ranking](/ranking): Best-selling and trending K-beauty products.
+- [Q&A](/qa): Frequently asked questions on shipping, returns and product usage.
+- [Contact](/contact): Get in touch with customer support.
+- [Trust & Safety](/trust): Shipping, returns, privacy and payment policies.
+
+## Optional
+
+- [Sign in](/auth): Account access for customers.

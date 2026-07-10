@@ -142,7 +142,7 @@ const Navigation = () => {
           <div className="flex items-center gap-2 shrink-0">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-9 w-9 md:h-10 md:w-10 text-foreground/60 hover:text-primary">
+                <Button variant="ghost" size="icon" aria-label={"Language"} className="h-9 w-9 md:h-10 md:w-10 text-foreground/60 hover:text-primary">
                   <Globe className="h-[18px] w-[18px]" />
                 </Button>
               </DropdownMenuTrigger>
@@ -159,21 +159,21 @@ const Navigation = () => {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <Link to="/products" className="hidden md:inline-flex">
-              <Button variant="ghost" size="icon" className="h-10 w-10 text-foreground/60 hover:text-primary">
+            <Link to="/products" className="hidden md:inline-flex" aria-label={"Search products"}>
+              <Button variant="ghost" size="icon" aria-label={"Search products"} className="h-10 w-10 text-foreground/60 hover:text-primary">
                 <Search className="h-[18px] w-[18px]" />
               </Button>
             </Link>
             {user && (
-              <Link to="/mypage" className="hidden md:inline-flex">
-                <Button variant="ghost" size="icon" className="h-10 w-10 text-foreground/60 hover:text-primary">
+              <Link to="/mypage" className="hidden md:inline-flex" aria-label={"Wishlist"}>
+                <Button variant="ghost" size="icon" aria-label={"Wishlist"} className="h-10 w-10 text-foreground/60 hover:text-primary">
                   <Heart className="h-[18px] w-[18px]" />
                 </Button>
               </Link>
             )}
             <CartDrawer />
             <Link to={user ? "/mypage" : "/auth"} className="inline-flex" aria-label={user ? t("nav_mypage") : t("nav_login")}>
-              <Button variant="ghost" size="icon" className="h-10 w-10 text-foreground/60 hover:text-primary">
+              <Button variant="ghost" size="icon" aria-label={user ? t("nav_mypage") : t("nav_login")} className="h-10 w-10 text-foreground/60 hover:text-primary">
                 <User className="h-[18px] w-[18px]" />
               </Button>
             </Link>

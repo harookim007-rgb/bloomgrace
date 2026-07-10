@@ -4,6 +4,7 @@ import { Trophy, Medal, Award } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
 import { useLanguage, type Language } from "@/contexts/LanguageContext";
 import { getLocalizedBrand, getLocalizedProductName } from "@/lib/productI18n";
 
@@ -152,6 +153,11 @@ const Ranking = () => {
 
   return (
     <div className="min-h-dvh" data-ranking-page="sales-only">
+      <SEO
+        title="Best-Selling K-Beauty Ranking | Bloom & Grace"
+        description="See the top-selling and trending Korean beauty products at Bloom & Grace, updated weekly and monthly."
+        path="/ranking"
+      />
       <Navigation />
       <section className="py-8 md:py-16 px-3 md:px-6 lg:px-8">
         <div className="container max-w-4xl">

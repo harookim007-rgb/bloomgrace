@@ -196,6 +196,7 @@ const Hero = () => {
       {slides.length > 1 && (
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-4">
           <button
+            aria-label="Previous slide"
             onClick={() => setCurrent(c => (c - 1 + slides.length) % slides.length)}
             className="w-11 h-11 flex items-center justify-center text-foreground/50 hover:text-foreground transition-colors"
           >
@@ -205,6 +206,8 @@ const Hero = () => {
             {slides.map((_, i) => (
               <button
                 key={i}
+                aria-label={`Go to slide ${i + 1}`}
+                aria-current={i === current ? "true" : undefined}
                 onClick={() => setCurrent(i)}
                 className={`rounded-full transition-all duration-500 ${
                   i === current ? "w-10 h-2.5 bg-primary" : "w-2.5 h-2.5 bg-foreground/20"
@@ -213,6 +216,7 @@ const Hero = () => {
             ))}
           </div>
           <button
+            aria-label="Next slide"
             onClick={() => setCurrent(c => (c + 1) % slides.length)}
             className="w-11 h-11 flex items-center justify-center text-foreground/50 hover:text-foreground transition-colors"
           >
