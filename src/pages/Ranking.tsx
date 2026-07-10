@@ -4,6 +4,7 @@ import { Trophy, Medal, Award } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
 import { useLanguage, type Language } from "@/contexts/LanguageContext";
 import { getLocalizedBrand, getLocalizedProductName } from "@/lib/productI18n";
 

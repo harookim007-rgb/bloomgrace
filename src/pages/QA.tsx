@@ -1,5 +1,6 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { MessageCircle, Package, RefreshCw, Shield, Sparkles, Leaf } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
