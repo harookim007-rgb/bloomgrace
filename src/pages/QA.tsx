@@ -31,6 +31,22 @@ const QA = () => {
 
   return (
     <div className="min-h-dvh">
+      <SEO
+        title="Q&A — Shipping, Returns & Skincare Help | Bloom & Grace"
+        description="Answers to common questions about Bloom & Grace K-Beauty products, shipping, returns, membership, and sustainability."
+        path="/qa"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqs.flatMap((c) =>
+            c.questions.map((q) => ({
+              "@type": "Question",
+              name: q.q,
+              acceptedAnswer: { "@type": "Answer", text: q.a },
+            })),
+          ),
+        }}
+      />
       <Navigation />
       <section className="py-16 md:py-24 px-4 md:px-6 lg:px-8">
         <div className="container max-w-4xl">

@@ -78,6 +78,11 @@ const Products = () => {
 
   return (
     <div className="min-h-dvh">
+      <SEO
+        title="Shop All K-Beauty Products | Bloom & Grace"
+        description="Browse Bloom & Grace's curated Korean beauty catalog — skincare, makeup, body and hair essentials with worldwide shipping."
+        path="/products"
+      />
       <Navigation />
       <section className="py-8 md:py-16 px-3 md:px-6 lg:px-8">
         <div className="container">

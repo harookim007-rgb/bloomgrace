@@ -200,6 +200,11 @@ const Trust = () => {
   const d = T[language] || T.en;
   return (
     <div className="min-h-dvh flex flex-col">
+      <SEO
+        title="Trust & Privacy | Bloom & Grace"
+        description="How Bloom & Grace protects your account, order data and privacy — hosting, security and data handling practices."
+        path="/trust"
+      />
       <Navigation />
       <main className="flex-1 container px-4 md:px-6 lg:px-8 py-12 md:py-20 max-w-3xl">
         <h1 className="font-serif text-3xl md:text-4xl mb-2">{d.title}</h1>
