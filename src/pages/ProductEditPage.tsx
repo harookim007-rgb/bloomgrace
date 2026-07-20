@@ -276,9 +276,14 @@ const ProductEditPage = () => {
   }, [dirty]);
 
   const doSave = useCallback(async (silent = true): Promise<boolean> => {
-    if (!id || inFlightRef.current) return false;
+    if (inFlightRef.current) return false;
     if (!form.name.trim() || !form.price) {
       if (!silent) toast.error("상품명과 판매가는 필수입니다.");
+      return false;
+    }
+    // For new products, wait until the user has filled a main image so we don't insert half-baked rows via autosave
+    if (!currentId && !form.image_url) {
+      if (!silent) toast.error("대표 이미지를 먼저 등록해주세요.");
       return false;
     }
     inFlightRef.current = true;
@@ -308,7 +313,19 @@ const ProductEditPage = () => {
       skin_types: form.skin_types,
       related_product_ids: form.related_product_ids,
     };
-    const { error } = await supabase.from("products").update(payload).eq("id", id);
+    let error: any = null;
+    if (currentId) {
+      const res = await supabase.from("products").update(payload).eq("id", currentId);
+      error = res.error;
+    } else {
+      const res = await supabase.from("products").insert(payload).select("id").single();
+      error = res.error;
+      if (!error && res.data?.id) {
+        setCurrentId(res.data.id);
+        // Update URL to real edit path without adding a history entry
+        window.history.replaceState(null, "", `/admin/products/${res.data.id}/edit`);
+      }
+    }
     inFlightRef.current = false;
     if (error) {
       setStatus("error");
@@ -321,27 +338,28 @@ const ProductEditPage = () => {
     if (!silent) toast.success("저장되었습니다.");
     window.setTimeout(() => setStatus(s => (s === "saved" ? "idle" : s)), 2000);
     return true;
-  }, [id, form]);
+  }, [currentId, form]);
 
-  // Task 4: debounced autosave
+  // Task 4: debounced autosave (only after the product exists in DB)
   useEffect(() => {
     if (loading || !dirty) return;
+    if (!currentId) return; // don't autosave until first manual save creates the row
     if (saveTimerRef.current) window.clearTimeout(saveTimerRef.current);
     saveTimerRef.current = window.setTimeout(() => { doSave(true); }, 2500);
     return () => { if (saveTimerRef.current) window.clearTimeout(saveTimerRef.current); };
-  }, [form, dirty, loading, doSave]);
+  }, [form, dirty, loading, currentId, doSave]);
 
   const handleBack = () => {
     if (dirty) {
       const ok = window.confirm("저장되지 않은 변경사항이 있습니다. 정말 나가시겠습니까?");
       if (!ok) return;
     }
-    navigate(returnTo, { replace: true });
+    goBack();
   };
 
   const handleSaveAndReturn = async () => {
     const saved = await doSave(false);
-    if (saved) navigate(returnTo, { replace: true });
+    if (saved) goBack();
   };
 
   if (loading) {
