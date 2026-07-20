@@ -236,16 +236,18 @@ const AdminProducts = () => {
     related_product_ids: p.related_product_ids || [],
   });
 
+  const currentReturnTo = () => window.location.pathname + window.location.search;
+
   const editProduct = (p: any) => {
-    // Task 3: dedicated edit page instead of dialog
-    navigate(`/admin/products/${p.id}/edit`, { state: { returnTo: "/admin?tab=products" } });
+    navigate(`/admin/products/${p.id}/edit`, { state: { returnTo: currentReturnTo() } });
+  };
+
+  const addProduct = () => {
+    navigate(`/admin/products/new/edit`, { state: { returnTo: currentReturnTo() } });
   };
 
   const duplicateProduct = (p: any) => {
-    setForm(loadProduct(p, true));
-    setEditingId(null);
-    setActiveTab("info");
-    setDialogOpen(true);
+    navigate(`/admin/products/new/edit?duplicate=${p.id}`, { state: { returnTo: currentReturnTo() } });
   };
 
   const requestDeleteProduct = (p: any) => setPendingDelete({ ids: [p.id], label: p.name });
