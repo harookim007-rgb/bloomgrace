@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -123,20 +123,37 @@ const SortableImages = ({
 
 const AdminProducts = () => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [form, setForm] = useState<FormState>(emptyForm);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [search, setSearch] = useState("");
-  const [filterCategory, setFilterCategory] = useState("all");
-  const [filterStatus, setFilterStatus] = useState("all");
+  const [search, setSearchState] = useState(() => searchParams.get("q") || "");
+  const [filterCategory, setFilterCategoryState] = useState(() => searchParams.get("cat") || "all");
+  const [filterStatus, setFilterStatusState] = useState(() => searchParams.get("st") || "all");
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [activeTab, setActiveTab] = useState<"info" | "images" | "description" | "extras" | "preview">("info");
   const [pendingDelete, setPendingDelete] = useState<{ ids: string[]; label: string } | null>(null);
   const [deleting, setDeleting] = useState(false);
 
+  // Sync search/filter state into URL so returning from edit page restores exact list view
+  useEffect(() => {
+    const next = new URLSearchParams(searchParams);
+    next.set("tab", "products");
+    search ? next.set("q", search) : next.delete("q");
+    filterCategory !== "all" ? next.set("cat", filterCategory) : next.delete("cat");
+    filterStatus !== "all" ? next.set("st", filterStatus) : next.delete("st");
+    setSearchParams(next, { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search, filterCategory, filterStatus]);
+
+  const setSearch = (v: string) => setSearchState(v);
+  const setFilterCategory = (v: string) => setFilterCategoryState(v);
+  const setFilterStatus = (v: string) => setFilterStatusState(v);
+
   useEffect(() => { fetchData(); }, []);
+
 
   const fetchData = async () => {
     const [p, c] = await Promise.all([
