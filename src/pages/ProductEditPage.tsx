@@ -145,6 +145,8 @@ const ProductEditPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { isAdmin, isLoading: authLoading } = useAuth();
+  const isNew = id === "new";
+  const [currentId, setCurrentId] = useState<string | null>(isNew ? null : id ?? null);
   const [form, setForm] = useState<FormState>(emptyForm);
   const [categories, setCategories] = useState<any[]>([]);
   const [allProducts, setAllProducts] = useState<any[]>([]);
@@ -156,7 +158,16 @@ const ProductEditPage = () => {
   const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const saveTimerRef = useRef<number | null>(null);
   const inFlightRef = useRef(false);
+  const historyStartRef = useRef<number>(typeof window !== "undefined" ? window.history.length : 0);
   const returnTo = (location.state as { returnTo?: string } | null)?.returnTo || "/admin?tab=products";
+
+  const goBack = useCallback(() => {
+    if (typeof window !== "undefined" && window.history.length > historyStartRef.current) {
+      navigate(-1);
+    } else {
+      navigate(returnTo, { replace: true });
+    }
+  }, [navigate, returnTo]);
 
   // Guard
   useEffect(() => {
@@ -170,16 +181,54 @@ const ProductEditPage = () => {
   // Load
   useEffect(() => {
     (async () => {
-      if (!id) return;
-      const [p, c, all] = await Promise.all([
-        supabase.from("products").select("*").eq("id", id).maybeSingle(),
+      const duplicateFrom = new URLSearchParams(location.search).get("duplicate");
+      const [c, all] = await Promise.all([
         supabase.from("categories").select("*").order("sort_order"),
         supabase.from("products").select("id, name, price, image_url").order("created_at", { ascending: false }),
       ]);
       setCategories(c.data || []);
       setAllProducts(all.data || []);
-      if (!p.data) { toast.error("상품을 찾을 수 없습니다."); navigate("/admin?tab=products"); return; }
-      const d = p.data;
+
+      if (isNew) {
+        let next: FormState = emptyForm;
+        if (duplicateFrom) {
+          const { data } = await supabase.from("products").select("*").eq("id", duplicateFrom).maybeSingle();
+          if (data) {
+            next = {
+              name: (data.name || "") + " (복사)",
+              slug: "",
+              description: data.description || "",
+              description_top: data.description_top || "",
+              description_bottom: data.description_bottom || "",
+              description_position: (data.description_position as DescPos) || "none",
+              image_alt: data.image_alt || "",
+              price: String(data.price ?? ""),
+              original_price: data.original_price ? String(data.original_price) : "",
+              category_id: data.category_id || "",
+              brand: data.brand || "",
+              image_url: data.image_url || "",
+              images: (data.images || []).filter((u: string) => u && u !== data.image_url),
+              detail_images: data.detail_images || [],
+              image_links: (data.image_links as Record<string, string>) || {},
+              stock: String(data.stock ?? 0),
+              is_active: false,
+              is_featured: false,
+              tags: (data.tags || []).join(", "),
+              benefits: data.benefits || [],
+              skin_types: data.skin_types || [],
+              related_product_ids: data.related_product_ids || [],
+            };
+          }
+        }
+        setForm(next);
+        initialFormRef.current = JSON.stringify(next);
+        setLoading(false);
+        return;
+      }
+
+      if (!id) return;
+      const { data: d } = await supabase.from("products").select("*").eq("id", id).maybeSingle();
+      if (!d) { toast.error("상품을 찾을 수 없습니다."); navigate("/admin?tab=products"); return; }
       const next: FormState = {
         name: d.name || "",
         slug: d.slug || "",
@@ -208,7 +257,7 @@ const ProductEditPage = () => {
       initialFormRef.current = JSON.stringify(next);
       setLoading(false);
     })();
-  }, [id, navigate]);
+  }, [id, isNew, location.search, navigate]);
 
   // Task 4: dirty tracking + beforeunload
   useEffect(() => {
@@ -227,9 +276,14 @@ const ProductEditPage = () => {
   }, [dirty]);
 
   const doSave = useCallback(async (silent = true): Promise<boolean> => {
-    if (!id || inFlightRef.current) return false;
+    if (inFlightRef.current) return false;
     if (!form.name.trim() || !form.price) {
       if (!silent) toast.error("상품명과 판매가는 필수입니다.");
+      return false;
+    }
+    // For new products, wait until the user has filled a main image so we don't insert half-baked rows via autosave
+    if (!currentId && !form.image_url) {
+      if (!silent) toast.error("대표 이미지를 먼저 등록해주세요.");
       return false;
     }
     inFlightRef.current = true;
@@ -259,7 +313,19 @@ const ProductEditPage = () => {
       skin_types: form.skin_types,
       related_product_ids: form.related_product_ids,
     };
-    const { error } = await supabase.from("products").update(payload).eq("id", id);
+    let error: any = null;
+    if (currentId) {
+      const res = await supabase.from("products").update(payload).eq("id", currentId);
+      error = res.error;
+    } else {
+      const res = await supabase.from("products").insert(payload).select("id").single();
+      error = res.error;
+      if (!error && res.data?.id) {
+        setCurrentId(res.data.id);
+        // Update URL to real edit path without adding a history entry
+        window.history.replaceState(null, "", `/admin/products/${res.data.id}/edit`);
+      }
+    }
     inFlightRef.current = false;
     if (error) {
       setStatus("error");
@@ -272,27 +338,28 @@ const ProductEditPage = () => {
     if (!silent) toast.success("저장되었습니다.");
     window.setTimeout(() => setStatus(s => (s === "saved" ? "idle" : s)), 2000);
     return true;
-  }, [id, form]);
+  }, [currentId, form]);
 
-  // Task 4: debounced autosave
+  // Task 4: debounced autosave (only after the product exists in DB)
   useEffect(() => {
     if (loading || !dirty) return;
+    if (!currentId) return; // don't autosave until first manual save creates the row
     if (saveTimerRef.current) window.clearTimeout(saveTimerRef.current);
     saveTimerRef.current = window.setTimeout(() => { doSave(true); }, 2500);
     return () => { if (saveTimerRef.current) window.clearTimeout(saveTimerRef.current); };
-  }, [form, dirty, loading, doSave]);
+  }, [form, dirty, loading, currentId, doSave]);
 
   const handleBack = () => {
     if (dirty) {
       const ok = window.confirm("저장되지 않은 변경사항이 있습니다. 정말 나가시겠습니까?");
       if (!ok) return;
     }
-    navigate(returnTo, { replace: true });
+    goBack();
   };
 
   const handleSaveAndReturn = async () => {
     const saved = await doSave(false);
-    if (saved) navigate(returnTo, { replace: true });
+    if (saved) goBack();
   };
 
   if (loading) {
