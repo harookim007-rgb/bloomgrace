@@ -354,10 +354,8 @@ const AdminProducts = () => {
           <h1 className="text-2xl font-bold font-serif">상품 관리</h1>
           <p className="text-sm text-muted-foreground mt-1">총 {products.length}개 상품 · {products.filter(p=>p.is_active).length}개 활성</p>
         </div>
+        <Button className="gap-2" onClick={addProduct}><Plus className="h-4 w-4" />상품 추가</Button>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger asChild>
-            <Button className="gap-2" onClick={resetForm}><Plus className="h-4 w-4" />상품 추가</Button>
-          </DialogTrigger>
           <DialogContent className="max-w-4xl max-h-[92vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>{editingId ? "상품 수정" : "새 상품 등록"}</DialogTitle>
