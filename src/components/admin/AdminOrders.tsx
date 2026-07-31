@@ -193,7 +193,7 @@ const AdminOrders = () => {
         {Object.entries(statusMap).map(([key, val]) => (
           <button
             key={key}
-            onClick={() => setFilterStatus(filterStatus === key ? "all" : key)}
+            onClick={() => applyStatusFilter(filterStatus === key ? "all" : key)}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filterStatus === key ? val.color + " ring-2 ring-ring/40" : "bg-muted/50 text-muted-foreground hover:bg-muted"
             }`}
