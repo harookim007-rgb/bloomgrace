@@ -7,8 +7,14 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Eye, Repeat } from "lucide-react";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Search, Eye, Repeat, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import { parsePhone } from "@/lib/countryFlag";
+
 
 const AdminCustomers = () => {
   const [profiles, setProfiles] = useState<any[]>([]);
