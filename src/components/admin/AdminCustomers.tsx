@@ -26,6 +26,28 @@ const AdminCustomers = () => {
   const [repeatOnly, setRepeatOnly] = useState(false);
   const [detailProfile, setDetailProfile] = useState<any>(null);
   const [detailOpen, setDetailOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<any>(null);
+  const [deleting, setDeleting] = useState(false);
+
+  const confirmDelete = async () => {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("delete-customer", {
+        body: { userId: deleteTarget.user_id },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      toast.success("고객 계정이 삭제되었습니다.");
+      setProfiles(prev => prev.filter(p => p.user_id !== deleteTarget.user_id));
+      setDeleteTarget(null);
+    } catch (e: any) {
+      toast.error("삭제 실패: " + (e?.message || "unknown"));
+    } finally {
+      setDeleting(false);
+    }
+  };
+
 
   useEffect(() => { fetchData(); }, []);
 
