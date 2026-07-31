@@ -18,18 +18,20 @@ import AdminOtpGate from "@/components/admin/AdminOtpGate";
 import AdminRanking from "@/components/admin/AdminRanking";
 import AdminMenus from "@/components/admin/AdminMenus";
 import AdminWhitelist from "@/components/admin/AdminWhitelist";
+import AdminInquiries from "@/components/admin/AdminInquiries";
 
 export type AdminTab =
   | "dashboard" | "products" | "categories" | "orders"
   | "customers" | "coupons" | "banners" | "reviews"
   | "shipping" | "payment" | "settings" | "ranking"
-  | "menus" | "whitelist";
+  | "menus" | "whitelist" | "inquiries";
 
 const adminTabs: AdminTab[] = [
   "dashboard", "products", "categories", "orders", "customers", "coupons",
   "banners", "reviews", "shipping", "payment", "settings", "ranking",
-  "menus", "whitelist",
+  "menus", "whitelist", "inquiries",
 ];
+
 
 const getAdminTab = (value: string | null): AdminTab | null => {
   return value && adminTabs.includes(value as AdminTab) ? (value as AdminTab) : null;
@@ -88,7 +90,9 @@ const Admin = () => {
       case "ranking": return <AdminRanking />;
       case "menus": return <AdminMenus />;
       case "whitelist": return <AdminWhitelist />;
+      case "inquiries": return <AdminInquiries />;
       case "settings": return <AdminSettings />;
+
       default: return <AdminDashboard />;
     }
   };

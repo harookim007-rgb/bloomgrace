@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -49,9 +51,10 @@ const StatusStepper = ({ status }: { status: string }) => {
 };
 
 const AdminOrders = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [orders, setOrders] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
-  const [filterStatus, setFilterStatus] = useState("all");
+  const [filterStatus, setFilterStatus] = useState(searchParams.get("status") || "all");
   const [filterProduct, setFilterProduct] = useState("all");
   const [search, setSearch] = useState("");
   const [detailOrder, setDetailOrder] = useState<any>(null);
@@ -59,26 +62,76 @@ const AdminOrders = () => {
   const [trackingOpen, setTrackingOpen] = useState(false);
   const [trackingOrder, setTrackingOrder] = useState<any>(null);
   const [trackingForm, setTrackingForm] = useState({ tracking_number: "", tracking_carrier: "", tracking_url: "" });
+  const [busyId, setBusyId] = useState<string | null>(null);
 
   useEffect(() => { fetchData(); }, []);
+
+  useEffect(() => {
+    const s = searchParams.get("status");
+    if (s && s !== filterStatus) setFilterStatus(s);
+  }, [searchParams]);
+
+  const applyStatusFilter = (next: string) => {
+    setFilterStatus(next);
+    const p = new URLSearchParams(searchParams);
+    if (next === "all") p.delete("status"); else p.set("status", next);
+    setSearchParams(p, { replace: true });
+  };
 
   const fetchData = async () => {
     const [o, p] = await Promise.all([
       supabase
         .from("orders")
-        .select("*, order_items(*), profiles!orders_user_id_fkey(display_name, phone)")
+        .select("*, order_items(*)")
         .order("created_at", { ascending: false }),
       supabase.from("products").select("id, name"),
     ]);
-    setOrders(o.data || []);
+    if (o.error) toast.error("주문을 불러오지 못했습니다: " + o.error.message);
+
+    const rows = o.data || [];
+    const userIds = Array.from(new Set(rows.map((r: any) => r.user_id).filter(Boolean)));
+    let profileMap = new Map<string, any>();
+    if (userIds.length) {
+      const { data: profs } = await supabase
+        .from("profiles")
+        .select("user_id, display_name, phone")
+        .in("user_id", userIds);
+      profileMap = new Map((profs || []).map((pf: any) => [pf.user_id, pf]));
+    }
+    setOrders(rows.map((r: any) => ({ ...r, profiles: profileMap.get(r.user_id) || null })));
     setProducts(p.data || []);
   };
 
-  const updateStatus = async (id: string, status: string) => {
-    await supabase.from("orders").update({ status }).eq("id", id);
+  const notifyCustomer = async (orderId: string, type: "payment_confirmed" | "shipping_started" | "delivered") => {
+    const { data, error } = await supabase.functions.invoke("order-status-email", { body: { orderId, type } });
+    if (error || data?.error) {
+      toast.warning("상태는 변경됐지만 고객 이메일 발송에 실패했습니다.");
+      return;
+    }
+    toast.success("고객에게 안내 이메일을 발송했습니다.");
+  };
+
+  const updateStatus = async (id: string, status: string, notify = false) => {
+    setBusyId(id);
+    const { error } = await supabase.from("orders").update({ status }).eq("id", id);
+    if (error) {
+      toast.error("상태 변경 실패: " + error.message);
+      setBusyId(null);
+      return;
+    }
     toast.success("주문 상태가 업데이트되었습니다.");
+    if (notify) {
+      const map: Record<string, "payment_confirmed" | "shipping_started" | "delivered"> = {
+        confirmed: "payment_confirmed",
+        shipping: "shipping_started",
+        delivered: "delivered",
+      };
+      if (map[status]) await notifyCustomer(id, map[status]);
+    }
+    setBusyId(null);
     fetchData();
   };
+
 
   const openTracking = (o: any) => {
     setTrackingOrder(o);
@@ -140,7 +193,7 @@ const AdminOrders = () => {
         {Object.entries(statusMap).map(([key, val]) => (
           <button
             key={key}
-            onClick={() => setFilterStatus(filterStatus === key ? "all" : key)}
+            onClick={() => applyStatusFilter(filterStatus === key ? "all" : key)}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filterStatus === key ? val.color + " ring-2 ring-ring/40" : "bg-muted/50 text-muted-foreground hover:bg-muted"
             }`}
@@ -217,7 +270,25 @@ const AdminOrders = () => {
                       ) : <span className="text-muted-foreground">미등록</span>}
                     </TableCell>
                     <TableCell className="text-right">
-                      <div className="flex justify-end gap-1">
+                      <div className="flex justify-end items-center gap-1 flex-wrap">
+                        {o.status === "pending" && (
+                          <Button size="sm" variant="outline" className="h-8 text-xs" disabled={busyId === o.id}
+                            onClick={() => updateStatus(o.id, "confirmed", true)}>
+                            <CheckCircle className="h-3.5 w-3.5 mr-1" />입금 확인
+                          </Button>
+                        )}
+                        {o.status === "confirmed" && (
+                          <Button size="sm" variant="outline" className="h-8 text-xs" disabled={busyId === o.id}
+                            onClick={() => updateStatus(o.id, "shipping", true)}>
+                            <Truck className="h-3.5 w-3.5 mr-1" />배송 시작
+                          </Button>
+                        )}
+                        {o.status === "shipping" && (
+                          <Button size="sm" variant="outline" className="h-8 text-xs" disabled={busyId === o.id}
+                            onClick={() => updateStatus(o.id, "delivered", true)}>
+                            <Package className="h-3.5 w-3.5 mr-1" />배송 완료
+                          </Button>
+                        )}
                         <Button size="icon" variant="ghost" onClick={() => { setDetailOrder(o); setDetailOpen(true); }} title="상세"><Eye className="h-4 w-4" /></Button>
                         <Button size="icon" variant="ghost" onClick={() => openTracking(o)} title="송장 등록"><Truck className="h-4 w-4" /></Button>
                         <Select value={o.status} onValueChange={v => updateStatus(o.id, v)}>
@@ -228,6 +299,7 @@ const AdminOrders = () => {
                         </Select>
                       </div>
                     </TableCell>
+
                   </TableRow>
                 );
               })}

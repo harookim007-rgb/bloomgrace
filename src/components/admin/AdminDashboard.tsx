@@ -1,5 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Package, ShoppingCart, Users, Tag, DollarSign, Star, Repeat, UserPlus, Truck, CheckCircle2 } from "lucide-react";
@@ -16,7 +18,9 @@ const RANGES: { value: Range; label: string; days: number }[] = [
 ];
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
   const [range, setRange] = useState<Range>("30d");
+
   const [allOrders, setAllOrders] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
   const [profiles, setProfiles] = useState<any[]>([]);
@@ -151,7 +155,13 @@ const AdminDashboard = () => {
       {/* Order pipeline cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
         {stageCards.map(s => (
-          <div key={s.key} className={`rounded-lg border p-4 ${s.color}`}>
+          <button
+            key={s.key}
+            type="button"
+            onClick={() => navigate(`/admin?tab=orders&status=${s.key}`)}
+            className={`text-left rounded-lg border p-4 transition-shadow hover:shadow-md focus:outline-none focus:ring-2 focus:ring-ring/50 ${s.color}`}
+            aria-label={`${s.label} 주문 목록 보기`}
+          >
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium uppercase tracking-wide">{s.label}</span>
               <s.icon className="h-4 w-4 opacity-70" />
@@ -161,9 +171,10 @@ const AdminDashboard = () => {
               <span className="text-xs opacity-70">건</span>
             </div>
             <div className={`mt-2 h-1 rounded-full ${s.dot} opacity-80`} />
-          </div>
+          </button>
         ))}
       </div>
+
 
       {/* Stat cards */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6">

@@ -285,6 +285,7 @@ export type Database = {
           language: string | null
           message: string
           name: string
+          replied_at: string | null
           status: string | null
           updated_at: string | null
         }
@@ -296,6 +297,7 @@ export type Database = {
           language?: string | null
           message: string
           name: string
+          replied_at?: string | null
           status?: string | null
           updated_at?: string | null
         }
@@ -307,6 +309,7 @@ export type Database = {
           language?: string | null
           message?: string
           name?: string
+          replied_at?: string | null
           status?: string | null
           updated_at?: string | null
         }
@@ -392,11 +395,13 @@ export type Database = {
           cancel_reason: string | null
           coupon_code: string | null
           created_at: string
+          customer_email: string | null
           depositor_name: string | null
           discount: number | null
           id: string
           payment_deadline: string | null
           payment_method: string | null
+          payment_reminder_sent_at: string | null
           points_earned: number
           points_used: number
           shipping_address: Json | null
@@ -415,11 +420,13 @@ export type Database = {
           cancel_reason?: string | null
           coupon_code?: string | null
           created_at?: string
+          customer_email?: string | null
           depositor_name?: string | null
           discount?: number | null
           id?: string
           payment_deadline?: string | null
           payment_method?: string | null
+          payment_reminder_sent_at?: string | null
           points_earned?: number
           points_used?: number
           shipping_address?: Json | null
@@ -438,11 +445,13 @@ export type Database = {
           cancel_reason?: string | null
           coupon_code?: string | null
           created_at?: string
+          customer_email?: string | null
           depositor_name?: string | null
           discount?: number | null
           id?: string
           payment_deadline?: string | null
           payment_method?: string | null
+          payment_reminder_sent_at?: string | null
           points_earned?: number
           points_used?: number
           shipping_address?: Json | null

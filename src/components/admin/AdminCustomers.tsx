@@ -7,8 +7,14 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Eye, Repeat } from "lucide-react";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Search, Eye, Repeat, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import { parsePhone } from "@/lib/countryFlag";
+
 
 const AdminCustomers = () => {
   const [profiles, setProfiles] = useState<any[]>([]);
@@ -20,6 +26,28 @@ const AdminCustomers = () => {
   const [repeatOnly, setRepeatOnly] = useState(false);
   const [detailProfile, setDetailProfile] = useState<any>(null);
   const [detailOpen, setDetailOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<any>(null);
+  const [deleting, setDeleting] = useState(false);
+
+  const confirmDelete = async () => {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("delete-customer", {
+        body: { userId: deleteTarget.user_id },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      toast.success("고객 계정이 삭제되었습니다.");
+      setProfiles(prev => prev.filter(p => p.user_id !== deleteTarget.user_id));
+      setDeleteTarget(null);
+    } catch (e: any) {
+      toast.error("삭제 실패: " + (e?.message || "unknown"));
+    } finally {
+      setDeleting(false);
+    }
+  };
+
 
   useEffect(() => { fetchData(); }, []);
 
@@ -187,8 +215,15 @@ const AdminCustomers = () => {
                       )}
                     </TableCell>
                     <TableCell className="text-right">
-                      <Button size="icon" variant="ghost" onClick={() => viewDetail(p)}><Eye className="h-4 w-4" /></Button>
+                      <div className="flex justify-end gap-1">
+                        <Button size="icon" variant="ghost" onClick={() => viewDetail(p)} title="상세"><Eye className="h-4 w-4" /></Button>
+                        <Button size="icon" variant="ghost" className="text-destructive hover:text-destructive"
+                          onClick={() => setDeleteTarget(p)} title="고객 삭제">
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </TableCell>
+
                   </TableRow>
                 );
               })}
@@ -267,7 +302,30 @@ const AdminCustomers = () => {
           })()}
         </DialogContent>
       </Dialog>
+
+      <AlertDialog open={!!deleteTarget} onOpenChange={o => !o && setDeleteTarget(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>고객을 삭제하시겠습니까?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {deleteTarget?.display_name || "이 고객"}의 계정과 개인정보(주소, 장바구니, 위시리스트, 리뷰, 포인트)가 영구 삭제됩니다.
+              주문 내역은 통계를 위해 보존됩니다. 이 작업은 되돌릴 수 없습니다.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleting}>취소</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={(e) => { e.preventDefault(); confirmDelete(); }}
+              disabled={deleting}
+            >
+              {deleting ? "삭제 중..." : "삭제"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
+
   );
 };
 
