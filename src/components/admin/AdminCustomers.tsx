@@ -187,8 +187,15 @@ const AdminCustomers = () => {
                       )}
                     </TableCell>
                     <TableCell className="text-right">
-                      <Button size="icon" variant="ghost" onClick={() => viewDetail(p)}><Eye className="h-4 w-4" /></Button>
+                      <div className="flex justify-end gap-1">
+                        <Button size="icon" variant="ghost" onClick={() => viewDetail(p)} title="상세"><Eye className="h-4 w-4" /></Button>
+                        <Button size="icon" variant="ghost" className="text-destructive hover:text-destructive"
+                          onClick={() => setDeleteTarget(p)} title="고객 삭제">
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </TableCell>
+
                   </TableRow>
                 );
               })}
