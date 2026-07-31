@@ -33,9 +33,11 @@ const menuGroups: { title: string; items: { id: AdminTab; label: string; icon: R
     title: "회원",
     items: [
       { id: "customers", label: "고객 관리", icon: Users },
+      { id: "inquiries", label: "CS 문의 관리", icon: MessageSquare },
       { id: "reviews", label: "리뷰 관리", icon: Star },
     ],
   },
+
   {
     title: "콘텐츠",
     items: [
