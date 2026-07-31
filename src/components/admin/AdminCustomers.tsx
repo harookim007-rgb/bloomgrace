@@ -302,7 +302,30 @@ const AdminCustomers = () => {
           })()}
         </DialogContent>
       </Dialog>
+
+      <AlertDialog open={!!deleteTarget} onOpenChange={o => !o && setDeleteTarget(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>고객을 삭제하시겠습니까?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {deleteTarget?.display_name || "이 고객"}의 계정과 개인정보(주소, 장바구니, 위시리스트, 리뷰, 포인트)가 영구 삭제됩니다.
+              주문 내역은 통계를 위해 보존됩니다. 이 작업은 되돌릴 수 없습니다.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleting}>취소</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={(e) => { e.preventDefault(); confirmDelete(); }}
+              disabled={deleting}
+            >
+              {deleting ? "삭제 중..." : "삭제"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
+
   );
 };
 
