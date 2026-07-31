@@ -90,7 +90,9 @@ const Admin = () => {
       case "ranking": return <AdminRanking />;
       case "menus": return <AdminMenus />;
       case "whitelist": return <AdminWhitelist />;
+      case "inquiries": return <AdminInquiries />;
       case "settings": return <AdminSettings />;
+
       default: return <AdminDashboard />;
     }
   };
