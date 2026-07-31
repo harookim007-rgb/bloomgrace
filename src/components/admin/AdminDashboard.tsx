@@ -18,7 +18,9 @@ const RANGES: { value: Range; label: string; days: number }[] = [
 ];
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
   const [range, setRange] = useState<Range>("30d");
+
   const [allOrders, setAllOrders] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
   const [profiles, setProfiles] = useState<any[]>([]);
