@@ -270,7 +270,25 @@ const AdminOrders = () => {
                       ) : <span className="text-muted-foreground">미등록</span>}
                     </TableCell>
                     <TableCell className="text-right">
-                      <div className="flex justify-end gap-1">
+                      <div className="flex justify-end items-center gap-1 flex-wrap">
+                        {o.status === "pending" && (
+                          <Button size="sm" variant="outline" className="h-8 text-xs" disabled={busyId === o.id}
+                            onClick={() => updateStatus(o.id, "confirmed", true)}>
+                            <CheckCircle className="h-3.5 w-3.5 mr-1" />입금 확인
+                          </Button>
+                        )}
+                        {o.status === "confirmed" && (
+                          <Button size="sm" variant="outline" className="h-8 text-xs" disabled={busyId === o.id}
+                            onClick={() => updateStatus(o.id, "shipping", true)}>
+                            <Truck className="h-3.5 w-3.5 mr-1" />배송 시작
+                          </Button>
+                        )}
+                        {o.status === "shipping" && (
+                          <Button size="sm" variant="outline" className="h-8 text-xs" disabled={busyId === o.id}
+                            onClick={() => updateStatus(o.id, "delivered", true)}>
+                            <Package className="h-3.5 w-3.5 mr-1" />배송 완료
+                          </Button>
+                        )}
                         <Button size="icon" variant="ghost" onClick={() => { setDetailOrder(o); setDetailOpen(true); }} title="상세"><Eye className="h-4 w-4" /></Button>
                         <Button size="icon" variant="ghost" onClick={() => openTracking(o)} title="송장 등록"><Truck className="h-4 w-4" /></Button>
                         <Select value={o.status} onValueChange={v => updateStatus(o.id, v)}>
@@ -281,6 +299,7 @@ const AdminOrders = () => {
                         </Select>
                       </div>
                     </TableCell>
+
                   </TableRow>
                 );
               })}
