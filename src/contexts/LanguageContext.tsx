@@ -9,7 +9,7 @@ export const currencyNoticeMap: Record<string, string> = {
   de: "Preise basieren auf USD. Der Live-Kurs kann leicht abweichen.",
   fr: "Les prix sont en USD. Le taux en direct peut légèrement varier.",
   pt: "Preços em USD. A taxa ao vivo pode variar ligeiramente.",
-  ja: "価格はUSD基準です。実勢レートにより多少異なる場合があります。",
+  ja: "価格はUSD基準です。実勢レ ㅡートにより多少異なる場合があります。",
   ar: "الأسعار بالدولار الأمريكي. قد يختلف السعر الحي قليلاً.",
 };
 
@@ -160,7 +160,7 @@ const translations = {
     auth_benefit_1: "10% welcome coupon on sign-up",
     auth_benefit_2: "3% reward points on every purchase",
     auth_benefit_3: "Special gifts during your birthday month",
-    
+
     // Profile Completion
     cp_title: "Complete Your Profile",
     cp_subtitle: "Please fill in your shipping details to start shopping.",
@@ -250,7 +250,7 @@ const translations = {
     contact_email_value: "General: contact@bloomandgrace.com\nPartners: partnership@bloomandgrace.com",
     contact_hours_title: "Hours",
     contact_hours_value: "Mon-Fri: 10:00 - 18:00\nLunch: 12:00 - 13:00\nWeekends: Closed",
-  
+
     // QA
     qa_tagline: "Frequently Asked Questions",
     qa_title: "Q&A",
@@ -695,7 +695,7 @@ const translations = {
 
     pd_reviews: "Bewertungen",
     pd_stock: "Auf Lager",
-    pd_out_of_stock: "Ausverkauft",            
+    pd_out_of_stock: "Ausverkauft",
     pd_add_to_cart: "In den Warenkorb",
     pd_review_section: "Bewertungen",
     pd_all: "Alle",
