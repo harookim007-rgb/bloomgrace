@@ -8,9 +8,10 @@ export interface SendArgs {
   subject: string;
   html: string;
   tag?: string; // e.g. "welcome", "order-confirmation"
+  replyTo?: string;
 }
 
-export async function sendEmail({ to, subject, html, tag }: SendArgs): Promise<{ ok: boolean; error?: string; status?: number }> {
+export async function sendEmail({ to, subject, html, tag, replyTo }: SendArgs): Promise<{ ok: boolean; error?: string; status?: number }> {
   if (!RESEND_API_KEY) {
     const msg = "RESEND_API_KEY is not configured";
     console.error(`[email:${tag}] ${msg}`);
@@ -24,7 +25,7 @@ export async function sendEmail({ to, subject, html, tag }: SendArgs): Promise<{
         Authorization: `Bearer ${RESEND_API_KEY}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ from: FROM, to: [to], subject, html }),
+      body: JSON.stringify({ from: FROM, to: [to], subject, html, ...(replyTo ? { reply_to: [replyTo] } : {}) }),
     });
 
     if (!res.ok) {

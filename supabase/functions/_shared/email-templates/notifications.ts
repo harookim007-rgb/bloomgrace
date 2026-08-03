@@ -132,7 +132,9 @@ export function renderInquiryAdminEmail(d: { name: string; email: string; messag
         `언어: ${escapeHtml(d.language || "en")}`
       ) +
       p(escapeHtml(d.message).replace(/\n/g, "<br/>")) +
-      btn(`${SHOP}/admin?tab=inquiries`, "관리자에서 답변하기")
+      btn(`${SHOP}/admin?tab=inquiries`, "관리자에서 답변하기") +
+      p(`<span style="font-size:12px;color:#888;">이 메일에 그대로 답장하면 고객(${escapeHtml(d.email)})에게 바로 전달됩니다.</span>`) +
+      `<div style="text-align:center;margin-top:8px;"><a href="${SHOP}" style="font-size:12px;color:#888;">홈페이지 바로가기</a></div>`
     ),
   };
 }
