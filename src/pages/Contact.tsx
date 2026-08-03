@@ -78,27 +78,28 @@ const Contact = () => {
 
           <div className="grid md:grid-cols-2 gap-16">
             <div>
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={handleSubmit}>
                 <div className="space-y-2">
                   <label className="text-xs font-sans tracking-wider uppercase">{t("contact_name")}</label>
-                  <Input className="rounded-none border-border" />
+                  <Input className="rounded-none border-border" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-sans tracking-wider uppercase">{t("contact_email")}</label>
-                  <Input type="email" className="rounded-none border-border" />
+                  <Input type="email" className="rounded-none border-border" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} />
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-sans tracking-wider uppercase">{t("contact_phone")}</label>
-                  <Input type="tel" className="rounded-none border-border" />
+                  <Input type="tel" className="rounded-none border-border" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} />
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-sans tracking-wider uppercase">{t("contact_message")}</label>
-                  <Textarea rows={5} className="rounded-none border-border resize-none" placeholder={t("contact_message_placeholder")} />
+                  <Textarea rows={5} className="rounded-none border-border resize-none" placeholder={t("contact_message_placeholder")} value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} />
                 </div>
-                <Button type="submit" className="w-full rounded-none py-6 text-xs tracking-[0.15em] uppercase">
-                  {t("contact_submit")}
+                <Button type="submit" disabled={sending} className="w-full rounded-none py-6 text-xs tracking-[0.15em] uppercase">
+                  {sending ? m.sending : t("contact_submit")}
                 </Button>
               </form>
+
             </div>
 
             <div className="space-y-8">
