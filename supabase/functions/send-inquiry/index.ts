@@ -40,7 +40,7 @@ Deno.serve(async (req) => {
       message: message.trim(),
       language: typeof language === "string" ? language : "en",
     });
-    await sendEmail({ to: ADMIN_INBOX, subject: rendered.subject, html: rendered.html, tag: "inquiry-admin" });
+    await sendEmail({ to: ADMIN_INBOX, subject: rendered.subject, html: rendered.html, tag: "inquiry-admin", replyTo: email.trim() });
 
     return json({ success: true });
   } catch (e: any) {
