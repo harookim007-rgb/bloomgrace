@@ -13,7 +13,7 @@ function shell(inner: string) {
     </div>
     <div style="padding: 28px 0;">${inner}</div>
     <div style="border-top:1px solid #eee; padding-top:16px; font-size:11px; color:#999; text-align:center;">
-      <p style="margin:0;">Questions? offical@bloomgrace.shop</p>
+      <p style="margin:0;">Questions? welcometo@bloomgrace.shop</p>
       <p style="margin:8px 0 0;">© BLOOM &amp; GRACE. All rights reserved.</p>
     </div>
   </div>`;

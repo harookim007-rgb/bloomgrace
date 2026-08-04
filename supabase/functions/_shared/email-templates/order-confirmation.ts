@@ -82,7 +82,7 @@ export function renderOrderConfirmationEmail(d: OrderConfirmationData) {
     ${bankBlock}
 
     <div style="border-top:1px solid #eee; padding-top:16px; margin-top:28px; font-size:11px; color:#999; text-align:center;">
-      <p style="margin:0;">문의: offical@bloomgrace.shop</p>
+      <p style="margin:0;">문의: welcometo@bloomgrace.shop</p>
       <p style="margin:8px 0 0;">© BLOOM &amp; GRACE. All rights reserved.</p>
     </div>
   </div>`;
