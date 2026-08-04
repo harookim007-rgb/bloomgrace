@@ -146,6 +146,7 @@ const ProductDetail = () => {
             }}
 
             onBuyNow={(qty) => {
+              if (!requireLogin(!!user)) return;
               sessionStorage.setItem("buyNow", JSON.stringify({
                 product_id: product.id,
                 product_name: getLocalizedProductName(product, language),
