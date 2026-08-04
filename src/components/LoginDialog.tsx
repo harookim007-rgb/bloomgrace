@@ -36,7 +36,7 @@ const GoogleIcon = () => (
 );
 
 const BlossomIcon = () => (
-  <svg viewBox="1900 0 48 48" className="w-11 h-11 text-primary" fill="none">
+  <svg viewBox="0 0 48 48" className="w-11 h-11 text-primary" fill="none">
     {[0, 72, 144, 216, 288].map((r) => (
       <ellipse
         key={r}
