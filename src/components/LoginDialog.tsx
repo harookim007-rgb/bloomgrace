@@ -17,13 +17,13 @@ export const requireLogin = (isSignedIn: boolean) => {
 };
 
 const L = {
-  en: { title: "Sign in to continue", desc: "Sign in with Google to add items to your cart and check out.", google: "Continue with Google", note: "It only takes a few seconds." },
-  es: { title: "Inicia sesión para continuar", desc: "Inicia sesión con Google para añadir productos al carrito y pagar.", google: "Continuar con Google", note: "Solo toma unos segundos." },
-  de: { title: "Zum Fortfahren anmelden", desc: "Melden Sie sich mit Google an, um Artikel in den Warenkorb zu legen.", google: "Mit Google fortfahren", note: "Es dauert nur wenige Sekunden." },
-  fr: { title: "Connectez-vous pour continuer", desc: "Connectez-vous avec Google pour ajouter des articles au panier.", google: "Continuer avec Google", note: "Cela ne prend que quelques secondes." },
-  pt: { title: "Entre para continuar", desc: "Entre com o Google para adicionar itens ao carrinho e finalizar a compra.", google: "Continuar com Google", note: "Leva apenas alguns segundos." },
-  ja: { title: "続けるにはログイン", desc: "Googleでログインすると、カートに追加してご購入いただけます。", google: "Googleで続ける", note: "数秒で完了します。" },
-  ar: { title: "سجّل الدخول للمتابعة", desc: "سجّل الدخول عبر Google لإضافة المنتجات إلى السلة وإتمام الشراء.", google: "المتابعة عبر Google", note: "يستغرق ثوانٍ قليلة فقط." },
+  en: { title: "Welcome back", desc: "Sign in with Google to save your favorites and check out faster.", google: "Continue with Google", note: "Quick, secure, and only takes a moment." },
+  es: { title: "Bienvenido de nuevo", desc: "Inicia sesión con Google para guardar tus favoritos y comprar más rápido.", google: "Continuar con Google", note: "Rápido, seguro y solo toma un momento." },
+  de: { title: "Willkommen zurück", desc: "Melden Sie sich mit Google an, um Favoriten zu speichern und schneller zu bezahlen.", google: "Mit Google fortfahren", note: "Schnell, sicher und nur einen Moment." },
+  fr: { title: "Bon retour", desc: "Connectez-vous avec Google pour enregistrer vos favoris et accélérer le paiement.", google: "Continuer avec Google", note: "Rapide, sécurisé et instantané." },
+  pt: { title: "Bem-vindo de volta", desc: "Entre com o Google para salvar seus favoritos e finalizar a compra mais rápido.", google: "Continuar com Google", note: "Rápido, seguro e leva apenas um momento." },
+  ja: { title: "お帰りなさい", desc: "Googleでログインすると、お気に入りを保存してスムーズにお買い物できます。", google: "Googleで続ける", note: "安全で、ほんの数秒で完了します。" },
+  ar: { title: "مرحبًا بعودتك", desc: "سجّل الدخول عبر Google لحفظ المفضلات والدفع بشكل أسرع.", google: "المتابعة عبر Google", note: "سريع وآمن ولا يستغرق سوى لحظات." },
 } as const;
 
 const GoogleIcon = () => (
@@ -32,6 +32,17 @@ const GoogleIcon = () => (
     <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
     <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
     <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+  </svg>
+);
+
+const BlossomIcon = () => (
+  <svg viewBox="0 0 48 48" className="w-12 h-12 text-primary" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M24 28c-3-3-3-9 0-12" />
+    <path d="M24 28c3-3 9-3 12 0" />
+    <path d="M24 28c3 3 3 9 0 12" />
+    <path d="M24 28c-3 3-9 3-12 0" />
+    <circle cx="24" cy="28" r="2.5" fill="currentColor" stroke="none" />
+    <path d="M24 16v-4M36 28h4M24 40v4M12 28H8" />
   </svg>
 );
 
@@ -66,22 +77,39 @@ const LoginDialog = () => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="max-w-[360px] rounded-sm">
-        <DialogHeader>
-          <DialogTitle className="text-lg font-serif font-normal">{c.title}</DialogTitle>
-          <DialogDescription className="text-sm text-foreground/70 leading-relaxed">{c.desc}</DialogDescription>
-        </DialogHeader>
-        <Button
-          type="button"
-          variant="outline"
-          className="w-full rounded-none py-6 text-sm font-semibold tracking-wide flex items-center justify-center gap-3 border-border hover:bg-muted/50"
-          onClick={signIn}
-          disabled={loading}
-        >
-          {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <GoogleIcon />}
-          {c.google}
-        </Button>
-        <p className="text-xs text-center text-muted-foreground">{c.note}</p>
+      <DialogContent className="max-w-[92vw] sm:max-w-[420px] rounded-2xl border border-primary/10 bg-card p-0 shadow-luxury overflow-hidden">
+        <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-primary/30 via-secondary/70 to-primary/30" />
+        <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-primary/5 blur-2xl" />
+        <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full bg-secondary/20 blur-2xl" />
+
+        <div className="relative px-8 pt-10 pb-8 flex flex-col items-center text-center">
+          <div className="mb-4 p-3 rounded-full bg-primary-soft/40 ring-1 ring-primary/10">
+            <BlossomIcon />
+          </div>
+
+          <DialogHeader className="space-y-3">
+            <DialogTitle className="text-2xl sm:text-[1.65rem] font-serif font-semibold tracking-tight text-foreground">
+              {c.title}
+            </DialogTitle>
+            <DialogDescription className="text-sm leading-relaxed text-muted-foreground max-w-[280px] mx-auto">
+              {c.desc}
+            </DialogDescription>
+          </DialogHeader>
+
+          <Button
+            type="button"
+            className="mt-7 w-full rounded-xl py-6 text-sm font-semibold tracking-wide flex items-center justify-center gap-3 bg-white text-foreground border border-primary/15 shadow-soft hover:bg-primary-soft/50 hover:border-primary/30 hover:shadow-elegant transition-all duration-300"
+            onClick={signIn}
+            disabled={loading}
+          >
+            {loading ? <Loader2 className="h-5 w-5 animate-spin text-primary" /> : <GoogleIcon />}
+            {c.google}
+          </Button>
+
+          <p className="mt-4 text-[11px] tracking-wide text-muted-foreground/80">
+            {c.note}
+          </p>
+        </div>
       </DialogContent>
     </Dialog>
   );
