@@ -94,7 +94,7 @@ const LoginDialog = () => {
             <BlossomIcon />
           </div>
 
-          <DialogHeader className="space-y-3">
+          <DialogHeader className="space-y-3 text-center sm:text-center">
             <DialogTitle className="text-3xl font-serif font-semibold tracking-tight text-foreground">
               {c.title}
             </DialogTitle>
