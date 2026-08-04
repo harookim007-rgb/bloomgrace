@@ -15,6 +15,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Star } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import { containsHangul, getLocalizedProductName, productUi, SUPPORTED_PRODUCT_LANGUAGES } from "@/lib/productI18n";
+import { requireLogin } from "@/components/LoginDialog";
 
 const ADDED_I18N: Record<string, { title: string; msg: string; checkout: string; keep: string }> = {
   en: { title: "Added to cart", msg: "This product has been added to your cart.", checkout: "Checkout now", keep: "Continue shopping" },
