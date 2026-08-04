@@ -36,13 +36,20 @@ const GoogleIcon = () => (
 );
 
 const BlossomIcon = () => (
-  <svg viewBox="0 0 48 48" className="w-12 h-12 text-primary" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M24 28c-3-3-3-9 0-12" />
-    <path d="M24 28c3-3 9-3 12 0" />
-    <path d="M24 28c3 3 3 9 0 12" />
-    <path d="M24 28c-3 3-9 3-12 0" />
-    <circle cx="24" cy="28" r="2.5" fill="currentColor" stroke="none" />
-    <path d="M24 16v-4M36 28h4M24 40v4M12 28H8" />
+  <svg viewBox="1900 0 48 48" className="w-11 h-11 text-primary" fill="none">
+    {[0, 72, 144, 216, 288].map((r) => (
+      <ellipse
+        key={r}
+        cx="24"
+        cy="11"
+        rx="5.2"
+        ry="10.5"
+        fill="currentColor"
+        opacity="0.45"
+        transform={`rotate(${r} 24 24)`}
+      />
+    ))}
+    <circle cx="24" cy="24" r="5.5" fill="currentColor" opacity="0.95" />
   </svg>
 );
 
