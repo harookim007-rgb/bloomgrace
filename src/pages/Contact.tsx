@@ -63,7 +63,7 @@ const Contact = () => {
           "@context": "https://schema.org",
           "@type": "LocalBusiness",
           name: "Bloom & Grace",
-          email: "offical@bloomgrace.shop",
+          email: "welcometo@bloomgrace.shop",
           url: "https://bloomgrace.shop/contact",
         }}
       />

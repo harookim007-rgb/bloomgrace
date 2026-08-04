@@ -79,7 +79,7 @@ const translations = {
     footer_returns: "Returns & Exchanges",
     footer_terms: "Terms of Service",
     footer_rights: "All rights reserved.",
-    footer_cs: "Customer support: offical@bloomgrace.shop",
+    footer_cs: "Customer support: welcometo@bloomgrace.shop",
 
     // Products page
     products_title: "All Products",
@@ -242,7 +242,7 @@ const translations = {
     contact_message_placeholder: "Tell us what's on your mind...",
     contact_submit: "Send Message",
     contact_info: "Contact Information",
-    contact_email_title: "Email: offical@bloomgrace.shop",
+    contact_email_title: "Email: welcometo@bloomgrace.shop",
     contact_address_title: "Headquarters",
     contact_address_value: "123 Teheranro, Gangnam-gu\nSeoul, South Korea",
     contact_phone_title: "Phone",
@@ -1181,7 +1181,7 @@ const fallbacks: Partial<Record<Language, Partial<Record<keyof typeof translatio
     footer_new: "Nouveautés",
     footer_bestseller: "Meilleures ventes",
     footer_faq: "FAQ",
-    footer_cs: "Customer support: offical@bloomgrace.shop",
+    footer_cs: "Customer support: welcometo@bloomgrace.shop",
     products_search_btn: "Rechercher",
     products_category: "Catégorie",
     products_popular: "Populaire",

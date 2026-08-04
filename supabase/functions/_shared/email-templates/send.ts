@@ -1,7 +1,7 @@
 // Shared Resend sender with error logging + optional admin alert.
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 const ADMIN_NOTIFY_EMAIL = Deno.env.get("ADMIN_NOTIFY_EMAIL"); // optional
-const FROM = "BLOOM & GRACE <offical@bloomgrace.shop>";
+const FROM = "BLOOM & GRACE <welcometo@bloomgrace.shop>";
 
 export interface SendArgs {
   to: string;
