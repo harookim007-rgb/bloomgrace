@@ -1,28 +1,38 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { ShoppingBag, Plus, Minus, X } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
+import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getLocalizedProductName } from "@/lib/productI18n";
+import { requireLogin } from "@/components/LoginDialog";
 
 const CartDrawer = () => {
   const { items, total, itemCount, updateQuantity, removeItem } = useCart();
+  const { user } = useAuth();
   const { t, formatPrice, language } = useLanguage();
+  const [open, setOpen] = useState(false);
   const productName = (p: any) => getLocalizedProductName(p, language);
 
   return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative h-10 w-10 text-foreground/60 hover:text-primary">
-          <ShoppingBag className="h-[18px] w-[18px]" />
-          {itemCount > 0 && (
-            <span className="absolute -top-0.5 -right-0.5 h-5 w-5 flex items-center justify-center text-[10px] font-bold bg-primary text-primary-foreground rounded-full font-sans">
-              {itemCount}
-            </span>
-          )}
-        </Button>
-      </SheetTrigger>
+    <Sheet open={open} onOpenChange={setOpen}>
+      <Button
+        variant="ghost"
+        size="icon"
+        aria-label={t("cart_title")}
+        className="relative h-10 w-10 text-foreground/60 hover:text-primary"
+        onClick={() => { if (requireLogin(!!user)) setOpen(true); }}
+      >
+        <ShoppingBag className="h-[18px] w-[18px]" />
+        {itemCount > 0 && (
+          <span className="absolute -top-0.5 -right-0.5 h-5 w-5 flex items-center justify-center text-[10px] font-bold bg-primary text-primary-foreground rounded-full font-sans">
+            {itemCount}
+          </span>
+        )}
+      </Button>
+
       <SheetContent className="w-[85vw] max-w-[400px] flex flex-col p-0">
         <SheetHeader className="px-6 py-5 border-b border-border">
           <SheetTitle className="text-base font-sans font-bold tracking-[0.1em] uppercase">{t("cart_title")}</SheetTitle>
