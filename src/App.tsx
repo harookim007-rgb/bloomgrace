@@ -22,6 +22,7 @@ import Trust from "./pages/Trust";
 import Ranking from "./pages/Ranking";
 import FallingPetals from "./components/FallingPetals";
 import ScatteredFlorals from "./components/FloralDecor";
+import LoginDialog from "./components/LoginDialog";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +48,7 @@ const App = () => (
         <BrowserRouter>
           <AuthProvider>
             <DesignModeOverlay />
+            <LoginDialog />
             <GlobalPetals />
             <Routes>
               <Route path="/" element={<Index />} />

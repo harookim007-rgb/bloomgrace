@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { requireLogin } from "@/components/LoginDialog";
 
 export interface CartItem {
   id: string;
@@ -52,7 +53,7 @@ export const useCart = () => {
   useEffect(() => { fetchCart(); }, [fetchCart]);
 
   const addToCart = useCallback(async (productId: string, qty = 1, opts: { silent?: boolean } = {}): Promise<boolean> => {
-    if (!user) { toast.error(msg.login); return false; }
+    if (!user) { requireLogin(false); return false; }
     if (adding) return false;
     setAdding(true);
     try {
