@@ -6,6 +6,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { lovable } from "@/integrations/lovable/index";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import BrandLogo from "@/components/BrandLogo";
 
 export const LOGIN_EVENT = "open-login-dialog";
 
@@ -17,13 +18,13 @@ export const requireLogin = (isSignedIn: boolean) => {
 };
 
 const L = {
-  en: { title: "Welcome back", desc: "Sign in with Google to save your favorites and check out faster.", google: "Continue with Google", note: "Quick, secure, and only takes a moment." },
-  es: { title: "Bienvenido de nuevo", desc: "Inicia sesión con Google para guardar tus favoritos y comprar más rápido.", google: "Continuar con Google", note: "Rápido, seguro y solo toma un momento." },
-  de: { title: "Willkommen zurück", desc: "Melden Sie sich mit Google an, um Favoriten zu speichern und schneller zu bezahlen.", google: "Mit Google fortfahren", note: "Schnell, sicher und nur einen Moment." },
-  fr: { title: "Bon retour", desc: "Connectez-vous avec Google pour enregistrer vos favoris et accélérer le paiement.", google: "Continuer avec Google", note: "Rapide, sécurisé et instantané." },
-  pt: { title: "Bem-vindo de volta", desc: "Entre com o Google para salvar seus favoritos e finalizar a compra mais rápido.", google: "Continuar com Google", note: "Rápido, seguro e leva apenas um momento." },
-  ja: { title: "お帰りなさい", desc: "Googleでログインすると、お気に入りを保存してスムーズにお買い物できます。", google: "Googleで続ける", note: "安全で、ほんの数秒で完了します。" },
-  ar: { title: "مرحبًا بعودتك", desc: "سجّل الدخول عبر Google لحفظ المفضلات والدفع بشكل أسرع.", google: "المتابعة عبر Google", note: "سريع وآمن ولا يستغرق سوى لحظات." },
+  en: { title: "Welcome!", sub: "We are Bloom & Grace", desc: "Sign in with Google to save your favorites and check out faster.", google: "Continue with Google" },
+  es: { title: "¡Bienvenido!", sub: "Somos Bloom & Grace", desc: "Inicia sesión con Google para guardar tus favoritos y comprar más rápido.", google: "Continuar con Google" },
+  de: { title: "Willkommen!", sub: "Wir sind Bloom & Grace", desc: "Melden Sie sich mit Google an, um Favoriten zu speichern und schneller zu bezahlen.", google: "Mit Google fortfahren" },
+  fr: { title: "Bienvenue !", sub: "Nous sommes Bloom & Grace", desc: "Connectez-vous avec Google pour enregistrer vos favoris et accélérer le paiement.", google: "Continuer avec Google" },
+  pt: { title: "Bem-vindo!", sub: "Somos a Bloom & Grace", desc: "Entre com o Google para salvar seus favoritos e finalizar a compra mais rápido.", google: "Continuar com Google" },
+  ja: { title: "ようこそ！", sub: "Bloom & Grace です", desc: "Googleでログインすると、お気に入りを保存してスムーズにお買い物できます。", google: "Googleで続ける" },
+  ar: { title: "!أهلاً بك", sub: "نحن Bloom & Grace", desc: "سجّل الدخول عبر Google لحفظ المفضلات والدفع بشكل أسرع.", google: "المتابعة عبر Google" },
 } as const;
 
 const GoogleIcon = () => (
@@ -35,23 +36,8 @@ const GoogleIcon = () => (
   </svg>
 );
 
-const BlossomIcon = () => (
-  <svg viewBox="0 0 48 48" className="w-11 h-11 text-primary" fill="none">
-    {[0, 72, 144, 216, 288].map((r) => (
-      <ellipse
-        key={r}
-        cx="24"
-        cy="11"
-        rx="5.2"
-        ry="10.5"
-        fill="currentColor"
-        opacity="0.45"
-        transform={`rotate(${r} 24 24)`}
-      />
-    ))}
-    <circle cx="24" cy="24" r="5.5" fill="currentColor" opacity="0.95" />
-  </svg>
-);
+
+
 
 const LoginDialog = () => {
   const { language } = useLanguage();
@@ -84,40 +70,33 @@ const LoginDialog = () => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="max-w-[92vw] sm:max-w-[420px] rounded-2xl border border-primary/10 bg-gradient-to-b from-primary-soft/40 via-card to-card p-0 shadow-luxury overflow-hidden">
-        <div className="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-primary/40 via-secondary/80 to-primary/40" />
-        <div className="absolute -top-12 -right-12 w-36 h-36 rounded-full bg-primary/8 blur-3xl" />
-        <div className="absolute -bottom-12 -left-12 w-36 h-36 rounded-full bg-secondary/25 blur-3xl" />
+      <DialogContent className="max-w-[92vw] sm:max-w-[420px] rounded-3xl border border-primary/15 bg-gradient-to-b from-primary-soft/70 via-primary-soft/25 to-card p-0 shadow-luxury overflow-hidden">
+        <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-primary/30 via-primary/60 to-primary/30" />
+        <div className="absolute -top-16 -right-16 w-44 h-44 rounded-full bg-primary/10 blur-3xl" />
+        <div className="absolute -bottom-16 -left-16 w-44 h-44 rounded-full bg-primary/8 blur-3xl" />
 
-        <div className="relative px-8 pt-11 pb-9 flex flex-col items-center text-center">
-          <div className="mb-5 p-4 rounded-full bg-primary/8 ring-1 ring-primary/15 shadow-soft">
-            <BlossomIcon />
-          </div>
+        <div className="relative px-8 pt-12 pb-10 flex flex-col items-center text-center">
+          <BrandLogo size="md" showTagline asLink={false} className="mb-7" />
 
-          <DialogHeader className="space-y-3 text-center sm:text-center">
-            <DialogTitle className="text-3xl font-serif font-semibold tracking-tight text-foreground">
+          <DialogHeader className="space-y-2 text-center sm:text-center">
+            <DialogTitle className="text-[30px] font-serif font-medium tracking-tight text-foreground leading-tight">
               {c.title}
             </DialogTitle>
-            <DialogDescription className="text-sm leading-relaxed text-muted-foreground max-w-[290px] mx-auto">
+            <p className="text-[13px] font-sans uppercase tracking-[0.22em] text-primary/80">{c.sub}</p>
+            <DialogDescription className="pt-1 text-sm leading-relaxed text-muted-foreground max-w-[290px] mx-auto">
               {c.desc}
             </DialogDescription>
           </DialogHeader>
 
           <Button
             type="button"
-            className="mt-8 w-full rounded-xl py-6 text-sm font-semibold tracking-wide flex items-center justify-center gap-3 bg-white text-foreground border border-primary/15 shadow-soft hover:bg-primary-soft/60 hover:border-primary/30 hover:shadow-elegant transition-all duration-300"
+            className="mt-8 w-full rounded-xl py-6 text-sm font-semibold tracking-wide flex items-center justify-center gap-3 bg-card text-foreground border border-primary/20 shadow-soft hover:bg-primary-soft/60 hover:border-primary/35 hover:shadow-elegant transition-all duration-300"
             onClick={signIn}
             disabled={loading}
           >
             {loading ? <Loader2 className="h-5 w-5 animate-spin text-primary" /> : <GoogleIcon />}
             {c.google}
           </Button>
-
-          <div className="mt-5 flex items-center gap-3 w-full max-w-[260px]">
-            <span className="flex-1 h-px bg-border" />
-            <span className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground/70">{c.note}</span>
-            <span className="flex-1 h-px bg-border" />
-          </div>
         </div>
       </DialogContent>
     </Dialog>
