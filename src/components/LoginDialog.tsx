@@ -97,7 +97,6 @@ const LoginDialog = () => {
             {c.google}
           </Button>
         </div>
-        </div>
       </DialogContent>
     </Dialog>
   );
