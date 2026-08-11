@@ -69,40 +69,34 @@ const LoginDialog = () => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="max-w-[92vw] sm:max-w-[420px] rounded-2xl border border-primary/10 bg-gradient-to-b from-primary-soft/40 via-card to-card p-0 shadow-luxury overflow-hidden">
-        <div className="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-primary/40 via-secondary/80 to-primary/40" />
-        <div className="absolute -top-12 -right-12 w-36 h-36 rounded-full bg-primary/8 blur-3xl" />
-        <div className="absolute -bottom-12 -left-12 w-36 h-36 rounded-full bg-secondary/25 blur-3xl" />
+      <DialogContent className="max-w-[92vw] sm:max-w-[420px] rounded-3xl border border-primary/15 bg-gradient-to-b from-primary-soft/70 via-primary-soft/25 to-card p-0 shadow-luxury overflow-hidden">
+        <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-primary/30 via-primary/60 to-primary/30" />
+        <div className="absolute -top-16 -right-16 w-44 h-44 rounded-full bg-primary/10 blur-3xl" />
+        <div className="absolute -bottom-16 -left-16 w-44 h-44 rounded-full bg-primary/8 blur-3xl" />
 
-        <div className="relative px-8 pt-11 pb-9 flex flex-col items-center text-center">
-          <div className="mb-5 p-4 rounded-full bg-primary/8 ring-1 ring-primary/15 shadow-soft">
-            <BlossomIcon />
-          </div>
+        <div className="relative px-8 pt-12 pb-10 flex flex-col items-center text-center">
+          <BrandLogo size="md" showTagline asLink={false} className="mb-7" />
 
-          <DialogHeader className="space-y-3 text-center sm:text-center">
-            <DialogTitle className="text-3xl font-serif font-semibold tracking-tight text-foreground">
+          <DialogHeader className="space-y-2 text-center sm:text-center">
+            <DialogTitle className="text-[30px] font-serif font-medium tracking-tight text-foreground leading-tight">
               {c.title}
             </DialogTitle>
-            <DialogDescription className="text-sm leading-relaxed text-muted-foreground max-w-[290px] mx-auto">
+            <p className="text-[13px] font-sans uppercase tracking-[0.22em] text-primary/80">{c.sub}</p>
+            <DialogDescription className="pt-1 text-sm leading-relaxed text-muted-foreground max-w-[290px] mx-auto">
               {c.desc}
             </DialogDescription>
           </DialogHeader>
 
           <Button
             type="button"
-            className="mt-8 w-full rounded-xl py-6 text-sm font-semibold tracking-wide flex items-center justify-center gap-3 bg-white text-foreground border border-primary/15 shadow-soft hover:bg-primary-soft/60 hover:border-primary/30 hover:shadow-elegant transition-all duration-300"
+            className="mt-8 w-full rounded-xl py-6 text-sm font-semibold tracking-wide flex items-center justify-center gap-3 bg-card text-foreground border border-primary/20 shadow-soft hover:bg-primary-soft/60 hover:border-primary/35 hover:shadow-elegant transition-all duration-300"
             onClick={signIn}
             disabled={loading}
           >
             {loading ? <Loader2 className="h-5 w-5 animate-spin text-primary" /> : <GoogleIcon />}
             {c.google}
           </Button>
-
-          <div className="mt-5 flex items-center gap-3 w-full max-w-[260px]">
-            <span className="flex-1 h-px bg-border" />
-            <span className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground/70">{c.note}</span>
-            <span className="flex-1 h-px bg-border" />
-          </div>
+        </div>
         </div>
       </DialogContent>
     </Dialog>
