@@ -6,6 +6,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { lovable } from "@/integrations/lovable/index";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import BrandLogo from "@/components/BrandLogo";
 
 export const LOGIN_EVENT = "open-login-dialog";
 
