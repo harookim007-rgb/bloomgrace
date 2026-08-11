@@ -17,13 +17,13 @@ export const requireLogin = (isSignedIn: boolean) => {
 };
 
 const L = {
-  en: { title: "Welcome back", desc: "Sign in with Google to save your favorites and check out faster.", google: "Continue with Google", note: "Quick, secure, and only takes a moment." },
-  es: { title: "Bienvenido de nuevo", desc: "Inicia sesión con Google para guardar tus favoritos y comprar más rápido.", google: "Continuar con Google", note: "Rápido, seguro y solo toma un momento." },
-  de: { title: "Willkommen zurück", desc: "Melden Sie sich mit Google an, um Favoriten zu speichern und schneller zu bezahlen.", google: "Mit Google fortfahren", note: "Schnell, sicher und nur einen Moment." },
-  fr: { title: "Bon retour", desc: "Connectez-vous avec Google pour enregistrer vos favoris et accélérer le paiement.", google: "Continuer avec Google", note: "Rapide, sécurisé et instantané." },
-  pt: { title: "Bem-vindo de volta", desc: "Entre com o Google para salvar seus favoritos e finalizar a compra mais rápido.", google: "Continuar com Google", note: "Rápido, seguro e leva apenas um momento." },
-  ja: { title: "お帰りなさい", desc: "Googleでログインすると、お気に入りを保存してスムーズにお買い物できます。", google: "Googleで続ける", note: "安全で、ほんの数秒で完了します。" },
-  ar: { title: "مرحبًا بعودتك", desc: "سجّل الدخول عبر Google لحفظ المفضلات والدفع بشكل أسرع.", google: "المتابعة عبر Google", note: "سريع وآمن ولا يستغرق سوى لحظات." },
+  en: { title: "Welcome!", sub: "We are Bloom & Grace", desc: "Sign in with Google to save your favorites and check out faster.", google: "Continue with Google" },
+  es: { title: "¡Bienvenido!", sub: "Somos Bloom & Grace", desc: "Inicia sesión con Google para guardar tus favoritos y comprar más rápido.", google: "Continuar con Google" },
+  de: { title: "Willkommen!", sub: "Wir sind Bloom & Grace", desc: "Melden Sie sich mit Google an, um Favoriten zu speichern und schneller zu bezahlen.", google: "Mit Google fortfahren" },
+  fr: { title: "Bienvenue !", sub: "Nous sommes Bloom & Grace", desc: "Connectez-vous avec Google pour enregistrer vos favoris et accélérer le paiement.", google: "Continuer avec Google" },
+  pt: { title: "Bem-vindo!", sub: "Somos a Bloom & Grace", desc: "Entre com o Google para salvar seus favoritos e finalizar a compra mais rápido.", google: "Continuar com Google" },
+  ja: { title: "ようこそ！", sub: "Bloom & Grace です", desc: "Googleでログインすると、お気に入りを保存してスムーズにお買い物できます。", google: "Googleで続ける" },
+  ar: { title: "!أهلاً بك", sub: "نحن Bloom & Grace", desc: "سجّل الدخول عبر Google لحفظ المفضلات والدفع بشكل أسرع.", google: "المتابعة عبر Google" },
 } as const;
 
 const GoogleIcon = () => (
