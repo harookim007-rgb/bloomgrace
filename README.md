@@ -144,13 +144,3 @@ npm run dev
 ```
 
 ---
-
-## Author
-
-**Haru Kim**
-
-AI Engineer
-
-Email: harookim007@gmail.com
-
-Portfolio: https://codingmonster.net
