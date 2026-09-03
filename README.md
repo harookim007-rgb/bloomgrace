@@ -1,73 +1,156 @@
-# Welcome to your Lovable project
+# BloomGrace
 
-## Project info
+BloomGrace is a production-style e-commerce web application developed to explore modern frontend engineering practices and AI-assisted software development workflows.
 
-**URL**: https://lovable.dev/projects/58118214-0757-4148-9dd0-8825e428f889
+The project focuses on building a scalable and maintainable web application using a component-based architecture while leveraging AI tools to accelerate development and improve productivity.
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## Project Overview
 
-**Use Lovable**
+This project was built to gain hands-on experience with modern frontend technologies and production deployment.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/58118214-0757-4148-9dd0-8825e428f889) and start prompting.
+The application demonstrates:
 
-Changes made via Lovable will be committed automatically to this repo.
+- Responsive user interface design
+- Component-driven frontend architecture
+- Type-safe development with TypeScript
+- Modern styling using Tailwind CSS
+- Production deployment workflow
+- AI-assisted software development
 
-**Use your preferred IDE**
+---
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Live Demo
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+**Production Website**
 
-Follow these steps:
+https://bloomgrace.shop/
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+---
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## Technical Stack
 
-# Step 3: Install the necessary dependencies.
-npm i
+### Frontend
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- shadcn/ui
+
+### Development Environment
+
+- Git
+- GitHub
+- npm
+- Lovable
+
+---
+
+## System Design
+
+```
+Browser
+      │
+      ▼
+React Application
+      │
+      ▼
+Component Layer
+      │
+      ▼
+Business Logic
+      │
+      ▼
+UI Rendering
+```
+
+---
+
+## Key Engineering Highlights
+
+- Designed reusable React components to improve maintainability.
+- Implemented a responsive layout optimized for desktop and mobile devices.
+- Applied TypeScript to improve code quality and reduce runtime errors.
+- Managed the project using a Git-based development workflow.
+- Built and deployed a production-ready web application.
+
+---
+
+## Engineering Experience
+
+During this project, I gained practical experience in:
+
+- Component-based frontend architecture
+- State management in React applications
+- Type-safe frontend development
+- Production deployment workflow
+- Version control using Git and GitHub
+- AI-assisted software development
+
+---
+
+## Future Enhancements
+
+This project is intended to evolve into an AI-powered commerce platform.
+
+Planned features include:
+
+- LLM-powered shopping assistant
+- Semantic product search using vector embeddings
+- Personalized recommendation engine
+- RAG-based product question answering
+- AI customer support chatbot
+- AI-driven shopping experience
+
+---
+
+## Repository Structure
+
+```
+src/
+├── components/
+├── hooks/
+├── integrations/
+├── lib/
+├── pages/
+├── styles/
+└── App.tsx
+
+public/
+```
+
+---
+
+## Local Development
+
+Clone the repository.
+
+```bash
+git clone <repository-url>
+```
+
+Install dependencies.
+
+```bash
+npm install
+```
+
+Start the development server.
+
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Author
 
-**Use GitHub Codespaces**
+**Haru Kim**
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+AI Engineer
 
-## What technologies are used for this project?
+Email: harookim007@gmail.com
 
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/58118214-0757-4148-9dd0-8825e428f889) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Portfolio: https://codingmonster.net
