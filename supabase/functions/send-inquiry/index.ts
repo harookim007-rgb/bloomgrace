@@ -28,7 +28,11 @@ Deno.serve(async (req) => {
     const user = userData?.user;
     if (!user) return json({ error: "auth_required" }, 401);
 
-    const { name, phone, message, language, category, orderId } = await req.json();
+    const { name, phone, message, language, category, orderId, attachments } = await req.json();
+
+    const safeAttachments: string[] = Array.isArray(attachments)
+      ? attachments.filter((a: unknown) => typeof a === "string" && a.length > 0 && a.length < 2000).slice(0, 5)
+      : [];
 
     const safeName = typeof name === "string" && name.trim() ? name.trim().slice(0, 120) : (user.email || "Customer");
     const email = (user.email || "").trim().toLowerCase();
@@ -39,9 +43,10 @@ Deno.serve(async (req) => {
     if (!category || typeof category !== "string" || !CATEGORIES.includes(category)) {
       return json({ error: "invalid_category" }, 400);
     }
-    if (!message || typeof message !== "string" || message.trim().length < 2 || message.length > 5000) {
-      return json({ error: "invalid_message" }, 400);
-    }
+    const hasText = typeof message === "string" && message.trim().length >= 2;
+    if (!hasText && safeAttachments.length === 0) return json({ error: "invalid_message" }, 400);
+    if (typeof message === "string" && message.length > 5000) return json({ error: "invalid_message" }, 400);
+    const safeMessage = hasText ? (message as string).trim() : "(image)";
 
     const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
