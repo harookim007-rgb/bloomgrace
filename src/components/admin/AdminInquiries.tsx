@@ -141,6 +141,9 @@ const AdminInquiries = () => {
                   <Mail className="h-3.5 w-3.5 text-muted-foreground" />
                   <span>{active.email}</span>
                 </p>
+                {active.phone && <p><span className="text-muted-foreground">휴대폰:</span> {active.phone}</p>}
+                {active.category && <p><span className="text-muted-foreground">문의 유형:</span> {active.category}</p>}
+                {active.order_id && <p><span className="text-muted-foreground">주문번호:</span> #{String(active.order_id).slice(0, 8).toUpperCase()}</p>}
                 <p className="text-xs text-muted-foreground">{new Date(active.created_at).toLocaleString("ko-KR")}</p>
               </div>
               <div className="p-3 bg-muted/50 rounded-lg text-sm whitespace-pre-line">{active.message}</div>

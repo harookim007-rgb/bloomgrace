@@ -121,14 +121,22 @@ export function renderInquiryReplyEmail(d: { customerName: string; question: str
 }
 
 /** Internal alert to the shop owner when a new inquiry arrives. */
-export function renderInquiryAdminEmail(d: { name: string; email: string; message: string; language?: string }) {
+export function renderInquiryAdminEmail(d: {
+  name: string; email: string; message: string; language?: string;
+  phone?: string | null; category?: string | null; orderId?: string | null; orderSummary?: string | null;
+}) {
+  const cat = d.category ? `[${d.category}] ` : "";
   return {
-    subject: `[CS 문의] ${d.name} (${d.email})`,
+    subject: `[CS 문의] ${cat}${d.name} (${d.email})`,
     html: shell(
       h2(`새 고객 문의가 접수되었습니다`) +
       box(
         `이름: <strong>${escapeHtml(d.name)}</strong><br/>` +
         `이메일: <strong>${escapeHtml(d.email)}</strong><br/>` +
+        (d.phone ? `휴대폰: <strong>${escapeHtml(d.phone)}</strong><br/>` : "") +
+        (d.category ? `문의 유형: <strong>${escapeHtml(d.category)}</strong><br/>` : "") +
+        (d.orderId ? `주문번호: <strong>#${escapeHtml(d.orderId.slice(0, 8).toUpperCase())}</strong><br/>` : "") +
+        (d.orderSummary ? `주문 상품: ${escapeHtml(d.orderSummary)}<br/>` : "") +
         `언어: ${escapeHtml(d.language || "en")}`
       ) +
       p(escapeHtml(d.message).replace(/\n/g, "<br/>")) +

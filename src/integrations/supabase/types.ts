@@ -279,41 +279,61 @@ export type Database = {
       inquiries: {
         Row: {
           admin_reply: string | null
+          category: string | null
           created_at: string | null
           email: string
           id: string
           language: string | null
           message: string
           name: string
+          order_id: string | null
+          phone: string | null
           replied_at: string | null
           status: string | null
           updated_at: string | null
+          user_id: string | null
         }
         Insert: {
           admin_reply?: string | null
+          category?: string | null
           created_at?: string | null
           email: string
           id?: string
           language?: string | null
           message: string
           name: string
+          order_id?: string | null
+          phone?: string | null
           replied_at?: string | null
           status?: string | null
           updated_at?: string | null
+          user_id?: string | null
         }
         Update: {
           admin_reply?: string | null
+          category?: string | null
           created_at?: string | null
           email?: string
           id?: string
           language?: string | null
           message?: string
           name?: string
+          order_id?: string | null
+          phone?: string | null
           replied_at?: string | null
           status?: string | null
           updated_at?: string | null
+          user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "inquiries_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       menu_items: {
         Row: {
