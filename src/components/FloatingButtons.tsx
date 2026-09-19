@@ -1,9 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import { MessageCircle, X, Send } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/contexts/AuthContext";
-import { toast } from "sonner";
+import SupportMessenger from "@/components/support/SupportMessenger";
 import {
   HoverCard,
   HoverCardContent,
