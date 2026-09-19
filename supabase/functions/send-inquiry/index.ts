@@ -28,7 +28,11 @@ Deno.serve(async (req) => {
     const user = userData?.user;
     if (!user) return json({ error: "auth_required" }, 401);
 
-    const { name, phone, message, language, category, orderId } = await req.json();
+    const { name, phone, message, language, category, orderId, attachments } = await req.json();
+
+    const safeAttachments: string[] = Array.isArray(attachments)
+      ? attachments.filter((a: unknown) => typeof a === "string" && a.length > 0 && a.length < 2000).slice(0, 5)
+      : [];
 
     const safeName = typeof name === "string" && name.trim() ? name.trim().slice(0, 120) : (user.email || "Customer");
     const email = (user.email || "").trim().toLowerCase();
@@ -39,9 +43,10 @@ Deno.serve(async (req) => {
     if (!category || typeof category !== "string" || !CATEGORIES.includes(category)) {
       return json({ error: "invalid_category" }, 400);
     }
-    if (!message || typeof message !== "string" || message.trim().length < 2 || message.length > 5000) {
-      return json({ error: "invalid_message" }, 400);
-    }
+    const hasText = typeof message === "string" && message.trim().length >= 2;
+    if (!hasText && safeAttachments.length === 0) return json({ error: "invalid_message" }, 400);
+    if (typeof message === "string" && message.length > 5000) return json({ error: "invalid_message" }, 400);
+    const safeMessage = hasText ? (message as string).trim() : "(image)";
 
     const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
@@ -61,23 +66,24 @@ Deno.serve(async (req) => {
       }
     }
 
-    const { error } = await admin.from("inquiries").insert({
+    const { data: inserted, error } = await admin.from("inquiries").insert({
       user_id: user.id,
       name: safeName,
       email,
       phone: phone.trim(),
       category,
       order_id: validOrderId,
-      message: message.trim(),
+      message: safeMessage,
+      attachments: safeAttachments,
       language: typeof language === "string" ? language : "en",
       status: "pending",
-    });
+    }).select("id, created_at, message, category, order_id, attachments, admin_reply").single();
     if (error) {
       console.error("[send-inquiry] db insert failed:", error.message);
       return json({ error: "save_failed" }, 500);
     }
 
-    // Notify the shop owner
+    // Notify the shop owner — fire and forget so the customer is not kept waiting
     const rendered = renderInquiryAdminEmail({
       name: safeName,
       email,
@@ -85,12 +91,18 @@ Deno.serve(async (req) => {
       category,
       orderId: validOrderId,
       orderSummary,
-      message: message.trim(),
+      message: safeMessage + (safeAttachments.length ? `\n\n[첨부 이미지 ${safeAttachments.length}장]\n${safeAttachments.join("\n")}` : ""),
       language: typeof language === "string" ? language : "en",
     });
-    await sendEmail({ to: ADMIN_INBOX, subject: rendered.subject, html: rendered.html, tag: "inquiry-admin", replyTo: email });
+    const emailTask = sendEmail({ to: ADMIN_INBOX, subject: rendered.subject, html: rendered.html, tag: "inquiry-admin", replyTo: email });
+    try {
+      // @ts-ignore EdgeRuntime is available in Deno Deploy
+      EdgeRuntime.waitUntil(emailTask);
+    } catch {
+      void emailTask;
+    }
 
-    return json({ success: true });
+    return json({ success: true, inquiry: inserted });
   } catch (e: any) {
     console.error("[send-inquiry] uncaught", e);
     return json({ error: e?.message || "unknown" }, 500);

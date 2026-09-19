@@ -147,6 +147,15 @@ const AdminInquiries = () => {
                 <p className="text-xs text-muted-foreground">{new Date(active.created_at).toLocaleString("ko-KR")}</p>
               </div>
               <div className="p-3 bg-muted/50 rounded-lg text-sm whitespace-pre-line">{active.message}</div>
+              {(active.attachments || []).length > 0 && (
+                <div className="flex gap-2 flex-wrap">
+                  {(active.attachments as string[]).map((u, i) => (
+                    <a key={i} href={u} target="_blank" rel="noreferrer" className="w-20 h-20 border border-border block">
+                      <img src={u} alt="첨부 이미지" className="w-full h-full object-cover" />
+                    </a>
+                  ))}
+                </div>
+              )}
               <div>
                 <p className="text-sm font-medium mb-2">답변 내용 (고객 이메일로 발송됩니다)</p>
                 <Textarea rows={7} value={reply} onChange={e => setReply(e.target.value)} placeholder="Write your reply to the customer..." />
