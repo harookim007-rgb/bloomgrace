@@ -279,6 +279,7 @@ export type Database = {
       inquiries: {
         Row: {
           admin_reply: string | null
+          attachments: string[]
           category: string | null
           created_at: string | null
           email: string
@@ -295,6 +296,7 @@ export type Database = {
         }
         Insert: {
           admin_reply?: string | null
+          attachments?: string[]
           category?: string | null
           created_at?: string | null
           email: string
@@ -311,6 +313,7 @@ export type Database = {
         }
         Update: {
           admin_reply?: string | null
+          attachments?: string[]
           category?: string | null
           created_at?: string | null
           email?: string
