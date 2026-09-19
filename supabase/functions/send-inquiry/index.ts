@@ -66,23 +66,24 @@ Deno.serve(async (req) => {
       }
     }
 
-    const { error } = await admin.from("inquiries").insert({
+    const { data: inserted, error } = await admin.from("inquiries").insert({
       user_id: user.id,
       name: safeName,
       email,
       phone: phone.trim(),
       category,
       order_id: validOrderId,
-      message: message.trim(),
+      message: safeMessage,
+      attachments: safeAttachments,
       language: typeof language === "string" ? language : "en",
       status: "pending",
-    });
+    }).select("id, created_at, message, category, order_id, attachments, admin_reply").single();
     if (error) {
       console.error("[send-inquiry] db insert failed:", error.message);
       return json({ error: "save_failed" }, 500);
     }
 
-    // Notify the shop owner
+    // Notify the shop owner — fire and forget so the customer is not kept waiting
     const rendered = renderInquiryAdminEmail({
       name: safeName,
       email,
@@ -90,12 +91,18 @@ Deno.serve(async (req) => {
       category,
       orderId: validOrderId,
       orderSummary,
-      message: message.trim(),
+      message: safeMessage + (safeAttachments.length ? `\n\n[첨부 이미지 ${safeAttachments.length}장]\n${safeAttachments.join("\n")}` : ""),
       language: typeof language === "string" ? language : "en",
     });
-    await sendEmail({ to: ADMIN_INBOX, subject: rendered.subject, html: rendered.html, tag: "inquiry-admin", replyTo: email });
+    const emailTask = sendEmail({ to: ADMIN_INBOX, subject: rendered.subject, html: rendered.html, tag: "inquiry-admin", replyTo: email });
+    try {
+      // @ts-ignore EdgeRuntime is available in Deno Deploy
+      EdgeRuntime.waitUntil(emailTask);
+    } catch {
+      void emailTask;
+    }
 
-    return json({ success: true });
+    return json({ success: true, inquiry: inserted });
   } catch (e: any) {
     console.error("[send-inquiry] uncaught", e);
     return json({ error: e?.message || "unknown" }, 500);
