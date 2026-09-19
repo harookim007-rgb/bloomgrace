@@ -19,51 +19,12 @@ const bookmarkTexts: Record<string, { line1: string; line2: string; title: strin
 
 const FloatingButtons = () => {
   const { language } = useLanguage();
-  const { user } = useAuth();
-  const mt = messengerTexts[language] || messengerTexts.en;
   const bt = bookmarkTexts[language] || bookmarkTexts.en;
-
-  const [messengerOpen, setMessengerOpen] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [sending, setSending] = useState(false);
-  const [messages, setMessages] = useState<{ text: string; from: "user" | "system"; time: string }[]>([]);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (user?.email) setEmail(user.email);
-    if (user?.user_metadata?.display_name) setName(user.user_metadata.display_name);
-  }, [user]);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
 
   const handleOpenAI = () => {
     window.dispatchEvent(new Event("open-beauty-advisor"));
   };
 
-  const handleSend = async () => {
-    if (!message.trim() || !email.trim()) return;
-    setSending(true);
-
-    const newMsg = { text: message, from: "user" as const, time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) };
-    setMessages((prev) => [...prev, newMsg]);
-
-    try {
-      const { error } = await supabase.functions.invoke("send-inquiry", {
-        body: { name: name || "Guest", email, message, language },
-      });
-      if (error) throw error;
-      toast.success(mt.sent);
-      setMessage("");
-    } catch {
-      toast.error(mt.error);
-    } finally {
-      setSending(false);
-    }
-  };
 
   return (
     <>
