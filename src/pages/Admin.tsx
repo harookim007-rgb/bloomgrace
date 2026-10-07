@@ -19,17 +19,18 @@ import AdminRanking from "@/components/admin/AdminRanking";
 import AdminMenus from "@/components/admin/AdminMenus";
 import AdminWhitelist from "@/components/admin/AdminWhitelist";
 import AdminInquiries from "@/components/admin/AdminInquiries";
+import AdminCafe24 from "@/components/admin/AdminCafe24";
 
 export type AdminTab =
   | "dashboard" | "products" | "categories" | "orders"
   | "customers" | "coupons" | "banners" | "reviews"
   | "shipping" | "payment" | "settings" | "ranking"
-  | "menus" | "whitelist" | "inquiries";
+  | "menus" | "whitelist" | "inquiries" | "cafe24";
 
 const adminTabs: AdminTab[] = [
   "dashboard", "products", "categories", "orders", "customers", "coupons",
   "banners", "reviews", "shipping", "payment", "settings", "ranking",
-  "menus", "whitelist", "inquiries",
+  "menus", "whitelist", "inquiries", "cafe24",
 ];
 
 
@@ -91,6 +92,7 @@ const Admin = () => {
       case "menus": return <AdminMenus />;
       case "whitelist": return <AdminWhitelist />;
       case "inquiries": return <AdminInquiries />;
+      case "cafe24": return <AdminCafe24 />;
       case "settings": return <AdminSettings />;
 
       default: return <AdminDashboard />;

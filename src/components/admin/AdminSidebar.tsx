@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import {
   LayoutDashboard, Package, FolderTree, ShoppingCart, Users,
   Tag, Image, Star, Settings, ChevronLeft, ChevronRight, LogOut, Home, Paintbrush,
-  Truck, Wallet, Trophy, Menu as MenuIcon, ShieldCheck, MessageSquare,
+  Truck, Wallet, Trophy, Menu as MenuIcon, ShieldCheck, MessageSquare, Store,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDesignModeStore } from "@/stores/designModeStore";
@@ -52,6 +52,7 @@ const menuGroups: { title: string; items: { id: AdminTab; label: string; icon: R
     items: [
       { id: "shipping", label: "배송비 관리", icon: Truck },
       { id: "payment", label: "결제 설정", icon: Wallet },
+      { id: "cafe24", label: "카페24 연동", icon: Store },
       { id: "whitelist", label: "관리자 화이트리스트", icon: ShieldCheck },
       { id: "settings", label: "사이트 설정", icon: Settings },
     ],
