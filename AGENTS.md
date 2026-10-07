@@ -1,0 +1,1 @@
+- Admin 2-step verification is remembered per browser and account for a limited time (src/lib/adminOtp.ts) and cleared on sign-out; it is only a UI gate, and real admin access is enforced by database roles. Why: being asked to verify again in every tab, refresh or return visit was locking admins out.
