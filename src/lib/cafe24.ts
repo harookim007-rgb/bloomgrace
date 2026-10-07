@@ -28,19 +28,22 @@ let pending: Promise<Cafe24Settings> | null = null;
 export const loadCafe24Settings = (force = false): Promise<Cafe24Settings> => {
   if (cache && !force) return Promise.resolve(cache);
   if (pending) return pending;
-  pending = supabase
-    .from("cafe24_settings")
-    .select("*")
-    .maybeSingle()
-    .then(({ data }) => {
-      cache = data ? { ...DEFAULT_CAFE24, ...(data as object) } : { ...DEFAULT_CAFE24 };
-      pending = null;
-      return cache;
-    })
-    .catch(() => {
-      pending = null;
+  pending = (async (): Promise<Cafe24Settings> => {
+    try {
+      const { data, error } = await supabase
+        .from("cafe24_settings")
+        .select("*")
+        .maybeSingle();
+      const next: Cafe24Settings =
+        !error && data ? { ...DEFAULT_CAFE24, ...(data as object) } : { ...DEFAULT_CAFE24 };
+      cache = next;
+      return next;
+    } catch {
       return { ...DEFAULT_CAFE24 };
-    });
+    } finally {
+      pending = null;
+    }
+  })();
   return pending;
 };
 
