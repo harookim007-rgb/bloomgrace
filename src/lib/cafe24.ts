@@ -92,6 +92,22 @@ export const startCafe24Checkout = (req: Cafe24HandoffRequest) => {
 /** Opens a URL in a new tab; falls back to same-tab when the browser blocks the popup. */
 export const openInTab = (url: string) => {
   if (!url) return;
-  const w = window.open(url, "_blank", "noopener,noreferrer");
-  if (!w) window.location.href = url;
+  let w: Window | null = null;
+  try {
+    // No "noopener" feature here on purpose: with it the browser always returns null,
+    // which would make us think the popup was blocked and navigate the storefront away.
+    w = window.open(url, "_blank");
+  } catch {
+    w = null;
+  }
+  if (w) {
+    // Detach so the opened page cannot reach back into this window.
+    try {
+      w.opener = null;
+    } catch {
+      /* cross-origin already detached */
+    }
+  } else {
+    window.location.href = url;
+  }
 };
