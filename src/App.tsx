@@ -25,7 +25,7 @@ import ScatteredFlorals from "./components/FloralDecor";
 import LoginDialog from "./components/LoginDialog";
 import Cafe24Handoff from "./components/Cafe24Handoff";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({ defaultOptions: { queries: { refetchOnWindowFocus: false } } });
 
 const GlobalPetals = () => {
   const { pathname } = useLocation();

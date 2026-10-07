@@ -37,33 +37,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          setIsLoading(true);
-          setTimeout(async () => {
-            await checkAdmin(session.user.id);
-            setIsLoading(false);
-          }, 0);
-        } else {
-          setIsAdmin(false);
-          setIsLoading(false);
-        }
-      }
-    );
-
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
+    // Keep the same user object while the account is unchanged, so returning to the tab
+    // (token refresh / re-emitted SIGNED_IN) never resets screens or re-runs data loads.
+    let currentId: string | null | undefined = undefined;
+    const apply = async (session: Session | null) => {
       setSession(session);
+      const nextId = session?.user?.id ?? null;
+      if (nextId === currentId) return;
+      const first = currentId === undefined;
+      currentId = nextId;
       setUser(session?.user ?? null);
-      if (session?.user) {
-        await checkAdmin(session.user.id);
+      if (nextId) {
+        if (first) setIsLoading(true);
+        await checkAdmin(nextId);
       } else {
         setIsAdmin(false);
       }
       setIsLoading(false);
-    });
+    };
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => { setTimeout(() => { apply(session); }, 0); }
+    );
+
+    supabase.auth.getSession().then(({ data: { session } }) => apply(session));
 
     return () => subscription.unsubscribe();
   }, []);
