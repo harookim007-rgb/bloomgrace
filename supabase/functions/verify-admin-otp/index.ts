@@ -34,34 +34,35 @@ Deno.serve(async (req) => {
 
     const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
-    const { data: otp } = await admin
+    // Any still-valid code sent in the last few minutes is accepted.
+    const { data: otps } = await admin
       .from("admin_otp")
       .select("id, code_hash, expires_at, attempts, consumed")
       .eq("user_id", userId)
       .eq("consumed", false)
+      .gt("expires_at", new Date().toISOString())
       .order("created_at", { ascending: false })
-      .limit(1)
-      .maybeSingle();
+      .limit(10);
 
-    if (!otp) return json({ error: "요청된 인증코드가 없습니다. 코드를 다시 발송해 주세요." }, 400);
-    if (new Date(otp.expires_at) < new Date()) {
-      await admin.from("admin_otp").update({ consumed: true }).eq("id", otp.id);
-      return json({ error: "인증코드가 만료되었습니다. 다시 발송해 주세요." }, 400);
+    if (!otps || otps.length === 0) {
+      return json({ error: "인증번호가 만료되었습니다. '재전송'을 눌러 새 번호를 받아 주세요." }, 400);
     }
-    if (otp.attempts >= MAX_ATTEMPTS) {
-      await admin.from("admin_otp").update({ consumed: true }).eq("id", otp.id);
-      return json({ error: "시도 횟수를 초과했습니다. 5분 후 새 코드를 요청하세요.", locked: true }, 429);
+    const latest = otps[0];
+    if (latest.attempts >= MAX_ATTEMPTS) {
+      await admin.from("admin_otp").update({ consumed: true }).eq("user_id", userId).eq("consumed", false);
+      return json({ error: "시도 횟수를 초과했습니다. '재전송'을 눌러 새 번호를 받아 주세요.", locked: true }, 429);
     }
 
     const expected = await sha256(`${userId}:${code}`);
-    if (expected !== otp.code_hash) {
-      const nextAttempts = otp.attempts + 1;
-      await admin.from("admin_otp").update({ attempts: nextAttempts }).eq("id", otp.id);
+    const otp = otps.find((o) => o.code_hash === expected);
+    if (!otp) {
+      const nextAttempts = latest.attempts + 1;
+      await admin.from("admin_otp").update({ attempts: nextAttempts }).eq("id", latest.id);
       const remaining = MAX_ATTEMPTS - nextAttempts;
-      return json({ error: `인증번호가 일치하지 않습니다. (남은 시도 ${Math.max(0, remaining)}회)` }, 400);
+      return json({ error: `인증번호가 일치하지 않습니다. 가장 최근 이메일의 번호를 입력해 주세요. (남은 시도 ${Math.max(0, remaining)}회)` }, 400);
     }
 
-    await admin.from("admin_otp").update({ consumed: true }).eq("id", otp.id);
+    await admin.from("admin_otp").update({ consumed: true }).eq("user_id", userId).eq("consumed", false);
     return json({ success: true });
   } catch (e: any) {
     console.error("[verify-admin-otp] uncaught", e);

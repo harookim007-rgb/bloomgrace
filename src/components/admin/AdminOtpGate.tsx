@@ -21,6 +21,7 @@ const AdminOtpGate = ({ userId, onVerified }: Props) => {
   const [maskedEmail, setMaskedEmail] = useState(() => sessionStorage.getItem("admin_otp_masked") || "");
   const [cooldown, setCooldown] = useState(0);
   const [devCode, setDevCode] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
     if (cooldown <= 0) return;
@@ -61,6 +62,7 @@ const AdminOtpGate = ({ userId, onVerified }: Props) => {
 
   const handleVerify = async () => {
     setBusy(true);
+    setErrorMsg("");
     try {
       const { data, error } = await supabase.functions.invoke("verify-admin-otp", { body: { code } });
       if (error) {
@@ -79,7 +81,9 @@ const AdminOtpGate = ({ userId, onVerified }: Props) => {
         onVerified();
       }
     } catch (err: any) {
-      toast.error(err.message || "인증 실패");
+      const msg = err.message || "인증 실패";
+      setErrorMsg(msg);
+      toast.error(msg);
       setCode("");
     } finally {
       setBusy(false);
@@ -114,10 +118,14 @@ const AdminOtpGate = ({ userId, onVerified }: Props) => {
             )}
             <div className="space-y-2">
               <Label className="text-xs uppercase tracking-wider">인증번호 (6자리)</Label>
-              <Input maxLength={6} value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+              <Input maxLength={6} value={code} onChange={(e) => { setErrorMsg(""); setCode(e.target.value.replace(/\D/g, "").slice(0, 6)); }}
+                onKeyDown={(e) => { if (e.key === "Enter" && code.length === 6 && !busy) handleVerify(); }}
                 autoFocus inputMode="numeric"
                 className="text-center text-lg tracking-[0.5em] font-mono" />
             </div>
+            {errorMsg && (
+              <p role="alert" className="text-xs text-destructive text-center">{errorMsg}</p>
+            )}
             <Button className="w-full" onClick={handleVerify} disabled={busy || code.length !== 6}>
               {busy && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
               인증
