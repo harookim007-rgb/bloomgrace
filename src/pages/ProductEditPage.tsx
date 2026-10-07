@@ -586,6 +586,53 @@ const ProductEditPage = () => {
             </CardContent></Card>
           </TabsContent>
 
+          <TabsContent value="cafe24" className="mt-4">
+            <Card><CardContent className="pt-6 space-y-5">
+              <div>
+                <p className="text-sm font-medium">카페24 주문서 링크</p>
+                <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                  이 상품을 카페24에서 주문 받을 때 쓰는 링크입니다. 비워 두면 이 사이트에서 주문을 받습니다.
+                  카페24 관리자 → 상품관리 → 상품목록 → 목록표시에 <strong>'바로구매 URL'</strong>을 켜면
+                  상품마다 링크가 생깁니다. (원터치 주문서 적용 필요)
+                </p>
+              </div>
+              <div className="space-y-1">
+                <Label>바로구매 URL</Label>
+                <Input
+                  value={form.cafe24_buy_url}
+                  onChange={e => setForm({ ...form, cafe24_buy_url: e.target.value })}
+                  placeholder="https://bloomgrace.cafe24.com/item/..."
+                />
+                {form.cafe24_buy_url.trim() && (
+                  <a
+                    href={form.cafe24_buy_url.trim()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-xs text-primary hover:underline pt-1"
+                  >
+                    새 탭에서 주문서 확인 <ExternalLink className="h-3 w-3" />
+                  </a>
+                )}
+              </div>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <Label>카페24 상품번호 (선택)</Label>
+                  <Input
+                    value={form.cafe24_product_no}
+                    onChange={e => setForm({ ...form, cafe24_product_no: e.target.value })}
+                    placeholder="예) 1000123456"
+                  />
+                  <p className="text-[11px] text-muted-foreground">
+                    나중에 장바구니·재고를 카페24와 자동으로 맞출 때 씁니다.
+                  </p>
+                </div>
+              </div>
+              <div className="text-xs text-muted-foreground border border-border rounded p-3 leading-relaxed">
+                주문서 화면은 카페24 디자인으로 열립니다. 결제(카드·무통장), 정산, 배송, 환불은 카페24에서 처리됩니다.
+              </div>
+            </CardContent></Card>
+          </TabsContent>
+
           <TabsContent value="preview" className="mt-4">
             <Card><CardContent className="pt-6">
               <ProductView product={previewProduct as any} preview />
