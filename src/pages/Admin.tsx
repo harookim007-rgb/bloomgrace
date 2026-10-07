@@ -20,6 +20,7 @@ import AdminMenus from "@/components/admin/AdminMenus";
 import AdminWhitelist from "@/components/admin/AdminWhitelist";
 import AdminInquiries from "@/components/admin/AdminInquiries";
 import AdminCafe24 from "@/components/admin/AdminCafe24";
+import { isAdminOtpVerified } from "@/lib/adminOtp";
 
 export type AdminTab =
   | "dashboard" | "products" | "categories" | "orders"
@@ -44,7 +45,7 @@ const Admin = () => {
   const { user, isAdmin, isLoading: authLoading } = useAuth();
   const [activeTab, setActiveTabState] = useState<AdminTab>(() => getAdminTab(searchParams.get("tab")) || "dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [otpVerified, setOtpVerified] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(() => isAdminOtpVerified(user?.id));
 
   useEffect(() => {
     const tab = getAdminTab(searchParams.get("tab"));
@@ -69,12 +70,12 @@ const Admin = () => {
 
   useEffect(() => {
     if (!user) return;
-    setOtpVerified(sessionStorage.getItem("admin_otp_verified") === "1");
+    setOtpVerified(isAdminOtpVerified(user.id));
   }, [user]);
 
   if (authLoading) return <div className="min-h-dvh flex items-center justify-center text-muted-foreground">로딩 중...</div>;
   if (!isAdmin) return null;
-  if (!otpVerified) return <AdminOtpGate onVerified={() => setOtpVerified(true)} />;
+  if (!otpVerified) return <AdminOtpGate userId={user?.id} onVerified={() => setOtpVerified(true)} />;
 
   const renderContent = () => {
     switch (activeTab) {

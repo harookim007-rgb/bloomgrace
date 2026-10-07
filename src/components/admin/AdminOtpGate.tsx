@@ -6,12 +6,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { ShieldCheck, Loader2, Mail, LogOut } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { markAdminOtpVerified } from "@/lib/adminOtp";
 
 interface Props {
+  userId?: string;
   onVerified: () => void;
 }
 
-const AdminOtpGate = ({ onVerified }: Props) => {
+const AdminOtpGate = ({ userId, onVerified }: Props) => {
   const { signOut } = useAuth();
   const [sent, setSent] = useState(() => sessionStorage.getItem("admin_otp_sent") === "1");
   const [busy, setBusy] = useState(false);
@@ -71,7 +73,7 @@ const AdminOtpGate = ({ onVerified }: Props) => {
         }
       }
       if (data?.success) {
-        sessionStorage.setItem("admin_otp_verified", "1");
+        markAdminOtpVerified(userId);
         sessionStorage.removeItem("admin_otp_sent");
         toast.success("관리자 인증 완료");
         onVerified();
