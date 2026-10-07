@@ -41,6 +41,8 @@ interface FormState {
   benefits: string[];
   skin_types: string[];
   related_product_ids: string[];
+  cafe24_buy_url: string;
+  cafe24_product_no: string;
 }
 
 const emptyForm: FormState = {
@@ -50,6 +52,7 @@ const emptyForm: FormState = {
   image_url: "", images: [], detail_images: [], image_links: {},
   stock: "0", is_active: true, is_featured: false, tags: "",
   benefits: [], skin_types: [], related_product_ids: [],
+  cafe24_buy_url: "", cafe24_product_no: "",
 };
 
 // Task 8: Horizontal, drag-drop image gallery with per-image link
@@ -217,6 +220,8 @@ const ProductEditPage = () => {
               benefits: data.benefits || [],
               skin_types: data.skin_types || [],
               related_product_ids: data.related_product_ids || [],
+              cafe24_buy_url: data.cafe24_buy_url || "",
+              cafe24_product_no: data.cafe24_product_no || "",
             };
           }
         }
@@ -252,6 +257,8 @@ const ProductEditPage = () => {
         benefits: d.benefits || [],
         skin_types: d.skin_types || [],
         related_product_ids: d.related_product_ids || [],
+        cafe24_buy_url: d.cafe24_buy_url || "",
+        cafe24_product_no: d.cafe24_product_no || "",
       };
       setForm(next);
       initialFormRef.current = JSON.stringify(next);
@@ -312,6 +319,8 @@ const ProductEditPage = () => {
       benefits: form.benefits,
       skin_types: form.skin_types,
       related_product_ids: form.related_product_ids,
+      cafe24_buy_url: form.cafe24_buy_url.trim() || null,
+      cafe24_product_no: form.cafe24_product_no.trim() || null,
     };
     let error: any = null;
     if (currentId) {
@@ -420,11 +429,12 @@ const ProductEditPage = () => {
 
       <div className="max-w-6xl mx-auto p-4 md:p-6">
         <Tabs value={tab} onValueChange={(v) => setTab(v as any)}>
-          <TabsList className="grid grid-cols-5 w-full max-w-2xl">
+          <TabsList className="grid grid-cols-6 w-full max-w-2xl">
             <TabsTrigger value="info">기본 정보</TabsTrigger>
             <TabsTrigger value="images">이미지</TabsTrigger>
             <TabsTrigger value="description">상품 설명</TabsTrigger>
             <TabsTrigger value="extras">효능/연계</TabsTrigger>
+            <TabsTrigger value="cafe24">카페24</TabsTrigger>
             <TabsTrigger value="preview" className="gap-1"><Eye className="h-3 w-3" />미리보기</TabsTrigger>
           </TabsList>
 
