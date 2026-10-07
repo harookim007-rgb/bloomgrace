@@ -8,7 +8,7 @@ const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const ADMIN_OTP_FROM = Deno.env.get("ADMIN_OTP_FROM") || "Bloom & Grace Admin <welcometo@bloomgrace.shop>";
 
 const RESEND_COOLDOWN_MS = 45_000;
-const OTP_TTL_MS = 5 * 60 * 1000;
+const OTP_TTL_MS = 10 * 60 * 1000;
 
 async function sha256(text: string) {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
@@ -65,10 +65,8 @@ Deno.serve(async (req) => {
     const code_hash = await sha256(`${userId}:${code}`);
     const expires_at = new Date(Date.now() + OTP_TTL_MS).toISOString();
 
-    // Prepare one active code, but mark it consumed again if email delivery fails.
-    await admin.from("admin_otp").update({ consumed: true })
-      .eq("user_id", userId).eq("consumed", false);
-
+    // Earlier codes stay valid until they expire, so entering a code from an
+    // older email (common when mail apps group them) still works.
     const { data: insertedOtp, error: insErr } = await admin.from("admin_otp")
       .insert({ user_id: userId, email, code_hash, expires_at })
       .select("id")
@@ -81,11 +79,11 @@ Deno.serve(async (req) => {
       return json({ success: true, dev_mode: true, dev_code: code, masked_email: email });
     }
 
-    const subject = "관리자 인증코드 (5분 유효)";
+    const subject = `[${code}] Bloom & Grace 관리자 인증번호`;
     const html = `
       <div style="font-family: -apple-system, Arial, sans-serif; max-width: 480px; margin: 0 auto; padding: 24px;">
         <h2 style="color:#111; margin:0 0 12px; font-size:18px;">관리자 로그인 인증</h2>
-        <p style="color:#555; font-size:14px; margin:0 0 16px;">아래 6자리 인증번호를 관리자 로그인 화면에 입력해 주세요. 코드는 5분 후 만료됩니다.</p>
+        <p style="color:#555; font-size:14px; margin:0 0 16px;">아래 6자리 인증번호를 관리자 로그인 화면에 입력해 주세요. 코드는 10분 후 만료됩니다.</p>
         <div style="background:#f4f4f5; border:1px solid #e4e4e7; border-radius:8px; padding:20px; text-align:center; letter-spacing:0.35em; font-size:28px; font-weight:700; color:#111; font-family: 'SF Mono', monospace;">
           ${code}
         </div>
