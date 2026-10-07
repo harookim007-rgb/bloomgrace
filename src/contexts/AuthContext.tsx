@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { User, Session } from "@supabase/supabase-js";
+import { clearAdminOtp } from "@/lib/adminOtp";
 
 interface AuthContextType {
   user: User | null;
@@ -27,13 +28,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const checkAdmin = async (userId: string) => {
-    const { data, error } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", userId)
-      .in("role", ["admin", "master_admin"])
-      .limit(1);
-    setIsAdmin(!error && Boolean(data?.length));
+    // Retry so a momentary network hiccup never kicks an admin out of the dashboard.
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const { data, error } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", userId)
+        .in("role", ["admin", "master_admin"])
+        .limit(1);
+      if (!error) { setIsAdmin(Boolean(data?.length)); return; }
+      await new Promise((r) => setTimeout(r, 600 * (attempt + 1)));
+    }
   };
 
   useEffect(() => {
@@ -80,6 +85,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signOut = async () => {
+    clearAdminOtp();
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
   };
