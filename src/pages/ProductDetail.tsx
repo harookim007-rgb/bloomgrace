@@ -16,6 +16,12 @@ import { Star } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import { containsHangul, getLocalizedProductName, productUi, SUPPORTED_PRODUCT_LANGUAGES } from "@/lib/productI18n";
 import { requireLogin } from "@/components/LoginDialog";
+import {
+  cafe24BuyUrlOf,
+  isCafe24Checkout,
+  loadCafe24Settings,
+  startCafe24Checkout,
+} from "@/lib/cafe24";
 
 const ADDED_I18N: Record<string, { title: string; msg: string; checkout: string; keep: string }> = {
   en: { title: "Added to cart", msg: "This product has been added to your cart.", checkout: "Checkout now", keep: "Continue shopping" },
@@ -146,8 +152,17 @@ const ProductDetail = () => {
               if (ok) setAddedOpen(true);
             }}
 
-            onBuyNow={(qty) => {
+            onBuyNow={async (qty) => {
               if (!requireLogin(!!user)) return;
+              const cafe24 = await loadCafe24Settings();
+              if (isCafe24Checkout(cafe24, product)) {
+                startCafe24Checkout({
+                  buyUrl: cafe24BuyUrlOf(product),
+                  productName: getLocalizedProductName(product, language),
+                  quantity: qty,
+                });
+                return;
+              }
               sessionStorage.setItem("buyNow", JSON.stringify({
                 product_id: product.id,
                 product_name: getLocalizedProductName(product, language),

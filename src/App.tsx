@@ -23,6 +23,7 @@ import Ranking from "./pages/Ranking";
 import FallingPetals from "./components/FallingPetals";
 import ScatteredFlorals from "./components/FloralDecor";
 import LoginDialog from "./components/LoginDialog";
+import Cafe24Handoff from "./components/Cafe24Handoff";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +50,7 @@ const App = () => (
           <AuthProvider>
             <DesignModeOverlay />
             <LoginDialog />
+            <Cafe24Handoff />
             <GlobalPetals />
             <Routes>
               <Route path="/" element={<Index />} />
