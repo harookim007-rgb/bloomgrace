@@ -158,6 +158,39 @@ export type Database = {
         }
         Relationships: []
       }
+      cafe24_settings: {
+        Row: {
+          cart_url: string
+          id: string
+          is_enabled: boolean
+          join_url: string
+          login_url: string
+          mall_url: string
+          show_join_prompt: boolean
+          updated_at: string
+        }
+        Insert: {
+          cart_url?: string
+          id?: string
+          is_enabled?: boolean
+          join_url?: string
+          login_url?: string
+          mall_url?: string
+          show_join_prompt?: boolean
+          updated_at?: string
+        }
+        Update: {
+          cart_url?: string
+          id?: string
+          is_enabled?: boolean
+          join_url?: string
+          login_url?: string
+          mall_url?: string
+          show_join_prompt?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
       cart_items: {
         Row: {
           created_at: string
@@ -597,6 +630,8 @@ export type Database = {
         Row: {
           benefits: string[]
           brand: string | null
+          cafe24_buy_url: string | null
+          cafe24_product_no: string | null
           category_id: string | null
           created_at: string
           description: string | null
@@ -629,6 +664,8 @@ export type Database = {
         Insert: {
           benefits?: string[]
           brand?: string | null
+          cafe24_buy_url?: string | null
+          cafe24_product_no?: string | null
           category_id?: string | null
           created_at?: string
           description?: string | null
@@ -661,6 +698,8 @@ export type Database = {
         Update: {
           benefits?: string[]
           brand?: string | null
+          cafe24_buy_url?: string | null
+          cafe24_product_no?: string | null
           category_id?: string | null
           created_at?: string
           description?: string | null

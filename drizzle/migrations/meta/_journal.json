@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1791349493580,
+      "tag": "0000_cafe24_integration_fields",
+      "breakpoints": true
+    }
+  ]
+}
