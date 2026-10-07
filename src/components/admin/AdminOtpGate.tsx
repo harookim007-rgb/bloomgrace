@@ -13,10 +13,10 @@ interface Props {
 
 const AdminOtpGate = ({ onVerified }: Props) => {
   const { signOut } = useAuth();
-  const [sent, setSent] = useState(false);
+  const [sent, setSent] = useState(() => sessionStorage.getItem("admin_otp_sent") === "1");
   const [busy, setBusy] = useState(false);
   const [code, setCode] = useState("");
-  const [maskedEmail, setMaskedEmail] = useState("");
+  const [maskedEmail, setMaskedEmail] = useState(() => sessionStorage.getItem("admin_otp_masked") || "");
   const [cooldown, setCooldown] = useState(0);
   const [devCode, setDevCode] = useState<string | null>(null);
 
@@ -41,6 +41,8 @@ const AdminOtpGate = ({ onVerified }: Props) => {
       }
       setSent(true);
       setMaskedEmail(data?.masked_email || "");
+      sessionStorage.setItem("admin_otp_sent", "1");
+      sessionStorage.setItem("admin_otp_masked", data?.masked_email || "");
       setCooldown(45);
       if (data?.dev_mode && data?.dev_code) {
         setDevCode(data.dev_code);
@@ -70,6 +72,7 @@ const AdminOtpGate = ({ onVerified }: Props) => {
       }
       if (data?.success) {
         sessionStorage.setItem("admin_otp_verified", "1");
+        sessionStorage.removeItem("admin_otp_sent");
         toast.success("관리자 인증 완료");
         onVerified();
       }
