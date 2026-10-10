@@ -26,7 +26,7 @@ const fmt = (n: number) => `₩${Math.round(n).toLocaleString("ko-KR")}`;
 
 export function renderOrderConfirmationEmail(d: OrderConfirmationData) {
   const shortId = d.orderId.slice(0, 8).toUpperCase();
-  const subject = `[BLOOM & GRACE] 주문 접수 완료 · #${shortId}`;
+  const subject = `[YOUTHROOM] 주문 접수 완료 · #${shortId}`;
 
   const itemsRows = d.items.map(it => `
     <tr>
@@ -53,7 +53,7 @@ export function renderOrderConfirmationEmail(d: OrderConfirmationData) {
   const html = `
   <div style="font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; color: #1a1a1a; background: #ffffff;">
     <div style="text-align: center; padding-bottom: 24px; border-bottom: 1px solid #eee;">
-      <h1 style="font-family: 'Playfair Display', Georgia, serif; font-weight: 300; font-size: 26px; margin: 0; letter-spacing: 0.05em;">BLOOM &amp; GRACE</h1>
+      <h1 style="font-family: 'Playfair Display', Georgia, serif; font-weight: 300; font-size: 26px; margin: 0; letter-spacing: 0.05em;">YOUTHROOM</h1>
     </div>
 
     <div style="padding: 28px 0 8px;">
@@ -83,7 +83,7 @@ export function renderOrderConfirmationEmail(d: OrderConfirmationData) {
 
     <div style="border-top:1px solid #eee; padding-top:16px; margin-top:28px; font-size:11px; color:#999; text-align:center;">
       <p style="margin:0;">문의: welcometo@bloomgrace.shop</p>
-      <p style="margin:8px 0 0;">© BLOOM &amp; GRACE. All rights reserved.</p>
+      <p style="margin:8px 0 0;">© YOUTHROOM. All rights reserved.</p>
     </div>
   </div>`;
 

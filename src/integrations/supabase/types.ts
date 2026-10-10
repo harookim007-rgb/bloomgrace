@@ -233,6 +233,7 @@ export type Database = {
           parent_id: string | null
           slug: string
           sort_order: number
+          translations: Json | null
         }
         Insert: {
           created_at?: string
@@ -243,6 +244,7 @@ export type Database = {
           parent_id?: string | null
           slug: string
           sort_order?: number
+          translations?: Json | null
         }
         Update: {
           created_at?: string
@@ -253,6 +255,7 @@ export type Database = {
           parent_id?: string | null
           slug?: string
           sort_order?: number
+          translations?: Json | null
         }
         Relationships: [
           {
@@ -379,6 +382,7 @@ export type Database = {
           label: string
           link: string
           sort_order: number
+          translations: Json | null
           updated_at: string
         }
         Insert: {
@@ -388,6 +392,7 @@ export type Database = {
           label: string
           link: string
           sort_order?: number
+          translations?: Json | null
           updated_at?: string
         }
         Update: {
@@ -397,6 +402,7 @@ export type Database = {
           label?: string
           link?: string
           sort_order?: number
+          translations?: Json | null
           updated_at?: string
         }
         Relationships: []
@@ -854,6 +860,24 @@ export type Database = {
           max_days?: number
           min_days?: number
           sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      site_settings: {
+        Row: {
+          id: string
+          settings: Json
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          settings?: Json
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          settings?: Json
           updated_at?: string
         }
         Relationships: []

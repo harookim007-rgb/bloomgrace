@@ -8,12 +8,12 @@ export function renderWelcomeEmail(data: WelcomeEmailData) {
   const name = data.name || "고객";
   const shopUrl = data.shopUrl || "https://bloomgrace.shop";
 
-  const subject = `${name}님, BLOOM & GRACE에 오신 것을 환영합니다 🌸`;
+  const subject = `${name}님, YOUTHROOM에 오신 것을 환영합니다 🌸`;
 
   const html = `
   <div style="font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; color: #1a1a1a; background: #ffffff;">
     <div style="text-align: center; padding-bottom: 24px; border-bottom: 1px solid #eee;">
-      <h1 style="font-family: 'Playfair Display', Georgia, serif; font-weight: 300; font-size: 28px; margin: 0; letter-spacing: 0.05em;">BLOOM &amp; GRACE</h1>
+      <h1 style="font-family: 'Playfair Display', Georgia, serif; font-weight: 300; font-size: 28px; margin: 0; letter-spacing: 0.05em;">YOUTHROOM</h1>
       <p style="color:#888; font-size:12px; letter-spacing:0.2em; margin-top:4px;">LUXURY K-BEAUTY</p>
     </div>
 
@@ -22,7 +22,7 @@ export function renderWelcomeEmail(data: WelcomeEmailData) {
         ${escapeHtml(name)}님, 반갑습니다.
       </h2>
       <p style="font-size:14px; line-height:1.7; color:#333;">
-        BLOOM &amp; GRACE 회원이 되신 것을 진심으로 환영합니다.<br/>
+        YOUTHROOM 회원이 되신 것을 진심으로 환영합니다.<br/>
         엄선된 K-Beauty 제품과 개인 맞춤 뷰티 큐레이션을 만나보세요.
       </p>
 
@@ -43,7 +43,7 @@ export function renderWelcomeEmail(data: WelcomeEmailData) {
 
     <div style="border-top:1px solid #eee; padding-top:16px; font-size:11px; color:#999; text-align:center;">
       <p style="margin:0;">문의: welcometo@bloomgrace.shop</p>
-      <p style="margin:8px 0 0;">© BLOOM &amp; GRACE. All rights reserved.</p>
+      <p style="margin:8px 0 0;">© YOUTHROOM. All rights reserved.</p>
     </div>
   </div>`;
 

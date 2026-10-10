@@ -5,7 +5,7 @@ const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const ADMIN_OTP_FROM = Deno.env.get("ADMIN_OTP_FROM") || "Bloom & Grace Admin <welcometo@bloomgrace.shop>";
+const ADMIN_OTP_FROM = Deno.env.get("ADMIN_OTP_FROM") || "Youthroom Admin <welcometo@bloomgrace.shop>";
 
 const RESEND_COOLDOWN_MS = 45_000;
 const OTP_TTL_MS = 10 * 60 * 1000;
@@ -79,7 +79,7 @@ Deno.serve(async (req) => {
       return json({ success: true, dev_mode: true, dev_code: code, masked_email: email });
     }
 
-    const subject = `[${code}] Bloom & Grace 관리자 인증번호`;
+    const subject = `[${code}] Youthroom 관리자 인증번호`;
     const html = `
       <div style="font-family: -apple-system, Arial, sans-serif; max-width: 480px; margin: 0 auto; padding: 24px;">
         <h2 style="color:#111; margin:0 0 12px; font-size:18px;">관리자 로그인 인증</h2>

@@ -3,21 +3,21 @@ import { useEffect, useState } from "react";
 // Multilingual rolling greeting — flag always in front, no trailing emojis.
 const greetings: { lang: string; flag: string; text: string; dir?: "rtl" }[] = [
   
-  { lang: "en", flag: "🇺🇸", text: "Hello, gorgeous! We're BLOOM & GRACE" },
-  { lang: "ja", flag: "🇯🇵", text: "こんにちは！BLOOM & GRACE です" },
+  { lang: "en", flag: "🇺🇸", text: "Hello, gorgeous! We're YOUTHROOM" },
+  { lang: "ja", flag: "🇯🇵", text: "こんにちは！YOUTHROOM です" },
   
-  { lang: "es", flag: "🇪🇸", text: "¡Hola, bella! Somos BLOOM & GRACE" },
-  { lang: "fr", flag: "🇫🇷", text: "Bonjour ! Nous sommes BLOOM & GRACE" },
-  { lang: "de", flag: "🇩🇪", text: "Hallo! Wir sind BLOOM & GRACE" },
-  { lang: "it", flag: "🇮🇹", text: "Ciao, bella! Siamo BLOOM & GRACE" },
-  { lang: "pt", flag: "🇧🇷", text: "Olá, linda! Somos a BLOOM & GRACE" },
-  { lang: "ru", flag: "🇷🇺", text: "Привет! Мы — BLOOM & GRACE" },
-  { lang: "ar", flag: "🇸🇦", text: "مرحباً! نحن BLOOM & GRACE", dir: "rtl" },
-  { lang: "hi", flag: "🇮🇳", text: "नमस्ते! हम BLOOM & GRACE हैं" },
-  { lang: "th", flag: "🇹🇭", text: "สวัสดี! เราคือ BLOOM & GRACE" },
-  { lang: "vi", flag: "🇻🇳", text: "Xin chào! Chúng tôi là BLOOM & GRACE" },
-  { lang: "tr", flag: "🇹🇷", text: "Merhaba güzelim! Biz BLOOM & GRACE" },
-  { lang: "id", flag: "🇮🇩", text: "Halo cantik! Kami BLOOM & GRACE" },
+  { lang: "es", flag: "🇪🇸", text: "¡Hola, bella! Somos YOUTHROOM" },
+  { lang: "fr", flag: "🇫🇷", text: "Bonjour ! Nous sommes YOUTHROOM" },
+  { lang: "de", flag: "🇩🇪", text: "Hallo! Wir sind YOUTHROOM" },
+  { lang: "it", flag: "🇮🇹", text: "Ciao, bella! Siamo YOUTHROOM" },
+  { lang: "pt", flag: "🇧🇷", text: "Olá, linda! Somos a YOUTHROOM" },
+  { lang: "ru", flag: "🇷🇺", text: "Привет! Мы — YOUTHROOM" },
+  { lang: "ar", flag: "🇸🇦", text: "مرحباً! نحن YOUTHROOM", dir: "rtl" },
+  { lang: "hi", flag: "🇮🇳", text: "नमस्ते! हम YOUTHROOM हैं" },
+  { lang: "th", flag: "🇹🇭", text: "สวัสดี! เราคือ YOUTHROOM" },
+  { lang: "vi", flag: "🇻🇳", text: "Xin chào! Chúng tôi là YOUTHROOM" },
+  { lang: "tr", flag: "🇹🇷", text: "Merhaba güzelim! Biz YOUTHROOM" },
+  { lang: "id", flag: "🇮🇩", text: "Halo cantik! Kami YOUTHROOM" },
 ];
 
 const RollingGreeting = () => {

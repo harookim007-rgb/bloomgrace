@@ -18,13 +18,13 @@ export const requireLogin = (isSignedIn: boolean) => {
 };
 
 const L = {
-  en: { title: "Welcome!", sub: "We are Bloom & Grace", desc: "Sign in with Google to save your favorites and check out faster.", google: "Continue with Google" },
-  es: { title: "¡Bienvenido!", sub: "Somos Bloom & Grace", desc: "Inicia sesión con Google para guardar tus favoritos y comprar más rápido.", google: "Continuar con Google" },
-  de: { title: "Willkommen!", sub: "Wir sind Bloom & Grace", desc: "Melden Sie sich mit Google an, um Favoriten zu speichern und schneller zu bezahlen.", google: "Mit Google fortfahren" },
-  fr: { title: "Bienvenue !", sub: "Nous sommes Bloom & Grace", desc: "Connectez-vous avec Google pour enregistrer vos favoris et accélérer le paiement.", google: "Continuer avec Google" },
-  pt: { title: "Bem-vindo!", sub: "Somos a Bloom & Grace", desc: "Entre com o Google para salvar seus favoritos e finalizar a compra mais rápido.", google: "Continuar com Google" },
-  ja: { title: "ようこそ！", sub: "Bloom & Grace です", desc: "Googleでログインすると、お気に入りを保存してスムーズにお買い物できます。", google: "Googleで続ける" },
-  ar: { title: "!أهلاً بك", sub: "نحن Bloom & Grace", desc: "سجّل الدخول عبر Google لحفظ المفضلات والدفع بشكل أسرع.", google: "المتابعة عبر Google" },
+  en: { title: "Welcome!", sub: "We are Youthroom", desc: "Sign in with Google to save your favorites and check out faster.", google: "Continue with Google" },
+  es: { title: "¡Bienvenido!", sub: "Somos Youthroom", desc: "Inicia sesión con Google para guardar tus favoritos y comprar más rápido.", google: "Continuar con Google" },
+  de: { title: "Willkommen!", sub: "Wir sind Youthroom", desc: "Melden Sie sich mit Google an, um Favoriten zu speichern und schneller zu bezahlen.", google: "Mit Google fortfahren" },
+  fr: { title: "Bienvenue !", sub: "Nous sommes Youthroom", desc: "Connectez-vous avec Google pour enregistrer vos favoris et accélérer le paiement.", google: "Continuer avec Google" },
+  pt: { title: "Bem-vindo!", sub: "Somos a Youthroom", desc: "Entre com o Google para salvar seus favoritos e finalizar a compra mais rápido.", google: "Continuar com Google" },
+  ja: { title: "ようこそ！", sub: "Youthroom です", desc: "Googleでログインすると、お気に入りを保存してスムーズにお買い物できます。", google: "Googleで続ける" },
+  ar: { title: "!أهلاً بك", sub: "نحن Youthroom", desc: "سجّل الدخول عبر Google لحفظ المفضلات والدفع بشكل أسرع.", google: "المتابعة عبر Google" },
 } as const;
 
 const GoogleIcon = () => (

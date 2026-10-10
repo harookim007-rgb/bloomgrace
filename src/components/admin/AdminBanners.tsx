@@ -65,6 +65,9 @@ const AdminBanners = () => {
       if (error) { toast.error(error.message); return; }
       toast.success("배너가 등록되었습니다.");
     }
+    if (Object.keys(translations).length === 0) {
+      toast.warning("자동 번역에 실패했습니다. 번역이 없으면 쇼핑몰에 배너가 표시되지 않으니 잠시 후 다시 저장해 주세요.", { duration: 10000 });
+    }
     setForm(emptyForm); setEditingId(null); setDialogOpen(false);
     fetchData();
   };

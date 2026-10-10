@@ -154,8 +154,8 @@ const Ranking = () => {
   return (
     <div className="min-h-dvh" data-ranking-page="sales-only">
       <SEO
-        title="Best-Selling K-Beauty Ranking | Bloom & Grace"
-        description="See the top-selling and trending Korean beauty products at Bloom & Grace, updated weekly and monthly."
+        title="Best-Selling K-Beauty Ranking | Youthroom"
+        description="See the top-selling and trending Korean beauty products at Youthroom, updated weekly and monthly."
         path="/ranking"
       />
       <Navigation />

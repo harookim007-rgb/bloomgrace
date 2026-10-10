@@ -1,6 +1,6 @@
-# BloomGrace
+# Youthroom
 
-BloomGrace is a production-style e-commerce web application developed to explore modern frontend engineering practices and AI-assisted software development workflows.
+Youthroom is a production-style e-commerce web application developed to explore modern frontend engineering practices and AI-assisted software development workflows.
 
 The project focuses on building a scalable and maintainable web application using a component-based architecture while leveraging AI tools to accelerate development and improve productivity.
 

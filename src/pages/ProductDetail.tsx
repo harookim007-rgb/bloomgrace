@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCart } from "@/hooks/useCart";
 import { useWishlist } from "@/hooks/useWishlist";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { useLanguage } from "@/contexts/LanguageContext";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -39,6 +40,7 @@ const ProductDetail = () => {
   const { user } = useAuth();
   const { addToCart, adding } = useCart();
   const { isWishlisted, toggleWishlist } = useWishlist();
+  const { allowReviews } = useSiteSettings();
   const { t, language } = useLanguage();
   const [product, setProduct] = useState<any>(null);
   const [related, setRelated] = useState<any[]>([]);
@@ -50,7 +52,7 @@ const ProductDetail = () => {
 
 
   const loadProduct = async () => {
-    const { data } = await supabase.from("products").select("*, categories(name, slug)").eq("slug", slug).single();
+    const { data } = await supabase.from("products").select("*, categories(*)").eq("slug", slug).single();
     setProduct(data);
     if (data) {
       fetchReviews(data.id);
@@ -114,7 +116,7 @@ const ProductDetail = () => {
   if (!product) return <div className="min-h-dvh"><Navigation /><div className="flex items-center justify-center py-32 text-sm text-muted-foreground">{t("pd_not_found")}</div></div>;
 
   const pdName = getLocalizedProductName(product, language) || product.name;
-  const pdDesc = (product.translations?.[language]?.description || product.description || `${pdName} — Bloom & Grace K-Beauty`).toString().replace(/<[^>]*>/g, "").slice(0, 158);
+  const pdDesc = (product.translations?.[language]?.description || product.description || `${pdName} — Youthroom K-Beauty`).toString().replace(/<[^>]*>/g, "").slice(0, 158);
   const pdImage = product.image_url || product.thumbnail_url || undefined;
   const pdJsonLd = {
     "@context": "https://schema.org",
@@ -134,7 +136,7 @@ const ProductDetail = () => {
   return (
     <div className="min-h-dvh">
       <SEO
-        title={`${pdName} | Bloom & Grace`.slice(0, 60)}
+        title={`${pdName} | Youthroom`.slice(0, 60)}
         description={pdDesc}
         path={`/products/${product.slug}`}
         image={pdImage}
@@ -193,7 +195,7 @@ const ProductDetail = () => {
 
 
           {/* Reviews */}
-          <div className="mt-20 md:mt-28 space-y-8">
+          {allowReviews && <div className="mt-20 md:mt-28 space-y-8">
             <div className="border-b border-border pb-4">
               <h2 className="text-xl md:text-2xl font-serif font-light">{t("pd_review_section")} ({reviews.length})</h2>
             </div>
@@ -250,7 +252,7 @@ const ProductDetail = () => {
               ))}
               {filteredReviews.length === 0 && <p className="text-center text-muted-foreground py-12 text-sm">{t("pd_no_reviews")}</p>}
             </div>
-          </div>
+          </div>}
         </div>
       </section>
 

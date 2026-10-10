@@ -5,21 +5,23 @@ import BeautyConsultation from "@/components/BeautyConsultation";
 import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import SEO from "@/components/SEO";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const Index = () => {
+  const { metaTitle, metaDescription, ogImage } = useSiteSettings();
   const jsonLd = [
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      name: "Bloom & Grace",
+      name: "Youthroom",
       url: "https://bloomgrace.shop",
-      logo: "https://bloomgrace.shop/placeholder.svg",
+      logo: "https://bloomgrace.shop/apple-touch-icon.png",
       sameAs: [],
     },
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      name: "Bloom & Grace",
+      name: "Youthroom",
       url: "https://bloomgrace.shop",
       potentialAction: {
         "@type": "SearchAction",
@@ -38,9 +40,10 @@ const Index = () => {
       }}
     >
       <SEO
-        title="Bloom & Grace | Korean Beauty Boutique"
-        description="Discover elegant, natural K-Beauty. Curated Korean skincare, makeup, and body care with worldwide shipping and AI-personalized routines."
+        title={metaTitle || "Youthroom | Korean Beauty Boutique"}
+        description={metaDescription || "Discover elegant, natural K-Beauty. Curated Korean skincare, makeup, and body care with worldwide shipping and AI-personalized routines."}
         path="/"
+        image={ogImage || undefined}
         jsonLd={jsonLd}
       />
       <Navigation />

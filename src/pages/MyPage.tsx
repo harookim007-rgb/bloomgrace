@@ -13,6 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import ReviewPhotoUploader from "@/components/ReviewPhotoUploader";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { Clock, RotateCcw, Star, PenLine } from "lucide-react";
 import { toast } from "sonner";
 import { getLocalizedProductName } from "@/lib/productI18n";
@@ -43,6 +44,7 @@ const MP_I18N: Record<string, { points: string; reorder: string; deadline: strin
 const MyPage = () => {
   const { user, signOut } = useAuth();
   const { t, formatPrice, language } = useLanguage();
+  const { allowReviews, allowWishlist } = useSiteSettings();
   const { addToCart } = useCart();
   const navigate = useNavigate();
   const [orders, setOrders] = useState<any[]>([]);
@@ -142,9 +144,9 @@ const MyPage = () => {
           )}
 
           <Tabs defaultValue="orders">
-            <TabsList className="grid w-full grid-cols-3 mb-10 rounded-none bg-muted/50 h-auto">
+            <TabsList className={`grid w-full ${allowWishlist ? "grid-cols-3" : "grid-cols-2"} mb-10 rounded-none bg-muted/50 h-auto`}>
               <TabsTrigger value="orders" className="rounded-none text-xs tracking-wider uppercase py-3">{t("mp_orders")}</TabsTrigger>
-              <TabsTrigger value="wishlist" className="rounded-none text-xs tracking-wider uppercase py-3">{t("mp_wishlist")}</TabsTrigger>
+              {allowWishlist && <TabsTrigger value="wishlist" className="rounded-none text-xs tracking-wider uppercase py-3">{t("mp_wishlist")}</TabsTrigger>}
               <TabsTrigger value="profile" className="rounded-none text-xs tracking-wider uppercase py-3">{t("mp_profile")}</TabsTrigger>
             </TabsList>
 
@@ -201,7 +203,7 @@ const MyPage = () => {
                             <span className={`flex-1 min-w-0 ${isCancelled ? "line-through" : ""}`}>{getLocalizedProductName(item.products || { name: item.product_name }, language as any)} ×{item.quantity}</span>
                             <div className="flex items-center gap-2">
                               <span>{formatPrice(item.price * item.quantity)}</span>
-                              {canReview && (
+                              {allowReviews && canReview && (
                                 reviewed ? (
                                   <span className="text-[10px] tracking-wider uppercase px-2 py-1 border border-border text-muted-foreground inline-flex items-center gap-1"><Star className="h-3 w-3 fill-accent text-accent" />{R.done}</span>
                                 ) : (

@@ -12,7 +12,7 @@ const About = () => {
           <div className="aspect-square overflow-hidden bg-primary-soft rounded-sm">
             <img
               src={aboutImg}
-              alt="About Bloom & Grace"
+              alt="About Youthroom"
               className="w-full h-full object-cover"
               loading="lazy"
             />

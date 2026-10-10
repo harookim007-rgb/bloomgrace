@@ -237,7 +237,7 @@ const Cafe24Handoff = () => {
             <CreditCard className="h-3 w-3" /> {c.secure}
           </p>
           <p className="mt-2 text-[10px] font-sans uppercase tracking-[0.18em] text-muted-foreground/70 flex items-center gap-1.5">
-            <Sparkles className="h-3 w-3" /> Bloom &amp; Grace
+            <Sparkles className="h-3 w-3" /> Youthroom
           </p>
         </div>
       </DialogContent>

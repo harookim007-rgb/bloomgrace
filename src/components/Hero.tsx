@@ -25,8 +25,8 @@ const heroTexts: Record<string, { titles: string[]; subtitles: string[] }> = {
     ],
     subtitles: [
       "Crafted with nature's finest ingredients",
-      "Hydration that defies time, BLOOM & GRACE",
-      "Luxurious beauty, BLOOM & GRACE",
+      "Hydration that defies time, YOUTHROOM",
+      "Luxurious beauty, YOUTHROOM",
     ],
   },
   es: {
@@ -38,7 +38,7 @@ const heroTexts: Record<string, { titles: string[]; subtitles: string[] }> = {
     subtitles: [
       "Elaborado con los mejores ingredientes de la naturaleza",
       "Hidratación que desafía el tiempo",
-      "Belleza lujosa, BLOOM & GRACE",
+      "Belleza lujosa, YOUTHROOM",
     ],
   },
   de: {
@@ -50,7 +50,7 @@ const heroTexts: Record<string, { titles: string[]; subtitles: string[] }> = {
     subtitles: [
       "Mit den feinsten Inhaltsstoffen der Natur gefertigt",
       "Feuchtigkeit, die der Zeit trotzt",
-      "Luxuriöse Schönheit, BLOOM & GRACE",
+      "Luxuriöse Schönheit, YOUTHROOM",
     ],
   },
   fr: {
@@ -62,7 +62,7 @@ const heroTexts: Record<string, { titles: string[]; subtitles: string[] }> = {
     subtitles: [
       "Élaboré avec les plus beaux ingrédients de la nature",
       "Une hydratation qui défie le temps",
-      "Beauté luxueuse, BLOOM & GRACE",
+      "Beauté luxueuse, YOUTHROOM",
     ],
   },
   pt: {
@@ -74,7 +74,7 @@ const heroTexts: Record<string, { titles: string[]; subtitles: string[] }> = {
     subtitles: [
       "Elaborado com os melhores ingredientes da natureza",
       "Hidratação que desafia o tempo",
-      "Beleza luxuosa, BLOOM & GRACE",
+      "Beleza luxuosa, YOUTHROOM",
     ],
   },
   ar: {
@@ -86,7 +86,7 @@ const heroTexts: Record<string, { titles: string[]; subtitles: string[] }> = {
     subtitles: [
       "مصنوع من أجود مكونات الطبيعة",
       "ترطيب يتحدى الزمن",
-      "جمال فاخر، BLOOM & GRACE",
+      "جمال فاخر، YOUTHROOM",
     ],
   },
 };
@@ -114,7 +114,9 @@ const Hero = () => {
   const translatedBanners = banners
     .map((b: any, i: number) => {
       const cur = (b.translations || {})?.[language];
-      const title = cur?.title && !containsHangul(cur.title) ? cur.title : null;
+      // A title the admin already wrote without Korean is safe to show as-is when its translation is missing.
+      const rawTitle = b.title && !containsHangul(b.title) ? b.title : null;
+      const title = cur?.title && !containsHangul(cur.title) ? cur.title : rawTitle;
       const subtitle = cur?.subtitle && !containsHangul(cur.subtitle) ? cur.subtitle : "";
       if (!title) return null;
       return {
@@ -178,7 +180,7 @@ const Hero = () => {
             </h1>
             {slide.subtitle && (
               <p className="text-base md:text-lg text-foreground font-sans font-semibold leading-relaxed max-w-lg drop-shadow-[0_1px_4px_rgba(255,255,255,0.7)]">
-                {slide.subtitle.replace(/,?\s*BLOOM\s*&\s*GRACE/gi, "").replace(/,?\s*Bloom\s*&\s*Grace/gi, "").trim()}
+                {slide.subtitle.replace(/,?\s*(BLOOM\s*&\s*GRACE|YOUTHROOM)/gi, "").trim()}
               </p>
             )}
             <div className="flex flex-wrap gap-3 pt-2">

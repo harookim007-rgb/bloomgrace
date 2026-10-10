@@ -52,7 +52,7 @@ export const supportTexts: Record<string, SupportText> = {
     error: "Failed to send. Please try again.",
     emptyHistory: "No inquiries yet.",
     pending: "Waiting for reply", answered: "Answered",
-    replyLabel: "Bloom & Grace", newInquiry: "New inquiry",
+    replyLabel: "Youthroom", newInquiry: "New inquiry",
   },
   es: {
     title: "Atención al Cliente", subtitle: "Respondemos en pocas horas",
@@ -74,7 +74,7 @@ export const supportTexts: Record<string, SupportText> = {
     error: "Error al enviar. Inténtalo de nuevo.",
     emptyHistory: "Aún no hay consultas.",
     pending: "Pendiente", answered: "Respondida",
-    replyLabel: "Bloom & Grace", newInquiry: "Nueva consulta",
+    replyLabel: "Youthroom", newInquiry: "Nueva consulta",
   },
   de: {
     title: "Kundenservice", subtitle: "Wir antworten in wenigen Stunden",
@@ -96,7 +96,7 @@ export const supportTexts: Record<string, SupportText> = {
     error: "Senden fehlgeschlagen. Bitte erneut versuchen.",
     emptyHistory: "Noch keine Anfragen.",
     pending: "Offen", answered: "Beantwortet",
-    replyLabel: "Bloom & Grace", newInquiry: "Neue Anfrage",
+    replyLabel: "Youthroom", newInquiry: "Neue Anfrage",
   },
   fr: {
     title: "Service Client", subtitle: "Nous répondons en quelques heures",
@@ -118,7 +118,7 @@ export const supportTexts: Record<string, SupportText> = {
     error: "Échec de l'envoi. Veuillez réessayer.",
     emptyHistory: "Aucune demande.",
     pending: "En attente", answered: "Répondu",
-    replyLabel: "Bloom & Grace", newInquiry: "Nouvelle demande",
+    replyLabel: "Youthroom", newInquiry: "Nouvelle demande",
   },
   pt: {
     title: "Atendimento ao Cliente", subtitle: "Respondemos em poucas horas",
@@ -140,7 +140,7 @@ export const supportTexts: Record<string, SupportText> = {
     error: "Falha ao enviar. Tente novamente.",
     emptyHistory: "Nenhuma dúvida ainda.",
     pending: "Aguardando", answered: "Respondida",
-    replyLabel: "Bloom & Grace", newInquiry: "Nova dúvida",
+    replyLabel: "Youthroom", newInquiry: "Nova dúvida",
   },
   ja: {
     title: "カスタマーサポート", subtitle: "通常数時間以内に返信します",
@@ -162,7 +162,7 @@ export const supportTexts: Record<string, SupportText> = {
     error: "送信に失敗しました。もう一度お試しください。",
     emptyHistory: "お問い合わせはまだありません。",
     pending: "回答待ち", answered: "回答済み",
-    replyLabel: "Bloom & Grace", newInquiry: "新規お問い合わせ",
+    replyLabel: "Youthroom", newInquiry: "新規お問い合わせ",
   },
   ar: {
     title: "دعم العملاء", subtitle: "نرد عادة خلال بضع ساعات",
@@ -184,6 +184,6 @@ export const supportTexts: Record<string, SupportText> = {
     error: "فشل الإرسال. حاول مرة أخرى.",
     emptyHistory: "لا توجد استفسارات.",
     pending: "بانتظار الرد", answered: "تم الرد",
-    replyLabel: "Bloom & Grace", newInquiry: "استفسار جديد",
+    replyLabel: "Youthroom", newInquiry: "استفسار جديد",
   },
 };

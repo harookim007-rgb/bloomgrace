@@ -1,8 +1,8 @@
-# Bloom & Grace
+# Youthroom
 
-> Bloom & Grace is a Korean beauty (K-Beauty) boutique offering elegant, natural skincare, makeup, and personal care products with worldwide shipping.
+> Youthroom is a Korean beauty (K-Beauty) boutique offering elegant, natural skincare, makeup, and personal care products with worldwide shipping.
 
-Bloom & Grace curates premium Korean beauty products across skincare, makeup, body and hair care. Shoppers can browse the catalog, view daily rankings, get AI-personalized routine recommendations, and read a multilingual Q&A. The site supports English, Spanish, German, French, Portuguese, Japanese and Arabic, with prices shown in USD (with a EUR toggle).
+Youthroom curates premium Korean beauty products across skincare, makeup, body and hair care. Shoppers can browse the catalog, view daily rankings, get AI-personalized routine recommendations, and read a multilingual Q&A. The site supports English, Spanish, German, French, Portuguese, Japanese and Arabic, with prices shown in USD (with a EUR toggle).
 
 ## Pages
 

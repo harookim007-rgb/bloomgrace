@@ -56,13 +56,13 @@ const Contact = () => {
   return (
     <div className="min-h-dvh">
       <SEO
-        title="Contact Bloom & Grace | K-Beauty Support"
-        description="Reach the Bloom & Grace customer support team for order help, product questions, and partnership inquiries."
+        title="Contact Youthroom | K-Beauty Support"
+        description="Reach the Youthroom customer support team for order help, product questions, and partnership inquiries."
         path="/contact"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "LocalBusiness",
-          name: "Bloom & Grace",
+          name: "Youthroom",
           email: "welcometo@bloomgrace.shop",
           url: "https://bloomgrace.shop/contact",
         }}

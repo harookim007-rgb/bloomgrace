@@ -24,6 +24,7 @@ import FallingPetals from "./components/FallingPetals";
 import ScatteredFlorals from "./components/FloralDecor";
 import LoginDialog from "./components/LoginDialog";
 import Cafe24Handoff from "./components/Cafe24Handoff";
+import SiteGate from "./components/SiteGate";
 
 const queryClient = new QueryClient({ defaultOptions: { queries: { refetchOnWindowFocus: false } } });
 
@@ -48,6 +49,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <AuthProvider>
+            <SiteGate>
             <DesignModeOverlay />
             <LoginDialog />
             <Cafe24Handoff />
@@ -69,6 +71,7 @@ const App = () => (
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
+            </SiteGate>
           </AuthProvider>
         </BrowserRouter>
       </LanguageProvider>

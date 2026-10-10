@@ -20,7 +20,7 @@ type TrustDict = {
 const T: Record<string, TrustDict> = {
   en: {
     title: "Trust & Privacy",
-    intro: "This page is maintained by Bloom & Grace to answer common security and privacy questions about our store.",
+    intro: "This page is maintained by Youthroom to answer common security and privacy questions about our store.",
     auth: "Account & Authentication",
     authBody: "Customers sign in with Google. Sessions are issued by our backend provider. Administrator areas require an additional one-time passcode.",
     host: "Hosting & Platform",
@@ -41,11 +41,11 @@ const T: Record<string, TrustDict> = {
     requests: "Your Requests",
     requestsBody: "To access, correct or delete your personal data, or to report a security concern, contact us at",
     contactLink: "our contact page",
-    disclaimer: "Compliance commitments, audits, or regulatory certifications are not claimed on this page unless explicitly stated in writing by Bloom & Grace.",
+    disclaimer: "Compliance commitments, audits, or regulatory certifications are not claimed on this page unless explicitly stated in writing by Youthroom.",
   },
   es: {
     title: "Confianza y Privacidad",
-    intro: "Esta página es mantenida por Bloom & Grace para responder preguntas comunes de seguridad y privacidad sobre nuestra tienda.",
+    intro: "Esta página es mantenida por Youthroom para responder preguntas comunes de seguridad y privacidad sobre nuestra tienda.",
     auth: "Cuenta y Autenticación",
     authBody: "Los clientes inician sesión con Google. Las áreas de administrador requieren un código único adicional.",
     host: "Hospedaje y Plataforma",
@@ -66,11 +66,11 @@ const T: Record<string, TrustDict> = {
     requests: "Tus Solicitudes",
     requestsBody: "Para acceder, corregir o eliminar tus datos, o reportar un problema de seguridad, contáctanos en",
     contactLink: "nuestra página de contacto",
-    disclaimer: "No se reclaman certificaciones regulatorias en esta página salvo declaración escrita explícita de Bloom & Grace.",
+    disclaimer: "No se reclaman certificaciones regulatorias en esta página salvo declaración escrita explícita de Youthroom.",
   },
   de: {
     title: "Vertrauen & Datenschutz",
-    intro: "Diese Seite wird von Bloom & Grace gepflegt und beantwortet gängige Sicherheits- und Datenschutzfragen zu unserem Shop.",
+    intro: "Diese Seite wird von Youthroom gepflegt und beantwortet gängige Sicherheits- und Datenschutzfragen zu unserem Shop.",
     auth: "Konto & Authentifizierung",
     authBody: "Kunden melden sich mit Google an. Admin-Bereiche erfordern einen zusätzlichen Einmalcode.",
     host: "Hosting & Plattform",
@@ -91,11 +91,11 @@ const T: Record<string, TrustDict> = {
     requests: "Ihre Anfragen",
     requestsBody: "Zum Zugriff, zur Korrektur oder Löschung Ihrer Daten oder zur Meldung von Sicherheitsbedenken kontaktieren Sie uns über",
     contactLink: "unsere Kontaktseite",
-    disclaimer: "Auf dieser Seite werden keine Zertifizierungen beansprucht, sofern nicht ausdrücklich schriftlich von Bloom & Grace erklärt.",
+    disclaimer: "Auf dieser Seite werden keine Zertifizierungen beansprucht, sofern nicht ausdrücklich schriftlich von Youthroom erklärt.",
   },
   fr: {
     title: "Confiance & Confidentialité",
-    intro: "Cette page est maintenue par Bloom & Grace pour répondre aux questions courantes de sécurité et de confidentialité.",
+    intro: "Cette page est maintenue par Youthroom pour répondre aux questions courantes de sécurité et de confidentialité.",
     auth: "Compte & Authentification",
     authBody: "Les clients se connectent avec Google. Les zones administrateur nécessitent un code à usage unique supplémentaire.",
     host: "Hébergement & Plateforme",
@@ -116,11 +116,11 @@ const T: Record<string, TrustDict> = {
     requests: "Vos Demandes",
     requestsBody: "Pour accéder, corriger ou supprimer vos données, ou signaler un problème, contactez-nous via",
     contactLink: "notre page contact",
-    disclaimer: "Aucune certification réglementaire n'est revendiquée sur cette page sauf déclaration écrite explicite de Bloom & Grace.",
+    disclaimer: "Aucune certification réglementaire n'est revendiquée sur cette page sauf déclaration écrite explicite de Youthroom.",
   },
   pt: {
     title: "Confiança e Privacidade",
-    intro: "Esta página é mantida pela Bloom & Grace para responder a perguntas comuns de segurança e privacidade.",
+    intro: "Esta página é mantida pela Youthroom para responder a perguntas comuns de segurança e privacidade.",
     auth: "Conta e Autenticação",
     authBody: "Clientes entram com Google. Áreas de administrador exigem código único adicional.",
     host: "Hospedagem e Plataforma",
@@ -141,11 +141,11 @@ const T: Record<string, TrustDict> = {
     requests: "Suas Solicitações",
     requestsBody: "Para acessar, corrigir ou excluir seus dados, ou reportar problemas de segurança, fale conosco em",
     contactLink: "nossa página de contato",
-    disclaimer: "Nenhuma certificação regulatória é reivindicada nesta página, salvo declaração escrita expressa da Bloom & Grace.",
+    disclaimer: "Nenhuma certificação regulatória é reivindicada nesta página, salvo declaração escrita expressa da Youthroom.",
   },
   ja: {
     title: "信頼とプライバシー",
-    intro: "このページは Bloom & Grace がストアに関するセキュリティとプライバシーの一般的な質問に答えるために維持しています。",
+    intro: "このページは Youthroom がストアに関するセキュリティとプライバシーの一般的な質問に答えるために維持しています。",
     auth: "アカウントと認証",
     authBody: "お客様は Google でログインします。管理者エリアは追加のワンタイムパスコードが必要です。",
     host: "ホスティングとプラットフォーム",
@@ -170,7 +170,7 @@ const T: Record<string, TrustDict> = {
   },
   ar: {
     title: "الثقة والخصوصية",
-    intro: "تتولى Bloom & Grace صيانة هذه الصفحة للإجابة عن أسئلة الأمان والخصوصية الشائعة المتعلقة بمتجرنا.",
+    intro: "تتولى Youthroom صيانة هذه الصفحة للإجابة عن أسئلة الأمان والخصوصية الشائعة المتعلقة بمتجرنا.",
     auth: "الحساب والمصادقة",
     authBody: "يسجل العملاء الدخول عبر Google. تتطلب مناطق المسؤول رمزًا إضافيًا لمرة واحدة.",
     host: "الاستضافة والمنصة",
@@ -191,7 +191,7 @@ const T: Record<string, TrustDict> = {
     requests: "طلباتك",
     requestsBody: "للوصول إلى بياناتك أو تصحيحها أو حذفها أو الإبلاغ عن مشكلة أمنية، تواصل معنا عبر",
     contactLink: "صفحة التواصل",
-    disclaimer: "لا يتم ادعاء أي شهادات تنظيمية على هذه الصفحة ما لم تصرح بذلك Bloom & Grace كتابيًا.",
+    disclaimer: "لا يتم ادعاء أي شهادات تنظيمية على هذه الصفحة ما لم تصرح بذلك Youthroom كتابيًا.",
   },
 };
 
@@ -201,8 +201,8 @@ const Trust = () => {
   return (
     <div className="min-h-dvh flex flex-col">
       <SEO
-        title="Trust & Privacy | Bloom & Grace"
-        description="How Bloom & Grace protects your account, order data and privacy — hosting, security and data handling practices."
+        title="Trust & Privacy | Youthroom"
+        description="How Youthroom protects your account, order data and privacy — hosting, security and data handling practices."
         path="/trust"
       />
       <Navigation />

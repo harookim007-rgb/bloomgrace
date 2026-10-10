@@ -11,17 +11,19 @@ import { supabase } from "@/integrations/supabase/client";
 import CartDrawer from "@/components/CartDrawer";
 import BrandLogo from "@/components/BrandLogo";
 import RollingGreeting from "@/components/RollingGreeting";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 
 const langLabels: Record<Language, string> = {
   en: "English", es: "Español", de: "Deutsch", fr: "Français", pt: "Português", ja: "日本語", ar: "العربية",
 };
 
-type MenuItem = { id: string; label: string; link: string; sort_order: number; is_visible: boolean };
+type MenuItem = { id: string; label: string; link: string; sort_order: number; is_visible: boolean; translations?: Record<string, string> | null };
 
 const Navigation = () => {
   const { user, isAdmin } = useAuth();
   const { t, language, setLanguage } = useLanguage();
+  const { allowWishlist } = useSiteSettings();
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -58,13 +60,15 @@ const Navigation = () => {
     }
   };
 
-  // Resolve label: if starts with "nav_" treat as i18n key, else literal
-  const resolveLabel = (raw: string) => (raw.startsWith("nav_") ? (t as any)(raw) : raw);
+  // Resolve label: "nav_" keys use the built-in dictionary, anything else uses the
+  // translations saved by the admin menu screen and falls back to the literal label
+  const resolveLabel = (m: MenuItem) =>
+    m.label.startsWith("nav_") ? (t as any)(m.label) : m.translations?.[language] || m.label;
 
   const navLinks: { to?: string; label: string; onClick?: () => void }[] = menuItems.length > 0
     ? menuItems.map((m) => {
-        if (m.link === "__routine__") return { label: resolveLabel(m.label), onClick: openRoutine };
-        return { to: m.link, label: resolveLabel(m.label) };
+        if (m.link === "__routine__") return { label: resolveLabel(m), onClick: openRoutine };
+        return { to: m.link, label: resolveLabel(m) };
       })
     : [
         { to: "/", label: t("nav_home") },
@@ -164,7 +168,7 @@ const Navigation = () => {
                 <Search className="h-[18px] w-[18px]" />
               </Button>
             </Link>
-            {user && (
+            {user && allowWishlist && (
               <Link to="/mypage" className="hidden md:inline-flex" aria-label={"Wishlist"}>
                 <Button variant="ghost" size="icon" aria-label={"Wishlist"} className="h-10 w-10 text-foreground/60 hover:text-primary">
                   <Heart className="h-[18px] w-[18px]" />

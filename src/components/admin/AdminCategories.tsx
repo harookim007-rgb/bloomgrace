@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Plus, Pencil, Trash2, GripVertical } from "lucide-react";
 import { toast } from "sonner";
+import { translateLabel } from "@/lib/translateLabel";
 
 const emptyForm = { name: "", slug: "", description: "", parent_id: "", image_url: "", sort_order: "0" };
 
@@ -35,15 +36,24 @@ const AdminCategories = () => {
       sort_order: parseInt(form.sort_order) || 0,
     };
 
+    let savedId = editingId;
     if (editingId) {
       const { error } = await supabase.from("categories").update(payload).eq("id", editingId);
       if (error) { toast.error(error.message); return; }
       toast.success("카테고리가 수정되었습니다.");
     } else {
-      const { error } = await supabase.from("categories").insert(payload);
+      const { data, error } = await supabase.from("categories").insert(payload).select("id").single();
       if (error) { toast.error(error.message); return; }
+      savedId = data.id;
       toast.success("카테고리가 추가되었습니다.");
     }
+
+    // Auto-translate the name into all storefront languages (saved separately so a failure never blocks the save)
+    const translations = await translateLabel(form.name);
+    const { error: trError } = translations && savedId
+      ? await supabase.from("categories").update({ translations }).eq("id", savedId)
+      : { error: true };
+    if (trError) toast.warning("카테고리 이름의 자동 번역을 저장하지 못했습니다. 다른 언어에서도 입력한 이름 그대로 표시됩니다.", { duration: 10000 });
     setForm(emptyForm); setEditingId(null); setDialogOpen(false);
     fetchData();
   };

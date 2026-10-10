@@ -85,7 +85,7 @@ Deno.serve(async (req) => {
     const code = generateOtp();
     await supabase.from("otp_codes").insert({ phone: targetPhone, code, purpose });
 
-    const sms = await sendSms(targetPhone, `[BLOOM & GRACE] 인증번호: ${code} (5분간 유효)`);
+    const sms = await sendSms(targetPhone, `[YOUTHROOM] 인증번호: ${code} (5분간 유효)`);
 
     const devMode = !sms.ok;
     if (devMode) {

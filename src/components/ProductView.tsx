@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { localizeCategory } from "@/lib/categoryI18n";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { getLocalizedBenefit, getLocalizedBrand, getLocalizedDescription, getLocalizedProductName, productUi } from "@/lib/productI18n";
 import ImageLightbox from "@/components/ImageLightbox";
 import { CurrencyToggle } from "@/components/CurrencyToggle";
@@ -46,6 +47,7 @@ const FALLBACK_IMG = "/placeholder.svg";
 
 const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggleWishlist, isWishlisted, isAddingToCart }: Props) => {
   const { t, formatPrice, language } = useLanguage();
+  const { allowWishlist } = useSiteSettings();
   const [quantity, setQuantity] = useState(1);
 
   const mainImage = product.image_url || "";
@@ -102,7 +104,7 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
       {product.categories?.name && (
         <div className="-mb-8 md:-mb-12">
           <span className="inline-block text-[10px] md:text-xs font-sans tracking-[0.2em] uppercase border border-border px-3 py-1.5 bg-background">
-            {localizeCategory(product.categories as any, t)}
+            {localizeCategory(product.categories as any, t as any, language)}
           </span>
         </div>
       )}
@@ -231,14 +233,16 @@ const ProductView = ({ product, preview = false, onAddToCart, onBuyNow, onToggle
                 <Zap className="h-3.5 w-3.5 mr-2" /> {labels.buyNow}
               </Button>
             )}
-            <Button
-              variant="outline"
-              className="rounded-none py-6 px-6"
-              onClick={() => !preview && onToggleWishlist?.()}
-              disabled={preview}
-            >
-              <Heart className={`h-4 w-4 ${isWishlisted ? "fill-primary text-primary" : ""}`} />
-            </Button>
+            {allowWishlist && (
+              <Button
+                variant="outline"
+                className="rounded-none py-6 px-6"
+                onClick={() => !preview && onToggleWishlist?.()}
+                disabled={preview}
+              >
+                <Heart className={`h-4 w-4 ${isWishlisted ? "fill-primary text-primary" : ""}`} />
+              </Button>
+            )}
           </div>
         </div>
       </div>

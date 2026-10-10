@@ -62,7 +62,7 @@ const productNameByKorean: Record<string, Partial<Record<Language, string>>> = {
 
 const brandFallbacks: Record<string, Partial<Record<Language, string>>> = {
   "bloom & grace": {
-    en: "Bloom & Grace", es: "Bloom & Grace", de: "Bloom & Grace", fr: "Bloom & Grace", pt: "Bloom & Grace", ja: "ブルーム＆グレース", ar: "بلوم آند غريس",
+    en: "Youthroom", es: "Youthroom", de: "Youthroom", fr: "Youthroom", pt: "Youthroom", ja: "ユースルーム", ar: "يوث روم",
   },
   "마데카 21": {
     en: "Madeca 21", es: "Madeca 21", de: "Madeca 21", fr: "Madeca 21", pt: "Madeca 21", ja: "マデカ21", ar: "ماديكا 21",

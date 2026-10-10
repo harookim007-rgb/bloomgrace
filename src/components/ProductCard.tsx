@@ -6,6 +6,7 @@ import { Heart, ShoppingBag, ChevronLeft, ChevronRight } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
 import { useWishlist } from "@/hooks/useWishlist";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { Badge } from "@/components/ui/badge";
 import { getLocalizedBrand, getLocalizedProductName, productUi } from "@/lib/productI18n";
 
@@ -33,6 +34,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const { addToCart } = useCart();
   const { isWishlisted, toggleWishlist } = useWishlist();
   const { t, formatPrice, language } = useLanguage();
+  const { allowWishlist } = useSiteSettings();
   const discount = product.original_price
     ? Math.round((1 - product.price / product.original_price) * 100)
     : 0;
@@ -118,14 +120,14 @@ const ProductCard = ({ product }: ProductCardProps) => {
           )}
         </div>
 
-        <button
+        {allowWishlist && <button
           onClick={() => toggleWishlist(product.id)}
           aria-label={`${isWishlisted(product.id) ? "Remove" : "Add"} ${translatedName} ${isWishlisted(product.id) ? "from" : "to"} wishlist`}
           aria-pressed={isWishlisted(product.id)}
           className="absolute top-2 md:top-3 right-2 md:right-3 w-8 h-8 md:w-10 md:h-10 flex items-center justify-center bg-background/90 backdrop-blur-sm rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-soft z-10"
         >
           <Heart className={`h-3.5 w-3.5 md:h-4 md:w-4 ${isWishlisted(product.id) ? "fill-primary text-primary" : "text-foreground/60"}`} />
-        </button>
+        </button>}
 
         <button
           onClick={() => addToCart(product.id)}

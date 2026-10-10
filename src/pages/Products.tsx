@@ -79,8 +79,8 @@ const Products = () => {
   return (
     <div className="min-h-dvh">
       <SEO
-        title="Shop All K-Beauty Products | Bloom & Grace"
-        description="Browse Bloom & Grace's curated Korean beauty catalog — skincare, makeup, body and hair essentials with worldwide shipping."
+        title="Shop All K-Beauty Products | Youthroom"
+        description="Browse Youthroom's curated Korean beauty catalog — skincare, makeup, body and hair essentials with worldwide shipping."
         path="/products"
       />
       <Navigation />
@@ -106,7 +106,7 @@ const Products = () => {
                 <SelectTrigger className="w-[120px] md:w-[140px] rounded-none text-xs min-h-[44px]"><SelectValue placeholder={t("products_category")} /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">{t("products_all")}</SelectItem>
-                  {categories.map(c => <SelectItem key={c.id} value={c.slug}>{localizeCategory(c, t)}</SelectItem>)}
+                  {categories.map(c => <SelectItem key={c.id} value={c.slug}>{localizeCategory(c, t as any, language)}</SelectItem>)}
                 </SelectContent>
               </Select>
               <Select value={sort} onValueChange={setSort}>
@@ -149,7 +149,7 @@ const Products = () => {
                   category === c.slug ? "bg-foreground text-background border-foreground" : "border-border text-muted-foreground hover:text-foreground hover:border-foreground"
                 }`}
               >
-                {localizeCategory(c, t)}
+                {localizeCategory(c, t as any, language)}
               </button>
             ))}
           </div>

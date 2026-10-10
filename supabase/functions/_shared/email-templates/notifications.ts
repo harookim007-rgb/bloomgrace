@@ -8,13 +8,13 @@ function shell(inner: string) {
   return `
   <div style="font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; color: #1a1a1a; background: #ffffff;">
     <div style="text-align: center; padding-bottom: 24px; border-bottom: 1px solid #eee;">
-      <h1 style="font-family: Georgia, serif; font-weight: 300; font-size: 26px; margin: 0; letter-spacing: 0.05em;">BLOOM &amp; GRACE</h1>
+      <h1 style="font-family: Georgia, serif; font-weight: 300; font-size: 26px; margin: 0; letter-spacing: 0.05em;">YOUTHROOM</h1>
       <p style="color:#888; font-size:11px; letter-spacing:0.2em; margin-top:4px;">LUXURY K-BEAUTY</p>
     </div>
     <div style="padding: 28px 0;">${inner}</div>
     <div style="border-top:1px solid #eee; padding-top:16px; font-size:11px; color:#999; text-align:center;">
       <p style="margin:0;">Questions? welcometo@bloomgrace.shop</p>
-      <p style="margin:8px 0 0;">© BLOOM &amp; GRACE. All rights reserved.</p>
+      <p style="margin:8px 0 0;">© YOUTHROOM. All rights reserved.</p>
     </div>
   </div>`;
 }
@@ -109,7 +109,7 @@ export function renderDeliveredEmail(d: { customerName: string; orderId: string 
 /** Reply to a customer support inquiry. */
 export function renderInquiryReplyEmail(d: { customerName: string; question: string; reply: string }) {
   return {
-    subject: `Re: your inquiry to Bloom & Grace`,
+    subject: `Re: your inquiry to Youthroom`,
     html: shell(
       h2(`Hi ${d.customerName}, here is our reply`) +
       box(`<span style="color:#999;">Your message</span><br/>${escapeHtml(d.question).replace(/\n/g, "<br/>")}`) +

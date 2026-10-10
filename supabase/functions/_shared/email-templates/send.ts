@@ -1,7 +1,7 @@
 // Shared Resend sender with error logging + optional admin alert.
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 const ADMIN_NOTIFY_EMAIL = Deno.env.get("ADMIN_NOTIFY_EMAIL"); // optional
-const FROM = "BLOOM & GRACE <welcometo@bloomgrace.shop>";
+const FROM = "YOUTHROOM <welcometo@bloomgrace.shop>";
 
 export interface SendArgs {
   to: string;
@@ -54,7 +54,7 @@ async function notifyAdmin(tag: string, body: string) {
       body: JSON.stringify({
         from: FROM,
         to: [ADMIN_NOTIFY_EMAIL],
-        subject: `[BLOOM & GRACE] Email send failed: ${tag}`,
+        subject: `[YOUTHROOM] Email send failed: ${tag}`,
         html: `<pre style="font-family:monospace;font-size:12px;white-space:pre-wrap;">${body.replace(/[&<>]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;" }[c]!))}</pre>`,
       }),
     });

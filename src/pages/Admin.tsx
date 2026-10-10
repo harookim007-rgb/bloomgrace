@@ -44,7 +44,7 @@ const Admin = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { user, isAdmin, isLoading: authLoading } = useAuth();
   const [activeTab, setActiveTabState] = useState<AdminTab>(() => getAdminTab(searchParams.get("tab")) || "dashboard");
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(() => window.innerWidth >= 768);
   const [otpVerified, setOtpVerified] = useState(() => isAdminOtpVerified(user?.id));
 
   useEffect(() => {

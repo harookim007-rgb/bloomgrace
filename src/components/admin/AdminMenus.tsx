@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Plus, Trash2, ArrowUp, ArrowDown, Save } from "lucide-react";
 import { toast } from "sonner";
+import { translateLabel } from "@/lib/translateLabel";
 
 type Item = {
   id: string;
@@ -14,6 +15,7 @@ type Item = {
   link: string;
   sort_order: number;
   is_visible: boolean;
+  translations?: Record<string, string> | null;
 };
 
 const AdminMenus = () => {
@@ -59,20 +61,32 @@ const AdminMenus = () => {
   };
 
   const updateField = (id: string, patch: Partial<Item>) => {
-    setItems(items.map(i => (i.id === id ? { ...i, ...patch } : i)));
+    // A changed label needs a fresh translation on the next save
+    const reset = patch.label !== undefined ? { translations: null } : {};
+    setItems(items.map(i => (i.id === id ? { ...i, ...patch, ...reset } : i)));
   };
 
   const saveAll = async () => {
     setSaving(true);
+    let translationFailed = false;
     // Update each row (small table, straightforward)
     for (const it of items) {
       const { error } = await supabase.from("menu_items")
         .update({ label: it.label, link: it.link, sort_order: it.sort_order, is_visible: it.is_visible })
         .eq("id", it.id);
       if (error) { toast.error(error.message); setSaving(false); return; }
+
+      // "nav_" keys are translated by the built-in dictionary; other labels are auto-translated once
+      const isKey = it.label.startsWith("nav_");
+      if (!isKey && it.translations) continue;
+      const translations = isKey ? null : await translateLabel(it.label);
+      if (!isKey && !translations) { translationFailed = true; continue; }
+      const { error: trError } = await supabase.from("menu_items").update({ translations }).eq("id", it.id);
+      if (trError) translationFailed = true;
     }
     setSaving(false);
     toast.success("메뉴가 저장되었습니다.");
+    if (translationFailed) toast.warning("일부 메뉴의 자동 번역을 저장하지 못했습니다. 해당 메뉴는 입력한 이름 그대로 표시됩니다.", { duration: 10000 });
     load();
   };
 
@@ -115,7 +129,7 @@ const AdminMenus = () => {
                     </TableCell>
                     <TableCell>
                       <Input value={it.label} onChange={(e) => updateField(it.id, { label: e.target.value })} className="h-9" />
-                      <p className="text-[10px] text-muted-foreground mt-1">nav_home, nav_products, nav_ranking, nav_routine, nav_contact 등 i18n 키를 그대로 입력하면 다국어 지원</p>
+                      <p className="text-[10px] text-muted-foreground mt-1">nav_home, nav_products 같은 i18n 키는 내장 번역을 쓰고, 그 외 이름은 저장할 때 7개 언어로 자동 번역됩니다</p>
                     </TableCell>
                     <TableCell>
                       <Input value={it.link} onChange={(e) => updateField(it.id, { link: e.target.value })} placeholder="/products 또는 __routine__" className="h-9" />

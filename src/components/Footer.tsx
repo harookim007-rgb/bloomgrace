@@ -22,13 +22,6 @@ const Footer = () => {
           <div className="space-y-4 col-span-2 md:col-span-2 lg:col-span-1">
             <BrandLogo size="md" showTagline={true} asLink={false} className="items-start" />
             <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{t("footer_desc")}</p>
-            <div className="flex gap-4 pt-1">
-              {["Instagram", "Facebook", "YouTube"].map(name => (
-                <a key={name} href="#" className="text-sm font-sans font-semibold tracking-wide uppercase text-foreground/60 hover:text-primary transition-colors">
-                  {name}
-                </a>
-              ))}
-            </div>
           </div>
 
           <div className="space-y-3">
@@ -57,7 +50,7 @@ const Footer = () => {
 
         <div className="mt-10 md:mt-16 pt-6 md:pt-8 border-t border-border">
           <div className="flex flex-col md:flex-row justify-between items-center gap-3 text-xs md:text-sm text-muted-foreground font-sans font-medium">
-            <p>&copy; 2024 Bloom & Grace. {t("footer_rights")}</p>
+            <p>&copy; {new Date().getFullYear()} Youthroom. {t("footer_rights")}</p>
             <p className="tracking-wider text-center">{t("footer_cs")}</p>
           </div>
         </div>
