@@ -11,6 +11,8 @@ import { supabase } from "@/integrations/supabase/client";
 import CartDrawer from "@/components/CartDrawer";
 import BrandLogo from "@/components/BrandLogo";
 import RollingGreeting from "@/components/RollingGreeting";
+import AnnouncementBar from "@/components/AnnouncementBar";
+import { useDesign } from "@/hooks/useDesign";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 
@@ -22,6 +24,7 @@ type MenuItem = { id: string; label: string; link: string; sort_order: number; i
 
 const Navigation = () => {
   const { user, isAdmin } = useAuth();
+  const { header } = useDesign();
   const { t, language, setLanguage } = useLanguage();
   const { allowWishlist } = useSiteSettings();
   const navigate = useNavigate();
@@ -81,11 +84,12 @@ const Navigation = () => {
   return (
     <>
       {/* Rolling multi-language greeting (iPhone hello style) */}
-      <RollingGreeting />
+      <AnnouncementBar />
+      {header.greeting && <RollingGreeting />}
 
 
       <header
-        className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+        className={`${header.sticky ? "sticky top-0" : "relative"} z-50 w-full transition-all duration-300 ${
           scrolled
             ? "bg-background/95 backdrop-blur-xl shadow-soft"
             : "bg-background"

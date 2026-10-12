@@ -254,7 +254,7 @@ const AdminOrders = () => {
                       {o.order_items?.[0]?.product_name || "-"}
                       {(o.order_items?.length || 0) > 1 && <span className="text-muted-foreground"> 외 {o.order_items.length - 1}건</span>}
                     </TableCell>
-                    <TableCell className="font-medium whitespace-nowrap">{Number(o.total).toLocaleString()}원</TableCell>
+                    <TableCell className="font-medium whitespace-nowrap">${Number(o.total).toLocaleString()}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <Badge className={`${st.color} text-[10px]`}>{st.label}</Badge>
@@ -323,7 +323,7 @@ const AdminOrders = () => {
                 <div><span className="text-muted-foreground">고객:</span> {detailOrder.profiles?.display_name || "-"}</div>
                 <div><span className="text-muted-foreground">결제:</span> {detailOrder.payment_method || "-"}</div>
                 {detailOrder.coupon_code && <div><span className="text-muted-foreground">쿠폰:</span> {detailOrder.coupon_code}</div>}
-                {detailOrder.discount > 0 && <div><span className="text-muted-foreground">할인:</span> -{Number(detailOrder.discount).toLocaleString()}원</div>}
+                {detailOrder.discount > 0 && <div><span className="text-muted-foreground">할인:</span> -${Number(detailOrder.discount).toLocaleString()}</div>}
               </div>
 
               <div className="p-3 rounded-lg border border-border">
@@ -348,7 +348,7 @@ const AdminOrders = () => {
               {detailOrder.shipping_address && (
                 <div className="p-3 bg-muted/50 rounded-lg text-sm">
                   <p className="font-medium mb-1">배송지</p>
-                  <p>{(detailOrder.shipping_address as any)?.name} · {(detailOrder.shipping_address as any)?.phone}</p>
+                  <p>{(detailOrder.shipping_address as any)?.full_name || (detailOrder.shipping_address as any)?.name} · {(detailOrder.shipping_address as any)?.phone}</p>
                   <p>{(detailOrder.shipping_address as any)?.address_line1} {(detailOrder.shipping_address as any)?.address_line2}</p>
                   <p>{(detailOrder.shipping_address as any)?.city} {(detailOrder.shipping_address as any)?.postal_code}</p>
                 </div>
@@ -361,13 +361,13 @@ const AdminOrders = () => {
                       <p className="text-sm font-medium">{item.product_name}</p>
                       <p className="text-xs text-muted-foreground">수량: {item.quantity}</p>
                     </div>
-                    <p className="text-sm font-medium">{(Number(item.price) * item.quantity).toLocaleString()}원</p>
+                    <p className="text-sm font-medium">${(Number(item.price) * item.quantity).toLocaleString()}</p>
                   </div>
                 ))}
               </div>
               <div className="flex justify-between items-center pt-2 font-bold">
                 <span>총 결제금액</span>
-                <span>{Number(detailOrder.total).toLocaleString()}원</span>
+                <span>${Number(detailOrder.total).toLocaleString()}</span>
               </div>
             </div>
           )}

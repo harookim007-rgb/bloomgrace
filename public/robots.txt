@@ -5,4 +5,4 @@ Disallow: /mypage
 Disallow: /checkout
 Disallow: /complete-profile
 
-Sitemap: https://bloomgrace.shop/sitemap.xml
+Sitemap: https://youthroom.shop/sitemap.xml

@@ -130,7 +130,7 @@ const ProductDetail = () => {
       priceCurrency: "USD",
       price: product.price,
       availability: (product.stock ?? 1) > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-      url: `https://bloomgrace.shop/products/${product.slug}`,
+      url: `https://youthroom.shop/products/${product.slug}`,
     },
   };
   return (

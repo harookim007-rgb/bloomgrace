@@ -59,6 +59,9 @@
 
     --radius: 0.5rem;
 
+    --font-heading: "Playfair Display";
+    --font-body: "Inter";
+
     --sidebar-background: 36 25% 97%;
     --sidebar-foreground: 24 18% 18%;
     --sidebar-primary: 350 32% 58%;
@@ -196,3 +199,54 @@
     height: -webkit-fill-available;
   }
 }
+
+/* Storefront corner style chosen in the admin design editor (never set on admin pages). */
+html[data-corners="soft"] .rounded-none { border-radius: 8px !important; }
+html[data-corners="soft"] :is(button, a, input, select, textarea).rounded-none { border-radius: 6px !important; }
+html[data-corners="round"] .rounded-none { border-radius: 16px !important; }
+html[data-corners="round"] :is(button, a).rounded-none { border-radius: 9999px !important; }
+html[data-corners="round"] :is(input, select, textarea).rounded-none { border-radius: 12px !important; }
+
+/* Admin screens use their own neutral, high-contrast theme (class set on <html> for /admin routes),
+   so the admin stays readable whatever the storefront design is. */
+html.admin-theme {
+  --background: 220 20% 97%;
+  --foreground: 224 28% 12%;
+  --card: 0 0% 100%;
+  --card-foreground: 224 28% 12%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 224 28% 12%;
+  --primary: 234 62% 52%;
+  --primary-foreground: 0 0% 100%;
+  --primary-soft: 234 80% 96%;
+  --secondary: 220 16% 92%;
+  --secondary-foreground: 224 28% 18%;
+  --muted: 220 16% 94%;
+  --muted-foreground: 220 10% 38%;
+  --accent: 220 16% 93%;
+  --accent-foreground: 224 28% 16%;
+  --border: 220 14% 89%;
+  --input: 220 14% 84%;
+  --ring: 234 62% 52%;
+  --radius: 0.625rem;
+  --font-heading: "Pretendard Variable";
+  --font-body: "Pretendard Variable";
+}
+html.admin-theme body {
+  background: hsl(var(--background));
+  font-size: 15px;
+  line-height: 1.55;
+  letter-spacing: 0;
+}
+html.admin-theme :is(h1, h2, h3, h4, h5, h6) { letter-spacing: -0.015em; }
+html.admin-theme .rounded-lg.border.bg-card { box-shadow: 0 1px 2px hsl(224 28% 12% / 0.05); }
+html.admin-theme thead th {
+  height: 2.75rem;
+  background: hsl(var(--muted) / 0.7);
+  color: hsl(var(--muted-foreground));
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+html.admin-theme tbody tr:hover { background: hsl(var(--muted) / 0.45); }
+html.admin-theme :is(input, textarea, select, [role="combobox"]) { background-color: hsl(var(--card)); }

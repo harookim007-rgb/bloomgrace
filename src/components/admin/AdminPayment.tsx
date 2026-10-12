@@ -28,7 +28,8 @@ const AdminPayment = () => {
 
   useEffect(() => {
     supabase.from("payment_settings").select("*").maybeSingle().then(({ data }) => {
-      if (data) setS({ ...empty, ...(data as any) });
+      // Empty database columns come back as null; inputs need a string.
+      if (data) setS({ ...empty, ...Object.fromEntries(Object.entries(data).filter(([, v]) => v !== null)) } as Settings);
     });
   }, []);
 
@@ -45,7 +46,7 @@ const AdminPayment = () => {
   return (
     <div className="space-y-6 max-w-2xl">
       <div>
-        <h1 className="text-2xl font-serif font-medium">결제 / 무통장 입금 설정</h1>
+        <h1 className="text-2xl font-bold font-serif">결제 / 무통장 입금 설정</h1>
         <p className="text-sm text-muted-foreground mt-1">고객 결제 페이지에 표시될 입금 계좌와 사업자 정보를 관리합니다.</p>
       </div>
 

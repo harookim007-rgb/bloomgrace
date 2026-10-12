@@ -1,3 +1,5 @@
+import { useDesign } from "@/hooks/useDesign";
+import { HERO_HEIGHTS } from "@/lib/design";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
@@ -94,6 +96,7 @@ const heroTexts: Record<string, { titles: string[]; subtitles: string[] }> = {
 
 const Hero = () => {
   const { t, language } = useLanguage();
+  const { layout } = useDesign();
   const [banners, setBanners] = useState<any[]>([]);
   const [current, setCurrent] = useState(0);
 
@@ -109,15 +112,13 @@ const Hero = () => {
   const isUsableImage = (url?: string | null) =>
     !!url && url.trim() !== "" && !url.includes("placeholder");
 
-  // Only include banners that already have a clean translation for the current language.
-  // Never fall back to a different language — that would look like the site is switching languages.
+  // Prefer the translation for the current language; without one, show the text the admin typed
+  // so a registered banner always appears.
   const translatedBanners = banners
     .map((b: any, i: number) => {
       const cur = (b.translations || {})?.[language];
-      // A title the admin already wrote without Korean is safe to show as-is when its translation is missing.
-      const rawTitle = b.title && !containsHangul(b.title) ? b.title : null;
-      const title = cur?.title && !containsHangul(cur.title) ? cur.title : rawTitle;
-      const subtitle = cur?.subtitle && !containsHangul(cur.subtitle) ? cur.subtitle : "";
+      const title = cur?.title && !containsHangul(cur.title) ? cur.title : b.title;
+      const subtitle = cur?.subtitle && !containsHangul(cur.subtitle) ? cur.subtitle : (b.subtitle || "");
       if (!title) return null;
       return {
         image: isUsableImage(b.image_url) ? b.image_url : fallbackSlides[i % 3].image,
@@ -142,16 +143,16 @@ const Hero = () => {
 
   useEffect(() => {
     if (slides.length <= 1 || paused) return;
-    const timer = setInterval(() => setCurrent(c => (c + 1) % slides.length), 6000);
+    const timer = setInterval(() => setCurrent(c => (c + 1) % slides.length), layout.heroInterval * 1000);
     return () => clearInterval(timer);
-  }, [slides.length, paused]);
+  }, [slides.length, paused, layout.heroInterval]);
 
   const slide = slides[current];
 
   return (
     <section
       className="relative w-full min-h-[400px] md:min-h-[500px] max-h-[920px] overflow-hidden"
-      style={{ height: '85dvh' }}
+      style={{ height: HERO_HEIGHTS[layout.heroHeight].css }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >

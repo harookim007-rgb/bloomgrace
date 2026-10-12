@@ -22,8 +22,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        serif: ['"Playfair Display"', 'Georgia', 'serif'],
-        sans: ['"Inter"', '"Noto Sans KR"', 'system-ui', 'sans-serif'],
+        serif: ['var(--font-heading)', 'Georgia', 'serif'],
+        sans: ['var(--font-body)', '"Noto Sans KR"', 'system-ui', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",

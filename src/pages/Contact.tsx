@@ -64,7 +64,7 @@ const Contact = () => {
           "@type": "LocalBusiness",
           name: "Youthroom",
           email: "welcometo@bloomgrace.shop",
-          url: "https://bloomgrace.shop/contact",
+          url: "https://youthroom.shop/contact",
         }}
       />
       <Navigation />

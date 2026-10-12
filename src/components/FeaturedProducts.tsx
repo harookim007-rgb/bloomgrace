@@ -1,3 +1,4 @@
+import { useDesign } from "@/hooks/useDesign";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
@@ -5,14 +6,15 @@ import ProductCard from "@/components/ProductCard";
 import { ArrowRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-const FeaturedProducts = () => {
+const FeaturedProducts = ({ limit = 8 }: { limit?: number }) => {
   const { t } = useLanguage();
+  const { layout } = useDesign();
   const [products, setProducts] = useState<any[]>([]);
 
   useEffect(() => {
-    supabase.from("products").select("*").eq("is_active", true).eq("is_featured", true).limit(8)
+    supabase.from("products").select("*").eq("is_active", true).eq("is_featured", true).limit(limit)
       .then(({ data }) => setProducts(data || []));
-  }, []);
+  }, [limit]);
 
   return (
     <section className="py-12 md:py-28 px-3 md:px-6 lg:px-8">
@@ -22,8 +24,8 @@ const FeaturedProducts = () => {
             <p className="text-[11px] md:text-sm font-sans font-semibold tracking-[0.18em] md:tracking-[0.2em] uppercase text-primary">
               {t("featured_tagline")}
             </p>
-            <h2 className="text-2xl md:text-4xl lg:text-5xl font-serif">{t("featured_title")}</h2>
-            <p className="text-sm md:text-lg text-muted-foreground max-w-md">{t("featured_subtitle")}</p>
+            <h2 className="text-2xl md:text-4xl lg:text-5xl font-serif">{layout.featuredTitle.trim() || t("featured_title")}</h2>
+            <p className="text-sm md:text-lg text-muted-foreground max-w-md">{layout.featuredSubtitle.trim() || t("featured_subtitle")}</p>
           </div>
           <Link
             to="/products"
@@ -32,7 +34,7 @@ const FeaturedProducts = () => {
             {t("featured_view_all")} <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-8">
+        <div className={`grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8 ${layout.featuredColumns === 4 ? "xl:grid-cols-4" : ""}`}>
           {products.map(product => <ProductCard key={product.id} product={product} />)}
         </div>
       </div>

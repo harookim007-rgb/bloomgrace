@@ -18,7 +18,13 @@ type Item = {
   translations?: Record<string, string> | null;
 };
 
-const AdminMenus = () => {
+// Built-in menu keys are translated by the storefront's own dictionary.
+const BUILT_IN_LABELS: Record<string, string> = {
+  nav_home: "홈", nav_products: "상품", nav_ranking: "랭킹", nav_routine: "루틴 만들기", nav_contact: "문의",
+};
+
+// `compact` is the narrow layout used inside the design editor; both layouts save the same menu_items rows.
+const AdminMenus = ({ compact = false, onSaved }: { compact?: boolean; onSaved?: () => void }) => {
   const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -85,10 +91,43 @@ const AdminMenus = () => {
       if (trError) translationFailed = true;
     }
     setSaving(false);
-    toast.success("메뉴가 저장되었습니다.");
-    if (translationFailed) toast.warning("일부 메뉴의 자동 번역을 저장하지 못했습니다. 해당 메뉴는 입력한 이름 그대로 표시됩니다.", { duration: 10000 });
+    toast.success(translationFailed ? "메뉴가 저장되었습니다. 직접 입력한 이름은 그대로 표시됩니다." : "메뉴가 저장되었습니다.");
     load();
+    onSaved?.();
   };
+
+  if (compact) {
+    return (
+      <div className="space-y-3">
+        {loading && <p className="text-sm text-muted-foreground text-center py-4">로딩 중...</p>}
+        {!loading && items.length === 0 && <p className="text-sm text-muted-foreground text-center py-4">메뉴가 없습니다.</p>}
+        {items.map((it, idx) => (
+          <div key={it.id} className={`rounded-md border border-border p-2.5 space-y-2 ${it.is_visible ? "bg-background" : "bg-muted/50"}`}>
+            {BUILT_IN_LABELS[it.label] && (
+              <p className="text-xs text-muted-foreground">기본 메뉴 · {BUILT_IN_LABELS[it.label]} (언어별 자동 표시)</p>
+            )}
+            <div className="flex items-center gap-1">
+              <Input value={it.label} onChange={(e) => updateField(it.id, { label: e.target.value })} className="h-9 min-w-0 flex-1" aria-label="메뉴 이름" />
+              <Button size="icon" variant="ghost" className="h-8 w-8 shrink-0" disabled={idx === 0} onClick={() => move(idx, -1)} aria-label="위로"><ArrowUp className="h-4 w-4" /></Button>
+              <Button size="icon" variant="ghost" className="h-8 w-8 shrink-0" disabled={idx === items.length - 1} onClick={() => move(idx, 1)} aria-label="아래로"><ArrowDown className="h-4 w-4" /></Button>
+            </div>
+            <div className="flex items-center gap-2">
+              <Input value={it.link} onChange={(e) => updateField(it.id, { link: e.target.value })} placeholder="/products" className="h-9 min-w-0 flex-1" aria-label="링크" />
+              <Switch checked={it.is_visible} onCheckedChange={(v) => updateField(it.id, { is_visible: v })} aria-label="표시" />
+              <Button size="icon" variant="ghost" className="h-8 w-8 shrink-0 text-destructive" onClick={() => removeItem(it.id)} aria-label="삭제"><Trash2 className="h-4 w-4" /></Button>
+            </div>
+          </div>
+        ))}
+        <div className="grid grid-cols-2 gap-2">
+          <Button variant="outline" onClick={add} className="gap-1.5"><Plus className="h-4 w-4" />메뉴 추가</Button>
+          <Button onClick={saveAll} disabled={saving} className="gap-1.5"><Save className="h-4 w-4" />{saving ? "저장 중..." : "메뉴 저장"}</Button>
+        </div>
+        <p className="text-xs text-muted-foreground leading-relaxed">
+          메뉴는 '메뉴 저장'을 누르면 바로 쇼핑몰에 적용됩니다. 이름에 nav_home 같은 키를 쓰면 언어별 내장 번역이 표시되고, 직접 입력한 이름은 그대로 표시됩니다.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -129,7 +168,7 @@ const AdminMenus = () => {
                     </TableCell>
                     <TableCell>
                       <Input value={it.label} onChange={(e) => updateField(it.id, { label: e.target.value })} className="h-9" />
-                      <p className="text-[10px] text-muted-foreground mt-1">nav_home, nav_products 같은 i18n 키는 내장 번역을 쓰고, 그 외 이름은 저장할 때 7개 언어로 자동 번역됩니다</p>
+                      <p className="text-[10px] text-muted-foreground mt-1">nav_home, nav_products 같은 키는 언어별 내장 번역을 쓰고, 직접 입력한 이름은 그대로 표시됩니다</p>
                     </TableCell>
                     <TableCell>
                       <Input value={it.link} onChange={(e) => updateField(it.id, { link: e.target.value })} placeholder="/products 또는 __routine__" className="h-9" />

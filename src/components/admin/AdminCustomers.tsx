@@ -204,7 +204,7 @@ const AdminCustomers = () => {
                     </TableCell>
                     <TableCell className="text-sm">{new Date(p.created_at).toLocaleDateString("ko-KR")}</TableCell>
                     <TableCell><Badge variant="secondary">{stats.orderCount}건</Badge></TableCell>
-                    <TableCell className="font-medium">{stats.totalSpent.toLocaleString()}원</TableCell>
+                    <TableCell className="font-medium">${stats.totalSpent.toLocaleString()}</TableCell>
                     <TableCell>
                       {stats.isRepeat ? (
                         <Badge className="bg-primary/15 text-primary text-[10px]">재구매</Badge>
@@ -257,7 +257,7 @@ const AdminCustomers = () => {
                   <div><span className="text-muted-foreground">전화:</span> {detailProfile.phone || "-"}</div>
                   <div><span className="text-muted-foreground">가입일:</span> {new Date(detailProfile.created_at).toLocaleDateString("ko-KR")}</div>
                   <div><span className="text-muted-foreground">총 주문:</span> {stats.orderCount}건 {stats.isRepeat && <Badge className="ml-1 text-[10px] bg-primary/15 text-primary">재구매</Badge>}</div>
-                  <div className="col-span-2"><span className="text-muted-foreground">총 구매금액:</span> <span className="font-bold">{stats.totalSpent.toLocaleString()}원</span></div>
+                  <div className="col-span-2"><span className="text-muted-foreground">총 구매금액:</span> <span className="font-bold">${stats.totalSpent.toLocaleString()}</span></div>
                 </div>
 
                 {addresses.length > 0 && (
@@ -287,7 +287,7 @@ const AdminCustomers = () => {
                         <div key={idx} className="p-3 bg-muted/50 rounded-lg text-sm">
                           <div className="flex justify-between">
                             <span>{new Date(o.created_at).toLocaleDateString("ko-KR")}</span>
-                            <span className="font-medium">{Number(o.total).toLocaleString()}원</span>
+                            <span className="font-medium">${Number(o.total).toLocaleString()}</span>
                           </div>
                           <p className="text-xs text-muted-foreground mt-1">
                             {(o.order_items || []).map((i: any) => i.product_name).join(", ")}

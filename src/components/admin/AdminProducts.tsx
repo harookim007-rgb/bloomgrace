@@ -393,8 +393,8 @@ const AdminProducts = () => {
                   <div className="col-span-2"><Label>상품명 *</Label><Input value={form.name} onChange={e => setForm({...form, name: e.target.value})} placeholder="상품명을 입력하세요" /></div>
                   <div><Label>슬러그 (자동 생성)</Label><Input value={form.slug} onChange={e => setForm({...form, slug: e.target.value})} placeholder="auto-generated" /></div>
                   <div><Label>브랜드</Label><Input value={form.brand} onChange={e => setForm({...form, brand: e.target.value})} /></div>
-                  <div><Label>판매가 (원) *</Label><Input type="number" value={form.price} onChange={e => setForm({...form, price: e.target.value})} /></div>
-                  <div><Label>정가 (원)</Label><Input type="number" value={form.original_price} onChange={e => setForm({...form, original_price: e.target.value})} /></div>
+                  <div><Label>판매가 ($) *</Label><Input type="number" value={form.price} onChange={e => setForm({...form, price: e.target.value})} /></div>
+                  <div><Label>정가 ($)</Label><Input type="number" value={form.original_price} onChange={e => setForm({...form, original_price: e.target.value})} /></div>
                   <div><Label>카테고리</Label>
                     <Select value={form.category_id} onValueChange={v => setForm({...form, category_id: v})}>
                       <SelectTrigger><SelectValue placeholder="선택" /></SelectTrigger>
@@ -581,7 +581,7 @@ const AdminProducts = () => {
                           {p.image_url ? <img src={p.image_url} className="w-10 h-10 object-contain bg-muted/30 rounded" alt="" /> : <div className="w-10 h-10 bg-muted rounded" />}
                           <div className="flex-1 min-w-0">
                             <p className="text-sm truncate">{p.name}</p>
-                            <p className="text-xs text-muted-foreground">{Number(p.price).toLocaleString()}원</p>
+                            <p className="text-xs text-muted-foreground">${Number(p.price).toLocaleString()}</p>
                           </div>
                         </label>
                       );
@@ -681,8 +681,8 @@ const AdminProducts = () => {
                   </TableCell>
                   <TableCell className="text-sm">{p.categories?.name || "-"}</TableCell>
                   <TableCell>
-                    <p className="text-sm font-medium">{Number(p.price).toLocaleString()}원</p>
-                    {p.original_price && <p className="text-xs text-muted-foreground line-through">{Number(p.original_price).toLocaleString()}원</p>}
+                    <p className="text-sm font-medium">${Number(p.price).toLocaleString()}</p>
+                    {p.original_price && <p className="text-xs text-muted-foreground line-through">${Number(p.original_price).toLocaleString()}</p>}
                   </TableCell>
                   <TableCell>
                     <span className={`text-sm font-medium ${p.stock <= 0 ? 'text-destructive' : p.stock <= 10 ? 'text-accent' : ''}`}>

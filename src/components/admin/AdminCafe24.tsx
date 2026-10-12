@@ -51,7 +51,7 @@ const AdminCafe24 = () => {
   return (
     <div className="space-y-6 max-w-3xl">
       <div>
-        <h1 className="text-2xl font-serif font-medium">카페24 연동</h1>
+        <h1 className="text-2xl font-bold font-serif">카페24 연동</h1>
         <p className="text-sm text-muted-foreground mt-1">
           상품 보기와 BUY NOW는 이 사이트 디자인을 그대로 쓰고, 주문·결제만 카페24로 넘깁니다.
         </p>

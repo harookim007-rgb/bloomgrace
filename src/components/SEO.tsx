@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 
-const SITE = "https://bloomgrace.shop";
+const SITE = "https://youthroom.shop";
 
 interface SEOProps {
   title: string;

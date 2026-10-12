@@ -28,7 +28,7 @@ const AdminSettings = () => {
     }
     setSaving(true);
     const { error } = await supabase.from("site_settings")
-      .upsert({ id: "default", settings: { ...settings, googleAnalyticsId: gaId } });
+      .upsert({ id: "default", settings: { ...settings, googleAnalyticsId: gaId } as any });
     setSaving(false);
     if (error) { toast.error(`설정을 저장하지 못했습니다: ${error.message}`); return; }
     queryClient.invalidateQueries({ queryKey: SITE_SETTINGS_KEY });

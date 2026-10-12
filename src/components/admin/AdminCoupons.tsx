@@ -105,7 +105,7 @@ const AdminCoupons = () => {
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="percentage">퍼센트 (%)</SelectItem>
-                      <SelectItem value="fixed">정액 (원)</SelectItem>
+                      <SelectItem value="fixed">정액 ($)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -151,8 +151,8 @@ const AdminCoupons = () => {
                     </div>
                   </TableCell>
                   <TableCell className="text-sm">{c.description || "-"}</TableCell>
-                  <TableCell className="font-medium">{c.discount_type === "percentage" ? `${c.discount_value}%` : `${Number(c.discount_value).toLocaleString()}원`}</TableCell>
-                  <TableCell className="text-sm">{Number(c.min_order_amount || 0).toLocaleString()}원</TableCell>
+                  <TableCell className="font-medium">{c.discount_type === "percentage" ? `${c.discount_value}%` : `$${Number(c.discount_value).toLocaleString()}`}</TableCell>
+                  <TableCell className="text-sm">${Number(c.min_order_amount || 0).toLocaleString()}</TableCell>
                   <TableCell className="text-sm">{c.used_count || 0}/{c.max_uses || "∞"}</TableCell>
                   <TableCell className="text-xs text-muted-foreground">
                     {c.starts_at ? new Date(c.starts_at).toLocaleDateString("ko-KR") : "~"}

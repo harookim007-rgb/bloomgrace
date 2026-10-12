@@ -1,3 +1,4 @@
+import { useDesign } from "@/hooks/useDesign";
 import { useLanguage } from "@/contexts/LanguageContext";
 import SupportMessenger from "@/components/support/SupportMessenger";
 import {
@@ -20,11 +21,14 @@ const bookmarkTexts: Record<string, { line1: string; line2: string; title: strin
 const FloatingButtons = () => {
   const { language } = useLanguage();
   const bt = bookmarkTexts[language] || bookmarkTexts.en;
+  const { header } = useDesign();
 
   const handleOpenAI = () => {
     window.dispatchEvent(new Event("open-beauty-advisor"));
   };
 
+
+  if (!header.floating) return null;
 
   return (
     <>

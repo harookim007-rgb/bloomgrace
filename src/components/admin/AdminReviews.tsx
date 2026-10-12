@@ -17,11 +17,18 @@ const AdminReviews = () => {
   useEffect(() => { fetchData(); }, []);
 
   const fetchData = async () => {
-    const { data } = await supabase
+    // Reviews link to the account, not the profile row, so names are looked up separately.
+    const { data, error } = await supabase
       .from("reviews")
-      .select("*, products(name), profiles!reviews_user_id_fkey(display_name)")
+      .select("*, products(name)")
       .order("created_at", { ascending: false });
-    setReviews(data || []);
+    if (error) { toast.error("리뷰를 불러오지 못했습니다: " + error.message); return; }
+    const userIds = [...new Set((data || []).map(r => r.user_id))];
+    const { data: profiles } = userIds.length
+      ? await supabase.from("profiles").select("user_id, display_name").in("user_id", userIds)
+      : { data: [] as { user_id: string; display_name: string | null }[] };
+    const names = new Map((profiles || []).map(p => [p.user_id, p.display_name]));
+    setReviews((data || []).map(r => ({ ...r, profiles: { display_name: names.get(r.user_id) || null } })));
   };
 
   const remove = async (id: string) => {

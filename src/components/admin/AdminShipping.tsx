@@ -54,7 +54,7 @@ const AdminShipping = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-serif font-medium">배송비 관리</h1>
+        <h1 className="text-2xl font-bold font-serif">배송비 관리</h1>
         <p className="text-sm text-muted-foreground mt-1">나라별 배송비와 예상 배송 기간을 관리합니다. 고객 상품 상세 페이지·결제 페이지에 즉시 반영됩니다.</p>
       </div>
 
@@ -64,7 +64,7 @@ const AdminShipping = () => {
             <tr>
               <th className="text-left p-3">국가코드</th>
               <th className="text-left p-3">국가명</th>
-              <th className="text-left p-3">배송비(₩)</th>
+              <th className="text-left p-3">배송비($)</th>
               <th className="text-left p-3">최소일</th>
               <th className="text-left p-3">최대일</th>
               <th className="text-left p-3">순서</th>

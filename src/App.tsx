@@ -16,7 +16,10 @@ import Checkout from "./pages/Checkout";
 import CompleteProfile from "./pages/CompleteProfile";
 import Admin from "./pages/Admin";
 import ProductEditPage from "./pages/ProductEditPage";
-import DesignModeOverlay from "./components/design/DesignModeOverlay";
+import AdminDesign from "./pages/AdminDesign";
+import DesignApplier from "./components/DesignApplier";
+import PopupHost from "./components/PopupHost";
+import { useDesign } from "./hooks/useDesign";
 import NotFound from "./pages/NotFound";
 import Trust from "./pages/Trust";
 import Ranking from "./pages/Ranking";
@@ -30,7 +33,8 @@ const queryClient = new QueryClient({ defaultOptions: { queries: { refetchOnWind
 
 const GlobalPetals = () => {
   const { pathname } = useLocation();
-  if (pathname.startsWith("/admin")) return null;
+  const { effects } = useDesign();
+  if (pathname.startsWith("/admin") || !effects.petals) return null;
   return (
     <>
       <ScatteredFlorals count={7} />
@@ -50,7 +54,8 @@ const App = () => (
         <BrowserRouter>
           <AuthProvider>
             <SiteGate>
-            <DesignModeOverlay />
+            <DesignApplier />
+            <PopupHost />
             <LoginDialog />
             <Cafe24Handoff />
             <GlobalPetals />
@@ -65,6 +70,7 @@ const App = () => (
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/complete-profile" element={<CompleteProfile />} />
               <Route path="/admin" element={<Admin />} />
+              <Route path="/admin/design" element={<AdminDesign />} />
               <Route path="/admin/products/:id/edit" element={<ProductEditPage />} />
               <Route path="/trust" element={<Trust />} />
               <Route path="/ranking" element={<Ranking />} />

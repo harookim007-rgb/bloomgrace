@@ -174,6 +174,19 @@ const CO: Record<LangKey, Record<string, string>> = {
   },
 };
 
+const COUPON_T: Record<LangKey, {
+  label: string; ph: string; apply: string; remove: string; discount: string; applied: string;
+  not_found: string; not_started: string; expired: string; used_up: string; min_order: string;
+}> = {
+  en: { label: "Coupon Code", ph: "Enter code", apply: "Apply", remove: "Remove", discount: "Coupon", applied: "Coupon applied.", not_found: "This coupon code is not valid.", not_started: "This coupon is not active yet.", expired: "This coupon has expired.", used_up: "This coupon has reached its usage limit.", min_order: "Minimum order amount for this coupon:" },
+  es: { label: "Código de cupón", ph: "Introduce el código", apply: "Aplicar", remove: "Quitar", discount: "Cupón", applied: "Cupón aplicado.", not_found: "Este código de cupón no es válido.", not_started: "Este cupón aún no está activo.", expired: "Este cupón ha caducado.", used_up: "Este cupón ha alcanzado su límite de uso.", min_order: "Importe mínimo de pedido para este cupón:" },
+  de: { label: "Gutscheincode", ph: "Code eingeben", apply: "Einlösen", remove: "Entfernen", discount: "Gutschein", applied: "Gutschein eingelöst.", not_found: "Dieser Gutscheincode ist ungültig.", not_started: "Dieser Gutschein ist noch nicht aktiv.", expired: "Dieser Gutschein ist abgelaufen.", used_up: "Dieser Gutschein wurde bereits maximal eingelöst.", min_order: "Mindestbestellwert für diesen Gutschein:" },
+  fr: { label: "Code promo", ph: "Saisir le code", apply: "Appliquer", remove: "Retirer", discount: "Code promo", applied: "Code promo appliqué.", not_found: "Ce code promo n'est pas valide.", not_started: "Ce code promo n'est pas encore actif.", expired: "Ce code promo a expiré.", used_up: "Ce code promo a atteint sa limite d'utilisation.", min_order: "Montant minimum de commande pour ce code :" },
+  pt: { label: "Código do cupom", ph: "Digite o código", apply: "Aplicar", remove: "Remover", discount: "Cupom", applied: "Cupom aplicado.", not_found: "Este código de cupom não é válido.", not_started: "Este cupom ainda não está ativo.", expired: "Este cupom expirou.", used_up: "Este cupom atingiu o limite de uso.", min_order: "Valor mínimo do pedido para este cupom:" },
+  ja: { label: "クーポンコード", ph: "コードを入力", apply: "適用", remove: "解除", discount: "クーポン", applied: "クーポンを適用しました。", not_found: "このクーポンコードは無効です。", not_started: "このクーポンはまだ利用できません。", expired: "このクーポンは有効期限が切れています。", used_up: "このクーポンは利用上限に達しました。", min_order: "このクーポンの最低注文金額:" },
+  ar: { label: "رمز القسيمة", ph: "أدخل الرمز", apply: "تطبيق", remove: "إزالة", discount: "القسيمة", applied: "تم تطبيق القسيمة.", not_found: "رمز القسيمة غير صالح.", not_started: "هذه القسيمة غير مفعّلة بعد.", expired: "انتهت صلاحية هذه القسيمة.", used_up: "بلغت هذه القسيمة الحد الأقصى للاستخدام.", min_order: "الحد الأدنى للطلب لهذه القسيمة:" },
+};
+
 const Checkout = () => {
   const navigate = useNavigate();
   const [params] = useSearchParams();
@@ -190,6 +203,10 @@ const Checkout = () => {
   const [settings, setSettings] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [pointsToUse, setPointsToUse] = useState(0);
+  const [couponInput, setCouponInput] = useState("");
+  const [coupon, setCoupon] = useState<{ code: string; discount: number } | null>(null);
+  const [couponBusy, setCouponBusy] = useState(false);
+  const ct = COUPON_T[(language as LangKey)] || COUPON_T.en;
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [completed, setCompleted] = useState<any>(null);
 
@@ -217,9 +234,14 @@ const Checkout = () => {
   useEffect(() => {
     supabase.from("shipping_rates").select("*").eq("is_active", true).order("sort_order")
       .then(({ data }) => setRates(data || []));
-    supabase.from("payment_settings").select("*").maybeSingle()
-      .then(({ data }) => setSettings(data));
   }, []);
+
+  // Bank details are admin-only in the table; customers get the checkout fields through this function.
+  useEffect(() => {
+    if (!user) return;
+    supabase.rpc("get_checkout_payment_info")
+      .then(({ data }) => setSettings(Array.isArray(data) ? data[0] ?? null : data));
+  }, [user]);
 
   useEffect(() => {
     if (!user) return;
@@ -255,9 +277,50 @@ const Checkout = () => {
 
   const currentRate = rates.find(r => r.country_code === address.country_code);
   const shippingFee = Number(currentRate?.fee || 0);
-  const maxPoints = Math.min(profile?.points || 0, subtotal);
+  const couponDiscount = Math.min(coupon?.discount || 0, subtotal);
+  const maxPoints = Math.min(profile?.points || 0, subtotal - couponDiscount);
   const pointsApplied = Math.max(0, Math.min(pointsToUse || 0, maxPoints));
-  const total = Math.max(0, subtotal + shippingFee - pointsApplied);
+  const total = Math.max(0, subtotal - couponDiscount + shippingFee - pointsApplied);
+
+  // Returns the applied coupon, or null with a message explaining why the code was rejected.
+  const checkCoupon = async (code: string) => {
+    const { data, error } = await supabase.rpc("validate_coupon" as any, { _code: code, _subtotal: subtotal } as any);
+    const row: any = Array.isArray(data) ? data[0] : data;
+    if (error || !row) return { coupon: null, message: error?.message || ct.not_found };
+    if (!row.valid) {
+      const message = row.reason === "min_order"
+        ? `${ct.min_order} ${formatPrice(Number(row.min_order_amount))}`
+        : (ct as any)[row.reason] || ct.not_found;
+      return { coupon: null, message };
+    }
+    return { coupon: { code: row.code as string, discount: Number(row.discount) }, message: "" };
+  };
+
+  const applyCoupon = async () => {
+    const code = couponInput.trim();
+    if (!code || couponBusy) return;
+    setCouponBusy(true);
+    const result = await checkCoupon(code);
+    setCouponBusy(false);
+    if (!result.coupon) { toast.error(result.message); return; }
+    setCoupon(result.coupon);
+    setCouponInput("");
+    toast.success(ct.applied);
+  };
+
+  // The discount depends on the order amount, so re-check whenever the amount changes.
+  const couponCode = coupon?.code;
+  useEffect(() => {
+    if (!couponCode) return;
+    let cancelled = false;
+    checkCoupon(couponCode).then(result => {
+      if (cancelled) return;
+      if (!result.coupon) toast.error(result.message);
+      setCoupon(result.coupon);
+    });
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [subtotal, couponCode]);
   const deadlineHours = settings?.payment_deadline_hours || 48;
 
   const validate = () => {
@@ -276,6 +339,13 @@ const Checkout = () => {
     if (!user || !items.length) return;
     setIsProcessing(true);
     try {
+      if (coupon) {
+        const result = await checkCoupon(coupon.code);
+        if (!result.coupon || result.coupon.discount !== coupon.discount) {
+          setCoupon(result.coupon);
+          throw new Error(result.message || ct.not_found);
+        }
+      }
       const deadline = new Date(Date.now() + deadlineHours * 60 * 60 * 1000).toISOString();
       const shipping_address = {
         ...address, country: currentRate?.country_name || address.country,
@@ -288,6 +358,7 @@ const Checkout = () => {
         shipping_address, payment_method: "bank_transfer",
         depositor_name: depositor, payment_deadline: deadline,
         points_used: pointsApplied, status: "pending",
+        coupon_code: coupon?.code || null, discount: couponDiscount,
       } as any).select().single();
       if (error) throw error;
 
@@ -361,6 +432,7 @@ const Checkout = () => {
               <div className="border-t border-border pt-4 space-y-1.5 text-sm">
                 <div className="flex justify-between"><span className="text-muted-foreground">{t.subtotal_l}</span><span>{formatPrice(Number(ord.subtotal))}</span></div>
                 <div className="flex justify-between"><span className="text-muted-foreground">{t.shipping_l}</span><span>{formatPrice(Number(ord.shipping_fee))}</span></div>
+                {Number(ord.discount) > 0 && <div className="flex justify-between text-primary"><span>{ct.discount}{ord.coupon_code ? ` (${ord.coupon_code})` : ""}</span><span>-{formatPrice(Number(ord.discount))}</span></div>}
                 {Number(ord.points_used) > 0 && <div className="flex justify-between text-primary"><span>{t.points_used}</span><span>-{formatPrice(Number(ord.points_used))}</span></div>}
                 <div className="flex justify-between font-bold text-lg pt-2 border-t border-border"><span>{t.amount_due}</span><span>{formatPrice(Number(ord.total))}</span></div>
               </div>
@@ -428,6 +500,24 @@ const Checkout = () => {
                     <div>{t.holder} <strong>{settings.account_holder}</strong></div>
                   </div>
                 )}
+                <div className="space-y-1 pt-2 border-t border-border">
+                  <Label htmlFor="coupon-code" className="text-xs tracking-wider uppercase">{ct.label}</Label>
+                  {coupon ? (
+                    <div className="flex items-center justify-between gap-2 border border-border px-3 py-2 text-sm">
+                      <span className="min-w-0 truncate font-medium">{coupon.code} <span className="text-primary">-{formatPrice(couponDiscount)}</span></span>
+                      <Button type="button" variant="ghost" size="sm" className="rounded-none shrink-0" onClick={() => setCoupon(null)}>{ct.remove}</Button>
+                    </div>
+                  ) : (
+                    <div className="flex gap-2">
+                      <Input
+                        id="coupon-code" className="rounded-none uppercase" value={couponInput} placeholder={ct.ph}
+                        onChange={e => setCouponInput(e.target.value)}
+                        onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); applyCoupon(); } }}
+                      />
+                      <Button type="button" variant="outline" className="rounded-none shrink-0" disabled={couponBusy || !couponInput.trim()} onClick={applyCoupon}>{ct.apply}</Button>
+                    </div>
+                  )}
+                </div>
                 {(profile?.points || 0) > 0 && (
                   <div className="space-y-1 pt-2 border-t border-border">
                     <Label className="text-xs tracking-wider uppercase">{t.points_label} {(profile?.points || 0).toLocaleString()}P)</Label>
@@ -456,6 +546,7 @@ const Checkout = () => {
                     <span>{formatPrice(shippingFee)}</span>
                   </div>
                   {currentRate && <div className="text-[11px] text-muted-foreground text-right">{t.est} {currentRate.min_days}-{currentRate.max_days} {t.days}</div>}
+                  {couponDiscount > 0 && <div className="flex justify-between text-primary"><span>{ct.discount} ({coupon?.code})</span><span>-{formatPrice(couponDiscount)}</span></div>}
                   {pointsApplied > 0 && <div className="flex justify-between text-primary"><span>{t.points}</span><span>-{formatPrice(pointsApplied)}</span></div>}
                   <div className="flex justify-between font-bold text-base pt-2 border-t border-border"><span>{t.total}</span><span>{formatPrice(total)}</span></div>
                 </div>

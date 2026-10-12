@@ -6,26 +6,34 @@ import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import SEO from "@/components/SEO";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { useDesign } from "@/hooks/useDesign";
+import type { HomeSectionId } from "@/lib/design";
 
 const Index = () => {
   const { metaTitle, metaDescription, ogImage } = useSiteSettings();
+  const { home } = useDesign();
+  const sections: Record<HomeSectionId, JSX.Element> = {
+    hero: <Hero key="hero" />,
+    featured: <FeaturedProducts key="featured" limit={home.featuredCount} />,
+    consultation: <BeautyConsultation key="consultation" mode="section" />,
+  };
   const jsonLd = [
     {
       "@context": "https://schema.org",
       "@type": "Organization",
       name: "Youthroom",
-      url: "https://bloomgrace.shop",
-      logo: "https://bloomgrace.shop/apple-touch-icon.png",
+      url: "https://youthroom.shop",
+      logo: "https://youthroom.shop/apple-touch-icon.png",
       sameAs: [],
     },
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
       name: "Youthroom",
-      url: "https://bloomgrace.shop",
+      url: "https://youthroom.shop",
       potentialAction: {
         "@type": "SearchAction",
-        target: "https://bloomgrace.shop/products?q={search_term_string}",
+        target: "https://youthroom.shop/products?q={search_term_string}",
         "query-input": "required name=search_term_string",
       },
     },
@@ -47,9 +55,7 @@ const Index = () => {
         jsonLd={jsonLd}
       />
       <Navigation />
-      <Hero />
-      <FeaturedProducts />
-      <BeautyConsultation mode="section" />
+      {home.sections.filter(sec => sec.visible).map(sec => sections[sec.id])}
 
       <Footer />
       <BeautyConsultation mode="modal" />

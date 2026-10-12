@@ -9,6 +9,7 @@ export type SiteSettings = {
   metaDescription: string;
   ogImage: string;
   googleAnalyticsId: string;
+  design?: unknown;
 };
 
 export const defaultSiteSettings: SiteSettings = {
