@@ -6,7 +6,7 @@ export interface WelcomeEmailData {
 
 export function renderWelcomeEmail(data: WelcomeEmailData) {
   const name = data.name || "고객";
-  const shopUrl = data.shopUrl || "https://bloomgrace.shop";
+  const shopUrl = data.shopUrl || "https://youthroom.shop";
 
   const subject = `${name}님, YOUTHROOM에 오신 것을 환영합니다 🌸`;
 

@@ -28,7 +28,7 @@ const box = (t: string) =>
 const btn = (href: string, label: string) =>
   `<div style="text-align:center; margin:28px 0;"><a href="${href}" style="display:inline-block; background:#1a1a1a; color:#fff; padding:13px 30px; text-decoration:none; font-size:12px; letter-spacing:0.15em; text-transform:uppercase;">${escapeHtml(label)}</a></div>`;
 
-const SHOP = "https://bloomgrace.shop";
+const SHOP = "https://youthroom.shop";
 
 export interface BankInfo {
   bank_name?: string | null;

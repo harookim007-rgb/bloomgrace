@@ -1,10 +1,16 @@
-project_id = "czxbhekqqqvwzapkuuwv"
-
-[functions.grant-admin]
-verify_jwt = false
+project_id = "wlqulztkqjbzmrfhyggv"
 
 [functions.translate-product]
 verify_jwt = false
 
 [functions.top-selling-products]
 verify_jwt = false
+
+[auth]
+site_url = "https://youthroom.shop"
+additional_redirect_urls = ["https://youthroom.shop/**", "https://www.youthroom.shop/**", "http://localhost:8080/**"]
+
+[auth.external.google]
+enabled = true
+client_id = "580110538492-klc71q4rvtnqpbca46821affjg20pp08.apps.googleusercontent.com"
+secret = "env(SUPABASE_AUTH_EXTERNAL_GOOGLE_SECRET)"
