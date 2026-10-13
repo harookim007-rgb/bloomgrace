@@ -1,7 +1,7 @@
+import { defaultBlocks, normalizeBlocks, type HomeBlock } from "@/lib/homeBlocks";
+
 // Storefront design chosen in the admin design editor. Stored in site_settings.settings.design
 // and applied to every non-admin page, so what the editor shows is what visitors get.
-
-export type HomeSectionId = "hero" | "featured" | "consultation";
 
 export type PopupPosition = "center" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
 
@@ -26,17 +26,10 @@ export type SitePopup = {
 export type SiteDesign = {
   colors: { primary: string; background: string; foreground: string }; // "H S% L%"
   fonts: { heading: string; body: string; scale: number };
-  home: { sections: { id: HomeSectionId; visible: boolean }[]; featuredCount: number };
+  home: { blocks: HomeBlock[] };
   effects: { petals: boolean };
   announcement: { enabled: boolean; text: string; link: string };
-  layout: {
-    corners: "square" | "soft" | "round";
-    heroHeight: "compact" | "normal" | "tall";
-    heroInterval: number; // seconds per slide
-    featuredColumns: 3 | 4;
-    featuredTitle: string; // "" = built-in translated title
-    featuredSubtitle: string;
-  };
+  layout: { corners: "square" | "soft" | "round" };
   header: { sticky: boolean; greeting: boolean; floating: boolean };
   popups: SitePopup[];
   customCss: string;
@@ -45,17 +38,10 @@ export type SiteDesign = {
 export const defaultDesign: SiteDesign = {
   colors: { primary: "350 32% 62%", background: "36 30% 97%", foreground: "24 18% 18%" },
   fonts: { heading: "Playfair Display", body: "Inter", scale: 100 },
-  home: {
-    sections: [
-      { id: "hero", visible: true },
-      { id: "featured", visible: true },
-      { id: "consultation", visible: true },
-    ],
-    featuredCount: 8,
-  },
+  home: { blocks: defaultBlocks() },
   effects: { petals: true },
   announcement: { enabled: false, text: "", link: "" },
-  layout: { corners: "square", heroHeight: "normal", heroInterval: 6, featuredColumns: 4, featuredTitle: "", featuredSubtitle: "" },
+  layout: { corners: "square" },
   header: { sticky: true, greeting: true, floating: true },
   popups: [],
   customCss: "",
@@ -69,12 +55,7 @@ export const POPUP_POSITIONS: { value: PopupPosition; label: string }[] = [
   { value: "bottom-left", label: "왼쪽 아래" },
   { value: "bottom-right", label: "오른쪽 아래" },
 ];
-export const HERO_HEIGHTS: Record<SiteDesign["layout"]["heroHeight"], { label: string; css: string }> = {
-  compact: { label: "낮게", css: "60dvh" },
-  normal: { label: "기본", css: "85dvh" },
-  tall: { label: "높게", css: "100dvh" },
-};
-export const HERO_INTERVALS = [4, 6, 8, 10];
+export const HERO_HEIGHTS: Record<string, string> = { compact: "60dvh", normal: "85dvh", tall: "100dvh" };
 export const CORNERS: { value: SiteDesign["layout"]["corners"]; label: string }[] = [
   { value: "square", label: "각진" },
   { value: "soft", label: "살짝 둥근" },
@@ -115,12 +96,6 @@ const normalizePopup = (raw: any): SitePopup | null => {
   };
 };
 
-export const HOME_SECTION_LABELS: Record<HomeSectionId, { label: string; desc: string }> = {
-  hero: { label: "메인 배너", desc: "배너/프로모션에서 등록한 슬라이드" },
-  featured: { label: "추천 상품", desc: "상품 관리에서 '추천'으로 지정한 상품" },
-  consultation: { label: "뷰티 상담", desc: "피부 타입별 상품 추천 영역" },
-};
-
 export const HEADING_FONTS = ["Playfair Display", "Cormorant Garamond", "DM Serif Display", "Noto Serif KR", "Inter", "Noto Sans KR"];
 export const BODY_FONTS = ["Inter", "Noto Sans KR", "DM Sans", "Nanum Gothic"];
 export const FONT_SCALES = [
@@ -128,7 +103,6 @@ export const FONT_SCALES = [
   { value: 100, label: "기본" },
   { value: 106, label: "크게" },
 ];
-export const FEATURED_COUNTS = [4, 8, 12];
 
 export const COLOR_PRESETS: { name: string; colors: SiteDesign["colors"] }[] = [
   { name: "로즈 (기본)", colors: defaultDesign.colors },
@@ -145,13 +119,6 @@ const isHsl = (v: unknown): v is string => typeof v === "string" && HSL_RE.test(
 export const normalizeDesign = (raw: unknown): SiteDesign => {
   const r = (raw && typeof raw === "object" ? raw : {}) as any;
   const d = defaultDesign;
-  const saved: any[] = Array.isArray(r.home?.sections) ? r.home.sections : [];
-  const known = d.home.sections.map(s => s.id);
-  const ordered = saved.filter(s => known.includes(s?.id)).map(s => ({ id: s.id as HomeSectionId, visible: s.visible !== false }));
-  const sections = [
-    ...ordered.filter((s, i) => ordered.findIndex(o => o.id === s.id) === i),
-    ...d.home.sections.filter(s => !ordered.some(o => o.id === s.id)),
-  ];
   return {
     colors: {
       primary: isHsl(r.colors?.primary) ? r.colors.primary : d.colors.primary,
@@ -163,24 +130,14 @@ export const normalizeDesign = (raw: unknown): SiteDesign => {
       body: BODY_FONTS.includes(r.fonts?.body) ? r.fonts.body : d.fonts.body,
       scale: FONT_SCALES.some(s => s.value === r.fonts?.scale) ? r.fonts.scale : d.fonts.scale,
     },
-    home: {
-      sections,
-      featuredCount: FEATURED_COUNTS.includes(r.home?.featuredCount) ? r.home.featuredCount : d.home.featuredCount,
-    },
+    home: { blocks: normalizeBlocks(r.home, r.layout) },
     effects: { petals: r.effects?.petals !== false },
     announcement: {
       enabled: r.announcement?.enabled === true,
       text: typeof r.announcement?.text === "string" ? r.announcement.text.slice(0, 120) : "",
       link: typeof r.announcement?.link === "string" ? r.announcement.link.slice(0, 300) : "",
     },
-    layout: {
-      corners: oneOf(r.layout?.corners, CORNERS.map(c => c.value), d.layout.corners),
-      heroHeight: oneOf(r.layout?.heroHeight, ["compact", "normal", "tall"] as const, d.layout.heroHeight),
-      heroInterval: oneOf(r.layout?.heroInterval, HERO_INTERVALS, d.layout.heroInterval),
-      featuredColumns: oneOf(r.layout?.featuredColumns, [3, 4] as const, d.layout.featuredColumns),
-      featuredTitle: str(r.layout?.featuredTitle, 60),
-      featuredSubtitle: str(r.layout?.featuredSubtitle, 120),
-    },
+    layout: { corners: oneOf(r.layout?.corners, CORNERS.map(c => c.value), d.layout.corners) },
     header: {
       sticky: r.header?.sticky !== false,
       greeting: r.header?.greeting !== false,

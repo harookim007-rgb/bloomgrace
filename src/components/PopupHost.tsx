@@ -4,6 +4,7 @@ import { X } from "lucide-react";
 import { useDesign } from "@/hooks/useDesign";
 import { useLanguage, type Language } from "@/contexts/LanguageContext";
 import { designDraft, type PopupPosition, type SitePopup } from "@/lib/design";
+import { SANDBOX, sandboxDoc } from "@/lib/homeBlocks";
 
 const TEXT: Record<Language, { close: string; day: string; week: string }> = {
   en: { close: "Close", day: "Don't show today", week: "Don't show for a week" },
@@ -38,10 +39,6 @@ const inSchedule = (popup: SitePopup, now: number) =>
 
 const hasContent = (popup: SitePopup) => (popup.type === "image" ? !!popup.image.trim() : !!popup.html.trim());
 
-// Custom code runs in a sandboxed frame: scripts work, but cannot read or change the store page.
-const frameDoc = (html: string) =>
-  `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><base target="_top"><style>html,body{margin:0;padding:0;font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif}img{max-width:100%}</style></head><body>${html}</body></html>`;
-
 const PopupCard = ({ popup, onClose, onHide }: { popup: SitePopup; onClose: () => void; onHide: () => void }) => {
   const { language } = useLanguage();
   const text = TEXT[language] || TEXT.en;
@@ -52,8 +49,8 @@ const PopupCard = ({ popup, onClose, onHide }: { popup: SitePopup; onClose: () =
     ? (
       <iframe
         title={popup.name}
-        srcDoc={frameDoc(popup.html)}
-        sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation"
+        srcDoc={sandboxDoc(popup.html)}
+        sandbox={SANDBOX}
         className="block w-full border-0"
         style={{ height: `min(${popup.height}px, 70dvh)` }}
       />

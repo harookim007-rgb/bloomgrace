@@ -1,22 +1,15 @@
 import Navigation from "@/components/Navigation";
-import Hero from "@/components/Hero";
-import FeaturedProducts from "@/components/FeaturedProducts";
 import BeautyConsultation from "@/components/BeautyConsultation";
+import HomeBlocks from "@/components/home/HomeBlocks";
 import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import SEO from "@/components/SEO";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { useDesign } from "@/hooks/useDesign";
-import type { HomeSectionId } from "@/lib/design";
 
 const Index = () => {
   const { metaTitle, metaDescription, ogImage } = useSiteSettings();
   const { home } = useDesign();
-  const sections: Record<HomeSectionId, JSX.Element> = {
-    hero: <Hero key="hero" />,
-    featured: <FeaturedProducts key="featured" limit={home.featuredCount} />,
-    consultation: <BeautyConsultation key="consultation" mode="section" />,
-  };
   const jsonLd = [
     {
       "@context": "https://schema.org",
@@ -55,7 +48,7 @@ const Index = () => {
         jsonLd={jsonLd}
       />
       <Navigation />
-      {home.sections.filter(sec => sec.visible).map(sec => sections[sec.id])}
+      <HomeBlocks blocks={home.blocks} />
 
       <Footer />
       <BeautyConsultation mode="modal" />

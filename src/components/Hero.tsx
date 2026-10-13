@@ -1,4 +1,3 @@
-import { useDesign } from "@/hooks/useDesign";
 import { HERO_HEIGHTS } from "@/lib/design";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -94,9 +93,8 @@ const heroTexts: Record<string, { titles: string[]; subtitles: string[] }> = {
 };
 
 
-const Hero = () => {
+const Hero = ({ height = "normal", interval = 6 }: { height?: string; interval?: number }) => {
   const { t, language } = useLanguage();
-  const { layout } = useDesign();
   const [banners, setBanners] = useState<any[]>([]);
   const [current, setCurrent] = useState(0);
 
@@ -143,16 +141,16 @@ const Hero = () => {
 
   useEffect(() => {
     if (slides.length <= 1 || paused) return;
-    const timer = setInterval(() => setCurrent(c => (c + 1) % slides.length), layout.heroInterval * 1000);
+    const timer = setInterval(() => setCurrent(c => (c + 1) % slides.length), interval * 1000);
     return () => clearInterval(timer);
-  }, [slides.length, paused, layout.heroInterval]);
+  }, [slides.length, paused, interval]);
 
   const slide = slides[current];
 
   return (
     <section
       className="relative w-full min-h-[400px] md:min-h-[500px] max-h-[920px] overflow-hidden"
-      style={{ height: HERO_HEIGHTS[layout.heroHeight].css }}
+      style={{ height: HERO_HEIGHTS[height] || HERO_HEIGHTS.normal }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >

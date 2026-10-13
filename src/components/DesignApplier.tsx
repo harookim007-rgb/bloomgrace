@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useDesign } from "@/hooks/useDesign";
+import { DESIGN_FOCUS_MESSAGE } from "@/lib/homeBlocks";
 import {
   applyDesign, clearDesign, designDraft, normalizeDesign, DESIGN_DRAFT_MESSAGE, DESIGN_READY_MESSAGE,
 } from "@/lib/design";
@@ -33,8 +34,16 @@ const DesignApplier = () => {
   useEffect(() => {
     if (window.parent === window) return;
     const onMessage = (e: MessageEvent) => {
-      if (e.origin !== window.location.origin || e.data?.type !== DESIGN_DRAFT_MESSAGE) return;
-      designDraft.set(normalizeDesign(e.data.design));
+      if (e.origin !== window.location.origin) return;
+      if (e.data?.type === DESIGN_DRAFT_MESSAGE) designDraft.set(normalizeDesign(e.data.design));
+      if (e.data?.type === DESIGN_FOCUS_MESSAGE && typeof e.data.id === "string") {
+        const el = document.querySelector<HTMLElement>(`[data-block-id="${CSS.escape(e.data.id)}"]`);
+        if (!el) return;
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        el.style.outline = "3px solid #4f46e5";
+        el.style.outlineOffset = "-3px";
+        window.setTimeout(() => { el.style.outline = ""; el.style.outlineOffset = ""; }, 1600);
+      }
     };
     window.addEventListener("message", onMessage);
     window.parent.postMessage({ type: DESIGN_READY_MESSAGE }, window.location.origin);

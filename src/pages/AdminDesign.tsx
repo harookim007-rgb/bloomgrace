@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import {
-  ArrowDown, ArrowLeft, ArrowUp, Code2, Eye, EyeOff, Home, MessageSquareDashed, Monitor, Palette, PanelTop,
+  ArrowLeft, Code2, Home, MessageSquareDashed, Monitor, Palette, PanelTop,
   Redo2, RotateCcw, Smartphone, Undo2, Upload,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -11,10 +11,11 @@ import { useAuth } from "@/contexts/AuthContext";
 import { isAdminOtpVerified } from "@/lib/adminOtp";
 import { SITE_SETTINGS_KEY } from "@/hooks/useSiteSettings";
 import {
-  BODY_FONTS, COLOR_PRESETS, CORNERS, DESIGN_DRAFT_MESSAGE, DESIGN_READY_MESSAGE, FEATURED_COUNTS, FONT_SCALES,
-  HEADING_FONTS, HERO_HEIGHTS, HERO_INTERVALS, HOME_SECTION_LABELS, defaultDesign, hexToHsl, hslToHex,
-  normalizeDesign, sameDesign, type SiteDesign,
+  BODY_FONTS, COLOR_PRESETS, CORNERS, DESIGN_DRAFT_MESSAGE, DESIGN_READY_MESSAGE, FONT_SCALES,
+  HEADING_FONTS, defaultDesign, hexToHsl, hslToHex, normalizeDesign, sameDesign, type SiteDesign,
 } from "@/lib/design";
+import { BLOCK_TYPES, DESIGN_FOCUS_MESSAGE, DESIGN_SELECT_MESSAGE, findBadLink } from "@/lib/homeBlocks";
+import BlockEditor from "@/components/admin/design/BlockEditor";
 import AdminMenus from "@/components/admin/AdminMenus";
 import PopupEditor from "@/components/admin/design/PopupEditor";
 import { Textarea } from "@/components/ui/textarea";
@@ -70,6 +71,7 @@ const AdminDesign = () => {
   const [tab, setTab] = useState<Tab>("theme");
   const [previewPath, setPreviewPath] = useState("/");
   const [frameKey, setFrameKey] = useState(0);
+  const [openBlock, setOpenBlock] = useState<string | null>(null);
   const [publishing, setPublishing] = useState(false);
   const lastEdit = useRef({ key: "", at: 0 });
   const stageRef = useRef<HTMLDivElement>(null);
@@ -103,7 +105,13 @@ const AdminDesign = () => {
   useEffect(() => { sendDraft(); }, [sendDraft]);
   useEffect(() => {
     const onMessage = (e: MessageEvent) => {
-      if (e.origin === window.location.origin && e.data?.type === DESIGN_READY_MESSAGE) sendDraft();
+      if (e.origin !== window.location.origin) return;
+      if (e.data?.type === DESIGN_READY_MESSAGE) sendDraft();
+      // The preview's "edit" tag on a block opens that block's settings here.
+      if (e.data?.type === DESIGN_SELECT_MESSAGE && typeof e.data.id === "string") {
+        setTab("home");
+        setOpenBlock(e.data.id);
+      }
     };
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
@@ -153,6 +161,13 @@ const AdminDesign = () => {
       toast.error("공지 링크는 '/'로 시작하거나 'http(s)://'로 시작해야 합니다.");
       return;
     }
+    const badBlock = findBadLink(draft.home.blocks);
+    if (badBlock) {
+      setTab("home");
+      setOpenBlock(badBlock.id);
+      toast.error(`'${BLOCK_TYPES[badBlock.type].label}' 블록의 링크는 '/' 또는 'http(s)://'로 시작해야 합니다.`);
+      return;
+    }
     const badPopup = draft.popups.find(p =>
       (p.type === "image" && !linkOk(p.link)) ||
       (p.startsAt && p.endsAt && new Date(p.endsAt) <= new Date(p.startsAt)));
@@ -193,11 +208,10 @@ const AdminDesign = () => {
     navigate("/admin");
   };
 
-  const moveSection = (from: number, to: number) => {
-    const sections = [...draft.home.sections];
-    const [moved] = sections.splice(from, 1);
-    sections.splice(to, 0, moved);
-    change(`move-${Date.now()}`, { ...draft, home: { ...draft.home, sections } });
+  // Blocks only exist on the home page, so show it before scrolling the preview to one.
+  const focusBlock = (id: string) => {
+    if (previewPath !== "/") { setPreviewPath("/"); return; }
+    frameRef.current?.contentWindow?.postMessage({ type: DESIGN_FOCUS_MESSAGE, id }, window.location.origin);
   };
 
   // The PC preview renders at a real desktop width and is scaled down to fit, so it shows the
@@ -206,14 +220,17 @@ const AdminDesign = () => {
   useEffect(() => {
     const el = stageRef.current;
     if (!el) return;
-    const observer = new ResizeObserver(([entry]) => setStage({ w: entry.contentRect.width, h: entry.contentRect.height }));
+    // A zero size is reported while the panel is momentarily not laid out; keeping the last
+    // real size stops the preview from collapsing.
+    const observer = new ResizeObserver(([entry]) => {
+      const { width, height } = entry.contentRect;
+      if (width > 0 && height > 0) setStage({ w: width, h: height });
+    });
     observer.observe(el);
     return () => observer.disconnect();
   }, [ready]);
   const frameWidth = viewport === "mobile" ? 390 : 1440;
   const scale = stage.w ? Math.min(1, stage.w / frameWidth) : 1;
-
-  const visibleCount = useMemo(() => draft?.home.sections.filter(s => s.visible).length ?? 0, [draft]);
 
   if (authLoading || !draft || !published) {
     return <div className="min-h-dvh flex items-center justify-center text-muted-foreground">로딩 중...</div>;
@@ -363,126 +380,17 @@ const AdminDesign = () => {
           </Section>
           </>)}
 
-          {tab === "home" && (<>
-          <Section title="홈 화면 구성">
-            <ul className="space-y-2">
-              {draft.home.sections.map((section, i) => {
-                const meta = HOME_SECTION_LABELS[section.id];
-                const lastVisible = section.visible && visibleCount === 1;
-                return (
-                  <li key={section.id} className={`flex items-center gap-2 rounded-md border border-border p-2.5 ${section.visible ? "bg-background" : "bg-muted/50"}`}>
-                    <div className="min-w-0 flex-1">
-                      <p className={`text-sm font-medium truncate ${section.visible ? "" : "text-muted-foreground line-through"}`}>{meta.label}</p>
-                      <p className="text-xs text-muted-foreground truncate">{meta.desc}</p>
-                    </div>
-                    <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" disabled={i === 0} onClick={() => moveSection(i, i - 1)} title="위로" aria-label={`${meta.label} 위로`}><ArrowUp className="h-4 w-4" /></Button>
-                    <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" disabled={i === draft.home.sections.length - 1} onClick={() => moveSection(i, i + 1)} title="아래로" aria-label={`${meta.label} 아래로`}><ArrowDown className="h-4 w-4" /></Button>
-                    <Button
-                      variant="ghost" size="icon" className="h-8 w-8 shrink-0"
-                      disabled={lastVisible}
-                      title={lastVisible ? "최소 한 개는 보여야 합니다" : section.visible ? "숨기기" : "보이기"}
-                      aria-label={`${meta.label} ${section.visible ? "숨기기" : "보이기"}`}
-                      onClick={() => change(`toggle-${section.id}-${Date.now()}`, {
-                        ...draft,
-                        home: { ...draft.home, sections: draft.home.sections.map(s => s.id === section.id ? { ...s, visible: !s.visible } : s) },
-                      })}
-                    >
-                      {section.visible ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
-                    </Button>
-                  </li>
-                );
-              })}
-            </ul>
-            <div className="space-y-1.5">
-              <Label>추천 상품 개수</Label>
-              <div className="grid grid-cols-3 gap-2">
-                {FEATURED_COUNTS.map(n => (
-                  <Button
-                    key={n}
-                    type="button"
-                    variant={draft.home.featuredCount === n ? "default" : "outline"}
-                    onClick={() => change("featured-count", { ...draft, home: { ...draft.home, featuredCount: n } })}
-                  >
-                    {n}개
-                  </Button>
-                ))}
-              </div>
-            </div>
-          </Section>
-
-          <Section title="메인 배너">
-            <div className="space-y-1.5">
-              <Label>배너 높이</Label>
-              <div className="grid grid-cols-3 gap-2">
-                {(Object.keys(HERO_HEIGHTS) as (keyof typeof HERO_HEIGHTS)[]).map(h => (
-                  <Button
-                    key={h}
-                    type="button"
-                    variant={draft.layout.heroHeight === h ? "default" : "outline"}
-                    onClick={() => change("hero-height", { ...draft, layout: { ...draft.layout, heroHeight: h } })}
-                  >
-                    {HERO_HEIGHTS[h].label}
-                  </Button>
-                ))}
-              </div>
-            </div>
-            <div className="space-y-1.5">
-              <Label>슬라이드 넘김 간격</Label>
-              <div className="grid grid-cols-4 gap-2">
-                {HERO_INTERVALS.map(sec => (
-                  <Button
-                    key={sec}
-                    type="button"
-                    variant={draft.layout.heroInterval === sec ? "default" : "outline"}
-                    onClick={() => change("hero-interval", { ...draft, layout: { ...draft.layout, heroInterval: sec } })}
-                  >
-                    {sec}초
-                  </Button>
-                ))}
-              </div>
-            </div>
-            <p className="text-xs text-muted-foreground">배너 이미지와 문구는 '배너/프로모션'에서 등록합니다</p>
-          </Section>
-
-          <Section title="추천 상품 영역">
-            <div className="space-y-1.5">
-              <Label>PC 한 줄 상품 수</Label>
-              <div className="grid grid-cols-2 gap-2">
-                {([3, 4] as const).map(n => (
-                  <Button
-                    key={n}
-                    type="button"
-                    variant={draft.layout.featuredColumns === n ? "default" : "outline"}
-                    onClick={() => change("featured-columns", { ...draft, layout: { ...draft.layout, featuredColumns: n } })}
-                  >
-                    {n}개씩
-                  </Button>
-                ))}
-              </div>
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="featured-title">제목 (선택)</Label>
-              <Input
-                id="featured-title"
-                value={draft.layout.featuredTitle}
-                maxLength={60}
-                placeholder="비워두면 언어별 기본 제목"
-                onChange={e => change("featured-title", { ...draft, layout: { ...draft.layout, featuredTitle: e.target.value } })}
+          {tab === "home" && (
+            <Section title="홈 화면 블록">
+              <BlockEditor
+                blocks={draft.home.blocks}
+                onChange={(key, blocks) => change(key, { ...draft, home: { blocks } })}
+                openId={openBlock}
+                setOpenId={setOpenBlock}
+                onFocus={focusBlock}
               />
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="featured-subtitle">설명 (선택)</Label>
-              <Input
-                id="featured-subtitle"
-                value={draft.layout.featuredSubtitle}
-                maxLength={120}
-                placeholder="비워두면 언어별 기본 설명"
-                onChange={e => change("featured-subtitle", { ...draft, layout: { ...draft.layout, featuredSubtitle: e.target.value } })}
-              />
-              <p className="text-xs text-muted-foreground">직접 입력하면 모든 언어에서 입력한 문구 그대로 표시됩니다</p>
-            </div>
-          </Section>
-          </>)}
+            </Section>
+          )}
 
           {tab === "header" && (<>
           <Section title="헤더">
