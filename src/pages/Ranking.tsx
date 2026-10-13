@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Trophy, Medal, Award } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/Navigation";
+import { PageBlocks } from "@/components/home/HomeBlocks";
 import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import { useLanguage, type Language } from "@/contexts/LanguageContext";
@@ -159,6 +160,7 @@ const Ranking = () => {
         path="/ranking"
       />
       <Navigation />
+      <PageBlocks page="ranking" part="top" />
       <section className="py-8 md:py-16 px-3 md:px-6 lg:px-8">
         <div className="container max-w-4xl">
           <div className="mb-8 md:mb-12 text-center">
@@ -205,6 +207,7 @@ const Ranking = () => {
           </div>
         </div>
       </section>
+      <PageBlocks page="ranking" part="bottom" />
       <Footer />
     </div>
   );

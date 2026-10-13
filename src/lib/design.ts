@@ -1,4 +1,4 @@
-import { defaultBlocks, normalizeBlocks, type HomeBlock } from "@/lib/homeBlocks";
+import { defaultBlocks, normalizeBlocks, normalizePages, type BlockPageKey, type HomeBlock } from "@/lib/homeBlocks";
 
 // Storefront design chosen in the admin design editor. Stored in site_settings.settings.design
 // and applied to every non-admin page, so what the editor shows is what visitors get.
@@ -27,6 +27,7 @@ export type SiteDesign = {
   colors: { primary: string; background: string; foreground: string }; // "H S% L%"
   fonts: { heading: string; body: string; scale: number };
   home: { blocks: HomeBlock[] };
+  pages: Record<BlockPageKey, HomeBlock[]>;
   effects: { petals: boolean };
   announcement: { enabled: boolean; text: string; link: string };
   layout: { corners: "square" | "soft" | "round" };
@@ -39,6 +40,7 @@ export const defaultDesign: SiteDesign = {
   colors: { primary: "350 32% 62%", background: "36 30% 97%", foreground: "24 18% 18%" },
   fonts: { heading: "Playfair Display", body: "Inter", scale: 100 },
   home: { blocks: defaultBlocks() },
+  pages: normalizePages(null),
   effects: { petals: true },
   announcement: { enabled: false, text: "", link: "" },
   layout: { corners: "square" },
@@ -131,6 +133,7 @@ export const normalizeDesign = (raw: unknown): SiteDesign => {
       scale: FONT_SCALES.some(s => s.value === r.fonts?.scale) ? r.fonts.scale : d.fonts.scale,
     },
     home: { blocks: normalizeBlocks(r.home, r.layout) },
+    pages: normalizePages(r.pages),
     effects: { petals: r.effects?.petals !== false },
     announcement: {
       enabled: r.announcement?.enabled === true,

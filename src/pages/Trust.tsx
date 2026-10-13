@@ -1,4 +1,5 @@
 import Navigation from "@/components/Navigation";
+import { PageBlocks } from "@/components/home/HomeBlocks";
 import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -206,6 +207,7 @@ const Trust = () => {
         path="/trust"
       />
       <Navigation />
+      <PageBlocks page="trust" part="top" />
       <main className="flex-1 container px-4 md:px-6 lg:px-8 py-12 md:py-20 max-w-3xl">
         <h1 className="font-serif text-3xl md:text-4xl mb-2">{d.title}</h1>
         <p className="text-sm text-muted-foreground mb-10">{d.intro}</p>
@@ -251,6 +253,7 @@ const Trust = () => {
 
         <p className="text-xs text-muted-foreground mt-12">{d.disclaimer}</p>
       </main>
+      <PageBlocks page="trust" part="bottom" />
       <Footer />
     </div>
   );

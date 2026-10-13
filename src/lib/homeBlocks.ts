@@ -4,22 +4,30 @@
 
 export type BlockType =
   | "hero" | "products" | "categories" | "consultation" | "text" | "image" | "imageText"
-  | "promo" | "cards" | "accordion" | "video" | "spacer" | "divider" | "html";
+  | "promo" | "cards" | "accordion" | "video" | "spacer" | "divider" | "html"
+  | "button" | "gallery" | "countdown" | "pageContent";
 
 export type BlockItem = { title: string; body: string };
+export const BLOCK_WIDTHS = [3, 4, 6, 8, 9, 12] as const;
+export type BlockWidth = (typeof BLOCK_WIDTHS)[number];
 
 export type HomeBlock = {
   id: string;
   type: BlockType;
   visible: boolean;
   device: "all" | "desktop" | "mobile";
-  bg: "none" | "soft" | "tint" | "dark";
+  bg: "none" | "soft" | "tint" | "dark" | "custom";
+  bgColor: string; // "#rrggbb", used when bg is "custom"
   pad: "small" | "normal" | "large";
+  width: BlockWidth; // columns out of 12 on PC; narrower blocks sit side by side
+  anim: "none" | "fade" | "up";
+  anchor: string; // optional id so a menu link like "/#event" can jump to the block
   s: Record<string, any>; // settings for this block type, see BLOCK_TYPES[type].fields
 };
 
 export type BlockField =
-  | { key: string; kind: "text" | "textarea" | "link" | "image" | "code" | "category"; label: string; max: number; hint?: string; placeholder?: string; showIf?: (s: Record<string, any>) => boolean }
+  | { key: string; kind: "images"; label: string; max: number; hint?: string; showIf?: (s: Record<string, any>) => boolean }
+  | { key: string; kind: "text" | "textarea" | "link" | "image" | "code" | "category" | "datetime"; label: string; max: number; hint?: string; placeholder?: string; showIf?: (s: Record<string, any>) => boolean }
   | { key: string; kind: "select"; label: string; options: { value: string | number; label: string }[]; hint?: string; showIf?: (s: Record<string, any>) => boolean }
   | { key: string; kind: "number"; label: string; min: number; max: number; hint?: string; showIf?: (s: Record<string, any>) => boolean }
   | { key: string; kind: "items"; label: string; max: number; titleLabel: string; bodyLabel: string; hint?: string; showIf?: (s: Record<string, any>) => boolean };
@@ -29,7 +37,9 @@ type BlockDef = {
   desc: string;
   group: "쇼핑" | "콘텐츠" | "레이아웃" | "고급";
   single?: boolean; // only one allowed on the page
-  chrome: boolean; // whether background / spacing options apply
+  homeOnly?: boolean; // only available on the home page
+  fixed?: boolean; // the page's own content: cannot be added, removed, hidden or duplicated
+  chrome: boolean; // whether background / spacing / width options apply
   defaults: Record<string, any>;
   fields: BlockField[];
 };
@@ -38,7 +48,7 @@ const LINK_HINT = "'/products' 같은 쇼핑몰 주소 또는 'https://'로 시�
 
 export const BLOCK_TYPES: Record<BlockType, BlockDef> = {
   hero: {
-    label: "메인 배너", desc: "배너/프로모션에 등록한 슬라이드", group: "쇼핑", single: true, chrome: false,
+    label: "메인 배너", desc: "배너/프로모션에 등록한 슬라이드", group: "쇼핑", single: true, homeOnly: true, chrome: false,
     defaults: { height: "normal", interval: 6 },
     fields: [
       { key: "height", kind: "select", label: "배너 높이", options: [{ value: "compact", label: "낮게" }, { value: "normal", label: "기본" }, { value: "tall", label: "높게 (화면 가득)" }], hint: "배너 이미지와 문구는 '배너/프로모션'에서 등록합니다" },
@@ -63,7 +73,7 @@ export const BLOCK_TYPES: Record<BlockType, BlockDef> = {
     fields: [{ key: "title", kind: "text", label: "제목 (선택)", max: 60 }],
   },
   consultation: {
-    label: "뷰티 상담", desc: "피부 타입별 상품 추천 영역", group: "쇼핑", single: true, chrome: false,
+    label: "뷰티 상담", desc: "피부 타입별 상품 추천 영역", group: "쇼핑", single: true, homeOnly: true, chrome: false,
     defaults: {}, fields: [],
   },
   text: {
@@ -135,7 +145,7 @@ export const BLOCK_TYPES: Record<BlockType, BlockDef> = {
   spacer: {
     label: "여백", desc: "블록 사이 빈 공간", group: "레이아웃", chrome: false,
     defaults: { height: 48 },
-    fields: [{ key: "height", kind: "select", label: "높이", options: [24, 48, 80, 120].map(n => ({ value: n, label: `${n}px` })) }],
+    fields: [{ key: "height", kind: "number", label: "높이 (px)", min: 8, max: 400, hint: "미리보기에서 아래쪽 손잡이를 끌어서 조절할 수도 있습니다" }],
   },
   divider: {
     label: "구분선", desc: "가로 선", group: "레이아웃", chrome: false,
@@ -146,10 +156,54 @@ export const BLOCK_TYPES: Record<BlockType, BlockDef> = {
     defaults: { code: "", height: 240 },
     fields: [
       { key: "code", kind: "code", label: "HTML · CSS · JavaScript", max: 20000, hint: "코드는 이 블록 안에서만 실행되어 쇼핑몰 화면을 깨뜨리지 않습니다" },
-      { key: "height", kind: "number", label: "높이 (px)", min: 60, max: 1200 },
+      { key: "height", kind: "number", label: "높이 (px)", min: 60, max: 1200, hint: "미리보기에서 아래쪽 손잡이를 끌어서 조절할 수도 있습니다" },
     ],
   },
+  button: {
+    label: "버튼", desc: "링크로 이동하는 버튼 하나", group: "콘텐츠", chrome: true,
+    defaults: { label: "Shop now", link: "/products", style: "filled", align: "center" },
+    fields: [
+      { key: "label", kind: "text", label: "버튼 문구", max: 40 },
+      { key: "link", kind: "link", label: "링크", max: 500, hint: LINK_HINT },
+      { key: "style", kind: "select", label: "모양", options: [{ value: "filled", label: "채움" }, { value: "outline", label: "테두리" }] },
+      { key: "align", kind: "select", label: "정렬", options: [{ value: "left", label: "왼쪽" }, { value: "center", label: "가운데" }, { value: "right", label: "오른쪽" }] },
+    ],
+  },
+  gallery: {
+    label: "이미지 갤러리", desc: "이미지 여러 장을 격자로", group: "콘텐츠", chrome: true,
+    defaults: { title: "", images: [], columns: 3 },
+    fields: [
+      { key: "title", kind: "text", label: "제목 (선택)", max: 120 },
+      { key: "images", kind: "images", label: "이미지", max: 8 },
+      { key: "columns", kind: "select", label: "PC 한 줄 이미지 수", options: [2, 3, 4].map(n => ({ value: n, label: `${n}장` })) },
+    ],
+  },
+  countdown: {
+    label: "카운트다운", desc: "행사 종료까지 남은 시간", group: "콘텐츠", chrome: true,
+    defaults: { heading: "Sale ends in", endsAt: "", doneText: "", buttonLabel: "", buttonLink: "/products" },
+    fields: [
+      { key: "heading", kind: "text", label: "문구", max: 120 },
+      { key: "endsAt", kind: "datetime", label: "종료 일시", max: 20, hint: "이 시각이 지나면 아래 '종료 후 문구'가 표시됩니다" },
+      { key: "doneText", kind: "text", label: "종료 후 문구 (선택)", max: 120, hint: "비워두면 종료 후 블록이 사라집니다" },
+      { key: "buttonLabel", kind: "text", label: "버튼 문구 (선택)", max: 40 },
+      { key: "buttonLink", kind: "link", label: "버튼 링크", max: 500, hint: LINK_HINT, showIf: s => !!String(s.buttonLabel || "").trim() },
+    ],
+  },
+  pageContent: {
+    label: "기본 페이지 내용", desc: "이 페이지의 원래 내용 (위아래로 블록을 배치할 수 있습니다)", group: "레이아웃", single: true, fixed: true, chrome: false,
+    defaults: {}, fields: [],
+  },
 };
+
+// Pages (besides home) whose content can be surrounded with blocks.
+export const BLOCK_PAGES = [
+  { key: "products", label: "상품 목록", path: "/products" },
+  { key: "ranking", label: "랭킹", path: "/ranking" },
+  { key: "contact", label: "문의", path: "/contact" },
+  { key: "qa", label: "Q&A", path: "/qa" },
+  { key: "trust", label: "브랜드 신뢰", path: "/trust" },
+] as const;
+export type BlockPageKey = (typeof BLOCK_PAGES)[number]["key"];
 
 export const BLOCK_GROUPS = ["쇼핑", "콘텐츠", "레이아웃", "고급"] as const;
 export const MAX_BLOCKS = 30;
@@ -157,7 +211,7 @@ export const MAX_BLOCKS = 30;
 const newId = () => `b${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
 
 export const newBlock = (type: BlockType): HomeBlock => ({
-  id: newId(), type, visible: true, device: "all", bg: "none", pad: "normal",
+  id: newId(), type, visible: true, device: "all", bg: "none", bgColor: "", pad: "normal", width: 12, anim: "none", anchor: "",
   s: JSON.parse(JSON.stringify(BLOCK_TYPES[type].defaults)),
 });
 
@@ -173,6 +227,7 @@ const normalizeSettings = (type: BlockType, raw: any): Record<string, any> => {
     const fallback = def.defaults[f.key];
     if (f.kind === "select") out[f.key] = oneOf(v, f.options.map(o => o.value), fallback);
     else if (f.kind === "number") out[f.key] = typeof v === "number" && Number.isFinite(v) ? Math.min(f.max, Math.max(f.min, Math.round(v))) : fallback;
+    else if (f.kind === "images") out[f.key] = (Array.isArray(v) ? v : []).filter((u: unknown) => typeof u === "string" && u.trim()).slice(0, f.max).map((u: string) => u.slice(0, 2000));
     else if (f.kind === "items") {
       out[f.key] = (Array.isArray(v) ? v : fallback).slice(0, f.max).map((it: any) => ({
         title: typeof it?.title === "string" ? it.title.slice(0, 160) : "",
@@ -191,10 +246,40 @@ const normalizeBlock = (raw: any): HomeBlock | null => {
     type,
     visible: raw.visible !== false,
     device: oneOf(raw.device, ["all", "desktop", "mobile"] as const, "all"),
-    bg: oneOf(raw.bg, ["none", "soft", "tint", "dark"] as const, "none"),
+    bg: oneOf(raw.bg, ["none", "soft", "tint", "dark", "custom"] as const, "none"),
+    bgColor: typeof raw.bgColor === "string" && /^#[0-9a-fA-F]{6}$/.test(raw.bgColor) ? raw.bgColor : "",
     pad: oneOf(raw.pad, ["small", "normal", "large"] as const, "normal"),
+    width: BLOCK_TYPES[type].chrome ? oneOf(raw.width, BLOCK_WIDTHS, 12) : 12,
+    anim: oneOf(raw.anim, ["none", "fade", "up"] as const, "none"),
+    anchor: typeof raw.anchor === "string" ? raw.anchor.toLowerCase().replace(/[^a-z0-9-]/g, "").slice(0, 40) : "",
     s: normalizeSettings(type, raw.s),
   };
+};
+
+// Validates one list of blocks: unknown or duplicate blocks are dropped and single-use types kept once.
+const normalizeList = (raw: unknown, home: boolean): HomeBlock[] => {
+  const seen = new Set<string>();
+  const singles = new Set<BlockType>();
+  return (Array.isArray(raw) ? raw : []).map(normalizeBlock).filter((b: HomeBlock | null): b is HomeBlock => {
+    if (!b || seen.has(b.id)) return false;
+    const def = BLOCK_TYPES[b.type];
+    if (home ? def.fixed : def.homeOnly) return false;
+    if (def.single) { if (singles.has(b.type)) return false; singles.add(b.type); }
+    seen.add(b.id);
+    return true;
+  }).slice(0, MAX_BLOCKS);
+};
+
+const pageContentBlock = (key: string): HomeBlock => ({ ...newBlock("pageContent"), id: `content-${key}` });
+
+// Every page keeps exactly one "기본 페이지 내용" block; blocks before it show above the page, the rest below.
+export const normalizePages = (raw: any): Record<BlockPageKey, HomeBlock[]> => {
+  const out = {} as Record<BlockPageKey, HomeBlock[]>;
+  for (const page of BLOCK_PAGES) {
+    const list = normalizeList(raw?.[page.key], false).map(b => (b.type === "pageContent" ? { ...b, visible: true, device: "all" as const } : b));
+    out[page.key] = list.some(b => b.type === "pageContent") ? list : [...list, pageContentBlock(page.key)];
+  }
+  return out;
 };
 
 export const defaultBlocks = (): HomeBlock[] => [
@@ -206,16 +291,7 @@ export const defaultBlocks = (): HomeBlock[] => [
 // Rebuilds a valid block list. Designs saved before blocks existed stored a fixed list of
 // three sections plus a few layout options, so those are converted instead of being lost.
 export const normalizeBlocks = (home: any, legacyLayout: any): HomeBlock[] => {
-  if (Array.isArray(home?.blocks)) {
-    const seen = new Set<string>();
-    const singles = new Set<BlockType>();
-    return home.blocks.map(normalizeBlock).filter((b: HomeBlock | null): b is HomeBlock => {
-      if (!b || seen.has(b.id)) return false;
-      if (BLOCK_TYPES[b.type].single) { if (singles.has(b.type)) return false; singles.add(b.type); }
-      seen.add(b.id);
-      return true;
-    }).slice(0, MAX_BLOCKS);
-  }
+  if (Array.isArray(home?.blocks)) return normalizeList(home.blocks, true);
   const base = defaultBlocks();
   const legacy: any[] = Array.isArray(home?.sections) ? home.sections : [];
   const ordered = [
@@ -254,6 +330,9 @@ export const isEmptyBlock = (b: HomeBlock): boolean => {
     case "accordion": return blank(s.title) && !(s.items as BlockItem[]).some(it => !blank(it.title));
     case "video": return !/^https?:\/\//.test(String(s.url || "").trim());
     case "html": return blank(s.code);
+    case "button": return blank(s.label);
+    case "gallery": return (s.images as string[]).length === 0;
+    case "countdown": return blank(s.endsAt) || (new Date(s.endsAt).getTime() <= Date.now() && blank(s.doneText));
     case "products": return s.source === "category" && blank(s.category);
     default: return false;
   }
@@ -266,3 +345,5 @@ export const sandboxDoc = (html: string) =>
 
 export const DESIGN_FOCUS_MESSAGE = "design-focus"; // editor -> preview: scroll to a block
 export const DESIGN_SELECT_MESSAGE = "design-select"; // preview -> editor: open a block's settings
+export const DESIGN_MOVE_MESSAGE = "design-move"; // preview -> editor: a block was dragged next to another
+export const DESIGN_RESIZE_MESSAGE = "design-resize"; // preview -> editor: a block's width or height was dragged

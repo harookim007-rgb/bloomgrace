@@ -1,4 +1,5 @@
 import Navigation from "@/components/Navigation";
+import { PageBlocks } from "@/components/home/HomeBlocks";
 import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -48,6 +49,7 @@ const QA = () => {
         }}
       />
       <Navigation />
+      <PageBlocks page="qa" part="top" />
       <section className="py-16 md:py-24 px-4 md:px-6 lg:px-8">
         <div className="container max-w-4xl">
           <div className="mb-16 space-y-3">
@@ -93,6 +95,7 @@ const QA = () => {
           </div>
         </div>
       </section>
+      <PageBlocks page="qa" part="bottom" />
       <Footer />
     </div>
   );

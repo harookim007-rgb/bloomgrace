@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/Navigation";
+import { PageBlocks } from "@/components/home/HomeBlocks";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import SEO from "@/components/SEO";
@@ -84,6 +85,7 @@ const Products = () => {
         path="/products"
       />
       <Navigation />
+      <PageBlocks page="products" part="top" />
       <section className="py-8 md:py-16 px-3 md:px-6 lg:px-8">
         <div className="container">
           {/* Header */}
@@ -174,6 +176,7 @@ const Products = () => {
           )}
         </div>
       </section>
+      <PageBlocks page="products" part="bottom" />
       <Footer />
     </div>
   );

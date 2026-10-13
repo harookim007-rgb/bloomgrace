@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Navigation from "@/components/Navigation";
+import { PageBlocks } from "@/components/home/HomeBlocks";
 import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
@@ -68,6 +69,7 @@ const Contact = () => {
         }}
       />
       <Navigation />
+      <PageBlocks page="contact" part="top" />
       <section className="py-16 md:py-24 px-4 md:px-6 lg:px-8">
         <div className="container max-w-6xl">
           <div className="mb-16 space-y-3">
@@ -121,6 +123,7 @@ const Contact = () => {
           </div>
         </div>
       </section>
+      <PageBlocks page="contact" part="bottom" />
       <Footer />
     </div>
   );

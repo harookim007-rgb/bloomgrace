@@ -14,7 +14,10 @@ import {
   BODY_FONTS, COLOR_PRESETS, CORNERS, DESIGN_DRAFT_MESSAGE, DESIGN_READY_MESSAGE, FONT_SCALES,
   HEADING_FONTS, defaultDesign, hexToHsl, hslToHex, normalizeDesign, sameDesign, type SiteDesign,
 } from "@/lib/design";
-import { BLOCK_TYPES, DESIGN_FOCUS_MESSAGE, DESIGN_SELECT_MESSAGE, findBadLink } from "@/lib/homeBlocks";
+import {
+  BLOCK_PAGES, BLOCK_TYPES, BLOCK_WIDTHS, DESIGN_FOCUS_MESSAGE, DESIGN_MOVE_MESSAGE, DESIGN_RESIZE_MESSAGE,
+  DESIGN_SELECT_MESSAGE, findBadLink, type BlockPageKey, type HomeBlock,
+} from "@/lib/homeBlocks";
 import BlockEditor from "@/components/admin/design/BlockEditor";
 import AdminMenus from "@/components/admin/AdminMenus";
 import PopupEditor from "@/components/admin/design/PopupEditor";
@@ -30,18 +33,16 @@ type Tab = "theme" | "home" | "header" | "popup" | "advanced";
 
 const TABS: { id: Tab; label: string; icon: React.ElementType }[] = [
   { id: "theme", label: "테마", icon: Palette },
-  { id: "home", label: "홈 구성", icon: Home },
+  { id: "home", label: "페이지 구성", icon: Home },
   { id: "header", label: "헤더·메뉴", icon: PanelTop },
   { id: "popup", label: "팝업", icon: MessageSquareDashed },
   { id: "advanced", label: "고급", icon: Code2 },
 ];
 
-const PREVIEW_PAGES = [
-  { path: "/", label: "홈" },
-  { path: "/products", label: "상품 목록" },
-  { path: "/ranking", label: "랭킹" },
-  { path: "/contact", label: "문의" },
-];
+const PREVIEW_PAGES = [{ path: "/", label: "홈" }, ...BLOCK_PAGES.map(p => ({ path: p.path as string, label: p.label as string }))];
+
+type HistoryEntry = { at: string; design: unknown };
+const HISTORY_LIMIT = 10;
 
 const linkOk = (link: string) => !link.trim() || link.trim().startsWith("/") || /^https?:\/\//.test(link.trim());
 
@@ -72,6 +73,8 @@ const AdminDesign = () => {
   const [previewPath, setPreviewPath] = useState("/");
   const [frameKey, setFrameKey] = useState(0);
   const [openBlock, setOpenBlock] = useState<string | null>(null);
+  const [versions, setVersions] = useState<HistoryEntry[]>([]);
+  const importRef = useRef<HTMLInputElement>(null);
   const [publishing, setPublishing] = useState(false);
   const lastEdit = useRef({ key: "", at: 0 });
   const stageRef = useRef<HTMLDivElement>(null);
@@ -90,11 +93,20 @@ const AdminDesign = () => {
     supabase.from("site_settings").select("settings").eq("id", "default").maybeSingle().then(({ data, error }) => {
       if (error) toast.error(`디자인 설정을 불러오지 못했습니다: ${error.message}`);
       const design = normalizeDesign((data?.settings as any)?.design);
+      setVersions(Array.isArray((data?.settings as any)?.designHistory) ? (data?.settings as any).designHistory : []);
       setPublished(design);
       setHistory([design]);
       setIndex(0);
     });
   }, []);
+
+  // The page whose blocks are being edited follows the page shown in the preview.
+  const blockPage: "home" | BlockPageKey = BLOCK_PAGES.find(p => p.path === previewPath)?.key ?? "home";
+  const listOf = (design: SiteDesign, page: "home" | BlockPageKey) => (page === "home" ? design.home.blocks : design.pages[page]);
+  const withList = (design: SiteDesign, page: "home" | BlockPageKey, blocks: HomeBlock[]): SiteDesign =>
+    page === "home" ? { ...design, home: { blocks } } : { ...design, pages: { ...design.pages, [page]: blocks } };
+  const pageOfBlock = (design: SiteDesign, id: string): "home" | BlockPageKey | null =>
+    design.home.blocks.some(b => b.id === id) ? "home" : (BLOCK_PAGES.find(p => design.pages[p.key].some(b => b.id === id))?.key ?? null);
 
   const sendDraft = useCallback(() => {
     if (!draft) return;
@@ -112,10 +124,35 @@ const AdminDesign = () => {
         setTab("home");
         setOpenBlock(e.data.id);
       }
+      if (!draft) return;
+      // A block was dragged next to another block in the preview.
+      if (e.data?.type === DESIGN_MOVE_MESSAGE) {
+        const { id, targetId, after } = e.data;
+        const page = pageOfBlock(draft, targetId);
+        if (!page || pageOfBlock(draft, id) !== page) return;
+        const list = listOf(draft, page);
+        const moved = list.find(b => b.id === id);
+        const rest = list.filter(b => b.id !== id);
+        const at = rest.findIndex(b => b.id === targetId) + (after ? 1 : 0);
+        if (!moved) return;
+        rest.splice(at, 0, moved);
+        change(`block-move-${Date.now()}`, withList(draft, page, rest));
+      }
+      // A block's edge was dragged in the preview to change its width or height.
+      if (e.data?.type === DESIGN_RESIZE_MESSAGE) {
+        const page = pageOfBlock(draft, e.data.id);
+        if (!page) return;
+        const patchBlock = (b: HomeBlock): HomeBlock => {
+          if (BLOCK_WIDTHS.includes(e.data.width) && BLOCK_TYPES[b.type].chrome) return { ...b, width: e.data.width };
+          if (typeof e.data.height === "number" && (b.type === "spacer" || b.type === "html")) return { ...b, s: { ...b.s, height: Math.min(1200, Math.max(8, Math.round(e.data.height))) } };
+          return b;
+        };
+        change(`block-resize-${e.data.id}`, withList(draft, page, listOf(draft, page).map(b => (b.id === e.data.id ? patchBlock(b) : b))));
+      }
     };
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
-  }, [sendDraft]);
+  });
 
   useEffect(() => {
     if (!dirty) return;
@@ -161,8 +198,10 @@ const AdminDesign = () => {
       toast.error("공지 링크는 '/'로 시작하거나 'http(s)://'로 시작해야 합니다.");
       return;
     }
-    const badBlock = findBadLink(draft.home.blocks);
+    const badBlock = findBadLink([...draft.home.blocks, ...BLOCK_PAGES.flatMap(p => draft.pages[p.key])]);
     if (badBlock) {
+      const page = pageOfBlock(draft, badBlock.id);
+      setPreviewPath(page && page !== "home" ? BLOCK_PAGES.find(p => p.key === page)!.path : "/");
       setTab("home");
       setOpenBlock(badBlock.id);
       toast.error(`'${BLOCK_TYPES[badBlock.type].label}' 블록의 링크는 '/' 또는 'http(s)://'로 시작해야 합니다.`);
@@ -181,12 +220,19 @@ const AdminDesign = () => {
     setPublishing(true);
     // Merge into the latest saved settings so 사이트 설정 values are never overwritten.
     const { data: row, error: readError } = await supabase.from("site_settings").select("settings").eq("id", "default").maybeSingle();
+    const current = ((row?.settings as any) || {}) as { design?: unknown; designHistory?: HistoryEntry[] };
+    // Keep the design being replaced so it can be brought back from 게시 이력.
+    const history: HistoryEntry[] = [
+      ...(current.design ? [{ at: new Date().toISOString(), design: current.design }] : []),
+      ...(Array.isArray(current.designHistory) ? current.designHistory : []),
+    ].slice(0, HISTORY_LIMIT);
     const { error } = readError
       ? { error: readError }
-      : await supabase.from("site_settings").upsert({ id: "default", settings: { ...((row?.settings as object) || {}), design: next } as any });
+      : await supabase.from("site_settings").upsert({ id: "default", settings: { ...current, design: next, designHistory: history } as any });
     setPublishing(false);
     if (error) { toast.error(`게시하지 못했습니다: ${error.message}`); return; }
     setPublished(next);
+    setVersions(history);
     setHistory(h => h.map((d, i) => (i === index ? next : d)));
     queryClient.invalidateQueries({ queryKey: SITE_SETTINGS_KEY });
     toast.success("게시했습니다. 쇼핑몰에 바로 적용됩니다.");
@@ -208,15 +254,51 @@ const AdminDesign = () => {
     navigate("/admin");
   };
 
-  // Blocks only exist on the home page, so show it before scrolling the preview to one.
   const focusBlock = (id: string) => {
-    if (previewPath !== "/") { setPreviewPath("/"); return; }
     frameRef.current?.contentWindow?.postMessage({ type: DESIGN_FOCUS_MESSAGE, id }, window.location.origin);
+  };
+
+  // Opening a block from the preview may be for a page other than the one whose list is showing.
+  useEffect(() => {
+    if (!draft || !openBlock) return;
+    const page = pageOfBlock(draft, openBlock);
+    const path = page === "home" ? "/" : BLOCK_PAGES.find(p => p.key === page)?.path;
+    if (path && path !== previewPath) setPreviewPath(path);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openBlock]);
+
+  const exportDesign = () => {
+    const url = URL.createObjectURL(new Blob([JSON.stringify(draft, null, 2)], { type: "application/json" }));
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `youthroom-design-${new Date().toISOString().slice(0, 10)}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const importDesign = async (file: File | undefined) => {
+    if (!file) return;
+    try {
+      const parsed = JSON.parse(await file.text());
+      if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) throw new Error("not a design");
+      change("import", normalizeDesign(parsed));
+      toast.success("디자인 파일을 불러왔습니다. 미리보기를 확인하고 게시하세요.");
+    } catch {
+      toast.error("디자인 파일을 읽을 수 없습니다. 이 화면에서 내보낸 .json 파일인지 확인하세요.");
+    }
+    if (importRef.current) importRef.current.value = "";
+  };
+
+  const restoreVersion = (entry: HistoryEntry) => {
+    change(`restore-${entry.at}`, normalizeDesign(entry.design));
+    toast.info("이전 게시본을 불러왔습니다. 미리보기를 확인하고 게시하세요.");
   };
 
   // The PC preview renders at a real desktop width and is scaled down to fit, so it shows the
   // desktop layout (not the tablet one) even when the editor leaves it less room.
-  const ready = !!draft && !!published;
+  // "ready" must match the moment the editor (not the loading screen) is on the page; otherwise
+  // the size watcher below would start before the preview area exists and never measure it.
+  const ready = !authLoading && !!draft && !!published;
   useEffect(() => {
     const el = stageRef.current;
     if (!el) return;
@@ -232,7 +314,7 @@ const AdminDesign = () => {
   const frameWidth = viewport === "mobile" ? 390 : 1440;
   const scale = stage.w ? Math.min(1, stage.w / frameWidth) : 1;
 
-  if (authLoading || !draft || !published) {
+  if (!ready) {
     return <div className="min-h-dvh flex items-center justify-center text-muted-foreground">로딩 중...</div>;
   }
 
@@ -381,10 +463,22 @@ const AdminDesign = () => {
           </>)}
 
           {tab === "home" && (
-            <Section title="홈 화면 블록">
+            <Section title="페이지 블록">
+              <div className="space-y-1.5">
+                <Label>편집할 페이지</Label>
+                <Select value={previewPath} onValueChange={path => { setPreviewPath(path); setOpenBlock(null); }}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>{PREVIEW_PAGES.map(pg => <SelectItem key={pg.path} value={pg.path}>{pg.label}</SelectItem>)}</SelectContent>
+                </Select>
+                {blockPage !== "home" && (
+                  <p className="text-xs text-muted-foreground leading-relaxed">이 페이지의 원래 내용은 그대로 두고, 그 위와 아래에 블록을 넣을 수 있습니다.</p>
+                )}
+              </div>
               <BlockEditor
-                blocks={draft.home.blocks}
-                onChange={(key, blocks) => change(key, { ...draft, home: { blocks } })}
+                key={blockPage}
+                home={blockPage === "home"}
+                blocks={listOf(draft, blockPage)}
+                onChange={(key, blocks) => change(key, withList(draft, blockPage, blocks))}
                 openId={openBlock}
                 setOpenId={setOpenBlock}
                 onFocus={focusBlock}
@@ -488,6 +582,31 @@ const AdminDesign = () => {
             <p className="text-xs text-muted-foreground leading-relaxed">
               쇼핑몰 모든 페이지에 적용되고 관리자 화면에는 적용되지 않습니다. 화면이 이상해지면 내용을 지우고 다시 게시하세요.
             </p>
+          </Section>
+
+          <Section title="백업">
+            <div className="grid grid-cols-2 gap-2">
+              <Button variant="outline" onClick={exportDesign}>파일로 내보내기</Button>
+              <Button variant="outline" onClick={() => importRef.current?.click()}>파일에서 가져오기</Button>
+            </div>
+            <input ref={importRef} type="file" accept="application/json,.json" className="hidden" onChange={e => importDesign(e.target.files?.[0])} />
+            <p className="text-xs text-muted-foreground leading-relaxed">지금 편집 중인 디자인 전체(테마, 블록, 팝업 등)를 파일로 저장하거나 불러옵니다.</p>
+          </Section>
+
+          <Section title="게시 이력">
+            {versions.length === 0
+              ? <p className="text-sm text-muted-foreground">아직 이력이 없습니다. 게시할 때마다 이전 디자인이 여기에 보관됩니다.</p>
+              : (
+                <ul className="space-y-2">
+                  {versions.map(v => (
+                    <li key={v.at} className="flex items-center justify-between gap-2 rounded-md border border-border px-3 py-2">
+                      <span className="min-w-0 text-sm truncate">{new Date(v.at).toLocaleString("ko-KR", { dateStyle: "medium", timeStyle: "short" })}까지 사용</span>
+                      <Button variant="outline" size="sm" className="shrink-0" onClick={() => restoreVersion(v)}>불러오기</Button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            <p className="text-xs text-muted-foreground leading-relaxed">최근 {HISTORY_LIMIT}개까지 보관됩니다. 불러온 뒤 게시해야 쇼핑몰에 적용됩니다.</p>
           </Section>
 
           <div className="px-4 py-5">

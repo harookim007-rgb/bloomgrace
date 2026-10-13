@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowDown, ArrowUp, ChevronDown, ChevronUp, Copy, Eye, EyeOff, Plus, Trash2, X } from "lucide-react";
+import { ArrowDown, ArrowUp, ChevronDown, ChevronUp, Copy, Eye, EyeOff, GripVertical, Lock, Plus, Trash2, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,8 +8,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import ImageUploader from "@/components/admin/ImageUploader";
 import {
-  BLOCK_GROUPS, BLOCK_TYPES, MAX_BLOCKS, cloneBlock, newBlock,
-  type BlockField, type BlockItem, type BlockType, type HomeBlock,
+  BLOCK_GROUPS, BLOCK_TYPES, BLOCK_WIDTHS, MAX_BLOCKS, cloneBlock, newBlock,
+  type BlockField, type BlockItem, type BlockType, type BlockWidth, type HomeBlock,
 } from "@/lib/homeBlocks";
 
 interface BlockEditorProps {
@@ -20,10 +20,14 @@ interface BlockEditorProps {
   setOpenId: (id: string | null) => void;
   // Scrolls the preview to a block.
   onFocus: (id: string) => void;
+  // Home offers every block type; other pages leave out the home-only ones.
+  home: boolean;
 }
 
 const DEVICE_LABEL = { all: "PC + 모바일", desktop: "PC만", mobile: "모바일만" } as const;
-const BG_LABEL = { none: "없음", soft: "브랜드 연한색", tint: "연한 회색", dark: "어둡게" } as const;
+const BG_LABEL = { none: "없음", soft: "브랜드 연한색", tint: "연한 회색", dark: "어둡게", custom: "색 직접 선택" } as const;
+const WIDTH_LABEL: Record<BlockWidth, string> = { 12: "전체 (1/1)", 9: "3/4", 8: "2/3", 6: "절반 (1/2)", 4: "1/3", 3: "1/4" };
+const ANIM_LABEL = { none: "없음", fade: "서서히 나타나기", up: "아래에서 올라오기" } as const;
 const PAD_LABEL = { small: "좁게", normal: "기본", large: "넓게" } as const;
 
 const Field = ({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) => (
@@ -70,8 +74,26 @@ const ItemsField = ({ field, items, onChange }: { field: Extract<BlockField, { k
   );
 };
 
-const BlockEditor = ({ blocks, onChange, openId, setOpenId, onFocus }: BlockEditorProps) => {
+const ImagesField = ({ max, images, onChange }: { max: number; images: string[]; onChange: (images: string[]) => void }) => (
+  <div className="space-y-2">
+    {images.map((src, i) => (
+      <div key={i} className="flex items-center gap-2 rounded-md border border-border p-2 bg-muted/30">
+        <img src={src} alt="" className="h-12 w-12 shrink-0 rounded object-cover bg-muted" />
+        <span className="min-w-0 flex-1 text-xs text-muted-foreground truncate">이미지 {i + 1}</span>
+        <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" disabled={i === 0} onClick={() => { const n = [...images]; [n[i - 1], n[i]] = [n[i], n[i - 1]]; onChange(n); }} aria-label="앞으로"><ArrowUp className="h-4 w-4" /></Button>
+        <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0 text-destructive" onClick={() => onChange(images.filter((_, idx) => idx !== i))} aria-label="삭제"><Trash2 className="h-4 w-4" /></Button>
+      </div>
+    ))}
+    {images.length < max
+      ? <ImageUploader key={images.length} value="" onChange={url => { if (url) onChange([...images, url]); }} folder="home" aspect="free" label={`이미지 추가 (${images.length}/${max})`} />
+      : <p className="text-xs text-muted-foreground">최대 {max}장까지 넣을 수 있습니다.</p>}
+  </div>
+);
+
+const BlockEditor = ({ blocks, onChange, openId, setOpenId, onFocus, home }: BlockEditorProps) => {
   const [picking, setPicking] = useState(false);
+  const [dragId, setDragId] = useState<string | null>(null);
+  const [dropAt, setDropAt] = useState<{ id: string; after: boolean } | null>(null);
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
 
   useEffect(() => {
@@ -85,7 +107,7 @@ const BlockEditor = ({ blocks, onChange, openId, setOpenId, onFocus }: BlockEdit
   const add = (type: BlockType) => {
     const block = newBlock(type);
     // A new block goes right below the one being edited, otherwise at the end.
-    const at = openId ? blocks.findIndex(b => b.id === openId) + 1 : blocks.length;
+    const at = openId && blocks.some(b => b.id === openId) ? blocks.findIndex(b => b.id === openId) + 1 : blocks.length;
     const next = [...blocks];
     next.splice(at || blocks.length, 0, block);
     onChange(`block-add-${block.id}`, next);
@@ -113,6 +135,18 @@ const BlockEditor = ({ blocks, onChange, openId, setOpenId, onFocus }: BlockEdit
     if (!window.confirm(`'${BLOCK_TYPES[b.type].label}' 블록을 삭제할까요?`)) return;
     onChange(`block-remove-${b.id}-${Date.now()}`, blocks.filter(x => x.id !== b.id));
     if (openId === b.id) setOpenId(null);
+  };
+
+  // Dropping a dragged row places it just before or after the row it was dropped on.
+  const drop = () => {
+    if (dragId && dropAt && dragId !== dropAt.id) {
+      const moved = blocks.find(b => b.id === dragId);
+      const rest = blocks.filter(b => b.id !== dragId);
+      const at = rest.findIndex(b => b.id === dropAt.id) + (dropAt.after ? 1 : 0);
+      if (moved) { rest.splice(at, 0, moved); onChange(`block-move-${Date.now()}`, rest); }
+    }
+    setDragId(null);
+    setDropAt(null);
   };
 
   const toggle = (b: HomeBlock) => {
@@ -156,17 +190,23 @@ const BlockEditor = ({ blocks, onChange, openId, setOpenId, onFocus }: BlockEdit
       case "number":
         control = <Input type="number" min={f.min} max={f.max} value={value} onChange={e => setting(b, f.key, Number(e.target.value) || 0)} />;
         break;
+      case "images":
+        control = <ImagesField max={f.max} images={value as string[]} onChange={images => setting(b, f.key, images)} />;
+        break;
+      case "datetime":
+        control = <Input type="datetime-local" value={value} onChange={e => setting(b, f.key, e.target.value)} />;
+        break;
       case "items":
         control = <ItemsField field={f} items={value as BlockItem[]} onChange={items => setting(b, f.key, items)} />;
         break;
       default:
-        control = <Input value={value} maxLength={f.max} placeholder={f.placeholder} onChange={e => setting(b, f.key, e.target.value)} />;
+        control = <Input value={value} maxLength={f.max} placeholder={"placeholder" in f ? f.placeholder : undefined} onChange={e => setting(b, f.key, e.target.value)} />;
     }
     return <Field key={f.key} label={f.label} hint={f.hint}>{control}</Field>;
   };
 
   const full = blocks.length >= MAX_BLOCKS;
-  const noneVisible = blocks.length > 0 && !blocks.some(b => b.visible);
+  const noneVisible = home && blocks.length > 0 && !blocks.some(b => b.visible);
 
   return (
     <div className="space-y-3">
@@ -183,7 +223,7 @@ const BlockEditor = ({ blocks, onChange, openId, setOpenId, onFocus }: BlockEdit
             <div key={group} className="space-y-1.5">
               <p className="text-xs font-semibold text-muted-foreground">{group}</p>
               <div className="grid grid-cols-2 gap-2">
-                {(Object.keys(BLOCK_TYPES) as BlockType[]).filter(t => BLOCK_TYPES[t].group === group).map(type => {
+                {(Object.keys(BLOCK_TYPES) as BlockType[]).filter(t => BLOCK_TYPES[t].group === group && !BLOCK_TYPES[t].fixed && (home || !BLOCK_TYPES[t].homeOnly)).map(type => {
                   const def = BLOCK_TYPES[type];
                   const used = !!def.single && blocks.some(b => b.type === type);
                   return (
@@ -219,14 +259,47 @@ const BlockEditor = ({ blocks, onChange, openId, setOpenId, onFocus }: BlockEdit
         {blocks.map((b, i) => {
           const def = BLOCK_TYPES[b.type];
           const open = openId === b.id;
+          const marker = dropAt?.id === b.id && dragId !== b.id ? (dropAt.after ? "border-b-4 border-b-primary" : "border-t-4 border-t-primary") : "";
+          const rowDrag = {
+            onDragOver: (e: React.DragEvent) => {
+              if (!dragId) return;
+              e.preventDefault();
+              const rect = e.currentTarget.getBoundingClientRect();
+              setDropAt({ id: b.id, after: e.clientY > rect.top + rect.height / 2 });
+            },
+            onDrop: (e: React.DragEvent) => { e.preventDefault(); drop(); },
+          };
+          if (def.fixed) {
+            return (
+              <li key={b.id} {...rowDrag} className={`flex items-center gap-2 rounded-md border border-dashed border-border bg-muted/50 p-2.5 ${marker}`}>
+                <Lock className="h-4 w-4 shrink-0 text-muted-foreground" />
+                <span className="min-w-0 flex-1">
+                  <span className="block text-sm font-medium truncate">{def.label}</span>
+                  <span className="block text-xs text-muted-foreground">위쪽 블록은 페이지 내용 위에, 아래쪽 블록은 아래에 표시됩니다</span>
+                </span>
+                <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" disabled={i === 0} onClick={() => move(i, -1)} aria-label={`${def.label} 위로`}><ArrowUp className="h-4 w-4" /></Button>
+                <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" disabled={i === blocks.length - 1} onClick={() => move(i, 1)} aria-label={`${def.label} 아래로`}><ArrowDown className="h-4 w-4" /></Button>
+              </li>
+            );
+          }
           return (
-            <li key={b.id} className={`rounded-md border bg-background ${open ? "border-primary" : "border-border"}`}>
+            <li key={b.id} {...rowDrag} className={`rounded-md border bg-background ${open ? "border-primary" : "border-border"} ${marker} ${dragId === b.id ? "opacity-50" : ""}`}>
               <div className="flex items-center gap-1 p-2">
+                <span
+                  draggable
+                  onDragStart={e => { setDragId(b.id); e.dataTransfer.effectAllowed = "move"; e.dataTransfer.setData("text/plain", b.id); }}
+                  onDragEnd={() => { setDragId(null); setDropAt(null); }}
+                  title="끌어서 순서 바꾸기"
+                  className="shrink-0 cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground"
+                >
+                  <GripVertical className="h-4 w-4" />
+                </span>
                 <button className="min-w-0 flex-1 text-left px-1" onClick={() => toggle(b)} aria-expanded={open}>
                   <span className={`block text-sm font-medium truncate ${b.visible ? "" : "text-muted-foreground line-through"}`}>
                     <span className="text-muted-foreground tabular-nums mr-1.5">{i + 1}</span>{def.label}
                   </span>
                   <span className="block text-xs text-muted-foreground truncate">
+                    {b.width < 12 && <span className="mr-1.5 rounded bg-primary/10 text-primary px-1.5 py-0.5">{WIDTH_LABEL[b.width]}</span>}
                     {b.device !== "all" && <span className="mr-1.5 rounded bg-muted px-1.5 py-0.5">{DEVICE_LABEL[b.device]}</span>}
                     {summary(b)}
                   </span>
@@ -246,7 +319,15 @@ const BlockEditor = ({ blocks, onChange, openId, setOpenId, onFocus }: BlockEdit
                   {def.fields.length === 0 && <p className="text-sm text-muted-foreground">이 블록은 따로 설정할 내용이 없습니다.</p>}
                   {def.fields.map(f => renderField(b, f))}
 
-                  <div className={`grid gap-3 ${def.chrome ? "grid-cols-2" : "grid-cols-1"}`}>
+                  <div className="grid grid-cols-2 gap-3 border-t border-border pt-4">
+                    {def.chrome && (
+                      <Field label="너비 (PC)">
+                        <Select value={String(b.width)} onValueChange={v => patch(b.id, { width: Number(v) as BlockWidth }, "width")}>
+                          <SelectTrigger><SelectValue /></SelectTrigger>
+                          <SelectContent>{[...BLOCK_WIDTHS].reverse().map(w => <SelectItem key={w} value={String(w)}>{WIDTH_LABEL[w]}</SelectItem>)}</SelectContent>
+                        </Select>
+                      </Field>
+                    )}
                     <Field label="노출 기기">
                       <Select value={b.device} onValueChange={v => patch(b.id, { device: v as HomeBlock["device"] }, "device")}>
                         <SelectTrigger><SelectValue /></SelectTrigger>
@@ -256,7 +337,7 @@ const BlockEditor = ({ blocks, onChange, openId, setOpenId, onFocus }: BlockEdit
                     {def.chrome && (
                       <>
                         <Field label="배경">
-                          <Select value={b.bg} onValueChange={v => patch(b.id, { bg: v as HomeBlock["bg"] }, "bg")}>
+                          <Select value={b.bg} onValueChange={v => patch(b.id, { bg: v as HomeBlock["bg"], bgColor: v === "custom" ? (b.bgColor || "#f5e9ec") : b.bgColor }, "bg")}>
                             <SelectTrigger><SelectValue /></SelectTrigger>
                             <SelectContent>{Object.entries(BG_LABEL).map(([v, l]) => <SelectItem key={v} value={v}>{l}</SelectItem>)}</SelectContent>
                           </Select>
@@ -269,7 +350,32 @@ const BlockEditor = ({ blocks, onChange, openId, setOpenId, onFocus }: BlockEdit
                         </Field>
                       </>
                     )}
+                    <Field label="등장 효과">
+                      <Select value={b.anim} onValueChange={v => patch(b.id, { anim: v as HomeBlock["anim"] }, "anim")}>
+                        <SelectTrigger><SelectValue /></SelectTrigger>
+                        <SelectContent>{Object.entries(ANIM_LABEL).map(([v, l]) => <SelectItem key={v} value={v}>{l}</SelectItem>)}</SelectContent>
+                      </Select>
+                    </Field>
+                    {def.chrome && b.bg === "custom" && (
+                      <Field label="배경색">
+                        <input
+                          type="color"
+                          value={b.bgColor || "#f5e9ec"}
+                          onChange={e => patch(b.id, { bgColor: e.target.value }, "bgColor")}
+                          aria-label="배경색"
+                          className="h-10 w-full cursor-pointer rounded-md border border-border bg-background p-1"
+                        />
+                      </Field>
+                    )}
                   </div>
+                  {def.chrome && b.width < 12 && (
+                    <p className="text-xs text-muted-foreground leading-relaxed -mt-1">
+                      전체보다 좁은 블록은 바로 위아래의 좁은 블록과 PC에서 한 줄에 나란히 놓입니다. 모바일에서는 한 줄에 하나씩 표시됩니다.
+                    </p>
+                  )}
+                  <Field label="바로가기 이름 (선택)" hint={b.anchor ? `메뉴나 버튼 링크에 ${home ? "/" : ""}#${b.anchor} 를 넣으면 이 블록으로 이동합니다` : "영문 소문자·숫자·하이픈만. 예: event"}>
+                    <Input value={b.anchor} maxLength={40} placeholder="event" onChange={e => patch(b.id, { anchor: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, "") }, "anchor")} />
+                  </Field>
 
                   <div className="grid grid-cols-2 gap-2 pt-1">
                     <Button variant="outline" className="gap-1.5" onClick={() => duplicate(b, i)} disabled={full || !!def.single}><Copy className="h-4 w-4" />복제</Button>
@@ -283,7 +389,8 @@ const BlockEditor = ({ blocks, onChange, openId, setOpenId, onFocus }: BlockEdit
       </ol>
 
       <p className="text-xs text-muted-foreground leading-relaxed">
-        블록은 최대 {MAX_BLOCKS}개까지 넣을 수 있습니다. 미리보기에서 블록에 마우스를 올리면 나오는 '편집' 표시를 눌러도 설정이 열립니다.
+        블록은 최대 {MAX_BLOCKS}개까지 넣을 수 있습니다. 목록이나 미리보기에서 블록의 손잡이(⋮⋮)를 끌어 순서를 바꾸고,
+        미리보기에서 블록 오른쪽 가장자리를 끌어 너비를 조절할 수 있습니다. 미리보기의 '편집' 표시를 누르면 설정이 열립니다.
         직접 입력한 문구는 모든 언어에서 그대로 표시됩니다.
       </p>
     </div>
