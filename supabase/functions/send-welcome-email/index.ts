@@ -32,7 +32,7 @@ Deno.serve(async (req) => {
       email.split("@")[0];
 
     const { subject, html } = renderWelcomeEmail({ name });
-    const result = await sendEmail({ to: email, subject, html, tag: "welcome" });
+    const result = await sendEmail({ to: email, subject, html, tag: "welcome", copyToAdmin: true });
     if (!result.ok) return json({ error: result.error }, result.status || 500);
 
     return json({ success: true });

@@ -1,7 +1,9 @@
 // Shared Resend sender with error logging + optional admin alert.
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
-const ADMIN_NOTIFY_EMAIL = Deno.env.get("ADMIN_NOTIFY_EMAIL"); // optional
-const FROM = Deno.env.get("EMAIL_FROM") || "YOUTHROOM <welcometo@bloomgrace.shop>";
+// The shop's own inbox: gets inquiry notices, failure alerts and copies of customer emails,
+// and is where customers' replies go (mail is sent from the verified youthroom.shop domain).
+export const ADMIN_NOTIFY_EMAIL = Deno.env.get("ADMIN_NOTIFY_EMAIL") || "youthroom@gmail.com";
+const FROM = Deno.env.get("EMAIL_FROM") || "YOUTHROOM <hello@youthroom.shop>";
 
 export interface SendArgs {
   to: string;
@@ -9,9 +11,10 @@ export interface SendArgs {
   html: string;
   tag?: string; // e.g. "welcome", "order-confirmation"
   replyTo?: string;
+  copyToAdmin?: boolean; // also deliver a copy to the shop inbox
 }
 
-export async function sendEmail({ to, subject, html, tag, replyTo }: SendArgs): Promise<{ ok: boolean; error?: string; status?: number }> {
+export async function sendEmail({ to, subject, html, tag, replyTo, copyToAdmin }: SendArgs): Promise<{ ok: boolean; error?: string; status?: number }> {
   if (!RESEND_API_KEY) {
     const msg = "RESEND_API_KEY is not configured";
     console.error(`[email:${tag}] ${msg}`);
@@ -25,7 +28,11 @@ export async function sendEmail({ to, subject, html, tag, replyTo }: SendArgs): 
         Authorization: `Bearer ${RESEND_API_KEY}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ from: FROM, to: [to], subject, html, ...(replyTo ? { reply_to: [replyTo] } : {}) }),
+      body: JSON.stringify({
+        from: FROM, to: [to], subject, html,
+        reply_to: [replyTo || ADMIN_NOTIFY_EMAIL],
+        ...(copyToAdmin && to.toLowerCase() !== ADMIN_NOTIFY_EMAIL.toLowerCase() ? { bcc: [ADMIN_NOTIFY_EMAIL] } : {}),
+      }),
     });
 
     if (!res.ok) {

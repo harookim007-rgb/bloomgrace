@@ -85,7 +85,7 @@ const QA = () => {
             <h3 className="text-xl font-serif font-light">{t("qa_not_found")}</h3>
             <p className="text-sm text-muted-foreground font-light">{t("qa_not_found_desc")}</p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
-              <a href="mailto:welcometo@bloomgrace.shop" className="inline-flex items-center justify-center px-8 py-3 bg-foreground text-background text-xs tracking-[0.15em] uppercase">
+              <a href="mailto:youthroom@gmail.com" className="inline-flex items-center justify-center px-8 py-3 bg-foreground text-background text-xs tracking-[0.15em] uppercase">
                 {t("qa_email_btn")}
               </a>
               <a href="tel:+82-2-1234-5678" className="inline-flex items-center justify-center px-8 py-3 border border-foreground text-xs tracking-[0.15em] uppercase">

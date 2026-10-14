@@ -35,7 +35,7 @@ Deno.serve(async (req) => {
         question: inquiry.message || "",
         reply: reply.trim(),
       });
-      const result = await sendEmail({ to: inquiry.email, subject, html, tag: "inquiry-reply" });
+      const result = await sendEmail({ to: inquiry.email, subject, html, tag: "inquiry-reply", copyToAdmin: true });
       if (!result.ok) sendError = result.error;
     } else {
       sendError = "invalid_customer_email";

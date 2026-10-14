@@ -6,7 +6,7 @@ import { renderInquiryAdminEmail } from "../_shared/email-templates/notification
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
-const ADMIN_INBOX = Deno.env.get("ADMIN_NOTIFY_EMAIL") || "welcometo@bloomgrace.shop";
+const ADMIN_INBOX = Deno.env.get("ADMIN_NOTIFY_EMAIL") || "youthroom@gmail.com";
 
 const CATEGORIES = ["product", "order", "shipping", "return", "payment", "other"];
 

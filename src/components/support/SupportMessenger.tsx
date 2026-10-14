@@ -235,7 +235,7 @@ const SupportMessenger = () => {
                     {h.admin_reply ? (
                       <div className="flex gap-2">
                         <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                          <span className="text-[8px] font-sans font-bold text-foreground">B&G</span>
+                          <span className="text-[9px] font-sans font-bold text-foreground">Y</span>
                         </div>
                         <div className="bg-muted/50 px-3.5 py-2.5 max-w-[85%]">
                           <p className="text-[9px] text-muted-foreground mb-1 flex items-center gap-1">
@@ -254,7 +254,7 @@ const SupportMessenger = () => {
               <>
                 <div className="flex gap-2">
                   <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <span className="text-[8px] font-sans font-bold text-foreground">B&G</span>
+                    <span className="text-[9px] font-sans font-bold text-foreground">Y</span>
                   </div>
                   <div className="bg-muted/50 px-3.5 py-2.5 max-w-[85%]">
                     <p className="text-xs leading-relaxed">{t.greeting}</p>
