@@ -11,7 +11,8 @@ import heroImg1 from "@/assets/hero-luxury-1.jpg";
 import heroImg2 from "@/assets/hero-luxury-2.jpg";
 import heroImg3 from "@/assets/hero-luxury-3.jpg";
 
-const fallbackSlides = [
+// Built-in pictures used for banners that have no image of their own.
+export const fallbackSlides = [
   { image: heroImg1 },
   { image: heroImg2 },
   { image: heroImg3 },
@@ -99,7 +100,11 @@ const Hero = ({ height = "normal", interval = 6 }: { height?: string; interval?:
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
-    supabase.from("banners").select("*").eq("is_active", true).order("sort_order")
+    // Same rule as the admin banner list: active, and inside the optional start/end dates.
+    const now = new Date().toISOString().slice(0, 19) + "Z";
+    supabase.from("banners").select("*").eq("is_active", true)
+      .or(`starts_at.is.null,starts_at.lte.${now}`).or(`expires_at.is.null,expires_at.gte.${now}`)
+      .order("sort_order")
       .then(({ data }) => setBanners(data || []));
   }, []);
 
@@ -122,9 +127,10 @@ const Hero = ({ height = "normal", interval = 6 }: { height?: string; interval?:
         image: isUsableImage(b.image_url) ? b.image_url : fallbackSlides[i % 3].image,
         title,
         subtitle,
+        link: (b.link_url || "").trim(),
       };
     })
-    .filter(Boolean) as { image: string; title: string; subtitle: string }[];
+    .filter(Boolean) as { image: string; title: string; subtitle: string; link?: string }[];
 
   const slides = translatedBanners.length > 0
     ? translatedBanners
@@ -132,6 +138,7 @@ const Hero = ({ height = "normal", interval = 6 }: { height?: string; interval?:
         image: s.image,
         title: texts.titles[i] || texts.titles[0],
         subtitle: texts.subtitles[i] || texts.subtitles[0],
+        link: "",
       }));
 
   // Reset carousel index when language changes so we don't land on an out-of-range slide
@@ -183,11 +190,19 @@ const Hero = ({ height = "normal", interval = 6 }: { height?: string; interval?:
               </p>
             )}
             <div className="flex flex-wrap gap-3 pt-2">
-              <Link to="/products">
+              {/^https?:\/\//.test(slide.link || "") ? (
+                <a href={slide.link} target="_blank" rel="noopener noreferrer">
+                <button className="bg-primary text-primary-foreground px-8 md:px-10 py-3.5 md:py-4 text-xs md:text-sm font-sans font-bold tracking-[0.15em] uppercase hover:bg-primary/90 transition-all duration-300 flex items-center gap-2.5 shadow-elegant hover:shadow-luxury rounded-sm min-h-[44px]">
+                  {t("hero_shop")} <ArrowRight className="h-4 w-4" />
+                </button>
+              </a>
+              ) : (
+                <Link to={slide.link && slide.link.startsWith("/") ? slide.link : "/products"}>
                 <button className="bg-primary text-primary-foreground px-8 md:px-10 py-3.5 md:py-4 text-xs md:text-sm font-sans font-bold tracking-[0.15em] uppercase hover:bg-primary/90 transition-all duration-300 flex items-center gap-2.5 shadow-elegant hover:shadow-luxury rounded-sm min-h-[44px]">
                   {t("hero_shop")} <ArrowRight className="h-4 w-4" />
                 </button>
               </Link>
+              )}
             </div>
           </div>
         </div>

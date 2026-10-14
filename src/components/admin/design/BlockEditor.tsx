@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import ImageUploader from "@/components/admin/ImageUploader";
+import BannerImages from "@/components/admin/design/BannerImages";
 import {
   BLOCK_GROUPS, BLOCK_TYPES, BLOCK_WIDTHS, MAX_BLOCKS, cloneBlock, newBlock,
   type BlockField, type BlockItem, type BlockType, type BlockWidth, type HomeBlock,
@@ -22,6 +23,8 @@ interface BlockEditorProps {
   onFocus: (id: string) => void;
   // Home offers every block type; other pages leave out the home-only ones.
   home: boolean;
+  // Called after something outside the design (banner images) was saved, to refresh the preview.
+  onExternalSave: () => void;
 }
 
 const DEVICE_LABEL = { all: "PC + 모바일", desktop: "PC만", mobile: "모바일만" } as const;
@@ -90,7 +93,7 @@ const ImagesField = ({ max, images, onChange }: { max: number; images: string[];
   </div>
 );
 
-const BlockEditor = ({ blocks, onChange, openId, setOpenId, onFocus, home }: BlockEditorProps) => {
+const BlockEditor = ({ blocks, onChange, openId, setOpenId, onFocus, home, onExternalSave }: BlockEditorProps) => {
   const [picking, setPicking] = useState(false);
   const [dragId, setDragId] = useState<string | null>(null);
   const [dropAt, setDropAt] = useState<{ id: string; after: boolean } | null>(null);
@@ -318,6 +321,7 @@ const BlockEditor = ({ blocks, onChange, openId, setOpenId, onFocus, home }: Blo
                 <div className="border-t border-border p-3 space-y-4">
                   {def.fields.length === 0 && <p className="text-sm text-muted-foreground">이 블록은 따로 설정할 내용이 없습니다.</p>}
                   {def.fields.map(f => renderField(b, f))}
+                  {b.type === "hero" && <div className="border-t border-border pt-4"><BannerImages onSaved={onExternalSave} /></div>}
 
                   <div className="grid grid-cols-2 gap-3 border-t border-border pt-4">
                     {def.chrome && (

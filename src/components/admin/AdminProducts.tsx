@@ -1,3 +1,4 @@
+import ConsultTagPicker from "@/components/admin/ConsultTagPicker";
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -55,6 +56,7 @@ interface FormState {
   tags: string;
   benefits: string[];
   skin_types: string[];
+  consult_tags: string[];
   related_product_ids: string[];
 }
 
@@ -64,7 +66,7 @@ const emptyForm: FormState = {
   price: "", original_price: "", category_id: "", brand: "",
   image_url: "", images: [], detail_images: [],
   stock: "0", is_active: true, is_featured: false, tags: "",
-  benefits: [], skin_types: [], related_product_ids: [],
+  benefits: [], skin_types: [], consult_tags: [], related_product_ids: [],
 };
 
 // Sortable image list with up/down/delete
@@ -113,8 +115,8 @@ const SortableImages = ({
         onChange={(url) => url && onChange([...images, url])}
         folder={folder}
         aspect={aspect}
-        maxWidth={aspect === "free" ? 1600 : 1600}
-        maxHeight={aspect === "free" ? 4000 : 1600}
+        maxWidth={aspect === "square" ? 1200 : 1600}
+        maxHeight={aspect === "free" ? 12000 : 1600}
         label={label}
       />
     </div>
@@ -198,19 +200,12 @@ const AdminProducts = () => {
       tags: form.tags ? form.tags.split(",").map(t => t.trim()).filter(Boolean) : [],
       benefits: form.benefits || [],
       skin_types: form.skin_types || [],
+      consult_tags: form.consult_tags || [],
       related_product_ids: form.related_product_ids || [],
     };
 
-    // Auto-translate name & description into all supported languages
-    let translations: any = {};
-    try {
-      const { data: tr } = await supabase.functions.invoke("translate-product", {
-        body: { name: form.name, brand: form.brand || "", description: form.description || "" },
-      });
-      if (tr?.translations) translations = tr.translations;
-    } catch (e) {
-      console.warn("translate-product failed", e);
-    }
+    // Text is shown as typed in every language; existing translations are kept.
+    const translations: Record<string, any> = {};
 
     if (editingId) {
       const { data: existing } = await supabase.from("products").select("translations").eq("id", editingId).maybeSingle();
@@ -250,6 +245,7 @@ const AdminProducts = () => {
     tags: (p.tags || []).join(", "),
     benefits: p.benefits || [],
     skin_types: p.skin_types || [],
+    consult_tags: p.consult_tags || [],
     related_product_ids: p.related_product_ids || [],
   });
 
@@ -418,6 +414,9 @@ const AdminProducts = () => {
                         );
                       })}
                     </div>
+                  </div>
+                  <div className="col-span-2 border-t border-border pt-4">
+                    <ConsultTagPicker value={form.consult_tags} onChange={tags => setForm({ ...form, consult_tags: tags })} />
                   </div>
                   <div className="flex items-center gap-6 col-span-2">
                     <div className="flex items-center gap-2"><Switch checked={form.is_active} onCheckedChange={v => setForm({...form, is_active: v})} /><Label>판매 활성화</Label></div>

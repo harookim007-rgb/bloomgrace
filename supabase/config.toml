@@ -1,8 +1,5 @@
 project_id = "wlqulztkqjbzmrfhyggv"
 
-[functions.translate-product]
-verify_jwt = false
-
 [functions.top-selling-products]
 verify_jwt = false
 

@@ -66,23 +66,6 @@ const ProductDetail = () => {
       } else {
         setRelated([]);
       }
-      // Auto-translate fallback: if translations missing or still in source language, fill via edge function
-      const tr = (data.translations as any) || {};
-      const needs = SUPPORTED_PRODUCT_LANGUAGES.some(
-        (l) => !tr?.[l]?.name || containsHangul(tr[l].name) || !tr?.[l]?.brand
-      );
-      if (needs) {
-        supabase.functions
-          .invoke("translate-product", { body: { name: data.name, brand: data.brand || "", description: data.description || "" } })
-          .then(async ({ data: res }: any) => {
-            if (res?.translations) {
-              const merged = { ...tr, ...res.translations };
-              await supabase.from("products").update({ translations: merged }).eq("id", data.id);
-              setProduct({ ...data, translations: merged });
-            }
-          })
-          .catch(() => {});
-      }
     }
     setIsLoading(false);
   };

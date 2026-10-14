@@ -49,15 +49,58 @@ const getUploadErrorMessage = (error: unknown) => {
   return "이미지 처리 중 오류가 발생했습니다.";
 };
 
-// Product/admin uploads must keep the exact original pixels. Do not redraw through
-// canvas here: even contain-fit canvas output can make users perceive lost edges.
-async function fitImageWithinLimit(
+// Resizes uploads in the browser so every image the store serves is consistent:
+// - "square" (product main / gallery images): the whole image is placed, uncropped, on a white
+//   maxWidth x maxWidth canvas so all product photos share one size and shape and no edge is cut off.
+// - otherwise: images larger than the limit are scaled down, keeping their shape.
+// Animated GIFs and SVGs are uploaded untouched.
+export async function fitImageWithinLimit(
   file: File,
-  _maxW: number,
-  _maxH: number,
-  _quality: number,
+  maxW: number,
+  maxH: number,
+  quality: number,
+  aspect: ImageUploaderProps["aspect"] = "free",
 ): Promise<{ blob: Blob; contentType: string; ext: string }> {
-  return { blob: file, contentType: file.type || "application/octet-stream", ext: safeExt(file) };
+  const original = { blob: file as Blob, contentType: file.type || "application/octet-stream", ext: safeExt(file) };
+  if (/gif|svg/.test(file.type) || typeof createImageBitmap === "undefined") return original;
+
+  let bitmap: ImageBitmap;
+  try {
+    bitmap = await createImageBitmap(file, { imageOrientation: "from-image" } as ImageBitmapOptions);
+  } catch {
+    return original;
+  }
+  const { width: w, height: h } = bitmap;
+  const square = aspect === "square";
+  const scale = square ? 1 : Math.min(1, maxW / w, maxH / h);
+  if (!square && scale === 1 && file.size <= 1.5 * 1024 * 1024) { bitmap.close(); return original; }
+
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  if (!ctx) { bitmap.close(); return original; }
+  if (square) {
+    // Every product image comes out at exactly maxW x maxW, small originals included.
+    const side = maxW;
+    const fit = side / Math.max(w, h);
+    canvas.width = canvas.height = side;
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, side, side);
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(bitmap, Math.round((side - w * fit) / 2), Math.round((side - h * fit) / 2), Math.round(w * fit), Math.round(h * fit));
+  } else {
+    canvas.width = Math.round(w * scale);
+    canvas.height = Math.round(h * scale);
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  }
+  bitmap.close();
+
+  // Keep PNG for transparent artwork outside the square product frame; everything else is JPEG.
+  const png = !square && file.type === "image/png";
+  const contentType = png ? "image/png" : "image/jpeg";
+  const blob = await new Promise<Blob | null>(resolve => canvas.toBlob(resolve, contentType, png ? undefined : quality));
+  if (!blob) return original;
+  return { blob, contentType, ext: png ? "png" : "jpg" };
 }
 
 const ImageUploader = ({
@@ -93,7 +136,7 @@ const ImageUploader = ({
     setUploading(true);
     setProgress("이미지 처리 중...");
     try {
-      const { blob, contentType, ext } = await fitImageWithinLimit(file, maxWidth, maxHeight, quality);
+      const { blob, contentType, ext } = await fitImageWithinLimit(file, maxWidth, maxHeight, quality, aspect);
       setProgress("업로드 중...");
       const path = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
       const { error: upErr } = await supabase.storage.from("media").upload(path, blob, {

@@ -1,3 +1,4 @@
+import ConsultTagPicker from "@/components/admin/ConsultTagPicker";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -40,6 +41,7 @@ interface FormState {
   tags: string;
   benefits: string[];
   skin_types: string[];
+  consult_tags: string[];
   related_product_ids: string[];
   cafe24_buy_url: string;
   cafe24_product_no: string;
@@ -51,7 +53,7 @@ const emptyForm: FormState = {
   price: "", original_price: "", category_id: "", brand: "",
   image_url: "", images: [], detail_images: [], image_links: {},
   stock: "0", is_active: true, is_featured: false, tags: "",
-  benefits: [], skin_types: [], related_product_ids: [],
+  benefits: [], skin_types: [], consult_tags: [], related_product_ids: [],
   cafe24_buy_url: "", cafe24_product_no: "",
 };
 
@@ -132,8 +134,8 @@ const HorizontalImages = ({
         onChange={(url) => url && onChange([...images, url])}
         folder={folder}
         aspect={aspect}
-        maxWidth={1600}
-        maxHeight={aspect === "free" ? 4000 : 1600}
+        maxWidth={aspect === "square" ? 1200 : 1600}
+        maxHeight={aspect === "free" ? 12000 : 1600}
         label={label}
       />
       <p className="text-[11px] text-muted-foreground">
@@ -219,6 +221,7 @@ const ProductEditPage = () => {
               tags: (data.tags || []).join(", "),
               benefits: data.benefits || [],
               skin_types: data.skin_types || [],
+              consult_tags: data.consult_tags || [],
               related_product_ids: data.related_product_ids || [],
               cafe24_buy_url: data.cafe24_buy_url || "",
               cafe24_product_no: data.cafe24_product_no || "",
@@ -256,6 +259,7 @@ const ProductEditPage = () => {
         tags: (d.tags || []).join(", "),
         benefits: d.benefits || [],
         skin_types: d.skin_types || [],
+        consult_tags: d.consult_tags || [],
         related_product_ids: d.related_product_ids || [],
         cafe24_buy_url: d.cafe24_buy_url || "",
         cafe24_product_no: d.cafe24_product_no || "",
@@ -318,6 +322,7 @@ const ProductEditPage = () => {
       tags: form.tags ? form.tags.split(",").map(t => t.trim()).filter(Boolean) : [],
       benefits: form.benefits,
       skin_types: form.skin_types,
+      consult_tags: form.consult_tags || [],
       related_product_ids: form.related_product_ids,
       cafe24_buy_url: form.cafe24_buy_url.trim() || null,
       cafe24_product_no: form.cafe24_product_no.trim() || null,
@@ -469,6 +474,9 @@ const ProductEditPage = () => {
                       );
                     })}
                   </div>
+                </div>
+                <div className="md:col-span-2 border-t border-border pt-4">
+                  <ConsultTagPicker value={form.consult_tags} onChange={tags => setForm({ ...form, consult_tags: tags })} />
                 </div>
                 <div className="flex items-center gap-6 md:col-span-2">
                   <div className="flex items-center gap-2"><Switch checked={form.is_active} onCheckedChange={v => setForm({ ...form, is_active: v })} /><Label>판매 활성화</Label></div>

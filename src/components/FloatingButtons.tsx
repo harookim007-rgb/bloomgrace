@@ -9,13 +9,13 @@ import {
 
 
 const bookmarkTexts: Record<string, { line1: string; line2: string; title: string; subtitle: string; hover: string; cats: string[] }> = {
-  en: { line1: "MAKE YOUR", line2: "ROUTINE", title: "Personalized Beauty", subtitle: "Personalize Your Routine", hover: "Personalize your beauty routine with our AI advisor. Discover products perfectly matched to your skin, body & hair.", cats: ["Skin", "Body", "Hair"] },
-  es: { line1: "CREA TU", line2: "RUTINA", title: "Belleza Personalizada", subtitle: "Personaliza Tu Rutina", hover: "Personaliza tu rutina de belleza con nuestro asesor IA. Descubre productos perfectos para ti.", cats: ["Piel", "Cuerpo", "Cabello"] },
-  de: { line1: "DEINE", line2: "ROUTINE", title: "Personalisierte Schönheit", subtitle: "Deine Routine", hover: "Personalisieren Sie Ihre Beauty-Routine mit unserem KI-Berater. Entdecken Sie perfekt abgestimmte Produkte.", cats: ["Haut", "Körper", "Haar"] },
-  fr: { line1: "VOTRE", line2: "ROUTINE", title: "Beauté Personnalisée", subtitle: "Personnalisez Votre Routine", hover: "Personnalisez votre routine beauté avec notre conseiller IA. Découvrez des produits faits pour vous.", cats: ["Peau", "Corps", "Cheveux"] },
-  pt: { line1: "SUA", line2: "ROTINA", title: "Beleza Personalizada", subtitle: "Personalize Sua Rotina", hover: "Personalize sua rotina de beleza com nosso consultor IA. Descubra produtos perfeitos para você.", cats: ["Pele", "Corpo", "Cabelo"] },
-  ja: { line1: "あなたの", line2: "ルーティン", title: "パーソナルビューティー", subtitle: "あなたのルーティンを作る", hover: "AIアドバイザーが肌・ボディ・髪に合う商品を提案します。", cats: ["スキン", "ボディ", "ヘア"] },
-  ar: { line1: "اصنعي", line2: "روتينك", title: "جمالك المخصص", subtitle: "اصنعي روتينك", hover: "خصصي روتين جمالك مع مستشار الذكاء الاصطناعي واكتشفي المنتجات المناسبة لك.", cats: ["البشرة", "الجسم", "الشعر"] },
+  en: { line1: "MAKE YOUR", line2: "ROUTINE", title: "Personalized Beauty", subtitle: "Personalize Your Routine", hover: "Personalize your beauty routine with our beauty advisor. Discover products perfectly matched to your skin, body & hair.", cats: ["Skin", "Body", "Hair"] },
+  es: { line1: "CREA TU", line2: "RUTINA", title: "Belleza Personalizada", subtitle: "Personaliza Tu Rutina", hover: "Personaliza tu rutina de belleza con nuestro asesor de belleza. Descubre productos perfectos para ti.", cats: ["Piel", "Cuerpo", "Cabello"] },
+  de: { line1: "DEINE", line2: "ROUTINE", title: "Personalisierte Schönheit", subtitle: "Deine Routine", hover: "Personalisieren Sie Ihre Beauty-Routine mit unserem Beauty-Berater. Entdecken Sie perfekt abgestimmte Produkte.", cats: ["Haut", "Körper", "Haar"] },
+  fr: { line1: "VOTRE", line2: "ROUTINE", title: "Beauté Personnalisée", subtitle: "Personnalisez Votre Routine", hover: "Personnalisez votre routine beauté avec notre conseiller beauté. Découvrez des produits faits pour vous.", cats: ["Peau", "Corps", "Cheveux"] },
+  pt: { line1: "SUA", line2: "ROTINA", title: "Beleza Personalizada", subtitle: "Personalize Sua Rotina", hover: "Personalize sua rotina de beleza com nosso consultor de beleza. Descubra produtos perfeitos para você.", cats: ["Pele", "Corpo", "Cabelo"] },
+  ja: { line1: "あなたの", line2: "ルーティン", title: "パーソナルビューティー", subtitle: "あなたのルーティンを作る", hover: "ビューティーアドバイザーが肌・ボディ・髪に合う商品を提案します。", cats: ["スキン", "ボディ", "ヘア"] },
+  ar: { line1: "اصنعي", line2: "روتينك", title: "جمالك المخصص", subtitle: "اصنعي روتينك", hover: "خصصي روتين جمالك مع مستشار الجمال واكتشفي المنتجات المناسبة لك.", cats: ["البشرة", "الجسم", "الشعر"] },
 };
 
 const FloatingButtons = () => {

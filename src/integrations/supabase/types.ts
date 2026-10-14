@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.5"
+    PostgrestVersion: "14.18"
   }
   public: {
     Tables: {
@@ -639,6 +639,7 @@ export type Database = {
           cafe24_buy_url: string | null
           cafe24_product_no: string | null
           category_id: string | null
+          consult_tags: string[]
           created_at: string
           description: string | null
           description_bottom: string | null
@@ -673,6 +674,7 @@ export type Database = {
           cafe24_buy_url?: string | null
           cafe24_product_no?: string | null
           category_id?: string | null
+          consult_tags?: string[]
           created_at?: string
           description?: string | null
           description_bottom?: string | null
@@ -707,6 +709,7 @@ export type Database = {
           cafe24_buy_url?: string | null
           cafe24_product_no?: string | null
           category_id?: string | null
+          consult_tags?: string[]
           created_at?: string
           description?: string | null
           description_bottom?: string | null
@@ -934,6 +937,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_customer_accounts: {
+        Args: never
+        Returns: {
+          email: string
+          last_sign_in_at: string
+          user_id: string
+        }[]
+      }
       get_checkout_payment_info: {
         Args: never
         Returns: {
@@ -954,6 +965,16 @@ export type Database = {
         }[]
       }
       is_admin_email: { Args: { _email: string }; Returns: boolean }
+      validate_coupon: {
+        Args: { _code: string; _subtotal: number }
+        Returns: {
+          code: string
+          discount: number
+          min_order_amount: number
+          reason: string
+          valid: boolean
+        }[]
+      }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user" | "master_admin"

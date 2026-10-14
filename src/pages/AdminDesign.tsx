@@ -482,6 +482,7 @@ const AdminDesign = () => {
                 openId={openBlock}
                 setOpenId={setOpenBlock}
                 onFocus={focusBlock}
+                onExternalSave={() => setFrameKey(k => k + 1)}
               />
             </Section>
           )}

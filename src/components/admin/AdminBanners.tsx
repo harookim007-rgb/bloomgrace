@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Plus, Pencil, Trash2, GripVertical, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import ImageUploader from "./ImageUploader";
+import { fallbackSlides } from "@/components/Hero";
 
 const emptyForm = { title: "", subtitle: "", image_url: "", link_url: "", is_active: true, sort_order: "0", starts_at: "", expires_at: "" };
 
@@ -43,16 +44,8 @@ const AdminBanners = () => {
       starts_at: form.starts_at || null, expires_at: form.expires_at || null,
     };
 
-    // Auto-translate title/subtitle into all storefront languages
-    let translations: any = {};
-    try {
-      const { data: tr } = await supabase.functions.invoke("translate-banner", {
-        body: { title: form.title, subtitle: form.subtitle || "" },
-      });
-      if (tr?.translations) translations = tr.translations;
-    } catch (e) {
-      console.warn("translate-banner failed", e);
-    }
+    // Text is shown as typed in every language; existing translations are kept.
+    const translations: Record<string, any> = {};
 
     if (editingId) {
       const { data: existing } = await supabase.from("banners").select("translations").eq("id", editingId).maybeSingle();
@@ -109,7 +102,7 @@ const AdminBanners = () => {
               <div><Label>제목 *</Label><Input value={form.title} onChange={e => setForm({...form, title: e.target.value})} /></div>
               <div><Label>부제</Label><Input value={form.subtitle} onChange={e => setForm({...form, subtitle: e.target.value})} /></div>
               <div>
-                <Label>배너 이미지 (16:9 자동 크롭, 자동 크기 조정)</Label>
+                <Label>배너 이미지 (가로 1920px 이하로 자동 조정, 가로형 이미지 권장)</Label>
                 <ImageUploader
                   value={form.image_url}
                   onChange={(url) => setForm({...form, image_url: url})}
@@ -139,11 +132,17 @@ const AdminBanners = () => {
             <CardContent className="p-4">
               <div className="flex gap-4 items-center">
                 <div className="text-muted-foreground"><GripVertical className="h-5 w-5" /></div>
-                {b.image_url ? (
-                  <img src={b.image_url} alt={b.title} className="w-40 h-20 object-cover rounded-lg shrink-0" />
-                ) : (
-                  <div className="w-40 h-20 bg-muted rounded-lg shrink-0 flex items-center justify-center text-xs text-muted-foreground">이미지 없음</div>
-                )}
+                {/* Banners without their own picture show one of the built-in images on the store. */}
+                <div className="relative w-40 h-20 shrink-0">
+                  <img
+                    src={b.image_url && !b.image_url.includes("placeholder") ? b.image_url : fallbackSlides[Math.max(0, banners.filter(x => x.is_active).indexOf(b)) % fallbackSlides.length].image}
+                    alt={b.title}
+                    className="w-40 h-20 object-cover rounded-lg"
+                  />
+                  {(!b.image_url || b.image_url.includes("placeholder")) && (
+                    <span className="absolute bottom-1 left-1 rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-medium text-white">기본 이미지</span>
+                  )}
+                </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-medium">{b.title}</h3>
                   {b.subtitle && <p className="text-sm text-muted-foreground">{b.subtitle}</p>}

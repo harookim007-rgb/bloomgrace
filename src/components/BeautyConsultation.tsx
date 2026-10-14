@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { getLocalizedBrand, getLocalizedProductName } from "@/lib/productI18n";
+import { getLocalizedBrand, getLocalizedDescription, getLocalizedProductName } from "@/lib/productI18n";
+import { recommendProducts } from "@/lib/consultation";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ArrowRight, ArrowLeft, Loader2, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -11,6 +12,17 @@ import categoryHairImg from "@/assets/category-hair.jpg";
 
 // ── Beauty knowledge data ──
 const categories = ["Skin", "Body", "Hair"] as const;
+
+// Shown when no product is set up for the chosen concern yet.
+const NO_MATCH: Record<string, string> = {
+  en: "We're preparing products for this concern. Please browse all products in the meantime.",
+  es: "Estamos preparando productos para esta necesidad. Mientras tanto, explora todos los productos.",
+  de: "Für dieses Anliegen bereiten wir gerade Produkte vor. Stöbern Sie in der Zwischenzeit in allen Produkten.",
+  fr: "Nous préparons des produits pour ce besoin. En attendant, découvrez tous nos produits.",
+  pt: "Estamos preparando produtos para esta necessidade. Enquanto isso, veja todos os produtos.",
+  ja: "このお悩みに合う商品を準備中です。全商品からお選びください。",
+  ar: "نحضّر منتجات لهذه المشكلة. يمكنك تصفح جميع المنتجات في الأثناء.",
+};
 type Category = (typeof categories)[number];
 
 const skinSubCategories = ["All", "Toner", "Lotion", "Cream", "Ample", "Pack"] as const;
@@ -258,7 +270,7 @@ const cTexts: Record<string, Record<string, string>> = {
     sectionSubtitle: "Personalize Your Routine",
     sectionDesc: "Discover products perfectly matched to your unique skin, body, and hair needs",
     step1: "Choose Your Type",
-    step1Sub: "Select a category to get AI-powered product recommendations",
+    step1Sub: "Select a category to get personalized product recommendations",
     step2: "Select Your Concern",
     step3: "Filter by Product Type",
     analyzing: "Crafting your personalized routine",
@@ -272,7 +284,7 @@ const cTexts: Record<string, Record<string, string>> = {
     next: "Get My Recommendations",
     dontShowToday: "Don't show today",
     close: "Close",
-    aiAdvisor: "AI Beauty Advisor",
+    aiAdvisor: "Beauty Advisor",
     skin: "Skin",
     body: "Body",
     hair: "Hair",
@@ -284,13 +296,13 @@ const cTexts: Record<string, Record<string, string>> = {
     hairLong: "Identify your hair and scalp type to get expert recommendations for healthier, more beautiful hair.",
   },
   es: {
-    modalTitle: "Recomendaciones con IA",
-    modalSubtitle: "Nuestro asesor de belleza IA te recomendará productos perfectos para ti",
+    modalTitle: "Recomendaciones personalizadas",
+    modalSubtitle: "Nuestro asesor de belleza te recomendará productos perfectos para ti",
     sectionTitle: "Belleza Personalizada",
-    sectionSubtitle: "Recomendaciones IA",
+    sectionSubtitle: "Recomendaciones",
     sectionDesc: "Descubre productos perfectamente adaptados a tus necesidades únicas",
     step1: "Elige Tu Tipo",
-    step1Sub: "Selecciona una categoría para obtener recomendaciones con IA",
+    step1Sub: "Selecciona una categoría para obtener recomendaciones personalizadas",
     step2: "Selecciona Tu Preocupación",
     step3: "Filtrar por Tipo",
     analyzing: "Creando tu rutina personalizada",
@@ -304,7 +316,7 @@ const cTexts: Record<string, Record<string, string>> = {
     next: "Obtener Recomendaciones",
     dontShowToday: "No mostrar hoy",
     close: "Cerrar",
-    aiAdvisor: "Asesor de Belleza IA",
+    aiAdvisor: "Asesor de Belleza",
     skin: "Piel",
     body: "Cuerpo",
     hair: "Cabello",
@@ -316,13 +328,13 @@ const cTexts: Record<string, Record<string, string>> = {
     hairLong: "Identifica tu tipo de cabello y cuero cabelludo para obtener recomendaciones expertas.",
   },
   de: {
-    modalTitle: "KI-gestützte Empfehlungen",
-    modalSubtitle: "Unser KI-Beauty-Berater empfiehlt perfekt auf Sie abgestimmte Produkte",
+    modalTitle: "Persönliche Empfehlungen",
+    modalSubtitle: "Unser Beauty-Berater empfiehlt perfekt auf Sie abgestimmte Produkte",
     sectionTitle: "Personalisierte Schönheit",
-    sectionSubtitle: "KI-Empfehlungen",
+    sectionSubtitle: "Empfehlungen",
     sectionDesc: "Entdecken Sie perfekt auf Ihre Bedürfnisse abgestimmte Produkte",
     step1: "Wählen Sie Ihren Typ",
-    step1Sub: "Wählen Sie eine Kategorie für KI-gestützte Produktempfehlungen",
+    step1Sub: "Wählen Sie eine Kategorie für persönliche Produktempfehlungen",
     step2: "Anliegen Wählen",
     step3: "Nach Produkttyp Filtern",
     analyzing: "Ihre persönliche Routine wird erstellt",
@@ -336,7 +348,7 @@ const cTexts: Record<string, Record<string, string>> = {
     next: "Empfehlungen erhalten",
     dontShowToday: "Heute nicht mehr anzeigen",
     close: "Schließen",
-    aiAdvisor: "KI-Beauty-Berater",
+    aiAdvisor: "Beauty-Berater",
     skin: "Haut",
     body: "Körper",
     hair: "Haar",
@@ -348,30 +360,30 @@ const cTexts: Record<string, Record<string, string>> = {
     hairLong: "Identifizieren Sie Ihren Haar- und Kopfhauttyp für fachkundige Empfehlungen.",
   },
   fr: {
-    modalTitle: "Recommandations IA", modalSubtitle: "Notre conseiller beauté IA vous recommande les produits les plus adaptés",
+    modalTitle: "Recommandations personnalisées", modalSubtitle: "Notre conseiller beauté vous recommande les produits les plus adaptés",
     sectionTitle: "Beauté Personnalisée", sectionSubtitle: "Personnalisez Votre Routine", sectionDesc: "Découvrez les produits parfaitement adaptés à votre peau, corps et cheveux",
-    step1: "Choisissez Votre Type", step1Sub: "Sélectionnez une catégorie pour obtenir des recommandations IA", step2: "Choisissez Votre Préoccupation", step3: "Filtrer par Type de Produit",
-    analyzing: "Création de votre routine personnalisée", yourType: "Votre Analyse", recommended: "Recommandé Pour Vous", routine: "Ordre de Votre Routine", tips: "Conseils d’Expert", viewProduct: "Voir", startOver: "Recommencer", back: "Retour", next: "Obtenir mes Recommandations", dontShowToday: "Ne plus afficher aujourd’hui", close: "Fermer", aiAdvisor: "Conseiller Beauté IA",
+    step1: "Choisissez Votre Type", step1Sub: "Sélectionnez une catégorie pour obtenir des recommandations personnalisées", step2: "Choisissez Votre Préoccupation", step3: "Filtrer par Type de Produit",
+    analyzing: "Création de votre routine personnalisée", yourType: "Votre Analyse", recommended: "Recommandé Pour Vous", routine: "Ordre de Votre Routine", tips: "Conseils d’Expert", viewProduct: "Voir", startOver: "Recommencer", back: "Retour", next: "Obtenir mes Recommandations", dontShowToday: "Ne plus afficher aujourd’hui", close: "Fermer", aiAdvisor: "Conseiller Beauté",
     skin: "Peau", body: "Corps", hair: "Cheveux", skinDesc: "Soin visage & routine skincare", bodyDesc: "Soin corps & hydratation", hairDesc: "Soin cheveux & cuir chevelu", skinLong: "Découvrez votre type de peau et recevez une routine personnalisée.", bodyLong: "Trouvez les soins corps adaptés à vos besoins.", hairLong: "Identifiez votre type de cheveux et cuir chevelu pour des recommandations expertes.",
   },
   pt: {
-    modalTitle: "Recomendações com IA", modalSubtitle: "Nosso consultor de beleza IA recomenda produtos perfeitos para você",
+    modalTitle: "Recomendações personalizadas", modalSubtitle: "Nosso consultor de beleza recomenda produtos perfeitos para você",
     sectionTitle: "Beleza Personalizada", sectionSubtitle: "Personalize Sua Rotina", sectionDesc: "Descubra produtos ideais para sua pele, corpo e cabelo",
-    step1: "Escolha Seu Tipo", step1Sub: "Selecione uma categoria para receber recomendações com IA", step2: "Selecione Sua Preocupação", step3: "Filtrar por Tipo de Produto",
-    analyzing: "Criando sua rotina personalizada", yourType: "Sua Análise", recommended: "Recomendado Para Você", routine: "Ordem da Rotina", tips: "Dicas de Especialista", viewProduct: "Ver", startOver: "Recomeçar", back: "Voltar", next: "Receber Recomendações", dontShowToday: "Não mostrar hoje", close: "Fechar", aiAdvisor: "Consultor de Beleza IA",
+    step1: "Escolha Seu Tipo", step1Sub: "Selecione uma categoria para receber recomendações personalizadas", step2: "Selecione Sua Preocupação", step3: "Filtrar por Tipo de Produto",
+    analyzing: "Criando sua rotina personalizada", yourType: "Sua Análise", recommended: "Recomendado Para Você", routine: "Ordem da Rotina", tips: "Dicas de Especialista", viewProduct: "Ver", startOver: "Recomeçar", back: "Voltar", next: "Receber Recomendações", dontShowToday: "Não mostrar hoje", close: "Fechar", aiAdvisor: "Consultor de Beleza",
     skin: "Pele", body: "Corpo", hair: "Cabelo", skinDesc: "Cuidados faciais & skincare", bodyDesc: "Cuidados corporais & hidratação", hairDesc: "Tratamentos para cabelo & couro cabeludo", skinLong: "Descubra seu tipo de pele e receba uma rotina personalizada.", bodyLong: "Encontre produtos corporais certos para suas necessidades.", hairLong: "Identifique seu cabelo e couro cabeludo para recomendações de especialista.",
   },
   ja: {
-    modalTitle: "AIパーソナル診断", modalSubtitle: "AIビューティーアドバイザーがあなたに合う商品をおすすめします",
+    modalTitle: "パーソナル診断", modalSubtitle: "ビューティーアドバイザーがあなたに合う商品をおすすめします",
     sectionTitle: "パーソナルビューティー", sectionSubtitle: "あなたのルーティンを作る", sectionDesc: "肌・ボディ・髪の悩みに合う商品を見つけましょう",
-    step1: "タイプを選択", step1Sub: "カテゴリーを選ぶとAIがおすすめ商品を提案します", step2: "悩みを選択", step3: "商品タイプで絞り込み",
-    analyzing: "あなた専用のルーティンを作成中", yourType: "診断結果", recommended: "おすすめ商品", routine: "使用順序", tips: "専門家のヒント", viewProduct: "見る", startOver: "最初から", back: "戻る", next: "おすすめを見る", dontShowToday: "今日は表示しない", close: "閉じる", aiAdvisor: "AIビューティーアドバイザー",
+    step1: "タイプを選択", step1Sub: "カテゴリーを選ぶとおすすめ商品を提案します", step2: "悩みを選択", step3: "商品タイプで絞り込み",
+    analyzing: "あなた専用のルーティンを作成中", yourType: "診断結果", recommended: "おすすめ商品", routine: "使用順序", tips: "専門家のヒント", viewProduct: "見る", startOver: "最初から", back: "戻る", next: "おすすめを見る", dontShowToday: "今日は表示しない", close: "閉じる", aiAdvisor: "ビューティーアドバイザー",
     skin: "スキン", body: "ボディ", hair: "ヘア", skinDesc: "フェイスケア＆スキンケアルーティン", bodyDesc: "ボディケア＆保湿", hairDesc: "ヘア＆頭皮ケア", skinLong: "肌タイプを診断し、あなたに合うスキンケアルーティンを提案します。", bodyLong: "ボディの悩みに合うケア商品を見つけましょう。", hairLong: "髪と頭皮タイプに合う専門的なおすすめを受け取れます。",
   },
   ar: {
-    modalTitle: "توصيات ذكية", modalSubtitle: "مستشار الجمال بالذكاء الاصطناعي يرشح المنتجات الأنسب لك",
+    modalTitle: "توصيات ذكية", modalSubtitle: "مستشار الجمال يرشح المنتجات الأنسب لك",
     sectionTitle: "جمالك المخصص", sectionSubtitle: "اصنعي روتينك", sectionDesc: "اكتشفي منتجات مناسبة لبشرتك وجسمك وشعرك",
-    step1: "اختاري النوع", step1Sub: "اختاري فئة للحصول على توصيات مدعومة بالذكاء الاصطناعي", step2: "اختاري المشكلة", step3: "فلترة حسب نوع المنتج",
+    step1: "اختاري النوع", step1Sub: "اختاري فئة للحصول على توصيات مخصصة", step2: "اختاري المشكلة", step3: "فلترة حسب نوع المنتج",
     analyzing: "يتم إعداد روتينك المخصص", yourType: "تحليلك", recommended: "موصى به لك", routine: "ترتيب الروتين", tips: "نصائح الخبراء", viewProduct: "عرض", startOver: "ابدأ من جديد", back: "رجوع", next: "احصل على التوصيات", dontShowToday: "لا تظهر اليوم", close: "إغلاق", aiAdvisor: "مستشار الجمال الذكي",
     skin: "البشرة", body: "الجسم", hair: "الشعر", skinDesc: "العناية بالوجه وروتين البشرة", bodyDesc: "العناية بالجسم والترطيب", hairDesc: "علاجات الشعر وفروة الرأس", skinLong: "اكتشفي نوع بشرتك واحصلي على روتين مخصص.", bodyLong: "اعثري على منتجات الجسم المناسبة لاحتياجاتك.", hairLong: "حددي نوع شعرك وفروة رأسك لتوصيات خبيرة.",
   },
@@ -428,40 +440,35 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
     return () => window.removeEventListener("open-beauty-advisor", handler);
   }, []);
 
+  // Products are matched to the chosen concern through the tags set in 상품 관리 (뷰티 상담 추천).
   const handleGetRecommendation = async () => {
     setStep(3);
     setLoading(true);
     sessionStorage.setItem("bloom-consulted", "true");
 
     try {
-      const { data: prods } = await supabase.from("products").select("*").eq("is_active", true);
+      const [{ data: prods }, { data: cats }] = await Promise.all([
+        supabase.from("products").select("*").eq("is_active", true),
+        supabase.from("categories").select("id, slug"),
+      ]);
       setProducts(prods || []);
-
       const concernData = getConcerns(category!).find((c) => c.id === concern);
-
-      const { data, error } = await supabase.functions.invoke("beauty-recommend", {
-        body: {
-          category,
-          skinType: concernData?.label.en || concern,
-          subCategory: category === "Skin" ? subCategory : null,
-          products: prods || [],
-          language,
-        },
-      });
-
-      if (error) throw error;
-      setResult(data);
-      setStep(4);
-    } catch (err) {
-      console.error("Recommendation error:", err);
+      const matches = recommendProducts(prods || [], cats || [], category!, concern!, category === "Skin" ? subCategory : null);
+      const steps = [...new Set(matches.map(m => m.type).filter(Boolean) as string[])];
       setResult({
-        typeExplanation: "We couldn't generate recommendations at this time. Please try again.",
-        recommendations: [],
-        routineOrder: [],
+        typeExplanation: concernData ? localizedConcernDescription(concernData) : "",
+        emptyNote: matches.length === 0 ? (NO_MATCH[language] || NO_MATCH.en) : "",
+        recommendations: matches.map(m => ({
+          productId: m.product.id,
+          productName: m.product.name,
+          step: m.type ? localizedSubCategory(m.type) : "",
+          reason: getLocalizedDescription(m.product, language).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 160),
+        })),
+        routineOrder: category === "Skin" && steps.length > 1 ? steps.map(localizedSubCategory) : [],
         generalTips: [],
       });
-      setStep(4);
     } finally {
+      setStep(4);
       setLoading(false);
     }
   };
@@ -645,6 +652,12 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
           <div className="space-y-3 border-b border-border/30 pb-6">
             <p className="text-xs font-sans tracking-[0.18em] uppercase text-primary font-semibold">{ct.yourType}</p>
             <p className="text-base leading-relaxed text-foreground/85">{result.typeExplanation}</p>
+            {result.emptyNote && (
+              <p className="text-sm leading-relaxed text-muted-foreground pt-2">
+                {result.emptyNote}{" "}
+                <Link to="/products" onClick={() => setShowModal(false)} className="text-primary underline underline-offset-4">{ct.viewProduct}</Link>
+              </p>
+            )}
           </div>
 
           {/* Routine Order */}
