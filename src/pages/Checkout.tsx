@@ -1,3 +1,4 @@
+import PaymentTrustInfo from "@/components/PaymentTrustInfo";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -442,6 +443,7 @@ const Checkout = () => {
               </div>
               {settings?.instructions && <p className="text-xs text-muted-foreground border-t border-border pt-3 whitespace-pre-line">{settings.instructions}</p>}
             </div>
+            <div className="mt-4"><PaymentTrustInfo showSteps={false} /></div>
 
             <div className="flex gap-3 mt-6">
               <Button variant="outline" className="flex-1 rounded-none" onClick={() => navigate("/mypage")}>{t.to_orders}</Button>
@@ -493,6 +495,7 @@ const Checkout = () => {
 
               <div className="space-y-5">
                 <h2 className="text-sm font-sans font-medium tracking-[0.15em] uppercase border-b border-border pb-3">{t.bank_section}</h2>
+                <PaymentTrustInfo />
                 <div className="space-y-1"><Label className="text-xs tracking-wider uppercase">{t.depositor} *</Label><Input required className="rounded-none" value={depositor} onChange={e => setDepositor(e.target.value)} placeholder={t.depositor_ph} /></div>
                 {settings && (
                   <div className="text-xs text-muted-foreground bg-muted/50 p-3 border border-border space-y-0.5">

@@ -85,7 +85,7 @@ const AdminSettings = () => {
             <CardDescription>쇼핑몰 맨 아래(푸터)에 표시됩니다. 비워둔 항목은 표시되지 않습니다</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 sm:grid-cols-2">
-            <div><Label>상호</Label><Input value={settings.businessName} onChange={e => setSettings({ ...settings, businessName: e.target.value })} placeholder="youthroom" /></div>
+            <div><Label>상호 (사업자등록증상 정식 상호)</Label><Input value={settings.businessName} onChange={e => setSettings({ ...settings, businessName: e.target.value })} placeholder="youthroom (유스룸)" /></div>
             <div><Label>대표자</Label><Input value={settings.representative} onChange={e => setSettings({ ...settings, representative: e.target.value })} placeholder="HARU KIM" /></div>
             <div><Label>사업자등록번호</Label><Input value={settings.businessNumber} onChange={e => setSettings({ ...settings, businessNumber: e.target.value })} placeholder="000-00-00000" /></div>
             <div><Label>통신판매업 신고번호</Label><Input value={settings.mailOrderNumber} onChange={e => setSettings({ ...settings, mailOrderNumber: e.target.value })} placeholder="제0000-지역-0000호" /></div>

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useLanguage, type Language } from "@/contexts/LanguageContext";
 import BrandLogo from "@/components/BrandLogo";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { STORE_NAME } from "@/lib/shop";
 
 const trustLabel: Record<Language, string> = {
   en: "Trust & Privacy",
@@ -18,12 +19,14 @@ const Footer = () => {
   const site = useSiteSettings();
   // Seller details from 사이트 설정 > 사업자 정보; empty fields are left out.
   const business = [
-    site.businessName && `Business name: ${site.businessName}`,
+    `Store: ${STORE_NAME}`,
+    site.businessName && `Legal business name: ${site.businessName}`,
     site.representative && `Representative: ${site.representative}`,
     site.businessNumber && `Business registration no.: ${site.businessNumber}`,
     site.mailOrderNumber && `Mail-order business no.: ${site.mailOrderNumber}`,
     site.businessAddress && `Address: ${site.businessAddress}`,
   ].filter(Boolean) as string[];
+  if (business.length === 1) business.length = 0; // only the store name: nothing to show yet
 
   return (
     <footer className="border-t border-border bg-muted/20">
