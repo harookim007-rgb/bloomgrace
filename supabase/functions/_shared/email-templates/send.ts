@@ -2,7 +2,7 @@
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 // The shop's own inbox: gets inquiry notices, failure alerts and copies of customer emails,
 // and is where customers' replies go (mail is sent from the verified youthroom.shop domain).
-export const ADMIN_NOTIFY_EMAIL = Deno.env.get("ADMIN_NOTIFY_EMAIL") || "youthroom@gmail.com";
+export const ADMIN_NOTIFY_EMAIL = Deno.env.get("ADMIN_NOTIFY_EMAIL") || "youthroom.shop@gmail.com";
 const FROM = Deno.env.get("EMAIL_FROM") || "YOUTHROOM <hello@youthroom.shop>";
 
 export interface SendArgs {

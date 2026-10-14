@@ -64,7 +64,7 @@ const Contact = () => {
           "@context": "https://schema.org",
           "@type": "LocalBusiness",
           name: "Youthroom",
-          email: "youthroom@gmail.com",
+          email: "youthroom.shop@gmail.com",
           url: "https://youthroom.shop/contact",
         }}
       />
