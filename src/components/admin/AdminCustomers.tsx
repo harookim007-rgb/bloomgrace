@@ -17,7 +17,7 @@ import { parsePhone } from "@/lib/countryFlag";
 
 const STATUS: Record<string, { label: string; className: string }> = {
   pending: { label: "입금 대기", className: "bg-slate-100 text-slate-700 border border-slate-200" },
-  confirmed: { label: "결제 확인", className: "bg-blue-50 text-blue-700 border border-blue-200" },
+  confirmed: { label: "결제 완료", className: "bg-blue-50 text-blue-700 border border-blue-200" },
   shipping: { label: "배송 중", className: "bg-amber-50 text-amber-700 border border-amber-200" },
   delivered: { label: "배송 완료", className: "bg-emerald-50 text-emerald-700 border border-emerald-200" },
   cancelled: { label: "주문 취소", className: "bg-rose-50 text-rose-700 border border-rose-200" },
@@ -299,7 +299,7 @@ const AdminCustomers = () => {
                         return (
                           <article key={o.id} className="rounded-lg border border-border">
                             <header className="flex flex-wrap items-center justify-between gap-2 border-b border-border bg-muted/40 px-4 py-2.5">
-                              <span className="font-medium">#{o.id.slice(0, 8)} <span className="text-muted-foreground font-normal">· {dateTime(o.created_at)}</span></span>
+                              <span className="font-medium">#{o.id.slice(0, 8).toUpperCase()} <span className="text-muted-foreground font-normal">· {dateTime(o.created_at)}</span></span>
                               <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${st.className}`}>{st.label}</span>
                             </header>
                             <div className="grid md:grid-cols-2 gap-x-6 gap-y-4 p-4">

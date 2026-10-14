@@ -20,7 +20,7 @@ const RANGES: { value: Range; label: string; days: number }[] = [
 
 const STATUS: Record<string, { label: string; className: string }> = {
   pending: { label: "입금 대기", className: "bg-slate-100 text-slate-700 border border-slate-200" },
-  confirmed: { label: "발송 준비", className: "bg-blue-50 text-blue-700 border border-blue-200" },
+  confirmed: { label: "결제 완료", className: "bg-blue-50 text-blue-700 border border-blue-200" },
   shipping: { label: "배송 중", className: "bg-amber-50 text-amber-700 border border-amber-200" },
   delivered: { label: "배송 완료", className: "bg-emerald-50 text-emerald-700 border border-emerald-200" },
   cancelled: { label: "취소", className: "bg-rose-50 text-rose-700 border border-rose-200" },
@@ -326,7 +326,7 @@ const AdminDashboard = () => {
                     <li key={o.id}>
                       <button onClick={() => go("orders", `&status=${o.status}`)} className="w-full flex items-center gap-3 py-2.5 text-left rounded-md hover:bg-muted/60 px-2 -mx-2 transition-colors">
                         <span className="min-w-0 flex-1">
-                          <span className="block text-sm font-medium truncate">{nameOf(o)} <span className="text-muted-foreground font-normal">· #{o.id.slice(0, 8)}</span></span>
+                          <span className="block text-sm font-medium truncate">{nameOf(o)} <span className="text-muted-foreground font-normal">· #{o.id.slice(0, 8).toUpperCase()}</span></span>
                           <span className="block text-xs text-muted-foreground truncate">{first ? `${first}${more > 0 ? ` 외 ${more}건` : ""}` : "상품 정보 없음"} · {timeAgo(o.created_at)}</span>
                         </span>
                         <span className="text-sm font-semibold tabular-nums shrink-0">{money(Number(o.total))}</span>

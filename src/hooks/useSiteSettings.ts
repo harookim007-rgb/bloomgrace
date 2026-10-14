@@ -9,6 +9,12 @@ export type SiteSettings = {
   metaDescription: string;
   ogImage: string;
   googleAnalyticsId: string;
+  // Seller details shown in the store footer.
+  businessName: string;
+  representative: string;
+  businessNumber: string;
+  businessAddress: string;
+  mailOrderNumber: string; // 통신판매업 신고번호
   design?: unknown;
 };
 
@@ -20,6 +26,11 @@ export const defaultSiteSettings: SiteSettings = {
   metaDescription: "",
   ogImage: "",
   googleAnalyticsId: "",
+  businessName: "",
+  representative: "",
+  businessNumber: "",
+  businessAddress: "",
+  mailOrderNumber: "",
 };
 
 export const SITE_SETTINGS_KEY = ["site-settings"];

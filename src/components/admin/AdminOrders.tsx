@@ -15,8 +15,8 @@ import { toast } from "sonner";
 import { parsePhone } from "@/lib/countryFlag";
 
 const statusMap: Record<string, { label: string; color: string; dot: string; icon: React.ElementType; step: number }> = {
-  pending:   { label: "주문 접수", color: "bg-slate-100 text-slate-700 border border-slate-200", dot: "bg-slate-400", icon: Clock, step: 1 },
-  confirmed: { label: "주문 확인", color: "bg-blue-50 text-blue-700 border border-blue-200", dot: "bg-blue-500", icon: CheckCircle, step: 2 },
+  pending:   { label: "입금 대기", color: "bg-slate-100 text-slate-700 border border-slate-200", dot: "bg-slate-400", icon: Clock, step: 1 },
+  confirmed: { label: "결제 완료", color: "bg-blue-50 text-blue-700 border border-blue-200", dot: "bg-blue-500", icon: CheckCircle, step: 2 },
   shipping:  { label: "배송 중", color: "bg-amber-50 text-amber-700 border border-amber-200", dot: "bg-amber-500", icon: Truck, step: 3 },
   delivered: { label: "배송 완료", color: "bg-emerald-50 text-emerald-700 border border-emerald-200", dot: "bg-emerald-500", icon: Package, step: 4 },
   cancelled: { label: "주문 취소", color: "bg-rose-50 text-rose-700 border border-rose-200", dot: "bg-rose-500", icon: XCircle, step: 0 },
@@ -240,7 +240,7 @@ const AdminOrders = () => {
                 return (
                   <TableRow key={o.id}>
                     <TableCell className="text-sm whitespace-nowrap">{new Date(o.created_at).toLocaleDateString("ko-KR")}</TableCell>
-                    <TableCell className="text-xs font-mono text-muted-foreground">{o.id.slice(0, 8)}</TableCell>
+                    <TableCell className="text-xs font-mono text-muted-foreground">{o.id.slice(0, 8).toUpperCase()}</TableCell>
                     <TableCell className="text-sm font-medium">
                       <span className="inline-flex items-center gap-1.5">
                         {country && <span className="text-base leading-none">{country.flag}</span>}

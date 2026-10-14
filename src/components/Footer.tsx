@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useLanguage, type Language } from "@/contexts/LanguageContext";
 import BrandLogo from "@/components/BrandLogo";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const trustLabel: Record<Language, string> = {
   en: "Trust & Privacy",
@@ -14,6 +15,15 @@ const trustLabel: Record<Language, string> = {
 
 const Footer = () => {
   const { t, language } = useLanguage();
+  const site = useSiteSettings();
+  // Seller details from 사이트 설정 > 사업자 정보; empty fields are left out.
+  const business = [
+    site.businessName && `Business name: ${site.businessName}`,
+    site.representative && `Representative: ${site.representative}`,
+    site.businessNumber && `Business registration no.: ${site.businessNumber}`,
+    site.mailOrderNumber && `Mail-order business no.: ${site.mailOrderNumber}`,
+    site.businessAddress && `Address: ${site.businessAddress}`,
+  ].filter(Boolean) as string[];
 
   return (
     <footer className="border-t border-border bg-muted/20">
@@ -49,6 +59,11 @@ const Footer = () => {
         </div>
 
         <div className="mt-10 md:mt-16 pt-6 md:pt-8 border-t border-border">
+          {business.length > 0 && (
+            <p className="mb-4 text-center md:text-left text-xs text-muted-foreground font-sans leading-relaxed break-words">
+              {business.map((line, i) => <span key={line}>{i > 0 && <span className="mx-2 opacity-40">|</span>}<span className="inline-block">{line}</span></span>)}
+            </p>
+          )}
           <div className="flex flex-col md:flex-row justify-between items-center gap-3 text-xs md:text-sm text-muted-foreground font-sans font-medium">
             <p>&copy; {new Date().getFullYear()} Youthroom. {t("footer_rights")}</p>
             <p className="tracking-wider text-center">{t("footer_cs")}</p>
