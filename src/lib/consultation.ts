@@ -27,9 +27,20 @@ export const CONSULT_GROUPS = [
   },
 ] as const;
 
-// Skincare subcategory slugs in the order they are applied.
+// Skincare subcategory slugs (the "product type" choices in the consultation).
 export const SKIN_STEPS = ["skin-toner", "essence-serum", "cream", "mist-oil", "mask-pack"] as const;
 const ROUTINE_ORDER: string[] = [...SKIN_STEPS];
+
+// Owner's routine: first step (mist/oil, or skin/toner when there is no mist/oil) → mask pack
+// → essence/serum/ampoule → cream. Mist/oil takes the toner's place, so when both are present
+// only the mist/oil is recommended for that step.
+const STEP_POSITION: Record<string, number> = { "mist-oil": 0, "skin-toner": 0, "mask-pack": 1, "essence-serum": 2, cream: 3 };
+const routineOrder = <M extends { type: string | null }>(matches: M[]): M[] => {
+  const hasMist = matches.some(m => m.type === "mist-oil");
+  return matches
+    .filter(m => !(hasMist && m.type === "skin-toner"))
+    .sort((a, b) => (a.type ? STEP_POSITION[a.type] ?? 9 : 9) - (b.type ? STEP_POSITION[b.type] ?? 9 : 9));
+};
 // Product types chosen before subcategories existed.
 const LEGACY_TYPES: Record<string, string> = { Toner: "skin-toner", Ample: "essence-serum", Lotion: "essence-serum", Cream: "cream", Pack: "mask-pack" };
 
@@ -74,7 +85,9 @@ export const recommendProducts = <P extends Product>(
     const ofType = tagged.filter(p => typeOf(p) === productType);
     if (ofType.length > 0) tagged = ofType;
   }
-  const picked: ConsultMatch<P>[] = [...tagged].sort(rank).slice(0, limit).map(p => ({ product: p, type: typeOf(p), exact: true }));
+  // Skincare follows the routine rules (which may leave out a toner), then is cut to the limit.
+  const ordered = [...tagged].sort(rank).map(p => ({ product: p, type: typeOf(p), exact: true }));
+  const picked: ConsultMatch<P>[] = (category === "Skin" ? routineOrder(ordered) : ordered).slice(0, limit);
   if (picked.length < limit) {
     const tops = categories.filter(c => (FALLBACK_SLUGS[category] || []).includes(c.slug)).map(c => c.id);
     const ids = new Set([...tops, ...categories.filter(c => c.parent_id && tops.includes(c.parent_id)).map(c => c.id)]);
@@ -86,6 +99,5 @@ export const recommendProducts = <P extends Product>(
     picked.push(...extra);
   }
   // Skincare results are listed in the order they are used.
-  if (category === "Skin") picked.sort((a, b) => (a.type ? ROUTINE_ORDER.indexOf(a.type) : 99) - (b.type ? ROUTINE_ORDER.indexOf(b.type) : 99));
-  return picked;
+  return category === "Skin" ? routineOrder(picked) : picked;
 };

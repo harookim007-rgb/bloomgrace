@@ -34,7 +34,7 @@ const ConsultTagPicker = ({ value, onChange }: { value: string[]; onChange: (tag
         </div>
       ))}
       {hasSkin && (
-        <p className="text-xs text-muted-foreground">스킨케어 사용 단계(스킨/토너 → 에센스/세럼/앰플 → 크림 → 미스트/오일 → 마스크팩)는 이 상품의 카테고리로 정해집니다.</p>
+        <p className="text-xs text-muted-foreground">스킨케어 사용 단계는 이 상품의 카테고리로 정해집니다. 추천 순서: 스킨/토너(미스트/오일이 있으면 미스트/오일이 대신) → 마스크팩 → 에센스/세럼/앰플 → 크림</p>
       )}
     </div>
   );
