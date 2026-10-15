@@ -1,6 +1,7 @@
 import { useDesign } from "@/hooks/useDesign";
 import { useLanguage } from "@/contexts/LanguageContext";
 import SupportMessenger from "@/components/support/SupportMessenger";
+import { consultTexts } from "@/lib/consultationData";
 import {
   HoverCard,
   HoverCardContent,
@@ -21,6 +22,7 @@ const bookmarkTexts: Record<string, { line1: string; line2: string; title: strin
 const FloatingButtons = () => {
   const { language } = useLanguage();
   const bt = bookmarkTexts[language] || bookmarkTexts.en;
+  const ui = consultTexts(language).ui;
   const { header } = useDesign();
 
   const handleOpenAI = () => {
@@ -50,18 +52,12 @@ const FloatingButtons = () => {
               </div>
             </button>
           </HoverCardTrigger>
-          <HoverCardContent side="left" sideOffset={8} className="w-72 bg-background/95 backdrop-blur-md border-border/30 shadow-luxury p-5">
-            <div className="space-y-3">
-              <div>
-              <p className="text-lg font-serif font-bold">{bt.title}</p>
-                <p className="text-sm text-foreground/70 tracking-[0.1em] uppercase mt-0.5 font-semibold">{bt.subtitle}</p>
-              </div>
-              <p className="text-base text-foreground/80 leading-relaxed">{bt.hover}</p>
-              <div className="flex gap-2">
-                {bt.cats.map(cat => (
-                  <span key={cat} className="text-xs px-2.5 py-1 bg-muted text-foreground/80 border border-border/40 tracking-[0.08em] uppercase font-medium">{cat}</span>
-                ))}
-              </div>
+          <HoverCardContent side="left" sideOffset={8} className="w-64 bg-background/95 backdrop-blur-md border-border/30 shadow-luxury p-5">
+            <p className="text-lg font-serif font-semibold leading-snug">{ui.title}</p>
+            <div className="mt-3 flex flex-wrap gap-1.5">
+              {[ui.skin, ui.makeup, ui.hair].map(cat => (
+                <span key={cat} className="text-xs px-2.5 py-1 bg-muted text-foreground/80 border border-border/40 font-medium">{cat}</span>
+              ))}
             </div>
           </HoverCardContent>
         </HoverCard>
