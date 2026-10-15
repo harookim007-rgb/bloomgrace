@@ -2,11 +2,6 @@ import { useDesign } from "@/hooks/useDesign";
 import { useLanguage } from "@/contexts/LanguageContext";
 import SupportMessenger from "@/components/support/SupportMessenger";
 import { consultTexts } from "@/lib/consultationData";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
 
 
 const bookmarkTexts: Record<string, { line1: string; line2: string; title: string; subtitle: string; hover: string; cats: string[] }> = {
@@ -36,31 +31,24 @@ const FloatingButtons = () => {
     <>
       {/* AI Bookmark Tab — hidden on very small screens, sticky right edge */}
       <div className="fixed right-0 top-1/2 -translate-y-1/2 z-50 hidden sm:block">
-        <HoverCard openDelay={200} closeDelay={100}>
-          <HoverCardTrigger asChild>
-            <button
-              onClick={handleOpenAI}
-              className="group relative flex items-center"
-              aria-label="Personalize Your Routine"
-            >
-              <div
-                className="relative border border-primary/15 bg-primary-soft text-primary pl-4 pr-3 py-10 flex flex-col items-center gap-3 shadow-luxury transition-all duration-500 group-hover:pl-5 group-hover:pr-4 group-hover:bg-primary-soft/80"
-                style={{ borderRadius: "8px 0 0 8px" }}
-              >
-                <span className="text-xs font-sans font-bold tracking-[0.18em] uppercase leading-tight text-center">{bt.line1}</span>
-                <span className="text-xs font-sans font-bold tracking-[0.18em] uppercase text-center">{bt.line2}</span>
-              </div>
-            </button>
-          </HoverCardTrigger>
-          <HoverCardContent side="left" sideOffset={8} className="w-64 bg-background/95 backdrop-blur-md border-border/30 shadow-luxury p-5">
-            <p className="text-lg font-serif font-semibold leading-snug">{ui.title}</p>
-            <div className="mt-3 flex flex-wrap gap-1.5">
-              {[ui.skin, ui.makeup, ui.hair].map(cat => (
-                <span key={cat} className="text-xs px-2.5 py-1 bg-muted text-foreground/80 border border-border/40 font-medium">{cat}</span>
-              ))}
-            </div>
-          </HoverCardContent>
-        </HoverCard>
+        <button
+          onClick={handleOpenAI}
+          className="group relative flex items-center"
+          aria-label="Personalize Your Routine"
+        >
+          {/* Speech bubble shown on hover */}
+          <span className="pointer-events-none absolute right-full top-1/2 mr-3 -translate-y-1/2 whitespace-nowrap rounded-full border-[1.5px] border-primary bg-white px-4 py-2 text-sm font-sans font-semibold tracking-wide text-primary shadow-[0_8px_24px_-6px_hsl(var(--primary)/0.35)] opacity-0 translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
+            {ui.title}
+            <span aria-hidden="true" className="absolute top-1/2 -right-[7px] h-3 w-3 -translate-y-1/2 rotate-45 border-r-[1.5px] border-t-[1.5px] border-primary bg-white" />
+          </span>
+          <div
+            className="relative border border-primary/15 bg-primary-soft text-primary pl-4 pr-3 py-10 flex flex-col items-center gap-3 shadow-luxury transition-all duration-500 group-hover:pl-5 group-hover:pr-4 group-hover:bg-primary-soft/80"
+            style={{ borderRadius: "8px 0 0 8px" }}
+          >
+            <span className="text-xs font-sans font-bold tracking-[0.18em] uppercase leading-tight text-center">{bt.line1}</span>
+            <span className="text-xs font-sans font-bold tracking-[0.18em] uppercase text-center">{bt.line2}</span>
+          </div>
+        </button>
       </div>
 
       {/* Right — Customer Messenger */}

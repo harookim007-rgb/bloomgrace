@@ -1,5 +1,5 @@
 // Beauty consultation matching. Admins tag each product (상품 편집 > 뷰티 상담 추천) with the
-// skin types, makeup looks and scalp types it suits; the consultation recommends the products
+// skin types and hair answers it suits; the consultation recommends the products
 // tagged for the visitor's answer. A product's step in a routine is its subcategory
 // (e.g. 스킨/토너, 베이스 메이크업). Tag IDs must match src/lib/consultationData.ts.
 
@@ -13,17 +13,31 @@ export const CONSULT_GROUPS = [
     ],
   },
   {
-    category: "Makeup", label: "메이크업 룩",
+    category: "Hair", label: "두피 타입",
     tags: [
-      { id: "natural", label: "내추럴" }, { id: "dewy", label: "촉촉·윤광" }, { id: "soft_matte", label: "소프트 매트" },
-      { id: "soft_glam", label: "소프트 글램" }, { id: "romantic", label: "로맨틱" }, { id: "bold_glam", label: "볼드 글램" },
+      { id: "oily_scalp", label: "지성" }, { id: "dry_scalp", label: "건성" }, { id: "normal_scalp", label: "중성" },
+      { id: "sensitive_scalp", label: "민감성" }, { id: "combination_scalp", label: "복합성" },
     ],
   },
   {
-    category: "Hair", label: "두피 타입",
+    category: "Hair", label: "모발 타입",
     tags: [
-      { id: "oily_scalp", label: "지성 두피" }, { id: "dry_scalp", label: "건성 두피" }, { id: "normal_scalp", label: "중성 두피" },
-      { id: "sensitive_scalp", label: "민감성 두피" }, { id: "combination_scalp", label: "복합성 두피" },
+      { id: "straight", label: "직모" }, { id: "wavy", label: "웨이브" }, { id: "curly", label: "곱슬" },
+      { id: "coily", label: "강한 곱슬" }, { id: "fine", label: "가는 모발" }, { id: "thick", label: "굵은 모발" },
+    ],
+  },
+  {
+    category: "Hair", label: "헤어 고민",
+    tags: [
+      { id: "damage", label: "손상" }, { id: "frizz", label: "부스스함" }, { id: "volume", label: "볼륨 부족" },
+      { id: "dandruff", label: "비듬" }, { id: "hair_loss", label: "탈모" }, { id: "color_care", label: "염색 모발" },
+    ],
+  },
+  {
+    category: "Hair", label: "원하는 결과",
+    tags: [
+      { id: "smooth", label: "매끄러움" }, { id: "voluminous", label: "볼륨" }, { id: "defined_curls", label: "또렷한 컬" },
+      { id: "natural_styling", label: "자연스러운 스타일링" },
     ],
   },
 ] as const;
@@ -35,6 +49,33 @@ export const MAKEUP_STEPS = ["base-makeup", "eye-makeup", "lip-makeup", "cheek-f
 // Tags saved before the consultation was redesigned.
 const ALIASES: Record<string, string[]> = {
   acne_prone: ["acne"], oily_scalp: ["hair_oily"], dry_scalp: ["hair_dry"],
+};
+
+/**
+ * Hair: products in the chosen Hair Care subcategory, best first by how many of the visitor's
+ * answers (scalp type, hair type, concern, desired result) the product is tagged with.
+ * Without a tagged match, the subcategory's and then Hair Care's other products fill in.
+ */
+export const recommendHair = <P extends Product>(
+  products: P[],
+  categories: { id: string; slug: string; parent_id?: string | null }[],
+  productSlug: string,
+  answers: string[],
+  limit = 4,
+): ConsultMatch<P>[] => {
+  const available = products.filter(p => Number(p.stock ?? 1) > 0);
+  const sub = categories.find(c => c.slug === productSlug);
+  const hair = categories.find(c => c.slug === "haircare");
+  const inSub = (p: P) => !!sub && p.category_id === sub.id;
+  const inHair = (p: P) => !!hair && (p.category_id === hair.id || categories.some(c => c.id === p.category_id && c.parent_id === hair.id));
+  const score = (p: P) => answers.filter(a => (p.consult_tags || []).includes(a) || (ALIASES[a] || []).some(x => (p.consult_tags || []).includes(x))).length;
+  const pick = (list: P[], exact: boolean) => list.sort((a, b) => score(b) - score(a) || rank(a, b)).map(p => ({ product: p, type: productSlug, exact }));
+  const picked = pick(available.filter(p => inSub(p) && score(p) > 0), true).slice(0, limit);
+  for (const pool of [available.filter(inSub), available.filter(inHair)]) {
+    if (picked.length >= limit) break;
+    picked.push(...pick(pool.filter(p => !picked.some(m => m.product.id === p.id)), false).slice(0, limit - picked.length));
+  }
+  return picked;
 };
 
 // Shop category slugs used when no product is tagged for the answer yet.

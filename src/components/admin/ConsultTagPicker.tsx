@@ -28,7 +28,7 @@ const ConsultTagPicker = ({ value, onChange }: { value: string[]; onChange: (tag
         </p>
       </div>
       {CONSULT_GROUPS.map(group => (
-        <div key={group.category} className="space-y-1.5">
+        <div key={group.label} className="space-y-1.5">
           <p className="text-xs font-semibold text-muted-foreground">{group.label}</p>
           <div className="flex flex-wrap gap-2">{group.tags.map(t => chip(t.id, t.label))}</div>
         </div>
