@@ -443,7 +443,7 @@ const Checkout = () => {
               </div>
               {settings?.instructions && <p className="text-xs text-muted-foreground border-t border-border pt-3 whitespace-pre-line">{settings.instructions}</p>}
             </div>
-            <div className="mt-4"><PaymentTrustInfo showSteps={false} /></div>
+            <div className="mt-4"><PaymentTrustInfo /></div>
 
             <div className="flex gap-3 mt-6">
               <Button variant="outline" className="flex-1 rounded-none" onClick={() => navigate("/mypage")}>{t.to_orders}</Button>
