@@ -54,6 +54,7 @@ interface FormState {
   stock: string;
   is_active: boolean;
   is_featured: boolean;
+  is_best: boolean;
   tags: string;
   benefits: string[];
   skin_types: string[];
@@ -66,7 +67,7 @@ const emptyForm: FormState = {
   description_position: "none", image_alt: "",
   price: "", original_price: "", category_id: "", brand: "",
   image_url: "", images: [], detail_images: [],
-  stock: "0", is_active: true, is_featured: false, tags: "",
+  stock: "0", is_active: true, is_featured: false, is_best: false, tags: "",
   benefits: [], skin_types: [], consult_tags: [], related_product_ids: [],
 };
 
@@ -198,6 +199,7 @@ const AdminProducts = () => {
       detail_images: form.detail_images || [],
       is_active: form.is_active,
       is_featured: form.is_featured,
+      is_best: form.is_best,
       tags: form.tags ? form.tags.split(",").map(t => t.trim()).filter(Boolean) : [],
       benefits: form.benefits || [],
       skin_types: form.skin_types || [],
@@ -243,6 +245,7 @@ const AdminProducts = () => {
     stock: String(p.stock),
     is_active: asCopy ? false : p.is_active,
     is_featured: asCopy ? false : p.is_featured,
+    is_best: asCopy ? false : !!p.is_best,
     tags: (p.tags || []).join(", "),
     benefits: p.benefits || [],
     skin_types: p.skin_types || [],
@@ -422,6 +425,7 @@ const AdminProducts = () => {
                   <div className="flex items-center gap-6 col-span-2">
                     <div className="flex items-center gap-2"><Switch checked={form.is_active} onCheckedChange={v => setForm({...form, is_active: v})} /><Label>판매 활성화</Label></div>
                     <div className="flex items-center gap-2"><Switch checked={form.is_featured} onCheckedChange={v => setForm({...form, is_featured: v})} /><Label>추천 상품</Label></div>
+                  <div className="flex items-center gap-2"><Switch checked={form.is_best} onCheckedChange={v => setForm({...form, is_best: v})} /><Label>BEST 배지</Label></div>
                   </div>
                 </div>
               </TabsContent>
@@ -698,6 +702,7 @@ const AdminProducts = () => {
                         {p.is_active ? "활성" : "비활성"}
                       </Badge>
                       {p.is_featured && <Badge variant="outline" className="text-xs">추천</Badge>}
+                      {p.is_best && <Badge variant="outline" className="text-xs">BEST</Badge>}
                     </div>
                   </TableCell>
                   <TableCell className="text-right">

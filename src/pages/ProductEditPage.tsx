@@ -39,6 +39,7 @@ interface FormState {
   stock: string;
   is_active: boolean;
   is_featured: boolean;
+  is_best: boolean;
   tags: string;
   benefits: string[];
   skin_types: string[];
@@ -53,7 +54,7 @@ const emptyForm: FormState = {
   description_position: "none", image_alt: "",
   price: "", original_price: "", category_id: "", brand: "",
   image_url: "", images: [], detail_images: [], image_links: {},
-  stock: "0", is_active: true, is_featured: false, tags: "",
+  stock: "0", is_active: true, is_featured: false, is_best: false, tags: "",
   benefits: [], skin_types: [], consult_tags: [], related_product_ids: [],
   cafe24_buy_url: "", cafe24_product_no: "",
 };
@@ -219,6 +220,7 @@ const ProductEditPage = () => {
               stock: String(data.stock ?? 0),
               is_active: false,
               is_featured: false,
+              is_best: false,
               tags: (data.tags || []).join(", "),
               benefits: data.benefits || [],
               skin_types: data.skin_types || [],
@@ -257,6 +259,7 @@ const ProductEditPage = () => {
         stock: String(d.stock ?? 0),
         is_active: !!d.is_active,
         is_featured: !!d.is_featured,
+        is_best: !!d.is_best,
         tags: (d.tags || []).join(", "),
         benefits: d.benefits || [],
         skin_types: d.skin_types || [],
@@ -320,6 +323,7 @@ const ProductEditPage = () => {
       image_links: form.image_links,
       is_active: form.is_active,
       is_featured: form.is_featured,
+      is_best: form.is_best,
       tags: form.tags ? form.tags.split(",").map(t => t.trim()).filter(Boolean) : [],
       benefits: form.benefits,
       skin_types: form.skin_types,
@@ -482,6 +486,7 @@ const ProductEditPage = () => {
                 <div className="flex items-center gap-6 md:col-span-2">
                   <div className="flex items-center gap-2"><Switch checked={form.is_active} onCheckedChange={v => setForm({ ...form, is_active: v })} /><Label>판매 활성화</Label></div>
                   <div className="flex items-center gap-2"><Switch checked={form.is_featured} onCheckedChange={v => setForm({ ...form, is_featured: v })} /><Label>추천 상품</Label></div>
+                  <div className="flex items-center gap-2"><Switch checked={form.is_best} onCheckedChange={v => setForm({ ...form, is_best: v })} /><Label>BEST 배지</Label></div>
                 </div>
               </div>
             </CardContent></Card>

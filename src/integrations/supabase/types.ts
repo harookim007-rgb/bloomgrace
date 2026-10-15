@@ -652,6 +652,7 @@ export type Database = {
           image_url: string | null
           images: string[] | null
           is_active: boolean
+          is_best: boolean
           is_featured: boolean
           manual_rank: number | null
           name: string
@@ -687,6 +688,7 @@ export type Database = {
           image_url?: string | null
           images?: string[] | null
           is_active?: boolean
+          is_best?: boolean
           is_featured?: boolean
           manual_rank?: number | null
           name: string
@@ -722,6 +724,7 @@ export type Database = {
           image_url?: string | null
           images?: string[] | null
           is_active?: boolean
+          is_best?: boolean
           is_featured?: boolean
           manual_rank?: number | null
           name?: string

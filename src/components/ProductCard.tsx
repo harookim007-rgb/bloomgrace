@@ -27,6 +27,7 @@ interface ProductCardProps {
     review_count: number | null;
     translations?: any;
     is_featured?: boolean;
+    is_best?: boolean;
     tags?: string[] | null;
     created_at?: string;
   };
@@ -63,7 +64,7 @@ const ProductCard = ({ product, rank }: ProductCardProps) => {
 
   const top = rank !== undefined && rank <= 3;
   return (
-    <div className={`group hover-lift relative ${top ? "border-2 border-primary/70 bg-card p-1.5 sm:p-2.5 md:p-4 shadow-elegant" : ""}`}>
+    <div className={`group relative ${top ? "border-2 border-primary/70 bg-card p-1.5 sm:p-2.5 md:p-4 shadow-elegant" : ""}`}>
       {top && (
         <span className="absolute -top-3 left-1.5 sm:left-3 md:left-4 z-20 bg-primary text-primary-foreground text-[10px] sm:text-[11px] md:text-xs font-sans font-extrabold tracking-[0.12em] sm:tracking-[0.18em] px-2 sm:px-2.5 md:px-3 py-1 whitespace-nowrap">
           TOP {rank}
@@ -78,7 +79,7 @@ const ProductCard = ({ product, rank }: ProductCardProps) => {
                   <img
                     src={src}
                     alt={translatedName}
-                    className="w-full h-full object-contain transition-transform duration-700"
+                    className="w-full h-full object-contain transition-transform duration-500 ease-out group-hover:scale-105"
                     loading="lazy"
                     onError={(e) => ((e.currentTarget as HTMLImageElement).src = "/placeholder.svg")}
                   />
@@ -113,6 +114,11 @@ const ProductCard = ({ product, rank }: ProductCardProps) => {
           {discount > 0 && (
             <Badge variant="destructive" className="rounded-sm text-[10px] md:text-[11px] font-sans font-bold px-1.5 md:px-2.5 py-0.5">
               -{discount}%
+            </Badge>
+          )}
+          {product.is_best && (
+            <Badge className="rounded-sm border-0 bg-[#1f1a17] text-[#e8cf9a] hover:bg-[#1f1a17] text-[10px] md:text-[11px] font-sans font-extrabold tracking-[0.18em] px-1.5 md:px-2.5 py-0.5 shadow-sm">
+              BEST
             </Badge>
           )}
           {isNew && (
