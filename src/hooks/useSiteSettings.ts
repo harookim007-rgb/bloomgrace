@@ -16,6 +16,7 @@ export type SiteSettings = {
   businessAddress: string;
   mailOrderNumber: string; // 통신판매업 신고번호
   design?: unknown;
+  faq?: unknown; // see src/lib/faq.ts
 };
 
 export const defaultSiteSettings: SiteSettings = {

@@ -182,7 +182,7 @@ export const hexToHsl = (hex: string): string => {
 const parts = (hsl: string) => hsl.replace(/%/g, "").split(" ").map(Number) as [number, number, number];
 
 const DEFAULT_LOADED_FONTS = ["Playfair Display", "Inter", "Noto Sans KR", "Cormorant Garamond"];
-const ensureFont = (family: string) => {
+export const ensureFont = (family: string) => {
   if (DEFAULT_LOADED_FONTS.includes(family)) return;
   const id = `design-font-${family.replace(/\s+/g, "-")}`;
   if (document.getElementById(id)) return;

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ShoppingBag, User, Menu, Search, Heart, Globe, X } from "lucide-react";
 import {
@@ -12,6 +12,11 @@ import CartDrawer from "@/components/CartDrawer";
 import BrandLogo from "@/components/BrandLogo";
 import RollingGreeting from "@/components/RollingGreeting";
 import AnnouncementBar from "@/components/AnnouncementBar";
+import HintBubble from "@/components/HintBubble";
+
+const JOIN_TEXT: Record<string, string> = {
+  en: "Join us!", es: "¡Únete!", de: "Jetzt beitreten!", fr: "Rejoignez-nous !", pt: "Junte-se a nós!", ja: "会員登録はこちら", ar: "انضمي إلينا!",
+};
 import { useDesign } from "@/hooks/useDesign";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
@@ -26,6 +31,7 @@ const Navigation = () => {
   const { user, isAdmin } = useAuth();
   const { header } = useDesign();
   const { t, language, setLanguage } = useLanguage();
+  const { pathname } = useLocation();
   const { allowWishlist } = useSiteSettings();
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
@@ -180,11 +186,15 @@ const Navigation = () => {
               </Link>
             )}
             <CartDrawer />
-            <Link to={user ? "/mypage" : "/auth"} className="inline-flex" aria-label={user ? t("nav_mypage") : t("nav_login")}>
-              <Button variant="ghost" size="icon" aria-label={user ? t("nav_mypage") : t("nav_login")} className="h-10 w-10 text-foreground/60 hover:text-primary">
-                <User className="h-[18px] w-[18px]" />
-              </Button>
-            </Link>
+            <span className="relative inline-flex">
+              <Link to={user ? "/mypage" : "/auth"} className="inline-flex" aria-label={user ? t("nav_mypage") : t("nav_login")}>
+                <Button variant="ghost" size="icon" aria-label={user ? t("nav_mypage") : t("nav_login")} className="h-10 w-10 text-foreground/60 hover:text-primary">
+                  <User className="h-[18px] w-[18px]" />
+                </Button>
+              </Link>
+              {/* Many visitors did not recognise the person icon as sign-in, so point it out. */}
+              <HintBubble id="join" text={JOIN_TEXT[language] || JOIN_TEXT.en} side="below-right" hidden={!!user || pathname.startsWith("/auth")} />
+            </span>
           </div>
         </div>
 

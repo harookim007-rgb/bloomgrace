@@ -21,18 +21,19 @@ import AdminRanking from "@/components/admin/AdminRanking";
 import AdminMenus from "@/components/admin/AdminMenus";
 import AdminInquiries from "@/components/admin/AdminInquiries";
 import AdminCafe24 from "@/components/admin/AdminCafe24";
+import AdminFaq from "@/components/admin/AdminFaq";
 import { isAdminOtpVerified } from "@/lib/adminOtp";
 
 export type AdminTab =
   | "dashboard" | "products" | "categories" | "orders"
   | "customers" | "coupons" | "banners" | "reviews"
   | "shipping" | "payment" | "settings" | "ranking"
-  | "menus" | "inquiries" | "cafe24";
+  | "menus" | "inquiries" | "cafe24" | "faq";
 
 const adminTabs: AdminTab[] = [
   "dashboard", "products", "categories", "orders", "customers", "coupons",
   "banners", "reviews", "shipping", "payment", "settings", "ranking",
-  "menus", "inquiries", "cafe24",
+  "menus", "inquiries", "cafe24", "faq",
 ];
 
 
@@ -104,6 +105,7 @@ const Admin = () => {
       case "menus": return <AdminMenus />;
       case "inquiries": return <AdminInquiries />;
       case "cafe24": return <AdminCafe24 />;
+      case "faq": return <AdminFaq />;
       case "settings": return <AdminSettings />;
 
       default: return <AdminDashboard />;

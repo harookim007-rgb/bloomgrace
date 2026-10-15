@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, Package, FolderTree, ShoppingCart, Users,
   Tag, Image, Star, Settings, ChevronLeft, ChevronRight, LogOut, Home, Paintbrush,
-  Truck, Wallet, Trophy, Menu as MenuIcon, MessageSquare, Store,
+  Truck, Wallet, Trophy, Menu as MenuIcon, MessageSquare, Store, HelpCircle,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import type { AdminTab } from "@/pages/Admin";
@@ -45,6 +45,7 @@ export const menuGroups: { title: string; items: { id: AdminTab; label: string; 
       { id: "categories", label: "카테고리 관리", icon: FolderTree },
       { id: "banners", label: "배너/프로모션", icon: Image },
       { id: "menus", label: "메뉴 관리", icon: MenuIcon },
+      { id: "faq", label: "FAQ 관리", icon: HelpCircle },
     ],
   },
   {

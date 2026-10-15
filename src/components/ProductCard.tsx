@@ -114,7 +114,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
             </Badge>
           )}
           {isBest && !isNew && (
-            <Badge className="rounded-sm text-[10px] md:text-[11px] font-sans font-bold px-1.5 md:px-2.5 py-0.5 bg-secondary text-secondary-foreground border-secondary">
+            <Badge className="rounded-sm text-[10px] md:text-[11px] font-sans font-extrabold tracking-[0.12em] px-1.5 md:px-2.5 py-0.5 border-0 text-white bg-gradient-to-r from-rose-500 to-orange-400 shadow-sm hover:from-rose-500 hover:to-orange-400">
               {labels.best}
             </Badge>
           )}

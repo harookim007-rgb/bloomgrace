@@ -6,6 +6,12 @@ import { useAuth } from "@/contexts/AuthContext";
 import { requireLogin } from "@/components/LoginDialog";
 import { toast } from "sonner";
 import { supportTexts, SUPPORT_CATEGORIES, SupportCategory } from "./supportTexts";
+import HintBubble from "@/components/HintBubble";
+
+const HINT: Record<string, string> = {
+  en: "Questions? Ask us here", es: "¿Dudas? Pregúntanos aquí", de: "Fragen? Hier fragen", fr: "Une question ? Écrivez-nous ici",
+  pt: "Dúvidas? Fale conosco aqui", ja: "お問い合わせはこちら", ar: "لديك سؤال؟ اسألينا هنا",
+};
 
 interface OrderLite { id: string; created_at: string; status: string; items: string }
 
@@ -368,6 +374,8 @@ const SupportMessenger = () => {
         </div>
       )}
 
+      <span className="relative inline-flex">
+        <HintBubble id="support" text={(HINT[language] || HINT.en)} side="above-right" delay={1500} hidden={open} />
       <button
         onClick={() => setOpen(!open)}
         className="w-12 h-12 md:w-14 md:h-14 bg-primary text-primary-foreground rounded-full flex items-center justify-center shadow-luxury hover:scale-105 transition-transform duration-300"
@@ -375,6 +383,7 @@ const SupportMessenger = () => {
       >
         {open ? <X className="h-5 w-5 md:h-6 md:w-6" /> : <MessageCircle className="h-5 w-5 md:h-6 md:w-6" />}
       </button>
+      </span>
     </div>
   );
 };

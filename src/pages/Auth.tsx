@@ -74,16 +74,6 @@ const Auth = () => {
             </p>
           </div>
 
-          <div className="border border-border/50 p-5 space-y-3 bg-muted/30">
-            <p className="text-xs font-bold tracking-wider uppercase text-center text-foreground">
-              {t("auth_benefits_title")}
-            </p>
-            <ul className="space-y-2 text-xs text-foreground/70">
-              <li className="flex items-center gap-2"><span className="w-1 h-1 rounded-full bg-primary" />{t("auth_benefit_1")}</li>
-              <li className="flex items-center gap-2"><span className="w-1 h-1 rounded-full bg-primary" />{t("auth_benefit_2")}</li>
-              <li className="flex items-center gap-2"><span className="w-1 h-1 rounded-full bg-primary" />{t("auth_benefit_3")}</li>
-            </ul>
-          </div>
         </div>
       </section>
       <Footer />

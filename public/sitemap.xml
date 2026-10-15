@@ -5,6 +5,5 @@
   <url><loc>https://youthroom.shop/ranking</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://youthroom.shop/qa</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://youthroom.shop/contact</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://youthroom.shop/trust</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://youthroom.shop/auth</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
 </urlset>

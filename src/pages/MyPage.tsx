@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import ReviewPhotoUploader from "@/components/ReviewPhotoUploader";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
-import { Clock, RotateCcw, Star, PenLine } from "lucide-react";
+import { LogOut, Clock, RotateCcw, Star, PenLine } from "lucide-react";
 import { toast } from "sonner";
 import { getLocalizedProductName } from "@/lib/productI18n";
 
@@ -41,6 +41,19 @@ const MP_I18N: Record<string, { points: string; reorder: string; deadline: strin
 
 
 
+const RANGES = [
+  { days: 0, key: "all" }, { days: 30, key: "m1" }, { days: 90, key: "m3" }, { days: 180, key: "m6" }, { days: 365, key: "y1" },
+] as const;
+const DATE_I18N: Record<string, { all: string; m1: string; m3: string; m6: string; y1: string; from: string; to: string; none: string }> = {
+  en: { all: "All", m1: "1 month", m3: "3 months", m6: "6 months", y1: "1 year", from: "From", to: "To", none: "No orders in this period." },
+  es: { all: "Todo", m1: "1 mes", m3: "3 meses", m6: "6 meses", y1: "1 año", from: "Desde", to: "Hasta", none: "No hay pedidos en este periodo." },
+  de: { all: "Alle", m1: "1 Monat", m3: "3 Monate", m6: "6 Monate", y1: "1 Jahr", from: "Von", to: "Bis", none: "Keine Bestellungen in diesem Zeitraum." },
+  fr: { all: "Tout", m1: "1 mois", m3: "3 mois", m6: "6 mois", y1: "1 an", from: "Du", to: "Au", none: "Aucune commande sur cette période." },
+  pt: { all: "Tudo", m1: "1 mês", m3: "3 meses", m6: "6 meses", y1: "1 ano", from: "De", to: "Até", none: "Nenhum pedido neste período." },
+  ja: { all: "すべて", m1: "1ヶ月", m3: "3ヶ月", m6: "6ヶ月", y1: "1年", from: "開始日", to: "終了日", none: "この期間のご注文はありません。" },
+  ar: { all: "الكل", m1: "شهر", m3: "3 أشهر", m6: "6 أشهر", y1: "سنة", from: "من", to: "إلى", none: "لا توجد طلبات في هذه الفترة." },
+};
+
 const MyPage = () => {
   const { user, signOut } = useAuth();
   const { t, formatPrice, language } = useLanguage();
@@ -65,7 +78,7 @@ const MyPage = () => {
     if (!user) return;
     const [ordersRes, wishRes, profileRes, reviewsRes, payRes] = await Promise.all([
       supabase.from("orders").select("*, order_items(*, products(id,name,slug,brand,translations))").eq("user_id", user.id).order("created_at", { ascending: false }),
-      supabase.from("wishlists").select("product_id, products(*)").eq("user_id", user.id),
+      supabase.from("wishlists").select("product_id, products(*)").eq("user_id", user.id).order("created_at", { ascending: false }),
       supabase.from("profiles").select("*").eq("user_id", user.id).single(),
       supabase.from("reviews").select("product_id").eq("user_id", user.id),
       supabase.rpc("get_checkout_payment_info"),
@@ -77,6 +90,21 @@ const MyPage = () => {
     setPaymentInfo(Array.isArray(payRes.data) ? payRes.data[0] : payRes.data);
   };
   useEffect(() => { fetchData(); /* eslint-disable-next-line */ }, [user]);
+
+  // Order list period: a preset (0 = all) or an exact from/to date.
+  const [rangeDays, setRangeDays] = useState(0);
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const D = DATE_I18N[language] || DATE_I18N.en;
+  const shownOrders = orders.filter(o => {
+    const at = new Date(o.created_at).getTime();
+    if (fromDate || toDate) {
+      if (fromDate && at < new Date(`${fromDate}T00:00:00`).getTime()) return false;
+      if (toDate && at > new Date(`${toDate}T23:59:59`).getTime()) return false;
+      return true;
+    }
+    return !rangeDays || at >= Date.now() - rangeDays * 86_400_000;
+  });
 
 
   if (!user) return <div className="min-h-dvh"><Navigation /><div className="text-center py-32 text-sm text-muted-foreground">{t("mp_login_required")}</div><Footer /></div>;
@@ -134,7 +162,9 @@ const MyPage = () => {
         <div className="container max-w-5xl">
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-2xl md:text-3xl font-serif font-light">{t("mp_title")}</h1>
-            <Button variant="ghost" onClick={signOut} className="text-xs tracking-wider uppercase text-muted-foreground">{t("mp_logout")}</Button>
+            <Button variant="outline" onClick={signOut} className="rounded-full gap-2 px-5 h-10 text-xs font-semibold tracking-wider uppercase border-foreground/20 hover:bg-foreground hover:text-background transition-colors">
+              <LogOut className="h-3.5 w-3.5" />{t("mp_logout")}
+            </Button>
           </div>
           {profile && (
             <div className="mb-10 inline-flex items-center gap-3 px-4 py-2 border border-border bg-primary-soft/30 text-sm">
@@ -151,9 +181,26 @@ const MyPage = () => {
             </TabsList>
 
             <TabsContent value="orders" className="space-y-0">
-              {orders.length === 0 ? (
-                <div className="text-center py-20 text-sm text-muted-foreground">{t("mp_no_orders")}</div>
-              ) : orders.map(order => {
+              <div className="flex flex-wrap items-center gap-2 pb-4 border-b border-border">
+                {RANGES.map(r => (
+                  <button
+                    key={r.days}
+                    type="button"
+                    onClick={() => { setRangeDays(r.days); setFromDate(""); setToDate(""); }}
+                    className={`min-h-[36px] px-3 text-xs border transition-colors ${rangeDays === r.days && !fromDate && !toDate ? "bg-foreground text-background border-foreground" : "border-border text-muted-foreground hover:text-foreground"}`}
+                  >
+                    {D[r.key]}
+                  </button>
+                ))}
+                <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <input type="date" aria-label={D.from} value={fromDate} max={toDate || undefined} onChange={e => setFromDate(e.target.value)} className="h-9 border border-border bg-background px-2 text-xs" />
+                  ~
+                  <input type="date" aria-label={D.to} value={toDate} min={fromDate || undefined} onChange={e => setToDate(e.target.value)} className="h-9 border border-border bg-background px-2 text-xs" />
+                </span>
+              </div>
+              {shownOrders.length === 0 ? (
+                <div className="text-center py-20 text-sm text-muted-foreground">{orders.length === 0 ? t("mp_no_orders") : D.none}</div>
+              ) : shownOrders.map(order => {
                 const isCancelled = order.status === "cancelled";
                 const isPendingBank = order.status === "pending" && order.payment_method === "bank_transfer";
                 return (

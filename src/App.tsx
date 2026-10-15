@@ -21,7 +21,6 @@ import DesignApplier from "./components/DesignApplier";
 import PopupHost from "./components/PopupHost";
 import { useDesign } from "./hooks/useDesign";
 import NotFound from "./pages/NotFound";
-import Trust from "./pages/Trust";
 import Ranking from "./pages/Ranking";
 import FallingPetals from "./components/FallingPetals";
 import ScatteredFlorals from "./components/FloralDecor";
@@ -72,7 +71,6 @@ const App = () => (
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin/design" element={<AdminDesign />} />
               <Route path="/admin/products/:id/edit" element={<ProductEditPage />} />
-              <Route path="/trust" element={<Trust />} />
               <Route path="/ranking" element={<Ranking />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

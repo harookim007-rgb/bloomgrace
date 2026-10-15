@@ -201,7 +201,6 @@ export const BLOCK_PAGES = [
   { key: "ranking", label: "랭킹", path: "/ranking" },
   { key: "contact", label: "문의", path: "/contact" },
   { key: "qa", label: "Q&A", path: "/qa" },
-  { key: "trust", label: "브랜드 신뢰", path: "/trust" },
 ] as const;
 export type BlockPageKey = (typeof BLOCK_PAGES)[number]["key"];
 

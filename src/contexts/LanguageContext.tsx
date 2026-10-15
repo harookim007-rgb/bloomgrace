@@ -15,7 +15,7 @@ export const currencyNoticeMap: Record<string, string> = {
 
 export type Language = "en" | "es" | "de" | "fr" | "pt" | "ja" | "ar";
 
-const translations = {
+export const translations = {
   en: {
     // Navigation
     nav_home: "Home",
@@ -63,8 +63,7 @@ const translations = {
     about_since: "Crafted with care since 2024",
 
     // Footer
-    footer_desc:
-      "A brand embracing Korean beauty wisdom. Crafted with nature's finest ingredients to complete your elegance.",
+    footer_desc: "Where your youth stays — Youthroom. A K-Beauty cosmetic shop selling at honest prices.",
     footer_products: "Products",
     footer_new: "New Arrivals",
     footer_bestseller: "Bestsellers",
@@ -85,7 +84,7 @@ const translations = {
     products_title: "All Products",
     products_search: "Search products...",
     products_search_btn: "Search",
-    products_all: "All",
+    products_all: "Ranking",
     products_category: "Category",
     products_popular: "Popular",
     products_newest: "Newest",
@@ -376,7 +375,7 @@ const translations = {
       "Desde nuestras formulaciones exclusivas hasta nuestro empaque cuidadosamente diseñado, cada elemento está elaborado para realzar tu resplandor natural mientras nutre tu piel con la pureza de la naturaleza.",
     about_since: "Elaborado con cuidado desde 2024",
 
-    footer_desc: "Marca de cosméticos premium que abraza la sabiduría de la belleza coreana.",
+    footer_desc: "Donde tu juventud se queda: Youthroom. Tienda de cosmética K-Beauty con precios honestos.",
     footer_products: "Productos",
     footer_new: "Novedades",
     footer_bestseller: "Más Vendidos",
@@ -397,7 +396,7 @@ const translations = {
     products_subtitle: "Colección premium de cosméticos coreanos",
     products_search: "Buscar productos...",
     products_search_btn: "Buscar",
-    products_all: "Todos",
+    products_all: "Ranking",
     products_category: "Categoría",
     products_popular: "Popular",
     products_newest: "Más Reciente",
@@ -662,7 +661,7 @@ const translations = {
       "Von unseren exklusiven Formulierungen bis zu unserem durchdacht gestalteten Verpackungsdesign ist jedes Element darauf ausgerichtet, Ihre natürliche Ausstrahlung zu verstärken.",
     about_since: "Mit Sorgfalt gefertigt seit 2024",
 
-    footer_desc: "Premium-Kosmetikmarke mit koreanischer Schönheitsweisheit.",
+    footer_desc: "Wo deine Jugend bleibt – Youthroom. K-Beauty-Kosmetikshop mit ehrlichen Preisen.",
     footer_products: "Produkte",
     footer_new: "Neuheiten",
     footer_bestseller: "Bestseller",
@@ -683,7 +682,7 @@ const translations = {
     products_subtitle: "Premium koreanische Kosmetik-Kollektion",
     products_search: "Produkte suchen...",
     products_search_btn: "Suchen",
-    products_all: "Alle",
+    products_all: "Ranking",
     products_category: "Kategorie",
     products_popular: "Beliebt",
     products_newest: "Neueste",
@@ -928,7 +927,7 @@ const translations = {
     featured_title: "Produits Phares",
     featured_subtitle: "L'essentiel beauté inspiré des cosmétiques coréens",
     featured_view_all: "Voir Tous les Produits",
-    footer_desc: "Une marque inspirée de la sagesse beauté coréenne. Élaborée avec les meilleurs ingrédients naturels.",
+    footer_desc: "Là où votre jeunesse demeure : Youthroom. Boutique de cosmétiques K-Beauty aux prix honnêtes.",
     footer_products: "Produits",
     footer_brand: "Marque",
     footer_support: "Support",
@@ -936,7 +935,7 @@ const translations = {
     products_title: "Tous les Produits",
     products_subtitle: "Collection de cosmétiques coréens premium",
     products_search: "Rechercher...",
-    products_all: "Tout",
+    products_all: "Classement",
     products_no_results: "Aucun produit trouvé.",
     pd_add_to_cart: "Ajouter au panier",
     pd_review_section: "Avis",
@@ -1148,7 +1147,7 @@ const translations = {
     featured_title: "Produtos em Destaque",
     featured_subtitle: "Essenciais de beleza inspirados nos cosméticos coreanos",
     featured_view_all: "Ver Todos os Produtos",
-    footer_desc: "Marca inspirada na sabedoria da beleza coreana. Elaborada com os melhores ingredientes naturais.",
+    footer_desc: "Onde a sua juventude permanece: Youthroom. Loja de cosméticos K-Beauty com preços honestos.",
     footer_products: "Produtos",
     footer_brand: "Marca",
     footer_support: "Suporte",
@@ -1156,7 +1155,7 @@ const translations = {
     products_title: "Todos os Produtos",
     products_subtitle: "Coleção de cosméticos coreanos premium",
     products_search: "Buscar...",
-    products_all: "Todos",
+    products_all: "Ranking",
     products_no_results: "Nenhum produto encontrado.",
     pd_add_to_cart: "Adicionar ao carrinho",
     pd_review_section: "Avaliações",
@@ -1367,7 +1366,7 @@ const translations = {
     featured_title: "المنتجات المميزة",
     featured_subtitle: "أساسيات الجمال المستوحاة من مستحضرات التجميل الكورية",
     featured_view_all: "عرض كل المنتجات",
-    footer_desc: "علامة تجارية مستوحاة من حكمة الجمال الكوري. مصنوعة من أجود مكونات الطبيعة.",
+    footer_desc: "حيث يبقى شبابك — Youthroom. متجر مستحضرات تجميل كورية بأسعار صادقة.",
     footer_products: "المنتجات",
     footer_brand: "العلامة التجارية",
     footer_support: "الدعم",
@@ -1375,7 +1374,7 @@ const translations = {
     products_title: "كل المنتجات",
     products_subtitle: "مجموعة مستحضرات التجميل الكورية الفاخرة",
     products_search: "بحث...",
-    products_all: "الكل",
+    products_all: "الترتيب",
     products_no_results: "لا توجد منتجات.",
     pd_add_to_cart: "أضف إلى السلة",
     pd_review_section: "التقييمات",
@@ -1586,7 +1585,7 @@ const translations = {
     featured_title: "おすすめ商品",
     featured_subtitle: "韓国コスメを纏うビューティーエッセンシャル",
     featured_view_all: "すべての商品を見る",
-    footer_desc: "韓国コスメの知恵を込めたブランド。自然の最高の原料で優雅さを完成させます。",
+    footer_desc: "あなたの若さがとどまる場所、Youthroom。正直な価格でお届けするK-ビューティーコスメショップです。",
     footer_products: "商品",
     footer_brand: "ブランド",
     footer_support: "サポート",
@@ -1594,7 +1593,7 @@ const translations = {
     products_title: "すべての商品",
     products_subtitle: "プレミアム韓国コスメコレクション",
     products_search: "商品を検索...",
-    products_all: "すべて",
+    products_all: "ランキング",
     products_no_results: "商品が見つかりません。",
     pd_add_to_cart: "カートに追加",
     pd_review_section: "レビュー",
@@ -1950,7 +1949,7 @@ const fallbacks: Partial<Record<Language, Partial<Record<keyof typeof translatio
   },
 };
 
-const getDictionary = (language: Language) => ({
+export const getDictionary = (language: Language) => ({
   ...translations.en,
   ...(translations[language] as any),
   ...(fallbacks[language] as any),

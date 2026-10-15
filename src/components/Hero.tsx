@@ -120,8 +120,10 @@ const Hero = ({ height = "normal", interval = 6 }: { height?: string; interval?:
   const translatedBanners = banners
     .map((b: any, i: number) => {
       const cur = (b.translations || {})?.[language];
-      const title = cur?.title && !containsHangul(cur.title) ? cur.title : b.title;
-      const subtitle = cur?.subtitle && !containsHangul(cur.subtitle) ? cur.subtitle : (b.subtitle || "");
+      // Without a translation for this language, use the English one before the text as typed.
+      const en = (b.translations || {})?.en;
+      const title = cur?.title && !containsHangul(cur.title) ? cur.title : (en?.title && !containsHangul(en.title) ? en.title : b.title);
+      const subtitle = cur?.subtitle && !containsHangul(cur.subtitle) ? cur.subtitle : (en?.subtitle && !containsHangul(en.subtitle) ? en.subtitle : (b.subtitle || ""));
       if (!title) return null;
       return {
         image: isUsableImage(b.image_url) ? b.image_url : fallbackSlides[i % 3].image,

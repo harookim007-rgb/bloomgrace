@@ -122,7 +122,7 @@ export const getLocalizedBenefit = (benefit: string, language: Language): string
 
 export const productUi = (language: Language) => ({
   new: { en: "NEW", es: "NUEVO", de: "NEU", fr: "NOUVEAU", pt: "NOVO", ja: "新商品", ar: "جديد" }[language] || "NEW",
-  best: { en: "BEST", es: "TOP", de: "BEST", fr: "BEST", pt: "TOP", ja: "人気", ar: "الأفضل" }[language] || "BEST",
+  best: "HOT",
   buyNow: { en: "Buy Now", es: "Comprar ahora", de: "Jetzt kaufen", fr: "Acheter", pt: "Comprar agora", ja: "今すぐ購入", ar: "اشترِ الآن" }[language] || "Buy Now",
   keyBenefits: { en: "Key Benefits", es: "Beneficios", de: "Vorteile", fr: "Bénéfices", pt: "Benefícios", ja: "主な効果", ar: "الفوائد الرئيسية" }[language] || "Key Benefits",
   related: { en: "You may also like", es: "También te puede gustar", de: "Das könnte Ihnen gefallen", fr: "Vous aimerez aussi", pt: "Você também pode gostar", ja: "おすすめ商品", ar: "قد يعجبك أيضاً" }[language] || "You may also like",

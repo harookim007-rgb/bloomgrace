@@ -24,7 +24,6 @@ const Products = () => {
   const [search, setSearch] = useState(searchParams.get("q") || "");
   const [category, setCategory] = useState(searchParams.get("category") || "all");
   const [sort, setSort] = useState(searchParams.get("sort") || "popular");
-  const [priceRange, setPriceRange] = useState("all");
   const saleOnly = searchParams.get("sale") === "1";
 
   useEffect(() => {
@@ -44,9 +43,6 @@ const Products = () => {
         const cat = categories.find(c => c.slug === category);
         if (cat) query = query.eq("category_id", cat.id);
       }
-      if (priceRange === "under20000") query = query.lt("price", 20000);
-      else if (priceRange === "20000-50000") query = query.gte("price", 20000).lte("price", 50000);
-      else if (priceRange === "over50000") query = query.gt("price", 50000);
       if (sort === "popular") query = query.order("review_count", { ascending: false });
       else if (sort === "newest") query = query.order("created_at", { ascending: false });
       else if (sort === "price-low") query = query.order("price", { ascending: true });
@@ -70,7 +66,7 @@ const Products = () => {
     };
     fetchProducts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [category, search, sort, priceRange, categories, saleOnly, language]);
+  }, [category, search, sort, categories, saleOnly, language]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -121,15 +117,6 @@ const Products = () => {
                   <SelectItem value="rating">{t("products_rating")}</SelectItem>
                 </SelectContent>
               </Select>
-              <Select value={priceRange} onValueChange={setPriceRange}>
-                <SelectTrigger className="w-[120px] md:w-[150px] rounded-none text-xs min-h-[44px]"><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">{t("products_all_prices")}</SelectItem>
-                  <SelectItem value="under20000">{t("products_under_20k")}</SelectItem>
-                  <SelectItem value="20000-50000">{t("products_20k_50k")}</SelectItem>
-                  <SelectItem value="over50000">{t("products_over_50k")}</SelectItem>
-                </SelectContent>
-              </Select>
             </div>
           </div>
 
@@ -137,7 +124,7 @@ const Products = () => {
           <div className="flex gap-2 overflow-x-auto pb-4 md:pb-6 mb-2 -mx-1 px-1 scrollbar-hide">
             <button
               onClick={() => setCategory("all")}
-              className={`text-[11px] md:text-xs font-sans tracking-[0.12em] md:tracking-[0.15em] uppercase whitespace-nowrap px-3 md:px-4 py-2 border transition-colors min-h-[40px] ${
+              className={`text-xs md:text-sm font-sans font-medium whitespace-nowrap px-3 md:px-4 py-2 border transition-colors min-h-[40px] ${
                 category === "all" ? "bg-foreground text-background border-foreground" : "border-border text-muted-foreground hover:text-foreground hover:border-foreground"
               }`}
             >
@@ -147,7 +134,7 @@ const Products = () => {
               <button
                 key={c.id}
                 onClick={() => setCategory(c.slug)}
-                className={`text-[11px] md:text-xs font-sans tracking-[0.12em] md:tracking-[0.15em] uppercase whitespace-nowrap px-3 md:px-4 py-2 border transition-colors min-h-[40px] ${
+                className={`text-xs md:text-sm font-sans font-medium whitespace-nowrap px-3 md:px-4 py-2 border transition-colors min-h-[40px] ${
                   category === c.slug ? "bg-foreground text-background border-foreground" : "border-border text-muted-foreground hover:text-foreground hover:border-foreground"
                 }`}
               >

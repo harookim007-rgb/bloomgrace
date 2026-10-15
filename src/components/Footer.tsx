@@ -4,15 +4,6 @@ import BrandLogo from "@/components/BrandLogo";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { STORE_NAME } from "@/lib/shop";
 
-const trustLabel: Record<Language, string> = {
-  en: "Trust & Privacy",
-  es: "Confianza y Privacidad",
-  de: "Vertrauen & Datenschutz",
-  fr: "Confiance & Confidentialité",
-  pt: "Confiança e Privacidade",
-  ja: "信頼とプライバシー",
-  ar: "الثقة والخصوصية",
-};
 
 const Footer = () => {
   const { t, language } = useLanguage();
@@ -44,7 +35,6 @@ const Footer = () => {
               <li><Link to="/products?category=skincare" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{t("nav_skincare")}</Link></li>
               <li><Link to="/products?category=makeup" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{t("nav_makeup")}</Link></li>
               <li><Link to="/products?category=new" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_new")}</Link></li>
-              <li><Link to="/products?category=bestseller" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_bestseller")}</Link></li>
             </ul>
           </div>
 
@@ -56,7 +46,6 @@ const Footer = () => {
             <ul className="space-y-2">
               <li><Link to="/contact" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{t("nav_contact")}</Link></li>
               <li><Link to="/qa" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{t("footer_faq")}</Link></li>
-              <li><Link to="/trust" className="text-sm md:text-base text-muted-foreground hover:text-primary transition-colors">{trustLabel[language]}</Link></li>
             </ul>
           </div>
         </div>
