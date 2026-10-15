@@ -375,7 +375,7 @@ const SupportMessenger = () => {
       )}
 
       <span className="relative inline-flex">
-        <HintBubble id="support" text={(HINT[language] || HINT.en)} side="above-right" delay={1500} hidden={open} />
+        <HintBubble text={(HINT[language] || HINT.en)} side="above-right" delay={1500} hidden={open} />
       <button
         onClick={() => setOpen(!open)}
         className="w-12 h-12 md:w-14 md:h-14 bg-primary text-primary-foreground rounded-full flex items-center justify-center shadow-luxury hover:scale-105 transition-transform duration-300"

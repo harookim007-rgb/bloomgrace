@@ -15,7 +15,7 @@ import AnnouncementBar from "@/components/AnnouncementBar";
 import HintBubble from "@/components/HintBubble";
 
 const JOIN_TEXT: Record<string, string> = {
-  en: "Join us!", es: "¡Únete!", de: "Jetzt beitreten!", fr: "Rejoignez-nous !", pt: "Junte-se a nós!", ja: "会員登録はこちら", ar: "انضمي إلينا!",
+  en: "Login here!", es: "¡Inicia sesión aquí!", de: "Hier anmelden!", fr: "Connectez-vous ici !", pt: "Entre aqui!", ja: "ログインはこちら", ar: "سجّلي الدخول هنا!",
 };
 import { useDesign } from "@/hooks/useDesign";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
@@ -193,7 +193,7 @@ const Navigation = () => {
                 </Button>
               </Link>
               {/* Many visitors did not recognise the person icon as sign-in, so point it out. */}
-              <HintBubble id="join" text={JOIN_TEXT[language] || JOIN_TEXT.en} side="below-right" hidden={!!user || pathname.startsWith("/auth")} />
+              <HintBubble text={JOIN_TEXT[language] || JOIN_TEXT.en} side="below-right" hidden={!!user || pathname.startsWith("/auth")} />
             </span>
           </div>
         </div>
