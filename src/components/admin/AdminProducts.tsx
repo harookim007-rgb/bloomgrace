@@ -1,3 +1,4 @@
+import { orderedCategories } from "@/lib/categoryTree";
 import ConsultTagPicker from "@/components/admin/ConsultTagPicker";
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -332,7 +333,7 @@ const AdminProducts = () => {
 
   const filtered = products.filter(p => {
     if (search && !p.name.toLowerCase().includes(search.toLowerCase()) && !p.brand?.toLowerCase().includes(search.toLowerCase())) return false;
-    if (filterCategory !== "all" && p.category_id !== filterCategory) return false;
+    if (filterCategory !== "all" && p.category_id !== filterCategory && categories.find(c => c.id === p.category_id)?.parent_id !== filterCategory) return false;
     if (filterStatus === "active" && !p.is_active) return false;
     if (filterStatus === "inactive" && p.is_active) return false;
     if (filterStatus === "featured" && !p.is_featured) return false;
@@ -394,7 +395,7 @@ const AdminProducts = () => {
                   <div><Label>카테고리</Label>
                     <Select value={form.category_id} onValueChange={v => setForm({...form, category_id: v})}>
                       <SelectTrigger><SelectValue placeholder="선택" /></SelectTrigger>
-                      <SelectContent>{categories.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}</SelectContent>
+                      <SelectContent>{orderedCategories(categories).map(c => <SelectItem key={c.id} value={c.id}>{c.label}</SelectItem>)}</SelectContent>
                     </Select>
                   </div>
                   <div><Label>재고</Label><Input type="number" value={form.stock} onChange={e => setForm({...form, stock: e.target.value})} /></div>
@@ -625,7 +626,7 @@ const AdminProducts = () => {
           <SelectTrigger className="w-full sm:w-[150px] shrink-0"><SelectValue placeholder="카테고리" /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">전체 카테고리</SelectItem>
-            {categories.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
+            {orderedCategories(categories).map(c => <SelectItem key={c.id} value={c.id}>{c.label}</SelectItem>)}
           </SelectContent>
         </Select>
         <Select value={filterStatus} onValueChange={setFilterStatus}>

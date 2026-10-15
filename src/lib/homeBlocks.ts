@@ -57,12 +57,12 @@ export const BLOCK_TYPES: Record<BlockType, BlockDef> = {
   },
   products: {
     label: "상품 목록", desc: "추천·신상품·카테고리별 상품", group: "쇼핑", chrome: false,
-    defaults: { source: "featured", category: "", count: 8, columns: 4, title: "", subtitle: "" },
+    defaults: { source: "featured", category: "", count: 10, columns: 5, title: "", subtitle: "" },
     fields: [
-      { key: "source", kind: "select", label: "보여줄 상품", options: [{ value: "featured", label: "추천 상품" }, { value: "new", label: "신상품 (최근 등록순)" }, { value: "category", label: "카테고리 선택" }], hint: "추천 상품은 '상품 관리'에서 추천으로 지정한 상품입니다" },
+      { key: "source", kind: "select", label: "보여줄 상품", options: [{ value: "featured", label: "추천 상품" }, { value: "ranking", label: "랭킹 (TOP 1·2·3 강조)" }, { value: "new", label: "신상품 (최근 등록순)" }, { value: "category", label: "카테고리 선택" }], hint: "추천 상품은 '상품 관리'에서 추천으로 지정한 상품입니다" },
       { key: "category", kind: "category", label: "카테고리", max: 60, showIf: s => s.source === "category" },
-      { key: "count", kind: "select", label: "상품 개수", options: [4, 8, 12].map(n => ({ value: n, label: `${n}개` })) },
-      { key: "columns", kind: "select", label: "PC 한 줄 상품 수", options: [{ value: 3, label: "3개씩" }, { value: 4, label: "4개씩" }] },
+      { key: "count", kind: "select", label: "상품 개수", options: [5, 8, 10, 12, 15, 20].map(n => ({ value: n, label: `${n}개` })) },
+      { key: "columns", kind: "select", label: "PC 한 줄 상품 수", options: [4, 5, 6].map(n => ({ value: n, label: `${n}개씩` })) },
       { key: "title", kind: "text", label: "제목 (선택)", max: 60, placeholder: "비워두면 언어별 기본 제목" },
       { key: "subtitle", kind: "text", label: "설명 (선택)", max: 120, placeholder: "비워두면 언어별 기본 설명" },
     ],
@@ -224,7 +224,7 @@ const normalizeSettings = (type: BlockType, raw: any): Record<string, any> => {
   for (const f of def.fields) {
     const v = raw?.[f.key];
     const fallback = def.defaults[f.key];
-    if (f.kind === "select") out[f.key] = oneOf(v, f.options.map(o => o.value), fallback);
+    if (f.kind === "select") out[f.key] = oneOf(type === "products" && f.key === "columns" && (v === 3 || v === 4) ? v + 1 : v, f.options.map(o => o.value), fallback);
     else if (f.kind === "number") out[f.key] = typeof v === "number" && Number.isFinite(v) ? Math.min(f.max, Math.max(f.min, Math.round(v))) : fallback;
     else if (f.kind === "images") out[f.key] = (Array.isArray(v) ? v : []).filter((u: unknown) => typeof u === "string" && u.trim()).slice(0, f.max).map((u: string) => u.slice(0, 2000));
     else if (f.kind === "items") {

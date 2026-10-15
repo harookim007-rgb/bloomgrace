@@ -11,6 +11,8 @@ import { Badge } from "@/components/ui/badge";
 import { getLocalizedBrand, getLocalizedProductName, productUi } from "@/lib/productI18n";
 
 interface ProductCardProps {
+  // 1-3 marks a top-ranked product: the card gets a frame and a "TOP n" label.
+  rank?: number;
   product: {
     id: string;
     name: string;
@@ -30,7 +32,7 @@ interface ProductCardProps {
   };
 }
 
-const ProductCard = ({ product }: ProductCardProps) => {
+const ProductCard = ({ product, rank }: ProductCardProps) => {
   const { addToCart } = useCart();
   const { isWishlisted, toggleWishlist } = useWishlist();
   const { t, formatPrice, language } = useLanguage();
@@ -45,7 +47,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const isNew = product.created_at
     ? Date.now() - new Date(product.created_at).getTime() < 30 * 24 * 60 * 60 * 1000
     : false;
-  const isBest = product.tags?.includes("bestseller") || product.is_featured;
 
   const main = product.image_url || product.thumbnail_url || "/placeholder.svg";
   const slides = useMemo(() => {
@@ -60,8 +61,14 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   useEffect(() => { emblaApi?.reInit(); }, [slides.length, emblaApi]);
 
+  const top = rank !== undefined && rank <= 3;
   return (
-    <div className="group hover-lift">
+    <div className={`group hover-lift relative ${top ? "border-2 border-primary/70 bg-card p-1.5 sm:p-2.5 md:p-4 shadow-elegant" : ""}`}>
+      {top && (
+        <span className="absolute -top-3 left-1.5 sm:left-3 md:left-4 z-20 bg-primary text-primary-foreground text-[10px] sm:text-[11px] md:text-xs font-sans font-extrabold tracking-[0.12em] sm:tracking-[0.18em] px-2 sm:px-2.5 md:px-3 py-1 whitespace-nowrap">
+          TOP {rank}
+        </span>
+      )}
       <div className="relative aspect-square overflow-hidden bg-muted/30 mb-2.5 md:mb-4 rounded-sm">
         <Link to={`/products/${product.slug}`} className="block w-full h-full">
           <div className="overflow-hidden w-full h-full" ref={emblaRef}>
@@ -111,11 +118,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
           {isNew && (
             <Badge className="rounded-sm text-[10px] md:text-[11px] font-sans font-bold px-1.5 md:px-2.5 py-0.5 bg-primary-soft text-primary border-primary/20">
               {labels.new}
-            </Badge>
-          )}
-          {isBest && !isNew && (
-            <Badge className="rounded-sm text-[10px] md:text-[11px] font-sans font-extrabold tracking-[0.12em] px-1.5 md:px-2.5 py-0.5 border-0 text-white bg-gradient-to-r from-rose-500 to-orange-400 shadow-sm hover:from-rose-500 hover:to-orange-400">
-              {labels.best}
             </Badge>
           )}
         </div>

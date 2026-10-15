@@ -1,3 +1,4 @@
+import { orderedCategories } from "@/lib/categoryTree";
 import ConsultTagPicker from "@/components/admin/ConsultTagPicker";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -454,7 +455,7 @@ const ProductEditPage = () => {
                 <div><Label>카테고리</Label>
                   <Select value={form.category_id} onValueChange={v => setForm({ ...form, category_id: v })}>
                     <SelectTrigger><SelectValue placeholder="선택" /></SelectTrigger>
-                    <SelectContent>{categories.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}</SelectContent>
+                    <SelectContent>{orderedCategories(categories).map(c => <SelectItem key={c.id} value={c.id}>{c.label}</SelectItem>)}</SelectContent>
                   </Select>
                 </div>
                 <div><Label>재고</Label><Input type="number" value={form.stock} onChange={e => setForm({ ...form, stock: e.target.value })} /></div>

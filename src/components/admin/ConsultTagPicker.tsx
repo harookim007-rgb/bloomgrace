@@ -1,5 +1,5 @@
 import { Label } from "@/components/ui/label";
-import { CONSULT_GROUPS, SKIN_PRODUCT_TYPES } from "@/lib/consultation";
+import { CONSULT_GROUPS } from "@/lib/consultation";
 
 // Lets the admin choose which beauty-consultation answers a product is recommended for.
 const ConsultTagPicker = ({ value, onChange }: { value: string[]; onChange: (tags: string[]) => void }) => {
@@ -34,26 +34,7 @@ const ConsultTagPicker = ({ value, onChange }: { value: string[]; onChange: (tag
         </div>
       ))}
       {hasSkin && (
-        <div className="space-y-1.5">
-          <p className="text-xs font-semibold text-muted-foreground">스킨케어 제품 종류 (하나만)</p>
-          <div className="flex flex-wrap gap-2">
-            {SKIN_PRODUCT_TYPES.map(t => {
-              const active = value.includes(t.id);
-              return (
-                <button
-                  type="button"
-                  key={t.id}
-                  aria-pressed={active}
-                  onClick={() => onChange([...value.filter(v => !SKIN_PRODUCT_TYPES.some(s => s.id === v)), ...(active ? [] : [t.id])])}
-                  className={`px-3 py-1.5 text-xs rounded-full border transition-colors ${active ? "bg-foreground text-background border-foreground" : "border-border text-muted-foreground hover:text-foreground hover:border-foreground/40"}`}
-                >
-                  {t.label}
-                </button>
-              );
-            })}
-          </div>
-          <p className="text-xs text-muted-foreground">방문자가 제품 종류로 좁혀 볼 때와 사용 순서를 정할 때 쓰입니다.</p>
-        </div>
+        <p className="text-xs text-muted-foreground">스킨케어 사용 단계(스킨/토너 → 에센스/세럼/앰플 → 크림 → 미스트/오일 → 마스크팩)는 이 상품의 카테고리로 정해집니다.</p>
       )}
     </div>
   );

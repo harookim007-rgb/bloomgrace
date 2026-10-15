@@ -1,3 +1,4 @@
+import { orderedCategories } from "@/lib/categoryTree";
 import { useEffect, useState } from "react";
 import { ArrowDown, ArrowUp, ChevronDown, ChevronUp, Copy, Eye, EyeOff, GripVertical, Lock, Plus, Trash2, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -45,7 +46,7 @@ const Field = ({ label, hint, children }: { label: string; hint?: string; childr
 const summary = (b: HomeBlock) => {
   const text = [b.s.heading, b.s.title, b.s.alt, b.s.url].find(v => typeof v === "string" && v.trim());
   if (text) return text as string;
-  if (b.type === "products") return { featured: "추천 상품", new: "신상품", category: "카테고리 상품" }[b.s.source as string] || "";
+  if (b.type === "products") return { featured: "추천 상품", ranking: "랭킹", new: "신상품", category: "카테고리 상품" }[b.s.source as string] || "";
   if (b.type === "spacer") return `${b.s.height}px`;
   return BLOCK_TYPES[b.type].desc;
 };
@@ -97,10 +98,10 @@ const BlockEditor = ({ blocks, onChange, openId, setOpenId, onFocus, home, onExt
   const [picking, setPicking] = useState(false);
   const [dragId, setDragId] = useState<string | null>(null);
   const [dropAt, setDropAt] = useState<{ id: string; after: boolean } | null>(null);
-  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
+  const [categories, setCategories] = useState<{ id: string; name: string; slug: string; parent_id: string | null; sort_order: number | null }[]>([]);
 
   useEffect(() => {
-    supabase.from("categories").select("id, name").order("sort_order").then(({ data }) => setCategories(data || []));
+    supabase.from("categories").select("id, name, slug, parent_id, sort_order").order("sort_order").then(({ data }) => setCategories(data || []));
   }, []);
 
   const patch = (id: string, change: Partial<HomeBlock>, key: string) =>
@@ -177,7 +178,7 @@ const BlockEditor = ({ blocks, onChange, openId, setOpenId, onFocus, home, onExt
           : (
             <Select value={value || undefined} onValueChange={v => setting(b, f.key, v)}>
               <SelectTrigger><SelectValue placeholder="카테고리를 선택하세요" /></SelectTrigger>
-              <SelectContent>{categories.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}</SelectContent>
+              <SelectContent>{orderedCategories(categories).map(c => <SelectItem key={c.id} value={c.id}>{c.label}</SelectItem>)}</SelectContent>
             </Select>
           );
         break;

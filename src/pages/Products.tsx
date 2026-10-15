@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/Navigation";
@@ -12,6 +12,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Search } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { localizeCategory } from "@/lib/categoryI18n";
+import { categoryIdsFor, childCategories, topCategories } from "@/lib/categoryTree";
+import { PRODUCT_GRID } from "@/lib/productGrid";
+
+const SUB_ALL: Record<string, string> = { en: "All", es: "Todo", de: "Alle", fr: "Tout", pt: "Tudo", ja: "すべて", ar: "الكل" };
 import { getLocalizedBrand, getLocalizedProductName } from "@/lib/productI18n";
 
 const Products = () => {
@@ -40,10 +44,12 @@ const Products = () => {
       else setIsRefining(true);
       let query = supabase.from("products").select("*").eq("is_active", true);
       if (category !== "all") {
-        const cat = categories.find(c => c.slug === category);
-        if (cat) query = query.eq("category_id", cat.id);
+        // A top category also shows the products filed under its subcategories.
+        const ids = categoryIdsFor(categories, category);
+        if (ids.length) query = query.in("category_id", ids);
       }
-      if (sort === "popular") query = query.order("review_count", { ascending: false });
+      // Popular = the admin ranking (랭킹 관리) first, then the most reviewed.
+      if (sort === "popular") query = query.order("manual_rank", { ascending: true, nullsFirst: false }).order("review_count", { ascending: false });
       else if (sort === "newest") query = query.order("created_at", { ascending: false });
       else if (sort === "price-low") query = query.order("price", { ascending: true });
       else if (sort === "price-high") query = query.order("price", { ascending: false });
@@ -67,6 +73,14 @@ const Products = () => {
     fetchProducts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category, search, sort, categories, saleOnly, language]);
+
+  const activeTop = useMemo(() => {
+    const cat = categories.find(c => c.slug === category);
+    if (!cat) return null;
+    return cat.parent_id ? categories.find(c => c.id === cat.parent_id) || null : cat;
+  }, [categories, category]);
+  const subCategories = activeTop ? childCategories(categories, activeTop.id) : [];
+  const showTop = category === "all" && sort === "popular" && !search.trim() && !saleOnly && products.length > 3;
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -100,13 +114,6 @@ const Products = () => {
               <Button type="submit" variant="outline" className="rounded-none text-xs tracking-wider uppercase">{t("products_search_btn")}</Button>
             </form>
             <div className="flex gap-2 flex-wrap overflow-x-auto">
-              <Select value={category} onValueChange={setCategory}>
-                <SelectTrigger className="w-[120px] md:w-[140px] rounded-none text-xs min-h-[44px]"><SelectValue placeholder={t("products_category")} /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">{t("products_all")}</SelectItem>
-                  {categories.map(c => <SelectItem key={c.id} value={c.slug}>{localizeCategory(c, t as any, language)}</SelectItem>)}
-                </SelectContent>
-              </Select>
               <Select value={sort} onValueChange={setSort}>
                 <SelectTrigger className="w-[110px] md:w-[130px] rounded-none text-xs min-h-[44px]"><SelectValue /></SelectTrigger>
                 <SelectContent>
@@ -130,12 +137,12 @@ const Products = () => {
             >
               {t("products_all")}
             </button>
-            {categories.map(c => (
+            {topCategories(categories).map(c => (
               <button
                 key={c.id}
                 onClick={() => setCategory(c.slug)}
                 className={`text-xs md:text-sm font-sans font-medium whitespace-nowrap px-3 md:px-4 py-2 border transition-colors min-h-[40px] ${
-                  category === c.slug ? "bg-foreground text-background border-foreground" : "border-border text-muted-foreground hover:text-foreground hover:border-foreground"
+                  category === c.slug || activeTop?.id === c.id ? "bg-foreground text-background border-foreground" : "border-border text-muted-foreground hover:text-foreground hover:border-foreground"
                 }`}
               >
                 {localizeCategory(c, t as any, language)}
@@ -143,10 +150,31 @@ const Products = () => {
             ))}
           </div>
 
+          {/* Subcategories of the chosen top category */}
+          {activeTop && subCategories.length > 0 && (
+            <div className="flex gap-2 overflow-x-auto -mt-2 pb-4 md:pb-6 mb-2 -mx-1 px-1 scrollbar-hide">
+              <button
+                onClick={() => setCategory(activeTop.slug)}
+                className={`text-xs md:text-sm whitespace-nowrap px-3 py-1.5 rounded-full border transition-colors min-h-[36px] ${category === activeTop.slug ? "border-primary text-primary bg-primary/5 font-semibold" : "border-transparent text-muted-foreground hover:text-foreground"}`}
+              >
+                {SUB_ALL[language] || SUB_ALL.en}
+              </button>
+              {subCategories.map(c => (
+                <button
+                  key={c.id}
+                  onClick={() => setCategory(c.slug)}
+                  className={`text-xs md:text-sm whitespace-nowrap px-3 py-1.5 rounded-full border transition-colors min-h-[36px] ${category === c.slug ? "border-primary text-primary bg-primary/5 font-semibold" : "border-transparent text-muted-foreground hover:text-foreground"}`}
+                >
+                  {localizeCategory(c, t as any, language)}
+                </button>
+              ))}
+            </div>
+          )}
+
           {/* Grid */}
           {isLoading ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 lg:gap-8">
-              {[...Array(8)].map((_, i) => (
+            <div className={PRODUCT_GRID}>
+              {[...Array(10)].map((_, i) => (
                 <div key={i}>
                   <div className="aspect-[3/4] bg-muted animate-pulse mb-4" />
                   <div className="h-3 bg-muted animate-pulse w-2/3 mb-2" />
@@ -157,8 +185,19 @@ const Products = () => {
           ) : products.length === 0 ? (
             <div className="text-center py-20 text-muted-foreground text-sm">{t("products_no_results")}</div>
           ) : (
-            <div className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 lg:gap-8 transition-opacity duration-200 ${isRefining ? "opacity-60" : "opacity-100"}`}>
-              {products.map(product => <ProductCard key={product.id} product={product} />)}
+            <div className={`space-y-10 md:space-y-14 transition-opacity duration-200 ${isRefining ? "opacity-60" : "opacity-100"}`}>
+              {/* The Ranking view (all products, popular order) shows its top 3 larger and framed. */}
+              {showTop && (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-3 gap-y-6 sm:gap-6 md:gap-8 pt-3 max-w-5xl">
+                  {products.slice(0, 3).map((product, i) => (
+                  // On phones TOP 1 takes the full row, TOP 2 and 3 share the next one.
+                  <div key={product.id} className={i === 0 ? "col-span-2 sm:col-span-1" : ""}><ProductCard product={product} rank={i + 1} /></div>
+                ))}
+                </div>
+              )}
+              <div className={PRODUCT_GRID}>
+                {(showTop ? products.slice(3) : products).map(product => <ProductCard key={product.id} product={product} />)}
+              </div>
             </div>
           )}
         </div>

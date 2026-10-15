@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getLocalizedBrand, getLocalizedDescription, getLocalizedProductName } from "@/lib/productI18n";
-import { recommendProducts } from "@/lib/consultation";
+import { recommendProducts, SKIN_STEPS } from "@/lib/consultation";
+import { useCart } from "@/hooks/useCart";
+import { ShoppingBag, Check } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ArrowRight, ArrowLeft, Loader2, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -25,7 +27,8 @@ const NO_MATCH: Record<string, string> = {
 };
 type Category = (typeof categories)[number];
 
-const skinSubCategories = ["All", "Toner", "Lotion", "Cream", "Ample", "Pack"] as const;
+// "All" plus the skincare subcategory slugs, in the order they are applied.
+const skinSubCategories = ["All", ...SKIN_STEPS] as const;
 
 interface ConcernOption {
   id: string;
@@ -242,11 +245,17 @@ const CONCERN_I18N: Record<string, { label: Record<string, string>; description:
 
 const SUBCAT_I18N: Record<string, Record<string, string>> = {
   All: { en: "All", es: "Todo", de: "Alle", fr: "Tout", pt: "Todos", ja: "すべて", ar: "الكل" },
-  Toner: { en: "Toner", es: "Tónico", de: "Toner", fr: "Tonique", pt: "Tônico", ja: "トナー", ar: "تونر" },
-  Lotion: { en: "Lotion", es: "Loción", de: "Lotion", fr: "Lotion", pt: "Loção", ja: "ローション", ar: "لوشن" },
-  Cream: { en: "Cream", es: "Crema", de: "Creme", fr: "Crème", pt: "Creme", ja: "クリーム", ar: "كريم" },
-  Ample: { en: "Ampoule", es: "Ampolla", de: "Ampulle", fr: "Ampoule", pt: "Ampola", ja: "アンプル", ar: "أمبول" },
-  Pack: { en: "Pack", es: "Mascarilla", de: "Maske", fr: "Masque", pt: "Máscara", ja: "パック", ar: "ماسك" },
+  "skin-toner": { en: "Skin & Toner", es: "Tónico", de: "Toner", fr: "Lotion tonique", pt: "Tônico", ja: "化粧水・トナー", ar: "تونر" },
+  "essence-serum": { en: "Essence & Serum", es: "Esencia y sérum", de: "Essenz & Serum", fr: "Essence et sérum", pt: "Essência e sérum", ja: "美容液", ar: "إسنس وسيروم" },
+  cream: { en: "Cream", es: "Crema", de: "Creme", fr: "Crème", pt: "Creme", ja: "クリーム", ar: "كريم" },
+  "mist-oil": { en: "Mist & Oil", es: "Bruma y aceite", de: "Mist & Öl", fr: "Brume et huile", pt: "Bruma e óleo", ja: "ミスト・オイル", ar: "بخاخ وزيت" },
+  "mask-pack": { en: "Masks", es: "Mascarillas", de: "Masken", fr: "Masques", pt: "Máscaras", ja: "マスク・パック", ar: "أقنعة" },
+};
+
+const ADD_I18N: Record<string, { add: string; added: string }> = {
+  en: { add: "Add to cart", added: "Added" }, es: { add: "Añadir", added: "Añadido" }, de: { add: "In den Warenkorb", added: "Hinzugefügt" },
+  fr: { add: "Ajouter", added: "Ajouté" }, pt: { add: "Adicionar", added: "Adicionado" }, ja: { add: "カートに入れる", added: "追加済み" },
+  ar: { add: "أضيفي إلى السلة", added: "تمت الإضافة" },
 };
 
 const getConcerns = (cat: Category) => {
@@ -396,6 +405,9 @@ interface BeautyConsultationProps {
 
 const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
   const { language, formatPrice } = useLanguage();
+  const { addToCart } = useCart();
+  const [addedIds, setAddedIds] = useState<Set<string>>(new Set());
+  const addLabels = ADD_I18N[language] || ADD_I18N.en;
   const ct = cTexts[language] || cTexts.en;
 
   const [showModal, setShowModal] = useState(false);
@@ -449,7 +461,7 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
     try {
       const [{ data: prods }, { data: cats }] = await Promise.all([
         supabase.from("products").select("*").eq("is_active", true),
-        supabase.from("categories").select("id, slug"),
+        supabase.from("categories").select("id, slug, parent_id"),
       ]);
       setProducts(prods || []);
       const concernData = getConcerns(category!).find((c) => c.id === concern);
@@ -689,10 +701,10 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
                   return (
                     <div key={i} className="border border-border/30 bg-card overflow-hidden">
                       <div className="flex gap-0">
-                        {matchedProduct?.image_url && (
+                        {matchedProduct && (
                           <Link to={`/products/${matchedProduct.slug}`} onClick={() => setShowModal(false)} className="flex-shrink-0">
-                            <div className="w-20 h-20 md:w-24 md:h-24 bg-muted/50">
-                              <img src={matchedProduct.image_url} alt={rec.productName} className="w-full h-full object-cover" />
+                            <div className="w-24 h-24 md:w-28 md:h-28 bg-muted/50">
+                              <img src={matchedProduct.thumbnail_url || matchedProduct.image_url || "/placeholder.svg"} alt={displayName} className="w-full h-full object-cover" />
                             </div>
                           </Link>
                         )}
@@ -713,7 +725,17 @@ const BeautyConsultation = ({ mode }: BeautyConsultationProps) => {
                           </div>
                           <p className="text-[13px] text-muted-foreground leading-relaxed line-clamp-2">{rec.reason}</p>
                           {matchedProduct && (
-                            <p className="text-xs font-sans font-medium text-foreground/85">{formatPrice(matchedProduct.price)}</p>
+                            <div className="flex items-center justify-between gap-2 pt-0.5">
+                              <p className="text-xs font-sans font-medium text-foreground/85">{formatPrice(matchedProduct.price)}</p>
+                              <button
+                                type="button"
+                                onClick={async () => { if (await addToCart(matchedProduct.id)) setAddedIds(prev => new Set(prev).add(matchedProduct.id)); }}
+                                className={`inline-flex items-center gap-1.5 min-h-[34px] px-3 text-[11px] font-sans font-semibold tracking-[0.08em] uppercase transition-colors ${addedIds.has(matchedProduct.id) ? "bg-muted text-foreground" : "bg-primary text-primary-foreground hover:bg-primary/90"}`}
+                              >
+                                {addedIds.has(matchedProduct.id) ? <Check className="h-3.5 w-3.5" /> : <ShoppingBag className="h-3.5 w-3.5" />}
+                                {addedIds.has(matchedProduct.id) ? addLabels.added : addLabels.add}
+                              </button>
+                            </div>
                           )}
                         </div>
                       </div>

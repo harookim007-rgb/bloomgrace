@@ -1,3 +1,4 @@
+import { PRODUCT_GRID } from "@/lib/productGrid";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -170,7 +171,7 @@ const ProductDetail = () => {
               <div className="border-b border-border pb-4 mb-8">
                 <h2 className="text-xl md:text-2xl font-serif font-light">{productUi(language).related}</h2>
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+              <div className={PRODUCT_GRID}>
                 {related.map((r) => <ProductCard key={r.id} product={r} />)}
               </div>
             </div>

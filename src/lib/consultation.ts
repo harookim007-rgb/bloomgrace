@@ -1,6 +1,7 @@
 // Beauty consultation matching. Admins tag each product (상품 등록 > 뷰티 상담 추천) with the
-// concerns it suits and, for skincare, its product type; the consultation recommends the
-// products tagged for the concern the visitor picks. IDs must match BeautyConsultation's options.
+// concerns it suits; the consultation recommends the products tagged for the concern the visitor
+// picks. A skincare product's routine step is its subcategory (스킨/토너, 에센스/세럼/앰플, ...).
+// IDs must match BeautyConsultation's options and the category slugs.
 
 export const CONSULT_GROUPS = [
   {
@@ -26,14 +27,11 @@ export const CONSULT_GROUPS = [
   },
 ] as const;
 
-// Skincare product types, matching the consultation's "product type" step (except "All").
-export const SKIN_PRODUCT_TYPES = [
-  { id: "Toner", label: "토너" }, { id: "Ample", label: "앰플·세럼" }, { id: "Lotion", label: "로션" },
-  { id: "Cream", label: "크림" }, { id: "Pack", label: "팩·마스크" },
-] as const;
-
-// Order the types are used in a routine.
-const ROUTINE_ORDER = SKIN_PRODUCT_TYPES.map(t => t.id) as string[];
+// Skincare subcategory slugs in the order they are applied.
+export const SKIN_STEPS = ["skin-toner", "essence-serum", "cream", "mist-oil", "mask-pack"] as const;
+const ROUTINE_ORDER: string[] = [...SKIN_STEPS];
+// Product types chosen before subcategories existed.
+const LEGACY_TYPES: Record<string, string> = { Toner: "skin-toner", Ample: "essence-serum", Lotion: "essence-serum", Cream: "cream", Pack: "mask-pack" };
 
 // Shop category slugs used when no product is tagged for the chosen concern yet.
 const FALLBACK_SLUGS: Record<string, string[]> = { Skin: ["skincare"], Body: ["bodycare"], Hair: ["haircare"] };
@@ -57,22 +55,29 @@ const rank = (a: Product, b: Product) =>
  */
 export const recommendProducts = <P extends Product>(
   products: P[],
-  categories: { id: string; slug: string }[],
+  categories: { id: string; slug: string; parent_id?: string | null }[],
   category: string,
   concern: string,
   productType: string | null,
   limit = 4,
 ): ConsultMatch<P>[] => {
   const available = products.filter(p => Number(p.stock ?? 1) > 0);
-  const typeOf = (p: P) => ROUTINE_ORDER.find(t => (p.consult_tags || []).includes(t)) || null;
+  const slugOf = (id?: string | null) => categories.find(c => c.id === id)?.slug;
+  const typeOf = (p: P) => {
+    const slug = slugOf(p.category_id);
+    if (slug && ROUTINE_ORDER.includes(slug)) return slug;
+    const legacy = (p.consult_tags || []).find(t => LEGACY_TYPES[t]);
+    return legacy ? LEGACY_TYPES[legacy] : null;
+  };
   let tagged = available.filter(p => (p.consult_tags || []).includes(concern));
   if (productType && productType !== "All") {
-    const ofType = tagged.filter(p => (p.consult_tags || []).includes(productType));
+    const ofType = tagged.filter(p => typeOf(p) === productType);
     if (ofType.length > 0) tagged = ofType;
   }
   const picked: ConsultMatch<P>[] = [...tagged].sort(rank).slice(0, limit).map(p => ({ product: p, type: typeOf(p), exact: true }));
   if (picked.length < limit) {
-    const ids = new Set(categories.filter(c => (FALLBACK_SLUGS[category] || []).includes(c.slug)).map(c => c.id));
+    const tops = categories.filter(c => (FALLBACK_SLUGS[category] || []).includes(c.slug)).map(c => c.id);
+    const ids = new Set([...tops, ...categories.filter(c => c.parent_id && tops.includes(c.parent_id)).map(c => c.id)]);
     const extra = available
       .filter(p => !picked.some(m => m.product.id === p.id) && p.category_id && ids.has(p.category_id))
       .sort(rank)

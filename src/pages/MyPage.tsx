@@ -1,3 +1,4 @@
+import { PRODUCT_GRID } from "@/lib/productGrid";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -285,7 +286,7 @@ const MyPage = () => {
               {wishlistProducts.length === 0 ? (
                 <div className="text-center py-20 text-sm text-muted-foreground">{t("mp_no_wishlist")}</div>
               ) : (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                <div className={PRODUCT_GRID}>
                   {wishlistProducts.map(p => p && <ProductCard key={p.id} product={p} />)}
                 </div>
               )}
