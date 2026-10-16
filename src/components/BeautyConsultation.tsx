@@ -19,7 +19,6 @@ type Step = "home" | "skinIntro" | "quiz" | "pickSkin" | "skinResult" | "hair" |
 const ADD_I18N: Record<string, { add: string; added: string }> = {
   en: { add: "Add to cart", added: "Added" }, es: { add: "Añadir", added: "Añadido" }, de: { add: "In den Warenkorb", added: "Hinzugefügt" },
   fr: { add: "Ajouter", added: "Ajouté" }, pt: { add: "Adicionar", added: "Adicionado" }, ja: { add: "カートに入れる", added: "追加済み" },
-  ar: { add: "أضيفي إلى السلة", added: "تمت الإضافة" },
 };
 
 // Figure focus for each hair step.

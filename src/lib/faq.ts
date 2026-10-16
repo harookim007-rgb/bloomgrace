@@ -5,7 +5,7 @@ import { getDictionary, translations, type Language } from "@/contexts/LanguageC
 
 export const FAQ_LANGUAGES: { code: Language; label: string }[] = [
   { code: "en", label: "English" }, { code: "es", label: "Español" }, { code: "de", label: "Deutsch" },
-  { code: "fr", label: "Français" }, { code: "pt", label: "Português" }, { code: "ja", label: "日本語" }, { code: "ar", label: "العربية" },
+  { code: "fr", label: "Français" }, { code: "pt", label: "Português" }, { code: "ja", label: "日本語" },
 ];
 export const FAQ_ICONS = ["sparkles", "package", "refresh", "shield", "leaf", "message"] as const;
 export type FaqIcon = (typeof FAQ_ICONS)[number];

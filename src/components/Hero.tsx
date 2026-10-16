@@ -79,18 +79,6 @@ const heroTexts: Record<string, { titles: string[]; subtitles: string[] }> = {
       "Beleza luxuosa, YOUTHROOM",
     ],
   },
-  ar: {
-    titles: [
-      "اكتشفي أناقة\nالجمال الكوري",
-      "قطرة واحدة من\nالترطيب الخالد",
-      "ارتقي بروتين\nالعناية بالبشرة",
-    ],
-    subtitles: [
-      "مصنوع من أجود مكونات الطبيعة",
-      "ترطيب يتحدى الزمن",
-      "جمال فاخر، YOUTHROOM",
-    ],
-  },
 };
 
 

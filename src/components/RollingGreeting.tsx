@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 // Multilingual rolling greeting — flag always in front, no trailing emojis.
-const greetings: { lang: string; flag: string; text: string; dir?: "rtl" }[] = [
+const greetings: { lang: string; flag: string; text: string }[] = [
   
   { lang: "en", flag: "🇺🇸", text: "Hello, gorgeous! We're YOUTHROOM" },
   { lang: "ja", flag: "🇯🇵", text: "こんにちは！YOUTHROOM です" },
@@ -12,7 +12,6 @@ const greetings: { lang: string; flag: string; text: string; dir?: "rtl" }[] = [
   { lang: "it", flag: "🇮🇹", text: "Ciao, bella! Siamo YOUTHROOM" },
   { lang: "pt", flag: "🇧🇷", text: "Olá, linda! Somos a YOUTHROOM" },
   { lang: "ru", flag: "🇷🇺", text: "Привет! Мы — YOUTHROOM" },
-  { lang: "ar", flag: "🇸🇦", text: "مرحباً! نحن YOUTHROOM", dir: "rtl" },
   { lang: "hi", flag: "🇮🇳", text: "नमस्ते! हम YOUTHROOM हैं" },
   { lang: "th", flag: "🇹🇭", text: "สวัสดี! เราคือ YOUTHROOM" },
   { lang: "vi", flag: "🇻🇳", text: "Xin chào! Chúng tôi là YOUTHROOM" },
@@ -35,7 +34,6 @@ const RollingGreeting = () => {
           {greetings.map((item, idx) => (
             <p
               key={idx}
-              dir={item.dir || "ltr"}
               className={`absolute inset-0 flex items-center justify-center gap-1.5 md:gap-2 text-center font-sans font-medium text-[11px] xs:text-[12px] sm:text-[14px] md:text-[16px] leading-none tracking-[0.01em] text-foreground/85 whitespace-nowrap transition-all duration-[900ms] ease-out ${
                 idx === i
                   ? "opacity-100 translate-y-0 scale-100"

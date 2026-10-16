@@ -18,7 +18,6 @@ const I18N: Record<string, { attach: string; max: (n: number) => string; login: 
   fr: { attach: "Ajouter des photos", max: (n) => `Vous pouvez télécharger jusqu'à ${n} photos.`, login: "Veuillez vous connecter.", fail: "Échec du téléchargement" },
   pt: { attach: "Anexar fotos", max: (n) => `Você pode enviar até ${n} fotos.`, login: "Faça login.", fail: "Falha no upload" },
   ja: { attach: "写真を添付", max: (n) => `最大${n}枚までアップロードできます。`, login: "ログインしてください。", fail: "写真のアップロードに失敗" },
-  ar: { attach: "إرفاق الصور", max: (n) => `يمكنك رفع حتى ${n} صور.`, login: "الرجاء تسجيل الدخول.", fail: "فشل رفع الصورة" },
 };
 
 async function shrink(file: File, max = 1280, quality = 0.85): Promise<Blob> {

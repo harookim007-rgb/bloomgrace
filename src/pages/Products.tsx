@@ -15,7 +15,7 @@ import { localizeCategory } from "@/lib/categoryI18n";
 import { categoryIdsFor, childCategories, topCategories } from "@/lib/categoryTree";
 import { PRODUCT_GRID } from "@/lib/productGrid";
 
-const SUB_ALL: Record<string, string> = { en: "All", es: "Todo", de: "Alle", fr: "Tout", pt: "Tudo", ja: "すべて", ar: "الكل" };
+const SUB_ALL: Record<string, string> = { en: "All", es: "Todo", de: "Alle", fr: "Tout", pt: "Tudo", ja: "すべて"};
 import { getLocalizedBrand, getLocalizedProductName } from "@/lib/productI18n";
 
 const Products = () => {

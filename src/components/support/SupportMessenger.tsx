@@ -10,7 +10,7 @@ import HintBubble from "@/components/HintBubble";
 
 const HINT: Record<string, string> = {
   en: "Questions? Ask us here", es: "¿Dudas? Pregúntanos aquí", de: "Fragen? Hier fragen", fr: "Une question ? Écrivez-nous ici",
-  pt: "Dúvidas? Fale conosco aqui", ja: "お問い合わせはこちら", ar: "لديك سؤال؟ اسألينا هنا",
+  pt: "Dúvidas? Fale conosco aqui", ja: "お問い合わせはこちら", 
 };
 
 interface OrderLite { id: string; created_at: string; status: string; items: string }
@@ -22,7 +22,6 @@ const ATTACH_I18N: Record<string, { attach: string; max: string; uploadFail: str
   fr: { attach: "Joindre une image", max: "Jusqu'à 5 images.", uploadFail: "Échec du téléchargement" },
   pt: { attach: "Anexar imagem", max: "Até 5 imagens.", uploadFail: "Falha no envio da imagem" },
   ja: { attach: "画像を添付", max: "画像は5枚までです。", uploadFail: "画像のアップロードに失敗しました" },
-  ar: { attach: "إرفاق صورة", max: "حتى 5 صور.", uploadFail: "فشل رفع الصورة" },
 };
 
 async function shrink(file: File, max = 1280, quality = 0.82): Promise<Blob> {

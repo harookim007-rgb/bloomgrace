@@ -32,7 +32,6 @@ const ADDED_I18N: Record<string, { title: string; msg: string; checkout: string;
   fr: { title: "Ajouté au panier", msg: "Le produit a été ajouté au panier.", checkout: "Payer maintenant", keep: "Continuer les achats" },
   pt: { title: "Adicionado ao carrinho", msg: "O produto foi adicionado ao carrinho.", checkout: "Finalizar compra", keep: "Continuar comprando" },
   ja: { title: "カートに追加しました", msg: "この商品がカートに追加されました。", checkout: "今すぐ購入", keep: "買い物を続ける" },
-  ar: { title: "تمت الإضافة إلى السلة", msg: "تمت إضافة هذا المنتج إلى السلة.", checkout: "الدفع الآن", keep: "متابعة التسوق" },
 };
 
 const ProductDetail = () => {
@@ -94,7 +93,7 @@ const ProductDetail = () => {
   };
 
   const filteredReviews = filterRating > 0 ? reviews.filter(r => r.rating >= filterRating) : reviews;
-  const dateFmt = language === "de" ? "de-DE" : language === "es" ? "es-ES" : language === "fr" ? "fr-FR" : language === "pt" ? "pt-BR" : language === "ar" ? "ar-SA" : "en-US";
+  const dateFmt = language === "de" ? "de-DE" : language === "es" ? "es-ES" : language === "fr" ? "fr-FR" : language === "pt" ? "pt-BR" : "en-US";
 
   if (isLoading) return <div className="min-h-dvh"><Navigation /><div className="flex items-center justify-center py-32 text-sm text-muted-foreground">{t("pd_loading")}</div></div>;
   if (!product) return <div className="min-h-dvh"><Navigation /><div className="flex items-center justify-center py-32 text-sm text-muted-foreground">{t("pd_not_found")}</div></div>;
@@ -207,7 +206,6 @@ const ProductDetail = () => {
                 fr: "Les avis ne peuvent être rédigés que depuis Mon Compte après la livraison.",
                 pt: "As avaliações só podem ser escritas em Minha Conta após a entrega.",
                 ja: "レビューは配送完了後、マイページから作成できます。",
-                ar: "يمكن كتابة التقييمات فقط من حسابي بعد استلام الطلب.",
               }[language]}
             </div>
 

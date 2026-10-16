@@ -24,7 +24,6 @@ const L = {
   fr: { title: "Bienvenue !", sub: "Nous sommes Youthroom", desc: "Connectez-vous avec Google pour enregistrer vos favoris et accélérer le paiement.", google: "Continuer avec Google" },
   pt: { title: "Bem-vindo!", sub: "Somos a Youthroom", desc: "Entre com o Google para salvar seus favoritos e finalizar a compra mais rápido.", google: "Continuar com Google" },
   ja: { title: "ようこそ！", sub: "Youthroom です", desc: "Googleでログインすると、お気に入りを保存してスムーズにお買い物できます。", google: "Googleで続ける" },
-  ar: { title: "!أهلاً بك", sub: "نحن Youthroom", desc: "سجّل الدخول عبر Google لحفظ المفضلات والدفع بشكل أسرع.", google: "المتابعة عبر Google" },
 } as const;
 
 const GoogleIcon = () => (

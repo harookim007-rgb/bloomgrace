@@ -12,7 +12,6 @@ const maintenanceText: Record<Language, { title: string; desc: string }> = {
   fr: { title: "Nous revenons bientôt", desc: "Notre boutique est en maintenance programmée. Merci de revenir dans quelques instants." },
   pt: { title: "Voltamos em breve", desc: "Nossa loja está em manutenção programada. Volte em instantes." },
   ja: { title: "まもなく再開します", desc: "ただいまメンテナンス中です。しばらくしてからもう一度お越しください。" },
-  ar: { title: "سنعود قريباً", desc: "متجرنا يخضع لصيانة مجدولة. يرجى العودة بعد قليل." },
 };
 
 // Applies the admin "사이트 설정" values that affect the whole site: maintenance mode and Google Analytics.

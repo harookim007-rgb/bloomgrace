@@ -16,7 +16,6 @@ const I18N: Record<Language, Record<string, string>> = {
   fr: { title: "Classement", sold: "vendus", no_data: "Pas encore assez de commandes pour ce classement.", period_week: "Hebdomadaire", period_month: "Mensuel" },
   pt: { title: "Ranking", sold: "vendidos", no_data: "Ainda não há pedidos suficientes para este ranking.", period_week: "Semanal", period_month: "Mensal" },
   ja: { title: "ランキング", sold: "個販売", no_data: "このランキングを作成するための注文がまだ不足しています。", period_week: "週間", period_month: "月間" },
-  ar: { title: "الترتيب", sold: "مبيعاً", no_data: "لا توجد طلبات كافية بعد لهذا الترتيب.", period_week: "أسبوعي", period_month: "شهري" },
 };
 
 const useRankI18n = () => {

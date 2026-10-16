@@ -11,7 +11,6 @@ const WISH_MSG = {
   fr: { login: "Veuillez vous connecter.", added: "Ajouté aux favoris !", removed: "Retiré des favoris." },
   pt: { login: "Faça login primeiro.", added: "Adicionado aos favoritos!", removed: "Removido dos favoritos." },
   ja: { login: "ログインしてください。", added: "お気に入りに追加しました！", removed: "お気に入りから削除しました。" },
-  ar: { login: "يرجى تسجيل الدخول أولاً.", added: "تمت الإضافة إلى المفضلة!", removed: "تمت الإزالة من المفضلة." },
 };
 
 export const useWishlist = () => {

@@ -26,7 +26,6 @@ const REVIEW_I18N: Record<string, { write: string; notice: string; title: string
   fr: { write: "Écrire un avis", notice: "Gagnez 1 000P en publiant un avis (utilisable au paiement).", title: "Titre", content: "Partagez votre expérience...", submit: "Envoyer", done: "Avis publié", success: "Avis publié · 1 000P gagnés !", dup: "Vous avez déjà évalué ce produit.", fail: "Échec de l'envoi.", rating: "Note" },
   pt: { write: "Escrever avaliação", notice: "Ganhe 1.000P ao escrever uma avaliação (usável no checkout).", title: "Título", content: "Compartilhe sua experiência...", submit: "Enviar", done: "Avaliado", success: "Avaliação enviada · 1.000P ganhos!", dup: "Você já avaliou este produto.", fail: "Falha ao enviar.", rating: "Avaliação" },
   ja: { write: "レビューを書く", notice: "レビューを書くと1,000Pが貯まります（お支払い時に利用可能）。", title: "タイトル", content: "ご感想をお聞かせください...", submit: "送信", done: "レビュー済み", success: "レビューを送信しました・1,000P獲得！", dup: "この商品はすでにレビュー済みです。", fail: "送信に失敗しました。", rating: "評価" },
-  ar: { write: "اكتب تقييماً", notice: "احصل على 1,000 نقطة عند كتابة تقييم (قابلة للاستخدام عند الدفع).", title: "العنوان", content: "شارك تجربتك...", submit: "إرسال", done: "تم التقييم", success: "تم إرسال التقييم · 1,000 نقطة!", dup: "لقد قمت بتقييم هذا المنتج بالفعل.", fail: "فشل الإرسال.", rating: "التقييم" },
 };
 
 const MP_I18N: Record<string, { points: string; reorder: string; deadline: string; expired: string; expireH: string; expireM: string; autoCancelled: string; reorderToast: (n: number) => string; subtotal: string; shipping: string; statusPending: string; statusConfirmed: string; statusShipping: string; statusDelivered: string; statusCancelled: string; }> = {
@@ -36,7 +35,6 @@ const MP_I18N: Record<string, { points: string; reorder: string; deadline: strin
   fr: { points: "Points", reorder: "Remettre au panier", deadline: "Date limite de paiement", expired: "Expiré", expireH: "h", expireM: "min restantes", autoCancelled: "Annulé automatiquement.", reorderToast: (n) => `${n} article(s) ajouté(s).`, subtotal: "Articles", shipping: "Livraison", statusPending: "En attente de paiement", statusConfirmed: "Paiement confirmé", statusShipping: "En cours de livraison", statusDelivered: "Livré", statusCancelled: "Annulé" },
   pt: { points: "Pontos", reorder: "Adicionar ao carrinho", deadline: "Prazo de pagamento", expired: "Expirado", expireH: "h", expireM: "min restantes", autoCancelled: "Cancelado automaticamente.", reorderToast: (n) => `${n} item(ns) adicionado(s).`, subtotal: "Itens", shipping: "Frete", statusPending: "Aguardando pagamento", statusConfirmed: "Pagamento confirmado", statusShipping: "Em envio", statusDelivered: "Entregue", statusCancelled: "Cancelado" },
   ja: { points: "ポイント", reorder: "カートに戻す", deadline: "支払期限", expired: "期限切れ", expireH: "時間", expireM: "分", autoCancelled: "支払期限切れのため自動キャンセル。", reorderToast: (n) => `${n}点をカートに追加しました。`, subtotal: "商品", shipping: "送料", statusPending: "入金待ち", statusConfirmed: "入金確認", statusShipping: "配送中", statusDelivered: "配送完了", statusCancelled: "キャンセル" },
-  ar: { points: "النقاط", reorder: "إعادة إلى السلة", deadline: "موعد الدفع النهائي", expired: "انتهى", expireH: "س", expireM: "د متبقية", autoCancelled: "تم الإلغاء تلقائياً.", reorderToast: (n) => `تمت إضافة ${n} منتجاً.`, subtotal: "المنتجات", shipping: "الشحن", statusPending: "بانتظار الدفع", statusConfirmed: "تم تأكيد الدفع", statusShipping: "قيد الشحن", statusDelivered: "تم التسليم", statusCancelled: "ملغى" },
 };
 
 
@@ -52,7 +50,6 @@ const DATE_I18N: Record<string, { all: string; m1: string; m3: string; m6: strin
   fr: { all: "Tout", m1: "1 mois", m3: "3 mois", m6: "6 mois", y1: "1 an", from: "Du", to: "Au", none: "Aucune commande sur cette période." },
   pt: { all: "Tudo", m1: "1 mês", m3: "3 meses", m6: "6 meses", y1: "1 ano", from: "De", to: "Até", none: "Nenhum pedido neste período." },
   ja: { all: "すべて", m1: "1ヶ月", m3: "3ヶ月", m6: "6ヶ月", y1: "1年", from: "開始日", to: "終了日", none: "この期間のご注文はありません。" },
-  ar: { all: "الكل", m1: "شهر", m3: "3 أشهر", m6: "6 أشهر", y1: "سنة", from: "من", to: "إلى", none: "لا توجد طلبات في هذه الفترة." },
 };
 
 const MyPage = () => {
@@ -70,7 +67,7 @@ const MyPage = () => {
   const [submittingReview, setSubmittingReview] = useState(false);
   const [paymentInfo, setPaymentInfo] = useState<any>(null);
   const [openBankId, setOpenBankId] = useState<string | null>(null);
-  const dateFmt = language === "de" ? "de-DE" : language === "es" ? "es-ES" : language === "fr" ? "fr-FR" : language === "pt" ? "pt-BR" : language === "ar" ? "ar-SA" : language === "ja" ? "ja-JP" : "en-US";
+  const dateFmt = language === "de" ? "de-DE" : language === "es" ? "es-ES" : language === "fr" ? "fr-FR" : language === "pt" ? "pt-BR" : language === "ja" ? "ja-JP" : "en-US";
 
   const L = MP_I18N[language] || MP_I18N.en;
   const R = REVIEW_I18N[language] || REVIEW_I18N.en;

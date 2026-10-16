@@ -22,7 +22,7 @@ const emptyAddress = {
   city: "", state: "", postal_code: "", country: "South Korea", country_code: "KR",
 };
 
-type LangKey = "en" | "es" | "de" | "fr" | "pt" | "ja" | "ar";
+type LangKey = "en" | "es" | "de" | "fr" | "pt" | "ja";
 
 const CO: Record<LangKey, Record<string, string>> = {
   en: {
@@ -152,27 +152,6 @@ const CO: Record<LangKey, Record<string, string>> = {
     to_orders: "注文履歴へ", continue: "ショッピングを続ける", copied: "コピーしました",
     success: "ご注文を受け付けました。ご入金をお待ちしています。", fail: "注文に失敗しました。",
   },
-  ar: {
-    title: "الدفع", subtitle_a: "طريقة الدفع:", subtitle_b: "تحويل بنكي · يُلغى الطلب تلقائياً إذا لم يتم الدفع خلال",
-    hours: "ساعة", shipping_info: "عنوان الشحن", recipient: "المستلم", phone: "الهاتف",
-    country: "الدولة", country_ph: "اختر الدولة", address: "العنوان", address_ph: "الشارع + رقم المبنى",
-    detail: "تفاصيل العنوان", detail_ph: "شقة / طابق", city: "المدينة", state: "المنطقة",
-    postal: "الرمز البريدي", req: "تعليمات التوصيل", req_ph: "مثال: اترك أمام الباب",
-    bank_section: "تحويل بنكي", depositor: "اسم المودع", depositor_ph: "اسم الشخص الذي يقوم بالدفع",
-    deposit_to: "الإيداع إلى:", holder: "صاحب الحساب:", points_label: "استخدام النقاط (المتاح:",
-    use_all: "استخدام الكل", summary: "ملخص الطلب", subtotal: "المجموع الفرعي", shipping_fee: "الشحن",
-    est: "تقريباً", days: "يوم", points: "النقاط", total: "الإجمالي", processing: "جارٍ المعالجة...",
-    submit: "تأكيد الطلب / الحصول على بيانات الدفع", confirm_title: "يرجى تأكيد عنوان الشحن",
-    edit: "تعديل", confirm: "تأكيد · إرسال الطلب", login_req: "يرجى تسجيل الدخول.",
-    cart_empty: "سلتك فارغة.", err_country: "اختر دولة الشحن.",
-    err_required: "مطلوب.", placed_title: "تم استلام الطلب",
-    placed_sub_a: "يرجى إتمام الدفع خلال", placed_sub_b: "وإلا سيتم إلغاء الطلب تلقائياً.",
-    bank_info: "تفاصيل التحويل البنكي", bank: "البنك", account: "رقم الحساب", holder_l: "صاحب الحساب",
-    business: "اسم النشاط التجاري", order_no: "رقم الطلب", subtotal_l: "المجموع الفرعي", shipping_l: "الشحن",
-    points_used: "النقاط المستخدمة", amount_due: "المبلغ المطلوب إيداعه", deadline: "الموعد النهائي:",
-    to_orders: "طلباتي", continue: "متابعة التسوق", copied: "تم النسخ",
-    success: "تم استلام الطلب. في انتظار الدفع.", fail: "فشل في إنشاء الطلب.",
-  },
 };
 
 const COUPON_T: Record<LangKey, {
@@ -185,7 +164,6 @@ const COUPON_T: Record<LangKey, {
   fr: { label: "Code promo", ph: "Saisir le code", apply: "Appliquer", remove: "Retirer", discount: "Code promo", applied: "Code promo appliqué.", not_found: "Ce code promo n'est pas valide.", not_started: "Ce code promo n'est pas encore actif.", expired: "Ce code promo a expiré.", used_up: "Ce code promo a atteint sa limite d'utilisation.", min_order: "Montant minimum de commande pour ce code :" },
   pt: { label: "Código do cupom", ph: "Digite o código", apply: "Aplicar", remove: "Remover", discount: "Cupom", applied: "Cupom aplicado.", not_found: "Este código de cupom não é válido.", not_started: "Este cupom ainda não está ativo.", expired: "Este cupom expirou.", used_up: "Este cupom atingiu o limite de uso.", min_order: "Valor mínimo do pedido para este cupom:" },
   ja: { label: "クーポンコード", ph: "コードを入力", apply: "適用", remove: "解除", discount: "クーポン", applied: "クーポンを適用しました。", not_found: "このクーポンコードは無効です。", not_started: "このクーポンはまだ利用できません。", expired: "このクーポンは有効期限が切れています。", used_up: "このクーポンは利用上限に達しました。", min_order: "このクーポンの最低注文金額:" },
-  ar: { label: "رمز القسيمة", ph: "أدخل الرمز", apply: "تطبيق", remove: "إزالة", discount: "القسيمة", applied: "تم تطبيق القسيمة.", not_found: "رمز القسيمة غير صالح.", not_started: "هذه القسيمة غير مفعّلة بعد.", expired: "انتهت صلاحية هذه القسيمة.", used_up: "بلغت هذه القسيمة الحد الأقصى للاستخدام.", min_order: "الحد الأدنى للطلب لهذه القسيمة:" },
 };
 
 const Checkout = () => {
@@ -418,7 +396,7 @@ const Checkout = () => {
         <section className="py-12 md:py-20 px-4">
           <div className="container max-w-2xl">
             <h1 className="text-2xl md:text-3xl font-serif font-light mb-2">{t.placed_title}</h1>
-            <p className="text-sm text-muted-foreground mb-8">{t.placed_sub_a} <strong>{deadlineHours}{language === "ja" ? "時間" : language === "ar" ? " ساعة" : " " + t.hours}</strong> {t.placed_sub_b}</p>
+            <p className="text-sm text-muted-foreground mb-8">{t.placed_sub_a} <strong>{deadlineHours}{language === "ja" ? "時間" : " " + t.hours}</strong> {t.placed_sub_b}</p>
 
             <div className="border-2 border-foreground p-6 space-y-5 bg-card">
               <div className="flex items-center gap-2 text-xs tracking-[0.18em] uppercase font-sans font-bold"><Wallet className="h-4 w-4" /> {t.bank_info}</div>

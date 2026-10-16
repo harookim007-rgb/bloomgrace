@@ -13,7 +13,6 @@ const TEXT: Record<Language, { close: string; day: string; week: string }> = {
   fr: { close: "Fermer", day: "Ne plus afficher aujourd'hui", week: "Ne plus afficher pendant une semaine" },
   pt: { close: "Fechar", day: "Não mostrar hoje", week: "Não mostrar por uma semana" },
   ja: { close: "閉じる", day: "今日は表示しない", week: "1週間表示しない" },
-  ar: { close: "إغلاق", day: "عدم الإظهار اليوم", week: "عدم الإظهار لمدة أسبوع" },
 };
 
 const HIDE_KEY = (id: string) => `popup-hide-${id}`;

@@ -13,7 +13,7 @@ import {
 import { ArrowRight, BadgeCheck, CreditCard, ExternalLink, Sparkles, UserPlus } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
 
-type LangKey = "en" | "es" | "de" | "fr" | "pt" | "ja" | "ar";
+type LangKey = "en" | "es" | "de" | "fr" | "pt" | "ja";
 
 type Copy = {
   lead: string;
@@ -107,19 +107,6 @@ const L: Record<LangKey, Copy> = {
     afterCta: "注文書を開く",
     opened: "決済ページを新しいタブで開きました。",
     secure: "安全な決済 · カード・銀行振込",
-  },
-  ar: {
-    lead: "يتم الدفع في صفحة آمنة. ندفع بالبطاقة البنكية والتحويل البنكي.",
-    joinTitle: "سجّل واحصل على نقاط",
-    joinDesc: "أنشئ حساباً لجمع النقاط ومتابعة طلباتك والدفع بشكل أسرع في المرة القادمة.",
-    joinCta: "التسجيل والمتابعة",
-    memberCta: "لديّ حساب بالفعل",
-    guestCta: "المتابعة بدون حساب",
-    afterTitle: "هل انتهيت من التسجيل؟",
-    afterDesc: "عُد إلى هنا وافتح صفحة الطلب — كل ما اخترته ما زال محفوظاً.",
-    afterCta: "فتح صفحة الطلب",
-    opened: "تم فتح صفحة الدفع في تبويب جديد.",
-    secure: "دفع آمن · بطاقة وتحويل بنكي",
   },
 };
 

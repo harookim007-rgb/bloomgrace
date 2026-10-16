@@ -15,14 +15,14 @@ import AnnouncementBar from "@/components/AnnouncementBar";
 import HintBubble from "@/components/HintBubble";
 
 const JOIN_TEXT: Record<string, string> = {
-  en: "Login here!", es: "¡Inicia sesión aquí!", de: "Hier anmelden!", fr: "Connectez-vous ici !", pt: "Entre aqui!", ja: "ログインはこちら", ar: "سجّلي الدخول هنا!",
+  en: "Login here!", es: "¡Inicia sesión aquí!", de: "Hier anmelden!", fr: "Connectez-vous ici !", pt: "Entre aqui!", ja: "ログインはこちら", 
 };
 import { useDesign } from "@/hooks/useDesign";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 
 const langLabels: Record<Language, string> = {
-  en: "English", es: "Español", de: "Deutsch", fr: "Français", pt: "Português", ja: "日本語", ar: "العربية",
+  en: "English", es: "Español", de: "Deutsch", fr: "Français", pt: "Português", ja: "日本語", 
 };
 
 type MenuItem = { id: string; label: string; link: string; sort_order: number; is_visible: boolean; translations?: Record<string, string> | null };

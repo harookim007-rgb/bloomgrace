@@ -28,7 +28,6 @@ const CART_MSG = {
   fr: { login: "Veuillez vous connecter.", added: "Ajouté au panier !", fail: "Échec de l’ajout au panier." },
   pt: { login: "Faça login primeiro.", added: "Adicionado ao carrinho!", fail: "Falha ao adicionar ao carrinho." },
   ja: { login: "ログインしてください。", added: "カートに追加しました！", fail: "カートへの追加に失敗しました。" },
-  ar: { login: "يرجى تسجيل الدخول أولاً.", added: "تمت الإضافة إلى السلة!", fail: "فشلت الإضافة إلى السلة." },
 };
 
 export const useCart = () => {

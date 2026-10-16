@@ -8,7 +8,6 @@ const T: Record<Language, string> = {
   fr: "Le nom de l'émetteur du virement doit correspondre au nom de la commande pour que nous puissions identifier votre paiement.",
   pt: "O nome do depositante deve ser igual ao nome do pedido para que possamos identificar o seu pagamento.",
   ja: "ご入金の際は、ご注文者様と同じお名前でお振込みください。お名前で入金を確認いたします。",
-  ar: "يجب أن يطابق اسم المُحوِّل الاسم الموجود في الطلب حتى نتمكن من التحقق من دفعتك.",
 };
 
 // Bank transfers are matched to orders by name, so the transfer must be sent in the orderer's name.

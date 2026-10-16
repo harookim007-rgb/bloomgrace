@@ -85,17 +85,6 @@ export const HAIR_TEXTS: Record<string, HairText> = {
       smooth: "さらさら", voluminous: "ふんわり", defined_curls: "まとまるカール", natural_styling: "自然なスタイリング",
     },
   },
-  ar: {
-    title: "اعثري على ما يناسب شعرك تمامًا", sub: "اعثري على المنتجات المناسبة لشعرك وفروة رأسك.", start: "لنبدأ",
-    questions: { product: "عمّ تبحثين؟", scalp: "ما نوع فروة رأسك؟", hair: "ما نوع شعرك؟", concern: "ما أكبر مشكلة لديك؟", result: "ما النتيجة التي تريدينها؟" },
-    options: {
-      shampoo: "شامبو", treatment: "علاج", "scalp-care": "العناية بفروة الرأس", styling: "تصفيف", "hair-oil": "زيت الشعر",
-      oily_scalp: "دهنية", dry_scalp: "جافة", normal_scalp: "عادية", sensitive_scalp: "حساسة", combination_scalp: "مختلطة",
-      straight: "مستقيم", wavy: "مموج", curly: "مجعد", coily: "مجعد جدًا", fine: "رفيع", thick: "كثيف",
-      damage: "تلف", frizz: "تطاير", volume: "قلة الكثافة", dandruff: "قشرة", hair_loss: "تساقط", color_care: "حماية اللون",
-      smooth: "ناعم", voluminous: "كثيف", defined_curls: "تجاعيد واضحة", natural_styling: "تصفيف طبيعي",
-    },
-  },
 };
 
 export const hairTexts = (language: string) => HAIR_TEXTS[language] || HAIR_TEXTS.en;
