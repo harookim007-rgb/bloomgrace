@@ -28,7 +28,10 @@ const Auth = () => {
         .eq("user_id", user.id)
         .limit(1)
         .maybeSingle();
-      navigate(addr ? redirectTo : "/complete-profile", { replace: true });
+      // Only a brand-new member is sent to fill in their profile; a returning member who skipped it
+      // goes straight back to the store (checkout asks for the address anyway).
+      const isNew = Date.now() - new Date(user.created_at).getTime() < 10 * 60_000;
+      navigate(addr || !isNew ? redirectTo : "/complete-profile", { replace: true });
     };
     route();
   }, [user, navigate, redirectTo]);

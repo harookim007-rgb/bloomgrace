@@ -92,7 +92,7 @@ const ProductDetail = () => {
     setReviews(data || []);
   };
 
-  const filteredReviews = filterRating > 0 ? reviews.filter(r => r.rating >= filterRating) : reviews;
+  const filteredReviews = filterRating > 0 ? reviews.filter(r => r.rating === filterRating) : reviews;
   const dateFmt = language === "de" ? "de-DE" : language === "es" ? "es-ES" : language === "fr" ? "fr-FR" : language === "pt" ? "pt-BR" : "en-US";
 
   if (isLoading) return <div className="min-h-dvh"><Navigation /><div className="flex items-center justify-center py-32 text-sm text-muted-foreground">{t("pd_loading")}</div></div>;
@@ -192,7 +192,7 @@ const ProductDetail = () => {
                     filterRating === r ? "bg-foreground text-background border-foreground" : "border-border text-muted-foreground"
                   }`}
                 >
-                  {r === 0 ? t("pd_all") : `${r}★ ${t("pd_above")}`}
+                  {r === 0 ? t("pd_all") : `${r}★`}
                 </button>
               ))}
             </div>

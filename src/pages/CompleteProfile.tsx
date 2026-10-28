@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -10,31 +10,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-
-const countries = [
-  { code: "US", name: "United States", phoneCode: "+1", needsCustoms: true },
-  { code: "GB", name: "United Kingdom", phoneCode: "+44", needsCustoms: true },
-  { code: "DE", name: "Germany", phoneCode: "+49", needsCustoms: true },
-  { code: "FR", name: "France", phoneCode: "+33", needsCustoms: true },
-  { code: "IT", name: "Italy", phoneCode: "+39", needsCustoms: true },
-  { code: "ES", name: "Spain", phoneCode: "+34", needsCustoms: true },
-  { code: "PT", name: "Portugal", phoneCode: "+351", needsCustoms: true },
-  { code: "JP", name: "Japan", phoneCode: "+81", needsCustoms: true },
-  { code: "SA", name: "Saudi Arabia", phoneCode: "+966", needsCustoms: true },
-  { code: "AE", name: "United Arab Emirates", phoneCode: "+971", needsCustoms: true },
-  { code: "CA", name: "Canada", phoneCode: "+1", needsCustoms: true },
-  { code: "AU", name: "Australia", phoneCode: "+61", needsCustoms: true },
-  { code: "SG", name: "Singapore", phoneCode: "+65", needsCustoms: true },
-  { code: "TH", name: "Thailand", phoneCode: "+66", needsCustoms: true },
-  { code: "VN", name: "Vietnam", phoneCode: "+84", needsCustoms: true },
-  { code: "CN", name: "China", phoneCode: "+86", needsCustoms: true },
-  { code: "KR", name: "South Korea", phoneCode: "+82", needsCustoms: false },
-];
+import { countriesFor, countryEnglishName } from "@/lib/countries";
 
 const CompleteProfile = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [isSaving, setIsSaving] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState("US");
   const [form, setForm] = useState({
@@ -47,7 +28,10 @@ const CompleteProfile = () => {
     customs_number: "",
   });
 
+  const countries = useMemo(() => countriesFor(language), [language]);
   const country = countries.find((c) => c.code === selectedCountry) || countries[0];
+  // Korea is the domestic market; every other country needs a personal customs number.
+  const needsCustoms = country.code !== "KR";
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,17 +41,18 @@ const CompleteProfile = () => {
       // Update profile phone
       await supabase
         .from("profiles")
-        .update({ phone: `${country.phoneCode} ${form.phone}` })
+        .update({ phone: `${country.dial} ${form.phone}` })
         .eq("user_id", user.id);
 
       // Save address
       const { error } = await supabase.from("addresses").insert({
         user_id: user.id,
         name: user.user_metadata?.display_name || user.email?.split("@")[0] || "",
-        phone: `${country.phoneCode} ${form.phone}`,
+        phone: `${country.dial} ${form.phone}`,
         address_line1: form.address_line1,
         address_line2: form.address_line2 || null,
-        city: `${form.city} (${country.name})`,
+        city: form.city,
+        country: countryEnglishName(country.code),
         postal_code: form.postal_code,
         is_default: true,
       });
@@ -110,7 +95,7 @@ const CompleteProfile = () => {
                 <SelectTrigger className="rounded-none">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="max-h-72">
                   {countries.map((c) => (
                     <SelectItem key={c.code} value={c.code}>
                       {c.name}
@@ -125,7 +110,7 @@ const CompleteProfile = () => {
               <Label className="text-xs tracking-wider uppercase">{t("cp_phone")}</Label>
               <div className="flex gap-2">
                 <div className="w-24 flex items-center justify-center border border-input bg-muted/30 text-sm text-muted-foreground px-3">
-                  {country.phoneCode}
+                  {country.dial}
                 </div>
                 <Input
                   type="tel"
@@ -179,7 +164,7 @@ const CompleteProfile = () => {
             </div>
 
             {/* Customs number - only for international */}
-            {country.needsCustoms && (
+            {needsCustoms && (
               <div className="space-y-2">
                 <Label className="text-xs tracking-wider uppercase">{t("cp_customs_number")}</Label>
                 <Input

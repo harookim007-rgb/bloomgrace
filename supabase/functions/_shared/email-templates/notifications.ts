@@ -101,7 +101,7 @@ export function renderDeliveredEmail(d: { customerName: string; orderId: string 
       h2(`${d.customerName}, your order has been delivered`) +
       p(`We hope you love your new K-Beauty routine.`) +
       p(`Leave a review from your order history and earn <strong>1,000P</strong> to use on your next order.`) +
-      btn(`${SHOP}/mypage`, "Write a review")
+      btn(`${SHOP}/mypage?review=${d.orderId}`, "Write a review")
     ),
   };
 }

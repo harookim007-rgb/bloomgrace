@@ -19,6 +19,7 @@ import ProductEditPage from "./pages/ProductEditPage";
 import AdminDesign from "./pages/AdminDesign";
 import DesignApplier from "./components/DesignApplier";
 import PopupHost from "./components/PopupHost";
+import ReviewReminder from "./components/ReviewReminder";
 import { useDesign } from "./hooks/useDesign";
 import NotFound from "./pages/NotFound";
 import Ranking from "./pages/Ranking";
@@ -55,6 +56,7 @@ const App = () => (
             <SiteGate>
             <DesignApplier />
             <PopupHost />
+            <ReviewReminder />
             <LoginDialog />
             <Cafe24Handoff />
             <GlobalPetals />

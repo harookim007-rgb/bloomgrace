@@ -30,6 +30,11 @@ const CART_MSG = {
   ja: { login: "ログインしてください。", added: "カートに追加しました！", fail: "カートへの追加に失敗しました。" },
 };
 
+// Every component keeps its own copy of the cart, so a change made in one (e.g. a product card)
+// tells the others (the header cart) to reload from the database.
+const CART_CHANGED = "cart-changed";
+const announceChange = () => window.dispatchEvent(new Event(CART_CHANGED));
+
 export const useCart = () => {
   const { user } = useAuth();
   const { language } = useLanguage();
@@ -49,7 +54,11 @@ export const useCart = () => {
     setIsLoading(false);
   }, [user]);
 
-  useEffect(() => { fetchCart(); }, [fetchCart]);
+  useEffect(() => {
+    fetchCart();
+    window.addEventListener(CART_CHANGED, fetchCart);
+    return () => window.removeEventListener(CART_CHANGED, fetchCart);
+  }, [fetchCart]);
 
   const addToCart = useCallback(async (productId: string, qty = 1, opts: { silent?: boolean } = {}): Promise<boolean> => {
     if (!user) { requireLogin(false); return false; }
@@ -65,7 +74,7 @@ export const useCart = () => {
         if (error) throw error;
       }
       if (!opts.silent) toast.success(msg.added);
-      await fetchCart();
+      announceChange();
       return true;
     } catch (e: any) {
       toast.error(e?.message || msg.fail);
@@ -81,18 +90,19 @@ export const useCart = () => {
     } else {
       await supabase.from("cart_items").update({ quantity: Math.max(1, quantity) }).eq("id", itemId);
     }
-    fetchCart();
+    announceChange();
   };
 
   const removeItem = async (itemId: string) => {
     await supabase.from("cart_items").delete().eq("id", itemId);
-    fetchCart();
+    announceChange();
   };
 
   const clearCart = async () => {
     if (!user) return;
     await supabase.from("cart_items").delete().eq("user_id", user.id);
     setItems([]);
+    announceChange();
   };
 
   const total = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);

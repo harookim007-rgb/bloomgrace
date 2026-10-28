@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCart } from "@/hooks/useCart";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
@@ -19,13 +19,13 @@ import { LogOut, Clock, RotateCcw, Star, PenLine } from "lucide-react";
 import { toast } from "sonner";
 import { getLocalizedProductName } from "@/lib/productI18n";
 
-const REVIEW_I18N: Record<string, { write: string; notice: string; title: string; content: string; submit: string; done: string; success: string; dup: string; fail: string; rating: string; }> = {
-  en: { write: "Write a review", notice: "Earn 1,000P when you write a review (usable at checkout).", title: "Title", content: "Share your experience...", submit: "Submit", done: "Reviewed", success: "Review submitted · 1,000P earned!", dup: "You've already reviewed this product.", fail: "Failed to submit review.", rating: "Rating" },
-  es: { write: "Escribir reseña", notice: "Gana 1.000P al escribir una reseña (usable al pagar).", title: "Título", content: "Comparte tu experiencia...", submit: "Enviar", done: "Reseñado", success: "¡Reseña enviada · 1.000P ganados!", dup: "Ya has reseñado este producto.", fail: "Error al enviar.", rating: "Calificación" },
-  de: { write: "Bewertung schreiben", notice: "Erhalten Sie 1.000P für jede Bewertung (beim Checkout einlösbar).", title: "Titel", content: "Teilen Sie Ihre Erfahrung...", submit: "Senden", done: "Bewertet", success: "Bewertung gesendet · 1.000P erhalten!", dup: "Sie haben dieses Produkt bereits bewertet.", fail: "Senden fehlgeschlagen.", rating: "Bewertung" },
-  fr: { write: "Écrire un avis", notice: "Gagnez 1 000P en publiant un avis (utilisable au paiement).", title: "Titre", content: "Partagez votre expérience...", submit: "Envoyer", done: "Avis publié", success: "Avis publié · 1 000P gagnés !", dup: "Vous avez déjà évalué ce produit.", fail: "Échec de l'envoi.", rating: "Note" },
-  pt: { write: "Escrever avaliação", notice: "Ganhe 1.000P ao escrever uma avaliação (usável no checkout).", title: "Título", content: "Compartilhe sua experiência...", submit: "Enviar", done: "Avaliado", success: "Avaliação enviada · 1.000P ganhos!", dup: "Você já avaliou este produto.", fail: "Falha ao enviar.", rating: "Avaliação" },
-  ja: { write: "レビューを書く", notice: "レビューを書くと1,000Pが貯まります（お支払い時に利用可能）。", title: "タイトル", content: "ご感想をお聞かせください...", submit: "送信", done: "レビュー済み", success: "レビューを送信しました・1,000P獲得！", dup: "この商品はすでにレビュー済みです。", fail: "送信に失敗しました。", rating: "評価" },
+const REVIEW_I18N: Record<string, { write: string; notice: string; title: string; content: string; submit: string; done: string; success: string; dup: string; fail: string; rating: string; waiting: (n: number) => string; }> = {
+  en: { write: "Write a review", notice: "Earn 1,000P when you write a review (usable at checkout).", title: "Title", content: "Share your experience...", submit: "Submit", done: "Reviewed", success: "Review submitted · 1,000P earned!", dup: "You've already reviewed this product.", fail: "Failed to submit review.", rating: "Rating", waiting: (n) => `${n} delivered item${n > 1 ? "s are" : " is"} waiting for your review — earn 1,000P each.` },
+  es: { write: "Escribir reseña", notice: "Gana 1.000P al escribir una reseña (usable al pagar).", title: "Título", content: "Comparte tu experiencia...", submit: "Enviar", done: "Reseñado", success: "¡Reseña enviada · 1.000P ganados!", dup: "Ya has reseñado este producto.", fail: "Error al enviar.", rating: "Calificación", waiting: (n) => `${n} producto${n > 1 ? "s entregados esperan" : " entregado espera"} tu reseña: gana 1.000P por cada una.` },
+  de: { write: "Bewertung schreiben", notice: "Erhalten Sie 1.000P für jede Bewertung (beim Checkout einlösbar).", title: "Titel", content: "Teilen Sie Ihre Erfahrung...", submit: "Senden", done: "Bewertet", success: "Bewertung gesendet · 1.000P erhalten!", dup: "Sie haben dieses Produkt bereits bewertet.", fail: "Senden fehlgeschlagen.", rating: "Bewertung", waiting: (n) => `${n} gelieferte${n > 1 ? " Artikel warten" : "r Artikel wartet"} auf Ihre Bewertung – 1.000P pro Bewertung.` },
+  fr: { write: "Écrire un avis", notice: "Gagnez 1 000P en publiant un avis (utilisable au paiement).", title: "Titre", content: "Partagez votre expérience...", submit: "Envoyer", done: "Avis publié", success: "Avis publié · 1 000P gagnés !", dup: "Vous avez déjà évalué ce produit.", fail: "Échec de l'envoi.", rating: "Note", waiting: (n) => `${n} article${n > 1 ? "s livrés attendent" : " livré attend"} votre avis — 1 000P par avis.` },
+  pt: { write: "Escrever avaliação", notice: "Ganhe 1.000P ao escrever uma avaliação (usável no checkout).", title: "Título", content: "Compartilhe sua experiência...", submit: "Enviar", done: "Avaliado", success: "Avaliação enviada · 1.000P ganhos!", dup: "Você já avaliou este produto.", fail: "Falha ao enviar.", rating: "Avaliação", waiting: (n) => `${n} ite${n > 1 ? "ns entregues aguardam" : "m entregue aguarda"} sua avaliação — ganhe 1.000P por cada.` },
+  ja: { write: "レビューを書く", notice: "レビューを書くと1,000Pが貯まります（お支払い時に利用可能）。", title: "タイトル", content: "ご感想をお聞かせください...", submit: "送信", done: "レビュー済み", success: "レビューを送信しました・1,000P獲得！", dup: "この商品はすでにレビュー済みです。", fail: "送信に失敗しました。", rating: "評価", waiting: (n) => `配達済みの${n}点がレビューを待っています。1件につき1,000Pが貯まります。` },
 };
 
 const MP_I18N: Record<string, { points: string; reorder: string; deadline: string; expired: string; expireH: string; expireM: string; autoCancelled: string; reorderToast: (n: number) => string; subtotal: string; shipping: string; statusPending: string; statusConfirmed: string; statusShipping: string; statusDelivered: string; statusCancelled: string; }> = {
@@ -88,6 +88,21 @@ const MyPage = () => {
     setPaymentInfo(Array.isArray(payRes.data) ? payRes.data[0] : payRes.data);
   };
   useEffect(() => { fetchData(); /* eslint-disable-next-line */ }, [user]);
+
+  // Delivered items not reviewed yet. The review reminder and the delivery email link here with
+  // ?review=<order id>, which opens the form for that order's first unreviewed item.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const toReview = orders.filter(o => o.status === "delivered").flatMap(o => o.order_items || [])
+    .filter((it: any, idx: number, all: any[]) => !reviewedIds.has(it.product_id) && all.findIndex(x => x.product_id === it.product_id) === idx);
+  useEffect(() => {
+    const orderId = searchParams.get("review");
+    if (!orderId || orders.length === 0) return;
+    const order = orders.find(o => o.id === orderId && o.status === "delivered");
+    const item = order?.order_items?.find((it: any) => !reviewedIds.has(it.product_id));
+    if (item && allowReviews) openReview(item);
+    setSearchParams(p => { p.delete("review"); return p; }, { replace: true });
+    /* eslint-disable-next-line */
+  }, [orders, searchParams]);
 
   // Order list period: a preset (0 = all) or an exact from/to date.
   const [rangeDays, setRangeDays] = useState(0);
@@ -179,6 +194,13 @@ const MyPage = () => {
             </TabsList>
 
             <TabsContent value="orders" className="space-y-0">
+              {allowReviews && toReview.length > 0 && (
+                <div className="mb-4 flex flex-wrap items-center gap-3 border border-primary/40 bg-primary-soft/20 p-4 text-sm font-sans">
+                  <PenLine className="h-4 w-4 shrink-0 text-primary" />
+                  <span className="flex-1 min-w-[12rem]">{R.waiting(toReview.length)}</span>
+                  <Button size="sm" className="rounded-none h-8 text-[11px] tracking-wider uppercase" onClick={() => openReview(toReview[0])}>{R.write}</Button>
+                </div>
+              )}
               <div className="flex flex-wrap items-center gap-2 pb-4 border-b border-border">
                 {RANGES.map(r => (
                   <button
